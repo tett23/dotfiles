@@ -1,0 +1,39 @@
+[user]
+  name = tett23
+  email = tett23@gmail.com
+[core]
+  excludesfile = ~/.gitignore_global
+  autocrlf = input
+  editor = vim
+  pager = LESS=-R less
+  filemode = false
+[alias]
+  tr = log --graph --pretty='format:%C(yellow)%h%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset'
+  co = checkout
+  st = status -sb
+  wd = diff --word-diff
+	ld = log --stat -p
+	cl = commit -av
+	lgraph = log --oneline --graph --decorate --all
+	oneline = log --pretty=oneline
+	logg = log --stat --pretty=format:'%Cblue%h %Cgreen%ar %Cred%an %Creset%s %Cred%d'
+	lgraph2 = log --graph --date-order --pretty=format:'%Cblue%h %Cgreen%ci %Cred%an %Cblue%m %Creset%s %Cred%d'
+
+[color]
+  ui = auto
+[log]
+  date = local
+[merge]
+  tool = vimdiff
+[branch "master"]
+  rebase = true
+[branch]
+  autosetuprebase = always
+[difftool]
+  prompt = false
+[diff]
+	tool = vimdiff
+[mergetool]
+	prompt = true
+[grep]
+	lineNumbers = true
