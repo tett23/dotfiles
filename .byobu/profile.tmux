@@ -10,3 +10,5 @@ set-option -g status-left "#(~/.tmux/tmux-powerline/status-left.sh)"
 set-option -g status-right "#(~/.tmux/tmux-powerline/status-right.sh)"
 
 source ~/path/to/tmux-colors-solarized/tmuxcolors.conf
+
+set -sg escape-time 0

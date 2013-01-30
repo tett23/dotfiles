@@ -15,14 +15,14 @@ case ${UID} in
   PROMPT="%B%{${fg[red]}%}%/#%{${reset_color}%}%b "
   PROMPT2="%B%{${fg[red]}%}%_#%{${reset_color}%}%b "
   SPROMPT="%B%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
-  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
+  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
     PROMPT="%{${fg[white]}%}${HOST%%.*} ${PROMPT}"
   ;;
 *)
   PROMPT="%{${fg[red]}%}%/%%%{${reset_color}%} "
   PROMPT2="%{${fg[red]}%}%_%%%{${reset_color}%} "
   SPROMPT="%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%} "
-  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
+  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
     PROMPT="%{${fg[white]}%}${HOST%%.*} ${PROMPT}"
   ;;
 esac
@@ -53,7 +53,7 @@ setopt nolistbeep
 
 ## Keybind configuration
 #
-# emacs like keybind (e.x. Ctrl-a goes to head of a line and Ctrl-e goes 
+# emacs like keybind (e.x. Ctrl-a goes to head of a line and Ctrl-e goes
 # to end of it)
 #
 bindkey -e
@@ -157,14 +157,14 @@ case ${UID} in
   PROMPT="%B%{${fg[red]}%}%/#%{${reset_color}%}%b "
   PROMPT2="%B%{${fg[red]}%}%_#%{${reset_color}%}%b "
   SPROMPT="%B%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
-  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
+  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
     PROMPT="%{${fg[white]}%}${HOST%%.*} ${PROMPT}"
   ;;
 *)
   PROMPT="%{${fg[red]}%}%/%%%{${reset_color}%} "
   PROMPT2="%{${fg[red]}%}%_%%%{${reset_color}%} "
   SPROMPT="%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%} "
-  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
+  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
     PROMPT="%{${fg[white]}%}${HOST%%.*} ${PROMPT}"
   ;;
 esac
@@ -208,7 +208,26 @@ if is-at-least 4.3.7; then
       psvar[2]="& $COUNT"
     fi
   }
-  add-zsh-hook precmd _update_vcs_info_msg
-  RPROMPT="%1(v|%F{green}%1v%f%F{yellow}%2v%f|)"
-fi
 
+  # show rvm prompt like "1.9.2@gemset_name"
+  #function _update_rvm_prompt {
+  #  result=`rvm-prompt v g 2> /dev/null`
+  #  if [ "$result" ] ; then
+  #    "[$result]"
+  #  fi
+  #}
+  #function rvm_prompt() {
+  #  rvm_current = _update_rvm_prompt
+  #}
+
+  add-zsh-hook precmd _update_vcs_info_msg
+  #add-zsh-hook precmd _update_rvm_prompt
+  #RVM_INFO="%F{green}`rvm_prompt`%f"
+  #RVM_INFO="$'%{$RVM_COLOR%}$(rvm_prompt)%{${reset_color}%}'"
+  VCS_INFO="%1(v|%F{green}%1v%f%F{yellow}%2v%f|)"
+fi
+RPROMPT="${VCS_INFO}"
+
+alias diff=colordiff
+
+export BUNDLER_EDITOR=vim

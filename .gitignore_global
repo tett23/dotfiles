@@ -37,6 +37,5 @@ pickle-email-*.html
 .*\.swp
 .*\.swo
 .rvmrc
-Gemfile.lock
 Gemfile.local
 .gitignore

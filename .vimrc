@@ -73,10 +73,14 @@ Bundle 'mattn/zencoding-vim'
 Bundle 'vim-scripts/grep.vim'
 Bundle 'vim-scripts/rails.vim'
 Bundle 'fuenor/qfixhowm'
-Bundle 'vim-ref'
-Bundle 'vim-ref-ri'
+"Bundle 'vim-ref'
+"Bundle 'vim-ref-ri'
 Bundle 'vim-endwise'
 Bundle 'ruby-matchit'
+Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-markdown'
+Bundle 'scrooloose/syntastic'
 
 
 " eregexの設定
@@ -178,7 +182,7 @@ let g:Powerline#Colorschemes#my#colorscheme = Pl#Colorscheme#Init([
     \ 'N': ['gray4'],
     \ }),
   \
-  \ Pl#Hi#Segments(['currenttag', 'fileformat', 'fileencoding', 'pwd', 'filetype', 'rvm:string', 'rvm:statusline', 'virtualenv:statusline', 'charcode', 'currhigroup'], {
+  \ Pl#Hi#Segments(['fugitive:branch', 'currenttag', 'fileformat', 'fileencoding', 'pwd', 'filetype', 'rvm:string', 'rvm:statusline', 'virtualenv:statusline', 'charcode', 'currhigroup'], {
     \ 'n': ['gray9', 'gray4'],
     \ }),
   \
@@ -239,7 +243,12 @@ let g:Powerline#Colorschemes#my#colorscheme = Pl#Colorscheme#Init([
     \ 'n': ['white', 'darkestpurple'],
     \ }),
   \ ])
+set guifont=Inconsolata-vim-powerline:h10
+"let g:Powerline_theme='skwp'
 let g:Powerline_colorscheme='my'
+let g:Powerline_symbols = 'fancy'
+let g:Powerline_mode_n = 'NORMAL'
+" let g:Powerline_colorscheme='skwp'
 
 set cursorline
 " カレントウィンドウにのみ罫線を引く
@@ -258,13 +267,9 @@ set t_Co=256
 "colorscheme molokai
 colorscheme zenburn
 
-
-set guifont=Inconsolata-vim-powerline:h10
-let g:Powerline_symbols = 'fancy'
-
 " マウスサポート
-set mouse=a
-set ttymouse=xterm
+" set mouse=a
+" set ttymouse=xterm
 
 
 """
@@ -361,4 +366,39 @@ inoremap <expr> <C-x><C-o> &filetype == 'ruby' ? "\<C-x><C-v><C-p>" : neocomplca
 inoremap <expr> <C-x><C-o> &filetype == 'python' ? "\<C-x><C-v><C-p>" : neocomplcache#manual_omni_complete()
 
 
+set list listchars=tab:>-,trail:_
 
+" インデント表示
+let g:indent_guides_auto_colors=0
+hi IndentGuidesOdd ctermbg=grey
+hi IndentGuidesEven ctermbg=darkgrey
+let g:indent_guides_start_lebel=1
+let g:indent_guides_guide_size=1
+let g:indent_guides_enable_on_vim_startup=1
+
+" 保存時にスペースを自動削除
+autocmd BufWritePre * :%s/\s\+$//ge
+
+" エンコードの設定
+set encoding=utf-8
+set fileencodings=utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932
+
+" rspecのquickrun
+augroup RSpec
+  autocmd!
+  autocmd BufWinEnter,BufNewFile *_spec.rb set filetype=ruby.rspec
+augroup END
+
+let g:quickrun_config = {}
+let g:quickrun_config['ruby.rspec'] = {'command': 'rspec'}
+let g:quickrun_config['*'] = {'runmode': 'async:remote'}
+
+set incsearch
+
+" syntastic設定
+let g:syntastic_enable_signs=1
+let g:syntastic_mode_map = { 'mode': 'active',
+  \ 'active_filetypes': [],
+  \ 'passive_filetypes': ['html'] }
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_javascript_checker = 'jshint'

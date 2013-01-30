@@ -10,14 +10,22 @@
 [alias]
   tr = log --graph --pretty='format:%C(yellow)%h%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset'
   co = checkout
-  st = status -sb
+  ci = commit
+  cia = commit -a
+  df = diff
+  st = status
   wd = diff --word-diff
-	ld = log --stat -p
-	cl = commit -av
-	lgraph = log --oneline --graph --decorate --all
-	oneline = log --pretty=oneline
-	logg = log --stat --pretty=format:'%Cblue%h %Cgreen%ar %Cred%an %Creset%s %Cred%d'
-	lgraph2 = log --graph --date-order --pretty=format:'%Cblue%h %Cgreen%ci %Cred%an %Cblue%m %Creset%s %Cred%d'
+  ld = log --stat -p
+  cl = commit -av
+  lgraph = log --oneline --graph --decorate --all
+  oneline = log --pretty=oneline
+  logg = log --stat --pretty=format:'%Cblue%h %Cgreen%ar %Cred%an %Creset%s %Cred%d'
+  lgraph2 = log --graph --date-order --pretty=format:'%Cblue%h %Cgreen%ci %Cred%an %Cblue%m %Creset%s %Cred%d'
+  gr = grep -n -c --color -p
+  br = branch
+  bra = branch -a
+  cob = checkout -b
+  lop = log -p
 
 [color]
   ui = auto
@@ -32,8 +40,12 @@
 [difftool]
   prompt = false
 [diff]
-	tool = vimdiff
+  tool = vimdiff
 [mergetool]
-	prompt = true
+  prompt = true
 [grep]
-	lineNumbers = true
+  lineNumbers = true
+[push]
+  default = tracking
+[pull]
+  rebase = true
