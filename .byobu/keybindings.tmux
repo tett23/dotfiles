@@ -1,9 +1,6 @@
 
 set-option -g prefix C-j
 unbind-key -n C-a
-unbind-key -n C-j
-set -g prefix ^J
-bind j send-prefix
 
 bind h select-pane -L
 bind j select-pane -D
@@ -17,3 +14,7 @@ bind s split-window -v
 bind v split-window -h
 
 setw -g mode-keys vi
+unbind-key -n C-j
+set -g prefix ^J
+set -g prefix2 ^J
+bind j send-prefix
