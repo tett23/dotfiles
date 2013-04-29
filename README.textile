@@ -9,3 +9,4 @@ ln -s dotfiles/.gitignore_global ~/.gitignore_global
 * RVM
 * Byobu(tmux)
 * oh-my-zsh
+* RSense
