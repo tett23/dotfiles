@@ -4,6 +4,8 @@ source ~/dotfiles/zsh/exports.sh
 source ~/dotfiles/zsh/vcs.sh
 source ~/dotfiles/zsh/aliases.sh
 source ~/dotfiles/zsh/colors.sh
+source ~/.nvm/nvm.sh
+source ~/.zsh/color
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 source ~/.rvm/scripts/rvm
