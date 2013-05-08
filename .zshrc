@@ -1,9 +1,11 @@
-source ~/dotfiles/zsh/oh-my-zsh.sh
-source ~/dotfiles/zsh/common.sh
-source ~/dotfiles/zsh/exports.sh
-source ~/dotfiles/zsh/vcs.sh
-source ~/dotfiles/zsh/aliases.sh
-source ~/dotfiles/zsh/colors.sh
+export DOTFILES=~/dotfiles
+
+source $DOTFILES/zsh/oh-my-zsh.sh
+source $DOTFILES/zsh/common.sh
+source $DOTFILES/zsh/exports.sh
+source $DOTFILES/zsh/vcs.sh
+source $DOTFILES/zsh/aliases.sh
+source $DOTFILES/zsh/colors.sh
 source ~/.nvm/nvm.sh
 source ~/.zsh/color
 
