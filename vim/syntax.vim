@@ -5,3 +5,7 @@ let g:syntastic_mode_map = { 'mode': 'active',
   \ 'passive_filetypes': ['html'] }
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_javascript_checker = 'jshint'
+
+au BufRead,BufNewFile, *.thor set filetype=ruby
+au BufRead,BufNewFile, *.erubis set filetype=html
+
