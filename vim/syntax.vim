@@ -8,4 +8,4 @@ let g:syntastic_javascript_checker = 'jshint'
 
 au BufRead,BufNewFile, *.thor set filetype=ruby
 au BufRead,BufNewFile, *.erubis set filetype=html
-
+au BufNewFile,BufRead *as set ft=actionscript

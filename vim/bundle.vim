@@ -26,3 +26,10 @@ Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
 Bundle 'scrooloose/syntastic'
+
+" haskell
+Bundle 'dag/vim2hs'
+Bundle 'eagletmt/ghcmod-vim'
+Bundle 'pbrisbin/html-template-syntax'
+Bundle 'ujihisa/neco-ghc'
+Bundle 'eagletmt/unite-haddock'

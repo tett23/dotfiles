@@ -41,7 +41,6 @@ set incsearch
 
 let $VIMRUNTIME = "~/.vim"
 set tags=tags
-au BufNewFile,BufRead *as set ft=actionscript
 
 "マッピングとか
 map ^? ^H
