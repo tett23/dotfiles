@@ -33,3 +33,9 @@ Bundle 'eagletmt/ghcmod-vim'
 Bundle 'pbrisbin/html-template-syntax'
 Bundle 'ujihisa/neco-ghc'
 Bundle 'eagletmt/unite-haddock'
+
+" go
+set rtp+=$GOROOT/misc/vim
+exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+Bundle 'Blackrush/vim-gocode'
+Bundle 'jnwhiteh/vim-golang'
