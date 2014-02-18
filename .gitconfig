@@ -12,7 +12,7 @@
   co = checkout
   ci = commit
   cia = commit -a
-  df = diff
+  df = diff --ignore-space-change
   st = status
   wd = diff --word-diff
   ld = log --stat -p
@@ -25,7 +25,7 @@
   br = branch
   bra = branch -a
   cob = checkout -b
-  lop = log -p
+  lop = log -p --ignore-space-change
   delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
   lsf = ls-files
 
