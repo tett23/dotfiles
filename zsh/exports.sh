@@ -10,4 +10,5 @@ export ZSH=$HOME/.oh-my-zsh
 export GOROOT=/usr/local/go
 export PATH=$PATH:GOROOT/bin
 export GOPATH=$HOME/lib/go
+export ZSH=$HOME/.oh-my-zsh
 plugins=(git)
