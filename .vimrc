@@ -5,6 +5,7 @@ source ~/dotfiles/vim/neocomplecache.vim
 source ~/dotfiles/vim/syntax.vim
 source ~/dotfiles/vim/rspec.vim
 source ~/dotfiles/vim/go.vim
+source ~/dotfiles/vim/coffee.vim
 
 let g:rsenseHome = "$RSENSE_HOME"
 let g:rsenseUseOmniFunc = 1

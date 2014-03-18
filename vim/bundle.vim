@@ -39,3 +39,7 @@ set rtp+=$GOROOT/misc/vim
 exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
 Bundle 'Blackrush/vim-gocode'
 Bundle 'jnwhiteh/vim-golang'
+
+" coffee
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'claco/jasmine.vim'

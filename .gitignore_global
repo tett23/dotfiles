@@ -41,3 +41,5 @@ pickle-email-*.html
 .ruby-gemset
 Gemfile.local
 .gitignore
+
+node_modules
