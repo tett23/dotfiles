@@ -1,45 +1,52 @@
-set nocompatible
-"filetype off                   " (1)
+if has('vim_starting')
+  set nocompatible
+  "set runtimepath+=~/.vim/bundle/neobundle.vim/
+  set runtimepath+=~/dotfiles/vim/neobundle.vim/
+endif
 
-set rtp+=~/.vim/vundle/    " (2)
-call vundle#rc()               " (3)
+call neobundle#rc(expand('~/.vim/bundle/'))
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'Shougo/neocomplcache'
-Bundle 'molokai'
-Bundle 'Zenburn'
-"Bundle 'othree/eregex.vim'
-Bundle 'Shougo/unite.vim'
-Bundle 'Shougo/vimshell'
-Bundle 'Shougo/vimproc'
-Bundle 'thinca/vim-ref'
-Bundle 'thinca/vim-quickrun'
-Bundle 'mattn/zencoding-vim'
-Bundle 'vim-scripts/grep.vim'
-Bundle 'vim-scripts/rails.vim'
-Bundle 'fuenor/qfixhowm'
-"Bundle 'vim-ref'
-"Bundle 'vim-ref-ri'
-"Bundle 'vim-endwise'
-Bundle 'ruby-matchit'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-markdown'
-Bundle 'scrooloose/syntastic'
+NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'molokai'
+NeoBundle 'Zenburn'
+"NeoBundle 'othree/eregex.vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/vimshell'
+NeoBundle 'Shougo/vimproc'
+NeoBundle 'thinca/vim-ref'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'vim-scripts/grep.vim'
+NeoBundle 'vim-scripts/rails.vim'
+NeoBundle 'fuenor/qfixhowm'
+"NeoBundle 'vim-ref'
+"NeoBundle 'vim-ref-ri'
+"NeoBundle 'vim-endwise'
+NeoBundle 'ruby-matchit'
+NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-markdown'
+NeoBundle 'scrooloose/syntastic'
 
 " haskell
-Bundle 'dag/vim2hs'
-Bundle 'eagletmt/ghcmod-vim'
-Bundle 'pbrisbin/html-template-syntax'
-Bundle 'ujihisa/neco-ghc'
-Bundle 'eagletmt/unite-haddock'
+NeoBundle 'dag/vim2hs'
+NeoBundle 'eagletmt/ghcmod-vim'
+NeoBundle 'pbrisbin/html-template-syntax'
+NeoBundle 'ujihisa/neco-ghc'
+NeoBundle 'eagletmt/unite-haddock'
 
 " go
 set rtp+=$GOROOT/misc/vim
 exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-Bundle 'Blackrush/vim-gocode'
-Bundle 'jnwhiteh/vim-golang'
+NeoBundle 'Blackrush/vim-gocode'
+NeoBundle 'jnwhiteh/vim-golang'
 
 " coffee
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'claco/jasmine.vim'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'claco/jasmine.vim'
+
+filetype plugin indent on
+
+NeoBundleCheck
