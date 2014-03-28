@@ -29,6 +29,7 @@ NeoBundle 'ruby-matchit'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'scrooloose/syntastic'
+NeoBundle 'Shougo/vimfiler'
 
 " haskell
 NeoBundle 'dag/vim2hs'

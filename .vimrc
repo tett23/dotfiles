@@ -8,6 +8,8 @@ source ~/dotfiles/vim/rspec.vim
 source ~/dotfiles/vim/go.vim
 source ~/dotfiles/vim/javascript.vim
 source ~/dotfiles/vim/coffee.vim
+source ~/dotfiles/vim/commands.vim
+source ~/dotfiles/vim/keybinds.vim
 
 let g:rsenseHome = "$RSENSE_HOME"
 let g:rsenseUseOmniFunc = 1
