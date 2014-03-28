@@ -4,7 +4,7 @@ let g:gitgutter_sign_modified = '➜'
 let g:gitgutter_sign_removed = '✘'
 
 let g:lightline = {
-        \ 'colorscheme': 'landscape',
+        \ 'colorscheme': 'wombat',
         \ 'mode_map': {'c': 'NORMAL'},
         \ 'active': {
         \   'left': [

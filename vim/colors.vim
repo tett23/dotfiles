@@ -13,7 +13,3 @@ hi CursorColumn ctermbg=235 cterm=none
 
 set t_Co=256
 colorscheme zenburn
-
-let g:lightline = {
-  \ 'colorscheme': 'wombat'
-  \}
