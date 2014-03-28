@@ -43,6 +43,10 @@ exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
 NeoBundle 'Blackrush/vim-gocode'
 NeoBundle 'jnwhiteh/vim-golang'
 
+" javascript
+NeoBundle 'jiangmiao/simple-javascript-indenter'
+NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
+
 " coffee
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'claco/jasmine.vim'
