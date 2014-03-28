@@ -1,5 +1,6 @@
 source ~/dotfiles/vim/common.vim
 source ~/dotfiles/vim/bundle.vim
+source ~/dotfiles/vim/lightline.vim
 source ~/dotfiles/vim/colors.vim
 source ~/dotfiles/vim/neocomplecache.vim
 source ~/dotfiles/vim/syntax.vim

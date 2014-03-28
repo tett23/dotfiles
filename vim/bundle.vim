@@ -1,13 +1,14 @@
 if has('vim_starting')
   set nocompatible
-  "set runtimepath+=~/.vim/bundle/neobundle.vim/
   set runtimepath+=~/dotfiles/vim/neobundle.vim/
 endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'molokai'
 NeoBundle 'Zenburn'
@@ -26,7 +27,6 @@ NeoBundle 'fuenor/qfixhowm'
 "NeoBundle 'vim-endwise'
 NeoBundle 'ruby-matchit'
 NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'scrooloose/syntastic'
 
