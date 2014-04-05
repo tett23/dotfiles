@@ -1,4 +1,5 @@
 ln -s dotfiles/.vimrc ~/.vimrc
+chsh -s /bin/zsh
 git submodule init
 git submodule update
 mkdir -p ~/.vim/bundle

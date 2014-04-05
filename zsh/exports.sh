@@ -1,4 +1,6 @@
+export LANGUAGE=ja_JP
 export LANG=ja_JP.UTF-8
+export LC_ALL=ja_JP.UTF-8
 export RSENSE_HOME=$HOME/lib/rsense-0.3
 export BUNDLER_EDITOR=vim
 export PYTHONPATH=/usr/local/lib/python2.6/site-packages/
