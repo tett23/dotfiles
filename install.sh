@@ -1,4 +1,6 @@
 ln -s dotfiles/.vimrc ~/.vimrc
+git submodule init
+git submodule update
 mkdir -p ~/.vim/bundle
 ln -s dotfiles/vim/neobundle.vim/ ~/.vim/bundle/neobundle.vim
 ln -s dotfiles/.zshrc ~/.zshrc
