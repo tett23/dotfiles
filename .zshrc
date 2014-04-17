@@ -7,7 +7,6 @@ source $DOTFILES/zsh/vcs.sh
 source $DOTFILES/zsh/aliases.sh
 source $DOTFILES/zsh/colors.sh
 source ~/.nvm/nvm.sh
-source ~/.zsh/color
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 source ~/.rvm/scripts/rvm
