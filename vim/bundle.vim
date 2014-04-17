@@ -31,6 +31,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Shougo/vimfiler'
+NeoBundle 'kien/ctrlp.vim'
 
 " haskell
 NeoBundle 'dag/vim2hs'
