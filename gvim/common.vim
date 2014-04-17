@@ -1,0 +1,2 @@
+" クリップボード
+set clipboard=unnamed
