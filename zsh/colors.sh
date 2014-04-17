@@ -18,7 +18,6 @@ case ${UID} in
 esac
 
 ## terminal configuration
-#
 unset LSCOLORS
 case "${TERM}" in
 xterm)
@@ -39,7 +38,6 @@ cons25)
 esac
 
 # set terminal title including current directory
-#
 case "${TERM}" in
 kterm*|xterm*)
   precmd() {
@@ -51,3 +49,9 @@ kterm*|xterm*)
     'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'cd=43;34'
   ;;
 esac
+
+# zenburn color
+function EXT_COLOR () { echo -ne "\e[38;5;$1m"; }
+function CLOSE_COLOR () { echo -ne '\e[m'; }
+export PS1="\[`EXT_COLOR 187`\]\u@\h\[`CLOSE_COLOR`\]\[`EXT_COLOR 174`\] \w \$ \[`CLOSE_COLOR`\] > "
+export LS_COLORS='di=38;5;108:fi=00:*svn-commit.tmp=31:ln=38;5;116:ex=38;5;186'
