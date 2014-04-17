@@ -1,6 +1,6 @@
 #source $BYOBU_PREFIX/share/byobu/profiles/tmux
 
-iset-option -g status on
+set-option -g status on
 set-option -g status-interval 2
 set-option -g status-utf8 on
 set-option -g status-justify "centre"
