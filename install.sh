@@ -10,4 +10,4 @@ ln -s dotfiles/.tmux ~/.tmux
 ln -s dotfiles/tmux/powerlinerc.sh ~/.tmux-powerlinerc
 ln -s dotfiles/.gitconfig ~/.gitconfig
 ln -s dotfiles/.gitignore_global ~/.gitignore_global
-ln -s dotfiles/Xresources-hybrid ~/.Xresources
+ln -s dotfiles/Xresources-zenburn ~/.Xresources
