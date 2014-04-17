@@ -1,4 +1,5 @@
 ln -s dotfiles/.vimrc ~/.vimrc
+ln -s dotfiles/.gvimrc ~/.gvimrc
 chsh -s /bin/zsh
 git submodule init
 git submodule update
