@@ -2,7 +2,7 @@ test -s ~/.vimrc && unlink ~/.vimrc
 ln -s dotfiles/.vimrc ~/.vimrc
 test -s ~/.gvimrc && unlink ~/.gvimrc
 ln -s dotfiles/.gvimrc ~/.gvimrc
-chsh -s /bin/zsh
+test $SHELL != '/bin/zsh' && chsh -s /bin/zsh
 git submodule init
 git submodule update
 mkdir -p ~/.vim/bundle
