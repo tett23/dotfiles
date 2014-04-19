@@ -11,6 +11,7 @@ set-option -g status-right "#(~/dotfiles/tmux/tmux-powerline/powerline.sh right)
 
 set -g default-terminal "screen-256color"
 set -g status-bg colour237
+set -g status-fg colour252
 
 set-option -g terminal-overrides "*88col*:colors=88,*256col*:colors=256"
 set -g terminal-overrides "xterm*:kLFT5=\eOD:kRIT5=\eOC:kUP5=\eOA:kDN5=\eOB:smkx@:rmkx@:colors=256"
