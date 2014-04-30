@@ -4,15 +4,13 @@ source ~/dotfiles/vim/lightline.vim
 source ~/dotfiles/vim/colors.vim
 source ~/dotfiles/vim/neocomplecache.vim
 source ~/dotfiles/vim/syntax.vim
+source ~/dotfiles/vim/ruby.vim
 source ~/dotfiles/vim/rspec.vim
 source ~/dotfiles/vim/go.vim
 source ~/dotfiles/vim/javascript.vim
 source ~/dotfiles/vim/coffee.vim
 source ~/dotfiles/vim/commands.vim
 source ~/dotfiles/vim/keybinds.vim
-
-let g:rsenseHome = "$RSENSE_HOME"
-let g:rsenseUseOmniFunc = 1
 
 " インデント表示
 let g:indent_guides_auto_colors=0
