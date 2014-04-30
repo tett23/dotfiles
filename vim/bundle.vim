@@ -32,6 +32,7 @@ NeoBundle 'tpope/vim-markdown'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'todesking/ruby_hl_lvar.vim'
 
 " haskell
 NeoBundle 'dag/vim2hs'
