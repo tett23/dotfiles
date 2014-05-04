@@ -22,7 +22,6 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'mattn/zencoding-vim'
 NeoBundle 'vim-scripts/grep.vim'
 NeoBundle 'vim-scripts/rails.vim'
-NeoBundle 'fuenor/qfixhowm'
 "NeoBundle 'vim-ref'
 "NeoBundle 'vim-ref-ri'
 "NeoBundle 'vim-endwise'
@@ -32,7 +31,9 @@ NeoBundle 'tpope/vim-markdown'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'todesking/ruby_hl_lvar.vim'
+" NeoBundle 'todesking/ruby_hl_lvar.vim'
+
+NeoBundle 'fencview.vim'
 
 " haskell
 NeoBundle 'dag/vim2hs'

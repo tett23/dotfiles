@@ -76,3 +76,6 @@ let g:indent_guides_enable_on_vim_startup=1
 
 " 保存時にスペースを自動削除
 autocmd BufWritePre * :%s/\s\+$//ge
+
+" 自動改行しない
+set formatoptions=q
