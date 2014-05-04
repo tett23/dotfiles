@@ -19,3 +19,6 @@ set noimdisableactivate
 
 " 最終行の表示
 set display+=lastline
+
+" ベルを無効
+set visualbell t_vb=
