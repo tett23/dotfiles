@@ -23,17 +23,17 @@ TMUX_POWERLINE_DEFAULT_RIGHTSIDE_SEPARATOR=${TMUX_POWERLINE_DEFAULT_RIGHTSIDE_SE
 
 if [ -z $TMUX_POWERLINE_LEFT_STATUS_SEGMENTS ]; then
 	TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
-		"tmux_session_info 194 236" \
-		"hostname 117 0" \
+		"tmux_session_info 235 136 "${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN} \
+		"hostname 235 167 " \
 		#"ifstat 30 255" \
 		#"ifstat_sys 30 255" \
-		"lan_ip 182 239 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+		"lan_ip 235 167 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
 		#"wan_ip 182 239" \
-		"vcs_branch 133 252" \
-		"vcs_compare 194 240" \
-		"vcs_staged 64 252" \
-		"vcs_modified 3 238" \
-		"vcs_others 245 0" \
+		"vcs_branch 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+		"vcs_compare 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+		"vcs_staged 235 136" ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN} \
+		"vcs_modified 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+		"vcs_others 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
 	)
 fi
 
@@ -43,10 +43,10 @@ if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
 		"pwd 89 211" \
 		#"mailcount 9 255" \
 		#"now_playing 234 37" \
-		#"cpu 240 136" \
+		"cpu 240 136" \
 		"load 237 167" \
 		"tmux_mem_cpu_load 234 136" \
-		"battery 137 127" \
+		#"battery 137 127" \
 		#"weather 37 255" \
 		#"rainbarf 0 0" \
 		#"xkb_layout 125 117" \
