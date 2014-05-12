@@ -28,6 +28,7 @@
   lop = log -p --ignore-space-change
   delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
   lsf = ls-files
+  today = log --since=midnight --author='$(git config user.name)' --oneline
 
 [log]
   date = local
