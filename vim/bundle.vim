@@ -10,9 +10,6 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'molokai'
-NeoBundle 'jnurmine/Zenburn'
-NeoBundle 'w0ng/vim-hybrid'
 "NeoBundle 'othree/eregex.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimshell'
@@ -55,6 +52,12 @@ NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascr
 " coffee
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'claco/jasmine.vim'
+
+" colors
+NeoBundle 'tomasr/molokai'
+NeoBundle 'jnurmine/Zenburn'
+NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'jonathanfilip/vim-lucius'
 
 filetype plugin indent on
 
