@@ -22,3 +22,8 @@ set display+=lastline
 
 " ベルを無効
 set visualbell t_vb=
+
+if has('mac')
+  noremap! ¥ \
+  noremap! \ ¥
+endif
