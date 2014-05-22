@@ -53,6 +53,12 @@ NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascr
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'claco/jasmine.vim'
 
+" jade
+NeoBundle 'digitaltoad/vim-jade'
+
+" stylus
+NeoBundle 'wavded/vim-stylus'
+
 " colors
 NeoBundle 'tomasr/molokai'
 NeoBundle 'jnurmine/Zenburn'
