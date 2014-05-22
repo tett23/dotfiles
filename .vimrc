@@ -11,6 +11,7 @@ source ~/dotfiles/vim/javascript.vim
 source ~/dotfiles/vim/coffee.vim
 source ~/dotfiles/vim/commands.vim
 source ~/dotfiles/vim/keybinds.vim
+source ~/dotfiles/vim/ctrlp.vim
 
 " インデント表示
 let g:indent_guides_auto_colors=0
