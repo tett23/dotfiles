@@ -79,3 +79,6 @@ autocmd BufWritePre * :%s/\s\+$//ge
 
 " 自動改行しない
 set formatoptions=q
+
+" 最終行の表示
+set display+=lastline
