@@ -17,4 +17,7 @@ set t_Co=256
 
 let g:hybrid_use_Xresources = 1
 "let g:hybrid_use_iTerm_colors = 1
-colorscheme zenburn
+colorscheme molokai
+
+hi IndentGuidesOdd ctermbg=grey
+hi IndentGuidesEven ctermbg=darkgrey
