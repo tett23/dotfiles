@@ -6,6 +6,7 @@ source $DOTFILES/zsh/common.sh
 source $DOTFILES/zsh/vcs.sh
 source $DOTFILES/zsh/aliases.sh
 source $DOTFILES/zsh/colors.sh
+source $DOTFILES/zsh/completion.sh
 source ~/.nvm/nvm.sh
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
@@ -17,3 +18,4 @@ PROMPT="[%n@%m %~]$ "
 
 ## load user .zshrc configuration file
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
+source ~/.fzf.zsh

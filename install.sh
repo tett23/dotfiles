@@ -20,3 +20,5 @@ test -s ~/.Xresources && unlink ~/.Xresources
 ln -s $DOTFILES/Xresources-zenburn ~/.Xresources
 test -s ~/.tmux.conf && unlink ~/.tmux.conf
 ln -s $DOTFILES/tmux.conf ~/.tmux.conf
+
+$DOTFILES/zsh/fzf/install
