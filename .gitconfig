@@ -42,6 +42,8 @@
   prompt = false
 [diff]
   tool = vimdiff
+[diff "json"]
+  textconv = "perl -MJSON -0e \"print JSON->new->canonical->pretty->encode(decode_json(<>))\""
 [mergetool]
   prompt = true
 [grep]
