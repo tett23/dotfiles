@@ -24,6 +24,9 @@ set display+=lastline
 set visualbell t_vb=
 
 if has('mac')
-  noremap! ¥ \
-  noremap! \ ¥
+  "noremap! ¥ \
+  "noremap! \ ¥
 endif
+
+" 自動折り返しを無効
+set tw=0
