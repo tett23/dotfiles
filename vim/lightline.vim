@@ -13,7 +13,7 @@ let g:lightline = {
         \   ],
         \   'right': [
         \     ['lineinfo', 'syntastic'],
-        \     ['percent', 'line_counter', 'character_counter'],
+        \     ['percent', 'line_character_counter'],
         \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
         \   ]
         \ },
@@ -29,8 +29,7 @@ let g:lightline = {
         \   'syntastic': 'SyntasticStatuslineFlag',
         \   'charcode': 'MyCharCode',
         \   'gitgutter': 'MyGitGutter',
-        \   'character_counter': 'MyCharacterCount',
-        \   'line_counter': 'MyLineCount'
+        \   'line_character_counter': 'MyLineCharacterCount',
         \ },
         \ 'component': {},
         \ 'separator': {'left': '⮀', 'right': '⮂'},
@@ -58,7 +57,7 @@ function! MyCharacterCount()
   let buffer_characters = MyCharacterCounterOnCurrentBuffer()
   let line_characters = MyCharacterCounterOnCurrentBufferLine()
   let figures = strlen('' . buffer_characters)
-  let format = "char: %".figures."d / %".figures."d"
+  let format = "%".figures."d / %".figures."d"
 
   return printf(format, buffer_characters, line_characters)
 endfunction
@@ -67,9 +66,13 @@ function! MyLineCount()
   let line_count = line('$')
   let current_line = line('.')
   let figures = strlen('' . line_count)
-  let format = "line: %".figures."d / %".figures."d"
+  let format = "%".figures."d / %".figures."d"
 
   return printf(format, line_count, current_line)
+endfunction
+
+function! MyLineCharacterCount()
+  return MyLineCount() . ' : ' . MyCharacterCount()
 endfunction
 
 augroup character_counter
