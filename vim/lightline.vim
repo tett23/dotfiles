@@ -13,7 +13,7 @@ let g:lightline = {
         \   ],
         \   'right': [
         \     ['lineinfo', 'syntastic'],
-        \     ['percent'],
+        \     ['percent', 'line_counter', 'character_counter'],
         \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
         \   ]
         \ },
@@ -29,10 +29,54 @@ let g:lightline = {
         \   'syntastic': 'SyntasticStatuslineFlag',
         \   'charcode': 'MyCharCode',
         \   'gitgutter': 'MyGitGutter',
+        \   'character_counter': 'MyCharacterCount',
+        \   'line_counter': 'MyLineCount'
         \ },
+        \ 'component': {},
         \ 'separator': {'left': '⮀', 'right': '⮂'},
         \ 'subseparator': {'left': '⮁', 'right': '⮃'}
         \ }
+
+function! MyCharacterCounterOnCurrentBuffer()
+  let result = 0
+  for linenum in range(0, line('$'))
+    let line = getline(linenum)
+    let result += strlen(substitute(line, '.', 'x', 'g'))
+  endfor
+
+  return result
+endfunction
+
+function! MyCharacterCounterOnCurrentBufferLine()
+  let current_line = getline(line('.'))
+  let result = strlen(substitute(current_line, '.', 'x', 'g'))
+
+  return result
+endfunction
+
+function! MyCharacterCount()
+  let buffer_characters = MyCharacterCounterOnCurrentBuffer()
+  let line_characters = MyCharacterCounterOnCurrentBufferLine()
+  let figures = strlen('' . buffer_characters)
+  let format = "char: %".figures."d / %".figures."d"
+
+  return printf(format, buffer_characters, line_characters)
+endfunction
+
+function! MyLineCount()
+  let line_count = line('$')
+  let current_line = line('.')
+  let figures = strlen('' . line_count)
+  let format = "line: %".figures."d / %".figures."d"
+
+  return printf(format, line_count, current_line)
+endfunction
+
+augroup character_counter
+  autocmd!
+  autocmd BufCreate,BufEnter * call MyCharacterCount()
+  autocmd BufNew,BufEnter,BufWrite,InsertLeave * call MyCharacterCount()
+augroup END
 
 function! MyModified()
 return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
