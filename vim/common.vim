@@ -8,6 +8,8 @@ set backspace=2
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932
 
+set ttyfast
+
 set number "行番号表示
 set showmode "モード表示
 set title "編集中のファイル名を表示
