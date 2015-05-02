@@ -4,7 +4,6 @@ fi
 
 ln -s -f $DOTFILES/.vimrc $HOME/.vimrc
 ln -s -f $DOTFILES/.gvimrc $HOME/.gvimrc
-test $SHELL != '/bin/zsh' && chsh -s /bin/zsh
 git submodule init
 git submodule update
 mkdir -p $HOME/.vim/bundle
