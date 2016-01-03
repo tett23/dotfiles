@@ -14,5 +14,6 @@ ln -nsf $DOTFILES/.gitconfig $HOME/.gitconfig
 ln -nsf $DOTFILES/.gitignore_global $HOME/.gitignore_global
 ln -nsf $DOTFILES/Xresources-zenburn $HOME/.Xresources
 ln -nsf $DOTFILES/tmux.conf $HOME/.tmux.conf
+ln -nsf $DOTFILES/exenv $HOME/.exenv
 
 $DOTFILES/zsh/fzf/install

@@ -42,6 +42,7 @@ set completeopt=menu,preview
 au BufRead,BufNewFile, *.thor set filetype=ruby
 au BufRead,BufNewFile, Capfile set filetype=ruby
 au BufRead,BufNewFile, *.cap set filetype=ruby
+au BufNewFile,BufRead Vagrantfile set ft=ruby
 au BufRead,BufNewFile, *.erubis set filetype=html
 au BufRead,BufNewFile *.as set filetype=actionscript
 au BufRead,BufNewFile *.go set filetype=go

@@ -14,6 +14,8 @@ source ~/.rvm/scripts/rvm
 
 fpath=(~/.zsh-completions $fpath)
 
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
 PROMPT="[%n@%m %~]$ "
 
 ## load user .zshrc configuration file

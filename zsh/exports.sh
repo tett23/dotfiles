@@ -15,6 +15,7 @@ export GOPATH=$HOME/projects/golang
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export ZSH=$HOME/.oh-my-zsh
 
+# android
 export ANDROID_SDK_ROOT=~/Library/adt-bundle-mac-x86_64-20140702/sdk
 export NDK_ROOT=~/Library/android-ndk-r10
 export PATH=$PATH:$ANDROID_SDK_ROOT/tools
@@ -26,4 +27,9 @@ export PATH=$ANT_HOME/bin:${PATH}
 
 export XDG_CONFIG_HOME=$HOME/.config
 
+export PYENV_ROOT=/usr/local/opt/pyenv
+export PATH=$DOTFILES/exenv/bin:$PATH
+
 plugins=(git)
+#exec $SHELL
+echo 'eval "$(exenv init -)"' >> ~/.bash_profile

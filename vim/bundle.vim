@@ -82,6 +82,14 @@ NeoBundle 'jonathanfilip/vim-lucius'
 " slim
 NeoBundle 'slim-template/vim-slim'
 
+" typescript
+NeoBundle 'leafgarland/typescript-vim'
+NeoBundle 'clausreinke/typescript-tools.vim'
+
+" elixir
+NeoBundle 'elixir-lang/vim-elixir'
+NeoBundle 'mattonrails/vim-mix'
+
 call neobundle#end()
 
 filetype plugin indent on
