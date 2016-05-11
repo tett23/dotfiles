@@ -6,6 +6,14 @@ endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
+NeoBundle 'Shougo/vimproc', {
+  \ 'build' : {
+  \     'windows' : 'tools\\update-dll-mingw',
+  \     'cygwin' : 'make -f make_cygwin.mak',
+  \     'mac' : 'make -f make_mac.mak',
+  \     'unix' : 'make -f make_unix.mak',
+  \    },
+  \ }
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
@@ -13,7 +21,6 @@ NeoBundle 'Shougo/neocomplcache'
 "NeoBundle 'othree/eregex.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimshell'
-NeoBundle 'Shougo/vimproc'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'mattn/emmet-vim'
@@ -29,6 +36,7 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'kien/ctrlp.vim'
 " NeoBundle 'todesking/ruby_hl_lvar.vim'
+NeoBundle 'godlygeek/tabular'
 
 NeoBundle 'fencview.vim'
 
@@ -58,6 +66,10 @@ NeoBundle 'digitaltoad/vim-jade'
 
 " stylus
 NeoBundle 'wavded/vim-stylus'
+
+" c++
+NeoBundle 'osyo-manga/vim-marching'
+NeoBundle 'msanders/cocoa.vim'
 
 " colors
 NeoBundle 'tomasr/molokai'
