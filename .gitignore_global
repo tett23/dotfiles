@@ -36,6 +36,7 @@ pickle-email-*.html
 
 .*\.swp
 .*\.swo
+.*\.swn
 .rvmrc
 .ruby-version
 .ruby-gemset
