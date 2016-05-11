@@ -8,7 +8,7 @@ alias ll="ls -l"
 alias du="du -h"
 alias df="df -h"
 alias su="su -l"
-alias gg="git grep"
+alias gg="git grep --ignore-case"
 
 case "${OSTYPE}" in
 freebsd*|darwin*)

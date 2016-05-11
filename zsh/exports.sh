@@ -13,4 +13,14 @@ export GOROOT=/usr/local/go
 export PATH=$PATH:GOROOT/bin
 export GOPATH=$HOME/lib/go
 export ZSH=$HOME/.oh-my-zsh
+
+export ANDROID_SDK_ROOT=~/Library/adt-bundle-mac-x86_64-20140702/sdk
+export NDK_ROOT=~/Library/android-ndk-r10
+export PATH=$PATH:$ANDROID_SDK_ROOT/tools
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+export PATH="/usr/local/sbin:$PATH"
+export ANT_HOME=~/Library/apache-ant-1.9.4/
+#export JAVA_HOME=/usr/local/j2sdk1.4.1_01
+export PATH=$ANT_HOME/bin:${PATH}
+
 plugins=(git)
