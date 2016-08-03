@@ -18,6 +18,9 @@ set t_Co=256
 let g:hybrid_use_Xresources = 1
 "let g:hybrid_use_iTerm_colors = 1
 colorscheme molokai
+highlight Normal ctermbg=none
+let g:molokai_original = 1
+let g:rehash256 = 1
 
 hi IndentGuidesOdd ctermbg=grey
 hi IndentGuidesEven ctermbg=darkgrey

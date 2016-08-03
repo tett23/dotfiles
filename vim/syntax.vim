@@ -12,18 +12,32 @@ let g:marching#clang_command#options = {
 \   "cpp" : "-std=gnu++1y"
 \}
 
-let g:marching_enable_neocomplete = 1
+" go
+if $GOPATH != ''
+  " golintの実行パスを追加
+  execute "set rtp+=".globpath($GOPATH, "src/github.com/golang/lint/misc/vim")
 
-if !exists('g:neocomplete#force_omni_input_patterns')
-  let g:neocomplete#force_omni_input_patterns = {}
+  " syntastic設定
+  let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+  let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+  let g:go_list_type = "quickfix"
 endif
 
-let g:neocomplete#force_omni_input_patterns.cpp =
-  \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+let g:marching_enable_neocomplete = 1
 
+"  if !exists('g:neocomplete#force_omni_input_patterns')
+"    let g:neocomplete#force_omni_input_patterns = {}
+"  endif
+"
+"  let g:neocomplete#force_omni_input_patterns.cpp =
+"    \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+
+
+set completeopt=menu,preview
 
 au BufRead,BufNewFile, *.thor set filetype=ruby
 au BufRead,BufNewFile, Capfile set filetype=ruby
 au BufRead,BufNewFile, *.cap set filetype=ruby
 au BufRead,BufNewFile, *.erubis set filetype=html
-au BufNewFile,BufRead *as set ft=actionscript
+au BufRead,BufNewFile, "*.as" set ft=actionscript
+au BufRead,BufNewFile, "*.go" set ft=go

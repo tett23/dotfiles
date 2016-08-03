@@ -10,6 +10,10 @@ alias df="df -h"
 alias su="su -l"
 alias gg="git grep --ignore-case"
 
+if which nvim >/dev/null 2>&1; then
+  alias vim=nvim
+fi
+
 case "${OSTYPE}" in
 freebsd*|darwin*)
   alias ls="ls -G -w"

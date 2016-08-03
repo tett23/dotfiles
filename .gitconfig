@@ -1,8 +1,8 @@
 [user]
-  name = tett23
-  email = tett23@gmail.com
+  name = akabane-poppin-games
+  email = akabane@poppin-games.com
 [core]
-  excludesfile = ~/.gitignore_global
+	excludesfile = /Users/tett23/.gitignore_global
   autocrlf = input
   editor = vim
   pager = LESS=-R less
@@ -68,3 +68,9 @@
   changed = green
   untracked = cyan reverse
   branch = magenta
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

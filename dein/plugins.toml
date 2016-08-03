@@ -1,0 +1,174 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+
+#
+[[plugins]]
+repo = 'othree/eregex.vim'
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo = 'Shougo/vimshell'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+
+[[plugins]]
+repo = 'mattn/emmet-vim'
+
+[[plugins]]
+repo = 'vim-scripts/grep.vim'
+
+[[plugins]]
+repo = 'vim-scripts/rails.vim'
+#
+#[[plugins]]
+#repo = 'vim-ref'
+#
+#[[plugins]]
+#repo = 'vim-ref-ri'
+#
+#[[plugins]]
+#repo = 'vim-endwise'
+
+[[plugins]]
+repo = 'ruby-matchit'
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+
+[[plugins]]
+repo = 'tpope/vim-markdown'
+
+[[plugins]]
+repo = 'scrooloose/syntastic'
+
+[[plugins]]
+repo = 'Shougo/vimfiler'
+
+[[plugins]]
+repo = 'kien/ctrlp.vim'
+
+# [[plugins]]
+# repo = 'todesking/ruby_hl_lvar.vim'
+
+[[plugins]]
+repo = 'godlygeek/tabular'
+
+[[plugins]]
+repo = 'fencview.vim'
+
+[[plugins]]
+repo = 'neomake/neomake'
+hook_add = '''
+  autocmd! BufWritePost * Neomake
+'''
+
+# haskell
+[[plugins]]
+repo = 'dag/vim2hs'
+
+[[plugins]]
+repo = 'eagletmt/ghcmod-vim'
+
+[[plugins]]
+repo = 'pbrisbin/html-template-syntax'
+
+[[plugins]]
+repo = 'ujihisa/neco-ghc'
+
+[[plugins]]
+repo = 'eagletmt/unite-haddock'
+
+# go
+[[plugins]]
+repo = 'fatih/vim-go'
+on_ft = 'go'
+hook_source = '''
+  let g:go_fmt_command = 'goimports'
+  let s:goargs = go#package#ImportPath(expand('%:p:h'))
+  let g:neomake_go_errcheck_maker = {
+    \ 'args': ['-abspath', s:goargs],
+    \ 'append_file': 0,
+    \ 'errorformat': '%f:%l:%c:\ %m, %f:%l:%c\ %#%m',
+    \ }
+  let g:neomake_go_enabled_makers = ['golint', 'govet', 'errcheck']
+'''
+
+[[plugins]]
+repo = 'Blackrush/vim-gocode'
+
+[[plugins]]
+repo = 'jnwhiteh/vim-golang'
+
+[[plugins]]
+repo = 'zchee/deoplete-go'
+hook_post_update = '''
+  if dein#util#_is_windows()
+    let cmd = 'tools\\update-dll-mingw'
+  elseif dein#util#_is_cygwin()
+    let cmd = 'make -f make_cygwin.mak'
+  elseif executable('gmake')
+    let cmd = 'gmake'
+  else
+    let cmd = 'make'
+  endif
+  let g:dein#plugin.build = cmd
+'''
+
+# javascript
+[[plugins]]
+repo = 'jiangmiao/simple-javascript-indenter'
+
+#[[plugins]]
+#repo =Lazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
+
+# coffee
+[[plugins]]
+repo = 'kchmck/vim-coffee-script'
+
+[[plugins]]
+repo = 'claco/jasmine.vim'
+
+# jade
+[[plugins]]
+repo = 'digitaltoad/vim-jade'
+
+# stylus
+[[plugins]]
+repo = 'wavded/vim-stylus'
+
+# c++
+[[plugins]]
+repo = 'osyo-manga/vim-marching'
+
+[[plugins]]
+repo = 'msanders/cocoa.vim'
+
+# colors
+[[plugins]]
+repo = 'tomasr/molokai'
+
+[[plugins]]
+repo = 'jnurmine/Zenburn'
+
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]]
+repo = 'jonathanfilip/vim-lucius'
+
+# filetype plugin indent on
