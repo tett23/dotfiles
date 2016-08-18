@@ -57,6 +57,8 @@ NeoBundle 'jnwhiteh/vim-golang'
 NeoBundle 'jiangmiao/simple-javascript-indenter'
 NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
 
+NeoBundle 'elzr/vim-json'
+
 " coffee
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'claco/jasmine.vim'
@@ -76,6 +78,9 @@ NeoBundle 'tomasr/molokai'
 NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'jonathanfilip/vim-lucius'
+
+" slim
+NeoBundle 'slim-template/vim-slim'
 
 call neobundle#end()
 

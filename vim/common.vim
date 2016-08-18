@@ -27,6 +27,9 @@ set statusline=%F%M%R%=code:%B%H%W
 "プログラミングヘルプ系
 
 syntax on "カラー表示
+" 500字以上のときsyntax無効
+set synmaxcol=500
+let g:indentLine_faster = 1
 set smartindent "オートインデント
 
 set tabstop=2

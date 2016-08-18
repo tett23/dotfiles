@@ -1,4 +1,4 @@
-alias diff=colordiff
+alias diff="colordiff"
 alias where="command -v"
 alias j="jobs -l"
 alias g="git"
