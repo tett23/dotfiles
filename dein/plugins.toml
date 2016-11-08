@@ -77,6 +77,9 @@ hook_add = '''
   autocmd! BufWritePost * Neomake
 '''
 
+[[plugins]]
+repo = 'jiangmiao/auto-pairs'
+
 # haskell
 [[plugins]]
 repo = 'dag/vim2hs'

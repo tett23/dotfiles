@@ -15,7 +15,12 @@ let g:marching#clang_command#options = {
 " go
 if $GOPATH != ''
   " golintの実行パスを追加
+  filetype off
+  filetype plugin indent off
+  " set runtimepath+=$GOROOT/misc/vim
   execute "set rtp+=".globpath($GOPATH, "src/github.com/golang/lint/misc/vim")
+  filetype plugin indent on
+  syntax on
 
   " syntastic設定
   let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
@@ -39,5 +44,5 @@ au BufRead,BufNewFile, *.thor set filetype=ruby
 au BufRead,BufNewFile, Capfile set filetype=ruby
 au BufRead,BufNewFile, *.cap set filetype=ruby
 au BufRead,BufNewFile, *.erubis set filetype=html
-au BufRead,BufNewFile, "*.as" set ft=actionscript
-au BufRead,BufNewFile, "*.go" set ft=go
+au BufRead,BufNewFile *.as set filetype=actionscript
+au BufRead,BufNewFile *.go set filetype=go
