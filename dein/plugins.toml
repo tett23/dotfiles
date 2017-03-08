@@ -139,6 +139,9 @@ repo = 'jiangmiao/simple-javascript-indenter'
 #[[plugins]]
 #repo =Lazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
 
+[[plugins]]
+repo = 'othree/yajs.vim'
+
 # coffee
 [[plugins]]
 repo = 'kchmck/vim-coffee-script'
