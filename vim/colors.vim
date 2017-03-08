@@ -2,14 +2,15 @@ set cursorline
 " カレントウィンドウにのみ罫線を引く
 augroup cch
 autocmd! cch
-autocmd WinLeave * set nocursorline
-autocmd WinEnter,BufRead * set cursorline
+" 重いので無効にした
+" autocmd WinLeave * set nocursorline
+" autocmd WinEnter,BufRead * set cursorline
 augroup END
 
-hi clear CursorLine
-hi CursorLine gui=underline
-highlight CursorLine ctermbg=gray guibg=gray
-hi CursorColumn ctermbg=235 cterm=none
+" hi clear CursorLine
+" hi CursorLine gui=underline
+" highlight CursorLine ctermbg=gray guibg=gray
+" hi CursorColumn ctermbg=235 cterm=none
 
 " 色の設定
 set t_ut=

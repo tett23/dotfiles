@@ -43,3 +43,9 @@ let g:neomake_ruby_enabled_makers = ['rubocop']
 
 " カラースキームを上書きしているので最後に書いた
 highlight LineNr ctermfg=gray guibg=gray
+
+" 重いので対策
+set nocursorline
+set nocursorcolumn
+set norelativenumber
+set synmaxcol=300
