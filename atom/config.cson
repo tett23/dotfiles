@@ -1,0 +1,37 @@
+"*":
+  core:
+    audioBeep: false
+    disabledPackages: [
+      "json-schema"
+      "snippets"
+      "autocomplete-ruby"
+      "autocomplete-snippets"
+    ]
+    projectHome: "/Users/tett23/projects"
+    telemetryConsent: "no"
+  editor:
+    fontSize: 11
+    lineHeight: 1.2
+    showIndentGuide: true
+    showInvisibles: true
+    softWrap: true
+  "exception-reporting":
+    userId: "e3fa304f-4749-48ca-9457-4dcdd770983c"
+  "go-plus":
+    autocomplete: {}
+    config: {}
+    currentPanelHeight: "12.618203309692671vh"
+    lint: {}
+    maxPanelHeight: "20vh"
+    panel:
+      currentHeight: "9.781323877068559vh"
+      focusOnFailure: false
+    panelFontSize: "1.0em"
+    test: {}
+  "linter-ui-default":
+    panelHeight: 93
+    showPanel: true
+  "vim-mode-plus-ex-mode":
+    notifiedUseExMode: true
+  welcome:
+    showOnStartup: false
