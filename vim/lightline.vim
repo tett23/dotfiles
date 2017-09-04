@@ -12,7 +12,7 @@ let g:lightline = {
         \     ['fugitive', 'gitgutter', 'filename'],
         \   ],
         \   'right': [
-        \     ['lineinfo', 'syntastic'],
+        \     ['lineinfo', 'ale'],
         \     ['percent', 'line_character_counter'],
         \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
         \   ]
@@ -20,7 +20,6 @@ let g:lightline = {
         \ 'component_function': {
         \   'modified': 'MyModified',
         \   'readonly': 'MyReadonly',
-        \   'fugitive': 'MyFugitive',
         \   'filename': 'MyFilename',
         \   'fileformat': 'MyFileformat',
         \   'filetype': 'MyFiletype',
@@ -30,6 +29,7 @@ let g:lightline = {
         \   'charcode': 'MyCharCode',
         \   'gitgutter': 'MyGitGutter',
         \   'line_character_counter': 'MyLineCharacterCount',
+        \   'ale': 'ALEStatus',
         \ },
         \ 'component': {},
         \ 'separator': {'left': '⮀', 'right': '⮂'},
@@ -98,53 +98,43 @@ return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
 \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
-function! MyFugitive()
-try
-if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
-let _ = fugitive#head()
-return strlen(_) ? '⭠ '._ : ''
-endif
-catch
-endtry
-return ''
-endfunction
-
 function! MyFileformat()
-return winwidth('.') > 70 ? &fileformat : ''
+  return winwidth('.') > 70 ? &fileformat : ''
 endfunction
 
 function! MyFiletype()
-return winwidth('.') > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+  return winwidth('.') > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
 endfunction
 
 function! MyFileencoding()
-return winwidth('.') > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+  return winwidth('.') > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 
 function! MyMode()
-return winwidth('.') > 60 ? lightline#mode() : ''
+  return winwidth('.') > 60 ? lightline#mode() : ''
 endfunction
 
 function! MyGitGutter()
-if ! exists('*GitGutterGetHunkSummary')
-\ || ! get(g:, 'gitgutter_enabled', 0)
-\ || winwidth('.') <= 90
-return ''
-endif
-let symbols = [
-\ g:gitgutter_sign_added . ' ',
-\ g:gitgutter_sign_modified . ' ',
-\ g:gitgutter_sign_removed . ' '
-\ ]
-let hunks = GitGutterGetHunkSummary()
-let ret = []
-for i in [0, 1, 2]
-if hunks[i] > 0
-call add(ret, symbols[i] . hunks[i])
-endif
-endfor
-return join(ret, ' ')
+  if ! exists('*GitGutterGetHunkSummary')
+  \ || ! get(g:, 'gitgutter_enabled', 0)
+  \ || winwidth('.') <= 90
+  return ''
+  endif
+  let symbols = [
+  \ g:gitgutter_sign_added . ' ',
+  \ g:gitgutter_sign_modified . ' ',
+  \ g:gitgutter_sign_removed . ' '
+  \ ]
+  let hunks = GitGutterGetHunkSummary()
+  let ret = []
+  for i in [0, 1, 2]
+  if hunks[i] > 0
+  call add(ret, symbols[i] . hunks[i])
+  endif
+  endfor
+  return join(ret, ' ')
 endfunction
+
 " https://github.com/Lokaltog/vim-powerline/blob/develop/autoload/Powerline/Functions.vim
 function! MyCharCode()
   if winwidth('.') <= 70

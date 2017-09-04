@@ -7,8 +7,9 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
 fi
 
 ln -s -f $DOTFILES/.vimrc $HOME/.vimrc
+mkdir -p $XDG_CONFIG_HOME/nvim
+ln -s -f $DOTFILES/.nvimrc $XDG_CONFIG_HOME/nvim/init.vim
 ln -s -f $DOTFILES/.gvimrc $HOME/.gvimrc
-ln -nsf $DOTFILES/vim $XDG_CONFIG_HOME/nvim
 
 git submodule update --init --recursive
 

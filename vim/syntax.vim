@@ -1,9 +1,16 @@
-" syntastic設定
-let g:syntastic_enable_signs=1
-let g:syntastic_mode_map = { 'mode': 'active',
-  \ 'active_filetypes': [],
-  \ 'passive_filetypes': ['html'] }
-let g:syntastic_auto_loc_list = 1
+""" indent
+let g:indent_guides_start_level=2
+let g:indent_guides_auto_colors=0
+let g:indent_guides_color_change_percent=20
+hi IndentGuidesOdd ctermbg=grey
+hi IndentGuidesEven ctermbg=darkgrey
+let g:indent_guides_start_lebel=1
+let g:indent_guides_guide_size=1
+let g:indent_guides_space_guides=1
+let g:indent_guides_enable_on_vim_startup=1
+
+
+"""  languages
 
 " c++
 let g:marching_clang_command = '/usr/bin/clang'
@@ -19,23 +26,9 @@ if $GOPATH != ''
   " set runtimepath+=$GOROOT/misc/vim
   execute "set rtp+=".globpath($GOPATH, "src/github.com/golang/lint/misc/vim")
   filetype plugin indent on
-  syntax on
 
-  " syntastic設定
-  let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-  let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
   let g:go_list_type = "quickfix"
 endif
-
-let g:marching_enable_neocomplete = 1
-
-"  if !exists('g:neocomplete#force_omni_input_patterns')
-"    let g:neocomplete#force_omni_input_patterns = {}
-"  endif
-"
-"  let g:neocomplete#force_omni_input_patterns.cpp =
-"    \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-
 
 set completeopt=menu,preview
 

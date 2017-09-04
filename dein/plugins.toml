@@ -1,30 +1,18 @@
-[[plugins]]
-repo = 'Shougo/dein.vim'
-
-[[plugins]]
-repo = 'itchyny/lightline.vim'
-
-[[plugins]]
-repo = 'tpope/vim-fugitive'
-
-[[plugins]]
-repo = 'airblade/vim-gitgutter'
-
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-
-#
-[[plugins]]
-repo = 'othree/eregex.vim'
+# [[plugins]]
+# repo = 'Shougo/dein.vim'
 
 [[plugins]]
 repo = 'Shougo/unite.vim'
 
 [[plugins]]
-repo = 'Shougo/vimshell'
+repo = 'Shougo/deoplete.nvim'
+
+# colors
+[[plugins]]
+repo = 'tomasr/molokai'
 
 [[plugins]]
-repo = 'thinca/vim-quickrun'
+repo = 'othree/eregex.vim'
 
 [[plugins]]
 repo = 'mattn/emmet-vim'
@@ -33,65 +21,50 @@ repo = 'mattn/emmet-vim'
 repo = 'vim-scripts/grep.vim'
 
 [[plugins]]
-repo = 'vim-scripts/rails.vim'
-#
-#[[plugins]]
-#repo = 'vim-ref'
-#
-#[[plugins]]
-#repo = 'vim-ref-ri'
-#
-#[[plugins]]
-#repo = 'vim-endwise'
-
-[[plugins]]
-repo = 'vim-scripts/ruby-matchit'
-
-[[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
 
-[[plugins]]
-repo = 'tpope/vim-markdown'
+# powerline
+[[plugins]] # なんかALEのlint情報をlightlineに出すのに必要らしい
+repo = 'delphinus/lightline-delphinus'
 
 [[plugins]]
-repo = 'scrooloose/syntastic'
+repo = 'itchyny/lightline.vim'
 
-[[plugins]]
-repo = 'Shougo/vimfiler'
-
+# util
 [[plugins]]
 repo = 'kien/ctrlp.vim'
 
-# [[plugins]]
-# repo = 'todesking/ruby_hl_lvar.vim'
-
 [[plugins]]
-repo = 'godlygeek/tabular'
-
-[[plugins]]
-repo = 'vim-scripts/fencview.vim'
-
-[[plugins]]
-repo = 'w0rp/ale'
+repo = 'thinca/vim-quickrun'
 
 [[plugins]]
 repo = 'jiangmiao/auto-pairs'
 
-# haskell
+[[plugins]] # file encoding plugin
+repo = 'vim-scripts/fencview.vim'
+
+# git
 [[plugins]]
-repo = 'dag/vim2hs'
+repo = 'tpope/vim-fugitive'
 
 [[plugins]]
-repo = 'eagletmt/ghcmod-vim'
+repo = 'airblade/vim-gitgutter'
+
+### language plugins
+
+[[plugins]] # linter
+repo = 'w0rp/ale'
+
+# ruby
+[[plugins]]
+repo = 'vim-scripts/rails.vim'
 
 [[plugins]]
-repo = 'pbrisbin/html-template-syntax'
+repo = 'vim-scripts/ruby-matchit'
 
+# markdown
 [[plugins]]
-repo = 'ujihisa/neco-ghc'
-
-[[plugins]]
-repo = 'eagletmt/unite-haddock'
+repo = 'tpope/vim-markdown'
 
 # go
 [[plugins]]
@@ -101,9 +74,6 @@ hook_source = '''
   let g:go_fmt_command = 'goimports'
   let s:goargs = go#package#ImportPath(expand('%:p:h'))
 '''
-
-[[plugins]]
-repo = 'Blackrush/vim-gocode'
 
 [[plugins]]
 repo = 'jnwhiteh/vim-golang'
@@ -127,18 +97,12 @@ hook_post_update = '''
 [[plugins]]
 repo = 'jiangmiao/simple-javascript-indenter'
 
-#[[plugins]]
-#repo =Lazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
-
 [[plugins]]
 repo = 'othree/yajs.vim'
 
 # coffee
 [[plugins]]
 repo = 'kchmck/vim-coffee-script'
-
-[[plugins]]
-repo = 'claco/jasmine.vim'
 
 # jade
 [[plugins]]
@@ -154,18 +118,3 @@ repo = 'osyo-manga/vim-marching'
 
 [[plugins]]
 repo = 'msanders/cocoa.vim'
-
-# colors
-[[plugins]]
-repo = 'tomasr/molokai'
-
-[[plugins]]
-repo = 'jnurmine/Zenburn'
-
-[[plugins]]
-repo = 'w0ng/vim-hybrid'
-
-[[plugins]]
-repo = 'jonathanfilip/vim-lucius'
-
-# filetype plugin indent on

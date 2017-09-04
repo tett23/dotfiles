@@ -1,26 +1,25 @@
+if has('nvim')
+  let $VIMRUNTIME = expand($XDG_CONFIG_HOME . '/nvim')
+else
+  let $VIMRUNTIME = expand('~/.vim')
+endif
+
 source ~/dotfiles/vim/common.vim
 source ~/dotfiles/vim/dein.vim
+source ~/dotfiles/vim/syntax.vim
+
+" plugin config
+source ~/dotfiles/vim/ale.vim
 source ~/dotfiles/vim/lightline.vim
 source ~/dotfiles/vim/colors.vim
-" source ~/dotfiles/vim/neocomplecache.vim
 source ~/dotfiles/vim/deoplete.vim
-source ~/dotfiles/vim/syntax.vim
+source ~/dotfiles/vim/ctrlp.vim
+
+" language
 source ~/dotfiles/vim/ruby.vim
 source ~/dotfiles/vim/rspec.vim
 source ~/dotfiles/vim/go.vim
-source ~/dotfiles/vim/javascript.vim
 source ~/dotfiles/vim/coffee.vim
-source ~/dotfiles/vim/commands.vim
-source ~/dotfiles/vim/keybinds.vim
-source ~/dotfiles/vim/ctrlp.vim
-
-" インデント表示
-let g:indent_guides_auto_colors=0
-hi IndentGuidesOdd ctermbg=grey
-hi IndentGuidesEven ctermbg=darkgrey
-let g:indent_guides_start_lebel=1
-let g:indent_guides_guide_size=1
-let g:indent_guides_enable_on_vim_startup=1
 
 if has('nvim')
   " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -30,7 +29,6 @@ function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
 
-syntax on
 set ttimeoutlen=30
 
 let g:deoplete#enable_at_startup = 1
@@ -45,4 +43,4 @@ highlight LineNr ctermfg=gray guibg=gray
 set nocursorline
 set nocursorcolumn
 set norelativenumber
-set synmaxcol=300
+set synmaxcol=200
