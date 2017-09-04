@@ -1,5 +1,4 @@
 source ~/dotfiles/vim/common.vim
-" source ~/dotfiles/vim/bundle.vim
 source ~/dotfiles/vim/dein.vim
 source ~/dotfiles/vim/lightline.vim
 source ~/dotfiles/vim/colors.vim
@@ -38,8 +37,6 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-let g:neomake_open_list = 2
-let g:neomake_ruby_enabled_makers = ['rubocop']
 
 " カラースキームを上書きしているので最後に書いた
 highlight LineNr ctermfg=gray guibg=gray

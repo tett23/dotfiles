@@ -11,8 +11,7 @@ ln -s -f $DOTFILES/.gvimrc $HOME/.gvimrc
 ln -nsf $DOTFILES/vim $XDG_CONFIG_HOME/nvim
 
 git submodule update --init --recursive
-mkdir -p $HOME/.vim/bundle
-ln -nsf $DOTFILES/vim/neobundle.vim/ $HOME/.vim/bundle/neobundle.vim
+
 ln -nsf $DOTFILES/.zshrc $HOME/.zshrc
 ln -nsf $DOTFILES/tmux/powerlinerc.sh $HOME/.tmux-powerlinerc
 ln -nsf $DOTFILES/.gitconfig $HOME/.gitconfig
