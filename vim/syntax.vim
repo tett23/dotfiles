@@ -39,3 +39,32 @@ au BufNewFile,BufRead Vagrantfile set ft=ruby
 au BufRead,BufNewFile, *.erubis set filetype=html
 au BufRead,BufNewFile *.as set filetype=actionscript
 au BufRead,BufNewFile *.go set filetype=go
+
+" $RUNTIMEPATHからsyntaxの定義を探してくる
+function! s:split_runtime_path(runtimepath) abort
+  if stridx(a:runtimepath, '\,') < 0
+    return split(a:runtimepath, ',')
+  endif
+
+  let split = split(a:runtimepath, '\\\@<!\%(\\\\\)*\zs,')
+  return map(split,'substitute(v:val, ''\\\([\\,]\)'', ''\1'', ''g'')')
+endfunction
+
+let s:rtps = s:split_runtime_path(&runtimepath)
+
+for s:item in s:rtps
+  let s:syntax_path = expand(s:item . '/syntax/syntax.vim')
+
+  " 自身をsourceすると再帰してしまうのでそのガード
+  if expand('<sfile>:p') == s:syntax_path
+    continue
+  endif
+
+  if filereadable(s:syntax_path)
+    execute 'source ' . s:syntax_path
+  endif
+endfor
+
+
+" どこかでoffにしっぱなしかもしれない
+syntax on
