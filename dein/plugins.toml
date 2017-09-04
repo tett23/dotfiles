@@ -1,6 +1,3 @@
-# [[plugins]]
-# repo = 'Shougo/dein.vim'
-
 [[plugins]]
 repo = 'Shougo/unite.vim'
 
@@ -10,18 +7,6 @@ repo = 'Shougo/deoplete.nvim'
 # colors
 [[plugins]]
 repo = 'tomasr/molokai'
-
-[[plugins]]
-repo = 'othree/eregex.vim'
-
-[[plugins]]
-repo = 'mattn/emmet-vim'
-
-[[plugins]]
-repo = 'vim-scripts/grep.vim'
-
-[[plugins]]
-repo = 'nathanaelkane/vim-indent-guides'
 
 # powerline
 [[plugins]] # なんかALEのlint情報をlightlineに出すのに必要らしい
@@ -42,6 +27,15 @@ repo = 'jiangmiao/auto-pairs'
 
 [[plugins]] # file encoding plugin
 repo = 'vim-scripts/fencview.vim'
+
+[[plugins]]
+repo = 'othree/eregex.vim'
+
+[[plugins]]
+repo = 'vim-scripts/grep.vim'
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
 
 # git
 [[plugins]]
@@ -103,6 +97,10 @@ repo = 'othree/yajs.vim'
 # coffee
 [[plugins]]
 repo = 'kchmck/vim-coffee-script'
+
+# html
+[[plugins]]
+repo = 'mattn/emmet-vim'
 
 # jade
 [[plugins]]
