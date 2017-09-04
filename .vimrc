@@ -44,3 +44,6 @@ set nocursorline
 set nocursorcolumn
 set norelativenumber
 set synmaxcol=200
+
+" どこかでoffにしっぱなしかもしれない
+syntax on
