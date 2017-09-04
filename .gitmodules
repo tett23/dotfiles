@@ -10,3 +10,6 @@
 [submodule "exenv"]
 	path = exenv
 	url = git://github.com/mururu/exenv.git
+[submodule "dein.vim"]
+	path = dein.vim
+	url = https://github.com/Shougo/dein.vim.git
