@@ -2,10 +2,15 @@ if [ -z "$DOTFILES" ]; then
   export DOTFILES=$HOME/dotfiles
 fi
 
+if [ -z "$XDG_CONFIG_HOME" ]; then
+  export XDG_CONFIG_HOME=$HOME/.config
+fi
+
 ln -s -f $DOTFILES/.vimrc $HOME/.vimrc
 ln -s -f $DOTFILES/.gvimrc $HOME/.gvimrc
-git submodule init
-git submodule update
+ln -nsf $DOTFILES/vim $XDG_CONFIG_HOME/nvim
+
+git submodule update --init --recursive
 mkdir -p $HOME/.vim/bundle
 ln -nsf $DOTFILES/vim/neobundle.vim/ $HOME/.vim/bundle/neobundle.vim
 ln -nsf $DOTFILES/.zshrc $HOME/.zshrc

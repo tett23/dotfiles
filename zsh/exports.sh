@@ -26,6 +26,7 @@ export ANT_HOME=~/Library/apache-ant-1.9.4/
 export PATH=$ANT_HOME/bin:${PATH}
 
 export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
 
 export PYENV_ROOT=/usr/local/opt/pyenv
 export PATH=$DOTFILES/exenv/bin:$PATH

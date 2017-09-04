@@ -45,7 +45,7 @@ repo = 'vim-scripts/rails.vim'
 #repo = 'vim-endwise'
 
 [[plugins]]
-repo = 'ruby-matchit'
+repo = 'vim-scripts/ruby-matchit'
 
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
@@ -69,7 +69,7 @@ repo = 'kien/ctrlp.vim'
 repo = 'godlygeek/tabular'
 
 [[plugins]]
-repo = 'fencview.vim'
+repo = 'vim-scripts/fencview.vim'
 
 [[plugins]]
 repo = 'neomake/neomake'
