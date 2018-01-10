@@ -1,4 +1,6 @@
-alias diff="colordiff"
+if [[ -x `which colordiff` ]]; then
+  alias diff='colordiff -u'
+fi
 alias where="command -v"
 alias j="jobs -l"
 alias g="git"
