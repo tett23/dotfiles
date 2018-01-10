@@ -9,6 +9,7 @@ export TMUX_POWERLINE_DIR_HOME=$DOTFILES/tmux/tmux-powerline
 export CABAL_BIN=$HOME/.cabal/bin
 export PATH=/sbin:/usr/sbin:/usr/local/bin:$HOME/local/bin:$PATH:$CABAL_BIN
 export PATH=$PATH:/home/tett23/local/bin:/home/tett23/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
+export PATH=$PATH:~/Library/Python/3.6/bin
 export ZSH=$HOME/.oh-my-zsh
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/projects/golang
