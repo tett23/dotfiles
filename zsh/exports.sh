@@ -15,6 +15,11 @@ export GOPATH=$HOME/projects/golang
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export ZSH=$HOME/.oh-my-zsh
 
+# rust
+export PATH="$HOME/.cargo/bin:$PATH"
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
+
 # android
 export ANDROID_SDK_ROOT=~/Library/adt-bundle-mac-x86_64-20140702/sdk
 export NDK_ROOT=~/Library/android-ndk-r10
