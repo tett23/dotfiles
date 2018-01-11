@@ -1,4 +1,11 @@
 "*":
+  "atom-beautify":
+    rust:
+      beautify_on_save: true
+      rustfmt_path: "/Users/tett23/.cargo/bin/rustfmt"
+  "atom-ide-ui":
+    use:
+      "atom-ide-diagnostics-ui": false
   "autocomplete-ruby":
     rsensePath: "~/.rvm/gems/ruby-2.2.2/bin/rsense"
   core:
@@ -9,6 +16,7 @@
     ]
     telemetryConsent: "no"
   editor:
+    fontSize: 15
     lineHeight: 1.2
     showIndentGuide: true
     showInvisibles: true
@@ -21,15 +29,20 @@
     globalNodePath: "/Users/tett23/.nvm/versions/node/v8.4.0"
   "linter-rubocop":
     command: "/Users/tett23/.rvm/gems/ruby-2.4.0/bin/rubocop"
+  "linter-rust":
+    cargoPath: "/Users/tett23/.cargo/bin/cargo"
+    rustcPath: "/Users/tett23/.cargo/bin/rustc"
   "linter-ui-default":
     panelHeight: 170
     showPanel: true
+  racer:
+    racerBinPath: "/Users/tett23/.cargo/bin/racer"
+    rustSrcPath: "/Users/tett23/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src"
   "rubocop-auto-correct":
     autoRun: true
     correctFile: true
     rubocopCommandPath: "/Users/tett23/.rvm/gems/ruby-2.4.0/bin/rubocop"
-  "vim-mode-plus":
-    notifiedCoffeeScriptNoLongerSupportedToExtendVMP: true
+  "vim-mode-plus": {}
   "vim-mode-plus-ex-mode":
     notifiedUseExMode: true
   welcome:
