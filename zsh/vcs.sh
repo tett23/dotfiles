@@ -29,21 +29,7 @@ if is-at-least 4.3.7; then
     fi
   }
 
-  # show rvm prompt like "1.9.2@gemset_name"
-  #function _update_rvm_prompt {
-  #  result=`rvm-prompt v g 2> /dev/null`
-  #  if [ "$result" ] ; then
-  #    "[$result]"
-  #  fi
-  #}
-  #function rvm_prompt() {
-  #  rvm_current = _update_rvm_prompt
-  #}
-
   add-zsh-hook precmd _update_vcs_info_msg
-  #add-zsh-hook precmd _update_rvm_prompt
-  #RVM_INFO="%F{green}`rvm_prompt`%f"
-  #RVM_INFO="$'%{$RVM_COLOR%}$(rvm_prompt)%{${reset_color}%}'"
   VCS_INFO="%1(v|%F{green}%1v%f%F{yellow}%2v%f|)"
 fi
 RPROMPT="${VCS_INFO}"
