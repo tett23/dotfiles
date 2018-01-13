@@ -6,13 +6,10 @@ source $DOTFILES/zsh/common.sh
 source $DOTFILES/zsh/vcs.sh
 source $DOTFILES/zsh/aliases.sh
 source $DOTFILES/zsh/colors.sh
-source $DOTFILES/zsh/completion.sh
 source ~/.nvm/nvm.sh
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 source ~/.rvm/scripts/rvm
-
-fpath=(~/.zsh-completions $fpath)
 
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
