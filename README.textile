@@ -2,7 +2,7 @@ sh dotfiles/install.sh
 
 別途インストール
 * RVM
-* Byobu(tmux)
+* tmux
 * oh-my-zsh
 * RSense
 * node
