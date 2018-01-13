@@ -6,14 +6,13 @@ source $DOTFILES/zsh/common.sh
 source $DOTFILES/zsh/vcs.sh
 source $DOTFILES/zsh/aliases.sh
 source $DOTFILES/zsh/colors.sh
-source ~/.nvm/nvm.sh
+source $DOTFILES/zsh/prompt.sh
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 source ~/.rvm/scripts/rvm
+source ~/.nvm/nvm.sh
 
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-
-PROMPT="[%n@%m %~]$ "
 
 ## load user .zshrc configuration file
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
