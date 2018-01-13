@@ -23,16 +23,6 @@ export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
 export DYLD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$DYLD_LIBRARY_PATH
 export LC_RPATH=$LD_LIBRARY_PATH:$LC_RPATH
 
-# android
-export ANDROID_SDK_ROOT=~/Library/adt-bundle-mac-x86_64-20140702/sdk
-export NDK_ROOT=~/Library/android-ndk-r10
-export PATH=$PATH:$ANDROID_SDK_ROOT/tools
-export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
-export PATH="/usr/local/sbin:$PATH"
-export ANT_HOME=~/Library/apache-ant-1.9.4/
-#export JAVA_HOME=/usr/local/j2sdk1.4.1_01
-export PATH=$ANT_HOME/bin:${PATH}
-
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 
