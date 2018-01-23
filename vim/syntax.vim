@@ -53,17 +53,17 @@ endfunction
 let s:rtps = s:split_runtime_path(&runtimepath)
 
 for s:item in s:rtps
-  let s:syntax_path = expand(s:item . '/syntax/syntax.vim')
+   let s:syntax_path = expand(s:item . '/syntax/syntax.vim')
 
-  " 自身をsourceすると再帰してしまうのでそのガード
-  if expand('<sfile>:p') == s:syntax_path
-    continue
-  endif
+   " 自身をsourceすると再帰してしまうのでそのガード
+   if expand('<sfile>:p') == s:syntax_path
+     continue
+   endif
 
-  if filereadable(s:syntax_path)
-    execute 'source ' . s:syntax_path
-  endif
-endfor
+   if filereadable(s:syntax_path)
+     execute 'source ' . s:syntax_path
+   endif
+ endfor
 
 
 " どこかでoffにしっぱなしかもしれない
