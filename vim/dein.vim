@@ -18,13 +18,14 @@ execute 'set runtimepath+=' . s:dein_repo_dir
 " なんかwindowsでpath separatorがおかしくなるので対策
 " execute 'set runtimepath=' . expand(&runtimepath)
 
-let g:dein#install_max_processes = 16
-let g:dein#install_progress_type = 'title'
-let g:dein#enable_notification = 1
-let s:toml = expand('~/dotfiles/dein/plugins.toml')
-let s:lazy_toml = expand('~/dotfiles/dein/plugins_lazy.toml')
-
 if dein#load_state(s:dein_dir)
+  let g:dein#install_max_processes = 16
+  let g:dein#install_progress_type = 'title'
+  let g:dein#enable_notification = 1
+
+  let s:toml = expand('~/dotfiles/dein/plugins.toml')
+  let s:lazy_toml = expand('~/dotfiles/dein/plugins_lazy.toml')
+
   call dein#begin(s:dein_dir, [s:toml, s:lazy_toml])
   call dein#load_toml(s:toml, {'lazy': 0})
   call dein#load_toml(s:lazy_toml, {'lazy': 1})
