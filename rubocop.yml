@@ -1,0 +1,32 @@
+AllCops:
+  TargetRubyVersion: 2.2
+
+Style/MethodLength:
+  Max: 100
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+Style/DefWithParentheses:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
+
+Style/AndOr:
+  Enabled: false
+
+Style/SelfAssignment:
+  Enabled: false
+
+Lint/ElseAlignment:
+  Enabled: false
+
+Lint/EndAlignment:
+  Enabled: false
