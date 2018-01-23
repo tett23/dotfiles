@@ -17,11 +17,13 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export ZSH=$HOME/.oh-my-zsh
 
 # rust
-export PATH="$HOME/.cargo/bin:$PATH"
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
-export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
-export DYLD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$DYLD_LIBRARY_PATH
-export LC_RPATH=$LD_LIBRARY_PATH:$LC_RPATH
+if [[ -x `which rustc` ]]; then
+  export PATH="$HOME/.cargo/bin:$PATH"
+  export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+  export LD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$LD_LIBRARY_PATH
+  export DYLD_LIBRARY_PATH=$(rustc --print sysroot)/lib:$DYLD_LIBRARY_PATH
+  export LC_RPATH=$LD_LIBRARY_PATH:$LC_RPATH
+fi
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
