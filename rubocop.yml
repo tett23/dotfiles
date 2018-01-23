@@ -1,6 +1,12 @@
 AllCops:
   TargetRubyVersion: 2.2
 
+Metrics/AbcSize:
+  Max: 20
+
+Style/LineLength:
+  Max: 150
+
 Style/MethodLength:
   Max: 100
 
@@ -28,8 +34,23 @@ Style/SelfAssignment:
 Style/AsciiComments:
   Enabled: false
 
+Style/RedundantReturn:
+  Enabled: false
+
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: false
+
 Lint/ElseAlignment:
   Enabled: false
 
 Lint/EndAlignment:
+  Enabled: false
+
+Lint/Documentation:
+  Enabled: false
+
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: false
+
+Layout/SpaceAroundEqualsInParameterDefault:
   Enabled: false
