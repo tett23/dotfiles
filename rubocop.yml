@@ -25,6 +25,9 @@ Style/AndOr:
 Style/SelfAssignment:
   Enabled: false
 
+Style/AsciiComments:
+  Enabled: false
+
 Lint/ElseAlignment:
   Enabled: false
 
