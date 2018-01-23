@@ -2,17 +2,26 @@
   "atom-beautify":
     rust:
       beautify_on_save: true
-      rustfmt_path: "/Users/tett23/.cargo/bin/rustfmt"
   "atom-ide-ui":
     use:
       "atom-ide-diagnostics-ui": false
   "autocomplete-ruby":
-    rsensePath: "~/.rvm/gems/ruby-2.2.2/bin/rsense"
+    rsensePath: "~/.rvm/gems/ruby-2.4.0/bin/rsense"
   core:
     disabledPackages: [
       "javascript-snippets"
       "autocomplete-snippets"
       "snippets"
+    ]
+    ignoredNames: [
+      ".git"
+      ".hg"
+      ".svn"
+      ".DS_Store"
+      "._*"
+      "Thumbs.db"
+      "desktop.ini"
+      "._racertmp*"
     ]
     telemetryConsent: "no"
   editor:
@@ -42,6 +51,8 @@
     autoRun: true
     correctFile: true
     rubocopCommandPath: "/Users/tett23/.rvm/gems/ruby-2.4.0/bin/rubocop"
+  "tree-view":
+    hideIgnoredNames: true
   "vim-mode-plus": {}
   "vim-mode-plus-ex-mode":
     notifiedUseExMode: true
