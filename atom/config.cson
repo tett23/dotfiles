@@ -8,10 +8,11 @@
   "autocomplete-ruby":
     rsensePath: "~/.rvm/gems/ruby-2.4.0/bin/rsense"
   core:
+    audioBeep: false
     disabledPackages: [
-      "javascript-snippets"
       "autocomplete-snippets"
       "snippets"
+      "atom-ide-ui"
     ]
     ignoredNames: [
       ".git"
@@ -24,8 +25,12 @@
       "._racertmp*"
     ]
     telemetryConsent: "no"
+    themes: [
+      "one-dark-ui"
+      "monokai"
+    ]
   editor:
-    fontSize: 15
+    fontSize: 16
     lineHeight: 1.2
     showIndentGuide: true
     showInvisibles: true
@@ -33,6 +38,8 @@
     softWrapAtPreferredLineLength: true
   "exception-reporting":
     userId: "f4cd12c3-6c2e-4b81-bd21-0e2dbd8fa97b"
+  "ide-flowtype":
+    autoDownloadFlowBinaries: false
   "linter-eslint":
     fixOnSave: true
     globalNodePath: "/Users/tett23/.nvm/versions/node/v8.4.0"
@@ -42,8 +49,7 @@
     cargoPath: "/Users/tett23/.cargo/bin/cargo"
     rustcPath: "/Users/tett23/.cargo/bin/rustc"
   "linter-ui-default":
-    panelHeight: 170
-    showPanel: true
+    panelHeight: 136
   racer:
     racerBinPath: "/Users/tett23/.cargo/bin/racer"
     rustSrcPath: "/Users/tett23/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src"
