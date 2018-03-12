@@ -14,7 +14,6 @@ export ZSH=$HOME/.oh-my-zsh
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/projects/golang
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-export ZSH=$HOME/.oh-my-zsh
 
 # rust
 if [[ -x `which rustc` ]]; then
