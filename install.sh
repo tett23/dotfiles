@@ -23,4 +23,6 @@ ln -nsf $DOTFILES/tmux.conf $HOME/.tmux.conf
 ln -nsf $DOTFILES/exenv $HOME/.exenv
 ln -nsf $DOTFILES/rubocop.yml $HOME/.rubocop.yml
 
+ln -nsf $DOTFILES/karabiner $XDG_CONFIG_HOME/karabiner
+
 $DOTFILES/zsh/fzf/install
