@@ -4,16 +4,16 @@ AllCops:
 Metrics/AbcSize:
   Max: 20
 
-Style/LineLength:
+Metrics/LineLength:
   Max: 150
 
-Style/MethodLength:
+Metrics/MethodLength:
   Max: 100
 
 Style/MultilineBlockChain:
   Enabled: false
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
   Enabled: false
 
 Style/DefWithParentheses:
@@ -40,13 +40,13 @@ Style/RedundantReturn:
 Style/MethodCallWithoutArgsParentheses:
   Enabled: false
 
-Lint/ElseAlignment:
+Layout/ElseAlignment:
   Enabled: false
 
-Lint/EndAlignment:
+Layout/EndAlignment:
   Enabled: false
 
-Lint/Documentation:
+Style/Documentation:
   Enabled: false
 
 Layout/EmptyLinesAroundAccessModifier:
