@@ -16,6 +16,11 @@ vender/bundle
 # YARD artifacts
 .yardoc
 _yardoc
+
+# ruby
+.rvmrc
+.byebug_history
+
 # rails
 *.rbc
 *.sassc
