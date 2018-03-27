@@ -60,7 +60,17 @@
                                         "key_code": "spacebar"
                                     }
                                 ],
-                                "type": "basic"
+                                "type": "basic",
+                                "conditions": [
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "language": "ja"
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         ]
                     }
