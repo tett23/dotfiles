@@ -30,4 +30,4 @@ if [ ! $? ] ; then
   $DOTFILES/zsh/fzf/install
 fi
 
-pip install neovim pygments
+pip install neovim
