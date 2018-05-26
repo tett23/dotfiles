@@ -14,7 +14,12 @@ Style/MultilineBlockChain:
   Enabled: false
 
 Style/TrailingCommaInArrayLiteral:
-  Enabled: false
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
 
 Style/DefWithParentheses:
   Enabled: false
@@ -40,17 +45,34 @@ Style/RedundantReturn:
 Style/MethodCallWithoutArgsParentheses:
   Enabled: false
 
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: ()
+    '%':  ()
+    '%i': ()
+    '%q': ()
+    '%Q': ()
+    '%r': '{}'
+    '%s': ()
+    '%w': ()
+    '%W': ()
+    '%x': ()
+
+Style/Documentation:
+  Enabled: false
+
 Layout/ElseAlignment:
   Enabled: false
 
 Layout/EndAlignment:
   Enabled: false
 
-Style/Documentation:
-  Enabled: false
+Layout/IndentArray:
+  EnforcedStyle: consistent
 
 Layout/EmptyLinesAroundAccessModifier:
   Enabled: false
 
 Layout/SpaceAroundEqualsInParameterDefault:
   Enabled: false
+
