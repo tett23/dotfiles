@@ -5,7 +5,7 @@ else
 endif
 
 source ~/dotfiles/vim/common.vim
-source ~/dotfiles/vim/dein.vim
+source ~/dotfiles/vim/plugins.vim
 source ~/dotfiles/vim/syntax.vim
 
 " plugin config

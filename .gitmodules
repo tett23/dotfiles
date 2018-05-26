@@ -7,12 +7,6 @@
 [submodule "exenv"]
 	path = exenv
 	url = git://github.com/mururu/exenv.git
-[submodule "dein.vim"]
-	path = dein.vim
-	url = https://github.com/Shougo/dein.vim.git
-[submodule "dein/plugins/dein.vim"]
-	path = dein/plugins/dein.vim
-	url = git@github.com:Shougo/dein.vim.git
 [submodule "prezto"]
 	path = prezto
 	url = git@github.com:sorin-ionescu/prezto.git
