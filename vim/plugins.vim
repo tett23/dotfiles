@@ -25,6 +25,9 @@ Plug 'tyru/caw.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+" tree view
+Plug 'scrooloose/nerdtree'
+
 Plug 'jiangmiao/auto-pairs'
 
 " file encoding plugin

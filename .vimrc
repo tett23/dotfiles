@@ -14,6 +14,7 @@ source ~/dotfiles/vim/lightline.vim
 source ~/dotfiles/vim/colors.vim
 source ~/dotfiles/vim/deoplete.vim
 source ~/dotfiles/vim/fzf.vim
+source ~/dotfiles/vim/nerd_tree.vim
 source ~/dotfiles/vim/keymap.vim
 
 " language
