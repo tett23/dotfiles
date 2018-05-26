@@ -9,7 +9,7 @@ fi
 ln -s -f $DOTFILES/.vimrc $HOME/.vimrc
 ln -s -f $DOTFILES/.gvimrc $HOME/.gvimrc
 ln -nsf $DOTFILES/vim $XDG_CONFIG_HOME/nvim
-mkdir -p $HOME/.vim/syntax
+ln -nsf $DOTFILES/vim $HOME/.vim
 ln -nsf $DOTFILES/vim/syntax/syntax.vim $HOME/.vim/syntax/syntax.vim
 
 git submodule update --init --recursive
