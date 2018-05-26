@@ -39,9 +39,11 @@ config/*.yml
 rerun.txt
 pickle-email-*.html
 
-.*\.swp
-.*\.swo
-.*\.swn
+*.swl
+*.swm
+*.swn
+*.swo
+*.swp
 .rvmrc
 .ruby-version
 .ruby-gemset
