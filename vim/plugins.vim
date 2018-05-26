@@ -22,6 +22,8 @@ Plug 'kien/ctrlp.vim'
 
 " general utilities
 Plug 'thinca/vim-quickrun'
+" toggle comment out
+Plug 'tyru/caw.vim'
 
 Plug 'jiangmiao/auto-pairs'
 
