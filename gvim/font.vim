@@ -5,8 +5,8 @@ if has('xfontset')
 "  set guifontset=a14,r14,k14
 elseif has('mac')
   "set guifontwide=Hiragino\ Maru\ Gothic\ ProN\ W4:h10
-  set guifont=MonacoForPowerline:h10
-  set guifontwide=YuGo-Medium:h10
+  set guifont=MonacoForPowerline:h14
+  set guifontwide=YuGo-Medium:h14
   set ambiwidth=double
   set guioptions=emg
 elseif has('win32') || has('win64')
