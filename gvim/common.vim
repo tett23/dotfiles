@@ -18,6 +18,9 @@ set display+=lastline
 
 " ベルを無効
 set visualbell t_vb=
+set belloff=all
+set noerrorbells
+set novisualbell
 
 if has('mac')
   "noremap! ¥ \
