@@ -32,3 +32,6 @@ export PATH=$DOTFILES/exenv/bin:$PATH
 plugins=(git)
 #exec $SHELL
 echo 'eval "$(exenv init -)"' >> ~/.bash_profile
+
+export LESS='--RAW-CONTROL-CHARS -R --tabs=2'
+export LESSOPEN="| $DOTFILES/zsh/src-hilite-lesspipe.sh %s"
