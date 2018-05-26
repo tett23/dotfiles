@@ -11,6 +11,7 @@ ln -s -f $DOTFILES/.gvimrc $HOME/.gvimrc
 ln -nsf $DOTFILES/vim $XDG_CONFIG_HOME/nvim
 ln -nsf $DOTFILES/vim $HOME/.vim
 ln -nsf $DOTFILES/vim/syntax/syntax.vim $HOME/.vim/syntax/syntax.vim
+mkdir -p $HOME/.vimbackup
 
 git submodule update --init --recursive
 

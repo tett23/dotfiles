@@ -1,10 +1,6 @@
 " クリップボード
 set clipboard=unnamed
 
-set nobackup
-set noswapfile
-set backupdir=~/.vim/tmp
-
 "日本語の行の連結時には空白を入力しない。
 set formatoptions+=mM
 

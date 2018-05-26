@@ -18,6 +18,9 @@ set showcmd "入力中のコマンドをステータスに表示する
 set showmatch "括弧入力時の対応する括弧を表示
 set laststatus=2 "ステータスラインを常に表示
 set wildmenu
+set nobackup
+set noswapfile
+set backupdir=$HOME/.vimbackup
 let &directory = &backupdir
 if has('multi_byte_ime') || has('xim') " 日本語入力ON時のカーソルの色を設定
     highlight CursorIM guibg=Purple guifg=NONE
