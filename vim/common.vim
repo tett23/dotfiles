@@ -47,14 +47,6 @@ set incsearch
 
 set tags=tags
 
-"マッピングとか
-map ^? ^H
-map! ^? ^H
-
-"キーマッピング
-noremap ; :
-noremap : ;
-
 "その他
 set noerrorbells
 set novisualbell

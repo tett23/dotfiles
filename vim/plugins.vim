@@ -17,13 +17,13 @@ Plug 'w0rp/ale'
 Plug 'delphinus/lightline-delphinus'
 Plug 'itchyny/lightline.vim'
 
-" util
-Plug 'kien/ctrlp.vim'
-
 " general utilities
 Plug 'thinca/vim-quickrun'
 " toggle comment out
 Plug 'tyru/caw.vim'
+" fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 Plug 'jiangmiao/auto-pairs'
 

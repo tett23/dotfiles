@@ -13,7 +13,8 @@ source ~/dotfiles/vim/ale.vim
 source ~/dotfiles/vim/lightline.vim
 source ~/dotfiles/vim/colors.vim
 source ~/dotfiles/vim/deoplete.vim
-source ~/dotfiles/vim/ctrlp.vim
+source ~/dotfiles/vim/fzf.vim
+source ~/dotfiles/vim/keymap.vim
 
 " language
 source ~/dotfiles/vim/ruby.vim
