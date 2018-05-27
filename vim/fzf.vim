@@ -37,9 +37,11 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 nnoremap <S-b> :Buffers<CR>
 nnoremap <Space>b :Buffers<CR>
+nnoremap <S-x> :Commands<CR>
 nnoremap <Space>x :Commands<CR>
 nnoremap <Space>f :GFiles<CR>
 nnoremap <S-f> :GFiles<CR>
+nnoremap <S-s> :GFiles?<CR>
 nnoremap <Space>a :Ag<CR>
 nnoremap <C-p> :Files<CR>
 command! FZFMru call fzf#run({

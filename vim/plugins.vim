@@ -1,10 +1,14 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-
 Plug 'Shougo/unite.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'Shougo/neosnippet-snippets'
 
 " colors
 Plug 'tomasr/molokai'
@@ -27,23 +31,27 @@ Plug 'junegunn/fzf.vim'
 
 " tree view
 Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'jiangmiao/auto-pairs'
 
 " file encoding plugin
 Plug 'vim-scripts/fencview.vim'
 Plug 'othree/eregex.vim'
-Plug 'vim-scripts/grep.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 
 " git
-Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " language plugins
 "" ruby
 Plug 'vim-scripts/rails.vim'
 Plug 'vim-scripts/ruby-matchit'
+Plug 'tpope/vim-endwise'
+Plug 'uplus/deoplete-solargraph'
+
+"" HAML
+Plug 'tpope/vim-haml'
 
 "" markdown
 Plug 'tpope/vim-markdown'
@@ -51,26 +59,13 @@ Plug 'tpope/vim-markdown'
 "" go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jnwhiteh/vim-golang'
-Plug 'Shougo/deoplete.nvim'
 Plug 'zchee/deoplete-go', { 'do': 'make'}
 
 "" javascript
 Plug 'jiangmiao/simple-javascript-indenter'
 Plug 'othree/yajs.vim'
 
-"" coffee
-Plug 'kchmck/vim-coffee-script'
-
 "" html
 Plug 'mattn/emmet-vim'
-
-"" jade
-Plug 'digitaltoad/vim-jade'
-
-"" stylus
-Plug 'wavded/vim-stylus'
-
-"" c++
-Plug 'osyo-manga/vim-marching'
 
 call plug#end()
