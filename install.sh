@@ -23,6 +23,9 @@ ln -nsf $DOTFILES/tmux.conf $HOME/.tmux.conf
 ln -nsf $DOTFILES/exenv $HOME/.exenv
 ln -nsf $DOTFILES/rubocop.yml $HOME/.rubocop.yml
 
+mkdir -p $XDG_CONFIG_HOME/brewfile
+ln -nsf $DOTFILES/Brewfile $XDG_CONFIG_HOME/brewfile/Brewfile
+
 ln -nsf $DOTFILES/karabiner $XDG_CONFIG_HOME/karabiner
 
 command -v fzf > /dev/null
