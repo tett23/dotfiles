@@ -116,4 +116,4 @@ cask fontforge
 cask java
 cask kindlegen
 cask macvim
-
+cask vimr
