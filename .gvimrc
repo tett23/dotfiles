@@ -1,6 +1,6 @@
-source ~/dotfiles/gvim/common.vim
-source ~/dotfiles/gvim/window.vim
-source ~/dotfiles/gvim/restore_window.vim
-source ~/dotfiles/gvim/font.vim
-source ~/dotfiles/gvim/text.vim
-source ~/dotfiles/vim/colors.vim
+source $DOTFILES/gvim/common.vim
+source $DOTFILES/gvim/window.vim
+source $DOTFILES/gvim/restore_window.vim
+source $DOTFILES/gvim/font.vim
+source $DOTFILES/gvim/text.vim
+source $DOTFILES/vim/colors.vim

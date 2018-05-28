@@ -4,25 +4,25 @@ else
   let $VIMRUNTIME = expand('~/.vim')
 endif
 
-source ~/dotfiles/vim/common.vim
-source ~/dotfiles/vim/plugins.vim
-source ~/dotfiles/vim/syntax.vim
+source $DOTFILES/vim/common.vim
+source $DOTFILES/vim/plugins.vim
+source $DOTFILES/vim/syntax.vim
 
 " plugin config
-source ~/dotfiles/vim/ale.vim
-source ~/dotfiles/vim/colors.vim
-source ~/dotfiles/vim/deoplete.vim
-source ~/dotfiles/vim/fzf.vim
-source ~/dotfiles/vim/nerd_tree.vim
-source ~/dotfiles/vim/lightline.vim
-source ~/dotfiles/vim/goyo.vim
-source ~/dotfiles/vim/keymap.vim
+source $DOTFILES/vim/ale.vim
+source $DOTFILES/vim/colors.vim
+source $DOTFILES/vim/deoplete.vim
+source $DOTFILES/vim/fzf.vim
+source $DOTFILES/vim/nerd_tree.vim
+source $DOTFILES/vim/lightline.vim
+source $DOTFILES/vim/goyo.vim
+source $DOTFILES/vim/keymap.vim
 
 " language
-source ~/dotfiles/vim/ruby.vim
-source ~/dotfiles/vim/rspec.vim
-source ~/dotfiles/vim/go.vim
-source ~/dotfiles/vim/coffee.vim
+source $DOTFILES/vim/ruby.vim
+source $DOTFILES/vim/rspec.vim
+source $DOTFILES/vim/go.vim
+source $DOTFILES/vim/coffee.vim
 
 if has('nvim')
   " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
