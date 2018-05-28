@@ -4,4 +4,6 @@ vmap <Leader>c <Plug>(caw:hatpos:toggle)
 
 nmap <D-/> <Plug>(caw:hatpos:toggle)
 vmap <D-/> <Plug>(caw:hatpos:toggle)
+nmap <C-/> <Plug>(caw:hatpos:toggle)
+vmap <C-/> <Plug>(caw:hatpos:toggle)
 
