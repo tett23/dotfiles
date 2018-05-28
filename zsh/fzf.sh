@@ -20,3 +20,42 @@ function repo() {
 zle -N repo
 bindkey "^g" repo
 
+__fbr() {
+  local branches branch
+  local cmd="git branch --all --sort=committerdate --color | grep -v HEAD | sed 's/.* //'"
+
+  setopt localoptions pipefail 2> /dev/null
+  eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" | while read item; do
+    echo -n "${(q)item} "
+  done
+  local ret=$?
+  echo
+  return $ret
+}
+
+# fbr - checkout git branch (including remote branches), sorted by most recent commit
+fbr() {
+  LBUFFER="${LBUFFER}$(__fbr)"
+  local ret=$?
+  zle redisplay
+  typeset -f zle-line-init >/dev/null && zle zle-line-init
+  return $ret
+}
+zle -N fbr
+alias fzf-branch='(){ fbr }'
+bindkey "^b" fbr
+
+fkill() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    echo $pid | xargs kill -${1:-9}
+  fi
+}
+zle -N fkill
+alias pskill='(){ fkill }'
+bindkey "^K" fkill
+
+bindkey "^p" fzf-file-widget

@@ -19,6 +19,7 @@ brew colordiff
 brew coreutils
 brew czmq
 brew dfu-programmer
+brew direnv
 brew docker
 brew elixir
 brew erlang
