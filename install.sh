@@ -7,6 +7,7 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
 fi
 
 ln -s -f $DOTFILES/.vimrc $HOME/.vimrc
+ln -s -f $DOTFILES/.nvimrc $HOME/.nvimrc
 ln -s -f $DOTFILES/.gvimrc $HOME/.gvimrc
 ln -nsf $DOTFILES/vim $XDG_CONFIG_HOME/nvim
 ln -nsf $DOTFILES/vim $HOME/.vim

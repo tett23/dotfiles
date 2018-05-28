@@ -8,4 +8,5 @@ noremap : ;
 
 " 新規バッファ
 nnoremap <Space>n :enew<CR>
-nnoremap <D-w> :q<CR>
+nnoremap <S-t> :enew<CR>
+nnoremap <S-w> :BD<CR>

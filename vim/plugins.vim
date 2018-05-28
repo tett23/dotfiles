@@ -23,11 +23,15 @@ Plug 'itchyny/lightline.vim'
 
 " general utilities
 Plug 'thinca/vim-quickrun'
+Plug 'qpkorr/vim-bufkill'
 " toggle comment out
 Plug 'tyru/caw.vim'
 " fuzzy finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
+" language settings
+Plug 'sheerun/vim-polyglot'
 
 " tree view
 Plug 'scrooloose/nerdtree'
