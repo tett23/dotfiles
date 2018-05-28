@@ -1,104 +1,142 @@
-tap "osx-cross/avr"
 
-cask_args appdir: "/Applications"
+# tap repositories and their packages
 
-brew "ag"
-brew "autoconf"
-brew "automake"
-brew "awscli"
-brew "boost"
-brew "cairo"
-brew "cmake"
-brew "colordiff"
-brew "coreutils"
-brew "czmq"
-brew "dfu-programmer"
-brew "docker"
-brew "elixir"
-brew "erlang"
-brew "fribidi"
-brew "gawk"
-brew "gdbm"
-brew "gettext"
-brew "ghostscript"
-brew "ghq"
-brew "git"
-brew "glib"
-brew "glide"
-brew "gmp"
-brew "go"
-brew "gobject-introspection"
-brew "graphite2"
-brew "harfbuzz"
-brew "icu4c"
-brew "imagemagick"
-brew "imagemagick@6"
-brew "jemalloc"
-brew "jpeg"
-brew "jq"
-brew "libelf"
-brew "libevent"
-brew "libffi"
-brew "libftdi0"
-brew "libgpg-error"
-brew "libidn2"
-brew "libksba"
-brew "libmpc"
-brew "libogg"
-brew "libpng"
-brew "libtermkey"
-brew "libtiff"
-brew "libtool"
-brew "libunistring"
-brew "libusb"
-brew "libusb-compat"
-brew "libuv"
-brew "libvorbis"
-brew "libvterm"
-brew "libyaml"
-brew "little-cms2"
-brew "luajit"
-brew "makedepend"
-brew "mas"
-brew "mecab"
-brew "mecab-ipadic"
-brew "mpfr"
-brew "msgpack"
-brew "mysql"
-brew "neovim"
-brew "oniguruma"
-brew "openssl"
-brew "openssl@1.1"
-brew "ossp-uuid"
-brew "pango"
-brew "pcre"
-brew "pixman"
-brew "pkg-config"
-brew "pyenv"
-brew "pyenv-virtualenv"
-brew "python"
-brew "python@2"
-brew "readline"
-brew "redis"
-brew "ricty", args: ["with-powerline"]
-brew "ruby-build"
-brew "source-highlight"
-brew "sqlite"
-brew "the_silver_searcher"
-brew "tmux"
-brew "unibilium"
-brew "unixodbc"
-brew "watch"
-brew "watchman"
-brew "wget"
-brew "wxmac"
-brew "xz"
-brew "yarn --without-node", args: ["without-node"]
-brew "zeromq"
-brew "zsh"
+tap 'homebrew/core'
+brew 'adns'
+brew 'autoconf'
+brew 'automake'
+brew 'avrdude'
+brew 'awscli'
+brew 'blueutil'
+brew 'boost'
+brew 'cairo'
+brew 'cmake'
+brew 'colordiff'
+brew 'coreutils'
+brew 'czmq'
+brew 'dfu-programmer'
+brew 'direnv'
+brew 'docker'
+brew 'elixir'
+brew 'erlang'
+brew 'fontconfig'
+brew 'fontforge'
+brew 'freetype'
+brew 'fribidi'
+brew 'gawk'
+brew 'gcc'
+brew 'gdbm'
+brew 'gettext'
+brew 'ghq'
+brew 'git'
+brew 'glib'
+brew 'gmp'
+brew 'gnupg'
+brew 'gnutls'
+brew 'graphite2'
+brew 'harfbuzz'
+brew 'icu4c'
+brew 'imagemagick'
+brew 'imagemagick@6'
+brew 'isl'
+brew 'jemalloc'
+brew 'jpeg'
+brew 'jq'
+brew 'libassuan'
+brew 'libelf'
+brew 'libevent'
+brew 'libffi'
+brew 'libftdi0'
+brew 'libgcrypt'
+brew 'libgpg-error'
+brew 'libksba'
+brew 'libmpc'
+brew 'libpng'
+brew 'libtasn1'
+brew 'libtermkey'
+brew 'libtiff'
+brew 'libtool'
+brew 'libunistring'
+brew 'libusb'
+brew 'libusb-compat'
+brew 'libuv'
+brew 'libvterm'
+brew 'libyaml'
+brew 'luajit'
+brew 'mas'
+brew 'mpfr'
+brew 'msgpack'
+brew 'mysql'
+brew 'neovim'
+brew 'nettle'
+brew 'node'
+brew 'npth'
+brew 'nvm'
+brew 'oniguruma'
+brew 'openssl'
+brew 'openssl@1.1'
+brew 'p11-kit'
+brew 'pango'
+brew 'pcre'
+brew 'phantomjs'
+brew 'pinentry'
+brew 'pixman'
+brew 'pkg-config'
+brew 'pyenv'
+brew 'python'
+brew 'python@2'
+brew 'r'
+brew 'readline'
+brew 'reattach-to-user-namespace'
+brew 'ruby-build'
+brew 'sqlite'
+brew 'terraform'
+brew 'the_silver_searcher'
+brew 'tmux'
+brew 'unibilium'
+brew 'wxmac'
+brew 'xz'
+brew 'yarn'
+brew 'zeromq'
+brew 'zsh'
 
-# Oth"er Cask applications
-cask "atom"
-cask "java"
-cask "macvim"
-cask "vimr"
+tap 'homebrew/bundle'
+
+tap 'homebrew/cask'
+cask 'atom'
+cask 'calibre'
+cask 'fontforge'
+cask 'java'
+cask 'kindlegen'
+cask 'macdown'
+cask 'macvim'
+cask 'vimr'
+cask 'xquartz'
+
+tap 'caskroom/cask'
+
+tap 'neovim/neovim'
+
+tap 'osx-cross/avr'
+brew 'avr-binutils'
+brew 'avr-gcc'
+
+tap 'rcmdnk/file'
+brew 'brew-file'
+
+# App Store applications
+#appstore '1024640650 CotEditor (3.3.5)'
+#appstore '682658836 GarageBand (10.2.0)'
+#appstore '408981434 iMovie (10.1.8)'
+#appstore '409183694 Keynote (7.3.1)'
+#appstore '409203825 Numbers (4.3.1)'
+#appstore '409201541 Pages (6.3.1)'
+#appstore '803453959 Slack (3.0.5)'
+#appstore '1230288277 stone (1.0.4)'
+#appstore '497799835 Xcode (9.2)'
+
+# Other commands
+#cask_args appdir: "/Applications"
+#<<<<<<< Updated upstream
+#=======
+#>>>>>>> Stashed changes
