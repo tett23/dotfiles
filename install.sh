@@ -34,7 +34,3 @@ if [ ! $? ] ; then
   $DOTFILES/zsh/fzf/install
 fi
 
-gem install solargraph --no-ri --no-rdoc
-pip install neovim solargraph-utils.py
-yard gems
-yard config --gem-install-yri

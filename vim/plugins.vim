@@ -53,7 +53,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'vim-scripts/rails.vim'
 Plug 'vim-scripts/ruby-matchit'
 Plug 'tpope/vim-endwise'
-Plug 'uplus/deoplete-solargraph'
+Plug 'fishbullet/deoplete-ruby'
 
 "" HAML
 Plug 'tpope/vim-haml'
