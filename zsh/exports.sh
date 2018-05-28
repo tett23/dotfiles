@@ -29,6 +29,9 @@ export XDG_CACHE_HOME=$HOME/.cache
 
 export PATH=$DOTFILES/exenv/bin:$PATH
 
+# fzf
+export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
+
 plugins=(git)
 #exec $SHELL
 echo 'eval "$(exenv init -)"' >> ~/.bash_profile

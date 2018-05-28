@@ -27,6 +27,21 @@ bindkey "^K" fkill
 
 bindkey "^p" fzf-file-widget
 
+# fbr - checkout git branch (including remote branches), sorted by most recent commit
+fbr() {
+  local branches branch
+  branch=$(git branch --all --sort=committerdate --color | grep -v HEAD | fzf-tmux -d 30% --no-sort --reverse --tac)
+  ret=$(echo -n $branch | sed "s/.* //")
+
+  echo -n $ret
+
+  return ret
+}
+zle -N fbr
+alias fzf-branch='(){ fbr }'
+bindkey "^B" fbr
+
+
 if which nvim >/dev/null 2>&1; then
   alias vim=nvim
 fi
