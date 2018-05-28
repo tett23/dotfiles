@@ -9,32 +9,34 @@ let g:lightline = {
         \ 'active': {
         \   'left': [
         \     ['mode', 'paste'],
-        \     ['fugitive', 'gitgutter', 'filename'],
+        \     ['gitgutter', 'filepath'],
+        \     ['character_count', 'line_count'],
         \   ],
         \   'right': [
         \     ['lineinfo', 'ale'],
-        \     ['percent', 'line_character_counter'],
+        \     ['percent'],
         \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
         \   ]
         \ },
         \ 'component_function': {
         \   'modified': 'MyModified',
         \   'readonly': 'MyReadonly',
-        \   'fugitive': 'MyFugitive',
+        \   'filepath': 'MyFilepath',
         \   'filename': 'MyFilename',
         \   'fileformat': 'MyFileformat',
         \   'filetype': 'MyFiletype',
         \   'fileencoding': 'MyFileencoding',
         \   'mode': 'MyMode',
-        \   'syntastic': 'SyntasticStatuslineFlag',
         \   'charcode': 'MyCharCode',
         \   'gitgutter': 'MyGitGutter',
-        \   'line_character_counter': 'MyLineCharacterCount',
+        \   'buffer_character_counter': 'MyCharacterCount',
+        \   'character_count': 'MyCharacterCount',
+        \   'line_count': 'MyLineCount',
         \   'ale': 'ALEStatus',
         \ },
-        \ 'component': {},
-        \ 'separator': {'left': '⮀', 'right': '⮂'},
-        \ 'subseparator': {'left': '⮁', 'right': '⮃'}
+        \ 'component': { },
+        \ 'separator': {'left': '', 'right': ''},
+        \ 'subseparator': {'left': '|', 'right': '|'}
         \ }
 
 function! MyCharacterCounterOnCurrentBuffer()
@@ -58,18 +60,18 @@ function! MyCharacterCount()
   let buffer_characters = MyCharacterCounterOnCurrentBuffer()
   let line_characters = MyCharacterCounterOnCurrentBufferLine()
   let figures = strlen('' . buffer_characters)
-  let format = "%".figures."d / %".figures."d"
+  let format = "C %".figures."d / %".figures."d"
 
-  return printf(format, buffer_characters, line_characters)
+  return printf(format, line_characters, buffer_characters)
 endfunction
 
 function! MyLineCount()
   let line_count = line('$')
   let current_line = line('.')
   let figures = strlen('' . line_count)
-  let format = "%".figures."d / %".figures."d"
+  let format = "L %".figures."d / %".figures."d"
 
-  return printf(format, line_count, current_line)
+  return printf(format, current_line, line_count)
 endfunction
 
 function! MyLineCharacterCount()
@@ -90,24 +92,17 @@ function! MyReadonly()
 return &ft !~? 'help\|vimfiler\|gundo' && &ro ? '⭤' : ''
 endfunction
 
-function! MyFugitive()
-  try
-    if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
-      let _ = fugitive#head()
-      return strlen(_) ? '<U+2B60> '._ : ''
-    endif
-  catch
-  endtry
-  return ''
+function! MyFilepath()
+  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+  \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+  \  &ft == 'unite' ? unite#get_status_string() :
+  \  &ft == 'vimshell' ? substitute(b:vimshell.current_dir,expand('~'),'~','') :
+  \ '' != @% ? @% : '[No Name]') .
+  \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
 function! MyFilename()
-return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-\ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-\  &ft == 'unite' ? unite#get_status_string() :
-\  &ft == 'vimshell' ? substitute(b:vimshell.current_dir,expand('~'),'~','') :
-\ '' != @% ? @% : '[No Name]') .
-\ ('' != MyModified() ? ' ' . MyModified() : '')
+  return expand('%:t')
 endfunction
 
 function! MyFileformat()

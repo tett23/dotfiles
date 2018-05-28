@@ -17,8 +17,6 @@ Plug 'tomasr/molokai'
 Plug 'w0rp/ale'
 
 " powerline
-" なんかALEのlint情報をlightlineに出すのに必要らしい
-Plug 'delphinus/lightline-delphinus'
 Plug 'itchyny/lightline.vim'
 
 " general utilities
@@ -38,6 +36,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'jiangmiao/auto-pairs'
+
+" zen editor
+Plug 'junegunn/goyo.vim'
 
 " file encoding plugin
 Plug 'vim-scripts/fencview.vim'
