@@ -10,7 +10,7 @@ let g:lightline = {
         \   'left': [
         \     ['mode', 'paste'],
         \     ['gitbranch', 'gitgutter'],
-        \     ['parent_path', 'filename'],
+        \     ['readonly', 'parent_path', 'filename'],
         \     ['character_count', 'line_count'],
         \   ],
         \   'right': [
@@ -111,21 +111,8 @@ augroup character_counter
   autocmd BufNew,BufEnter,BufWrite,InsertLeave * call MyCharacterCount()
 augroup END
 
-function! MyModified()
-return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction
-
 function! MyReadonly()
-return &ft !~? 'help\|vimfiler\|gundo' && &ro ? '⭤' : ''
-endfunction
-
-function! MyFilepath()
-  return ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-  \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-  \  &ft == 'unite' ? unite#get_status_string() :
-  \  &ft == 'vimshell' ? substitute(b:vimshell.current_dir,expand('~'),'~','') :
-  \ '' != @% ? @% : '[No Name]') .
-  \ ('' != MyModified() ? ' ' . MyModified() : '')
+  return &ro ? 'RO' : ''
 endfunction
 
 function! MyParentPath() abort
