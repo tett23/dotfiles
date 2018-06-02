@@ -32,5 +32,3 @@ export FZF_DEFAULT_COMMAND='ag -g ""'
 
 export LESS='--RAW-CONTROL-CHARS -R --tabs=2'
 export LESSOPEN="| $DOTFILES/zsh/src-hilite-lesspipe.sh %s"
-
-export ZPLUG_HOME=/usr/local/opt/zplug

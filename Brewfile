@@ -73,7 +73,7 @@ brew "watchman"
 brew "wget"
 brew "yarn", args: ["without-node"]
 brew "zsh"
-brew "zplug"
+brew "zsh-completions"
 brew "osx-cross/avr/avr-gcc"
 brew "px4/px4/gcc-arm-none-eabi"
 brew "sanemat/font/ricty", args: ["with-powerline"]
