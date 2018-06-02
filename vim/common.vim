@@ -51,6 +51,8 @@ set tags=tags
 set noerrorbells
 set novisualbell
 
+set clipboard=unnamed " クリップボード共有
+
 filetype plugin on
 filetype indent on
 set shellslash
