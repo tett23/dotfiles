@@ -77,4 +77,4 @@
   trustExitCode = true
 
 [ghq]
-  root = ~/repositories
+  root = ~/repositories/src

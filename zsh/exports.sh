@@ -12,7 +12,7 @@ export PATH=$PATH:/home/tett23/local/bin:/home/tett23/local/bin:/usr/local/bin:/
 export PATH=$PATH:~/Library/Python/3.6/bin
 export ZSH=$HOME/.oh-my-zsh
 export GOROOT=/usr/local/opt/go/libexec
-export GOPATH=$HOME/projects/golang
+export GOPATH=$HOME/repositories
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 
 # rust
