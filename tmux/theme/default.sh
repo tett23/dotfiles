@@ -29,11 +29,11 @@ if [ -z $TMUX_POWERLINE_LEFT_STATUS_SEGMENTS ]; then
     #"ifstat_sys 30 255" \
     "lan_ip 235 167 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
     #"wan_ip 182 239" \
-    #"vcs_branch 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
-    #""vcs_compare 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
-    #""vcs_staged 235 136" ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN} \
-    #""vcs_modified 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
-    #""vcs_others 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+    "vcs_branch 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+    #"vcs_compare 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+    #"vcs_staged 235 136" ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN} \
+    "vcs_modified 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+    #"vcs_others 235 136 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
   )
 fi
 
@@ -45,12 +45,11 @@ if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
     #"now_playing 234 37" \
     "cpu 240 136" \
     "load 237 167" \
-    "tmux_mem_cpu_load 234 136" \
+    #"tmux_mem_cpu_load 234 136" \
     #"battery 137 127" \
     #"weather 37 255" \
     #"rainbarf 0 0" \
     #"xkb_layout 125 117" \
-    "date_day 235 136" \
     "date 235 136 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
     "time 235 136 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
     "utc_time 235 136 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
