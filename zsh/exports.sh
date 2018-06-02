@@ -30,6 +30,7 @@ export PATH=$DOTFILES/exenv/bin:$PATH
 
 # fzf
 export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
+export FZF_DEFAULT_COMMAND='ag -g ""'
 
 plugins=(git)
 #exec $SHELL
