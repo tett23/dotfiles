@@ -1,4 +1,5 @@
-# source ~/.nvm/nvm.sh
+source ~/.nvm/nvm.sh
+
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 export PATH=$DOTFILES/exenv/bin:$PATH
