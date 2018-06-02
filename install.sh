@@ -15,6 +15,7 @@ mkdir -p $HOME/.vimbackup
 
 git submodule update --init --recursive
 
+ln -nsf $DOTFILES/zshenv $HOME/.zshenv
 ln -nsf $DOTFILES/.zshrc $HOME/.zshrc
 ln -nsf $DOTFILES/tmux/powerlinerc.sh $HOME/.tmux-powerlinerc
 ln -nsf $DOTFILES/.gitconfig $HOME/.gitconfig
