@@ -7,6 +7,3 @@
 [submodule "exenv"]
 	path = exenv
 	url = git://github.com/mururu/exenv.git
-[submodule "prezto"]
-	path = prezto
-	url = git@github.com:sorin-ionescu/prezto.git

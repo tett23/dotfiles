@@ -1,7 +1,6 @@
 export DOTFILES=~/dotfiles
 
 source $DOTFILES/zsh/exports.sh
-source $DOTFILES/zsh/prezto.sh
 source $DOTFILES/zsh/common.sh
 source $DOTFILES/zsh/vcs.sh
 source $DOTFILES/zsh/aliases.sh
