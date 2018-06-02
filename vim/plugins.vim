@@ -48,6 +48,7 @@ Plug 'nathanaelkane/vim-indent-guides'
 
 " git
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
 " language plugins
 "" ruby

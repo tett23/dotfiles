@@ -9,7 +9,7 @@ let g:lightline = {
         \ 'active': {
         \   'left': [
         \     ['mode', 'paste'],
-        \     ['gitgutter', 'filepath'],
+        \     ['gitbranch', 'gitgutter', 'filepath'],
         \     ['character_count', 'line_count'],
         \   ],
         \   'right': [
