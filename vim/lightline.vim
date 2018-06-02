@@ -30,7 +30,6 @@ let g:lightline = {
         \   'mode': 'MyMode',
         \   'charcode': 'MyCharCode',
         \   'gitgutter': 'MyGitGutter',
-        \   'buffer_character_counter': 'MyCharacterCount',
         \   'character_count': 'MyCharacterCount',
         \   'line_count': 'MyLineCount',
         \ },
@@ -68,7 +67,18 @@ function! MyCharacterCounterOnCurrentBufferLine()
   return result
 endfunction
 
+let s:textFileType = ['text', 'markdown']
+function! s:isTextFile()
+  let l:filetype = &filetype
+
+  return index(s:textFileType, l:filetype) >= 0
+endfunction
+
 function! MyCharacterCount()
+  if !s:isTextFile()
+    return ''
+  endif
+
   let buffer_characters = MyCharacterCounterOnCurrentBuffer()
   let line_characters = MyCharacterCounterOnCurrentBufferLine()
   let figures = strlen('' . buffer_characters)
@@ -78,6 +88,10 @@ function! MyCharacterCount()
 endfunction
 
 function! MyLineCount()
+  if !s:isTextFile()
+    return ''
+  endif
+
   let line_count = line('$')
   let current_line = line('.')
   let figures = strlen('' . line_count)
