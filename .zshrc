@@ -7,7 +7,6 @@ source $DOTFILES/zsh/aliases.sh
 source $DOTFILES/zsh/colors.sh
 source $DOTFILES/zsh/prompt.sh
 source $DOTFILES/zsh/fzf.sh
-source $DOTFILES/zsh/brew.sh
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 source ~/.rvm/scripts/rvm
