@@ -16,6 +16,6 @@ eval "$(direnv hook zsh)"
 ## load user .zshrc configuration file
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
 
-if (which zprof > /dev/null) ;then
-  zprof | less
-fi
+# if (which zprof > /dev/null) ;then
+#   zprof | less
+# fi
