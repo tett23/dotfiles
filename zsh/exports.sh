@@ -26,15 +26,9 @@ fi
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
 
-export PATH=$DOTFILES/exenv/bin:$PATH
-
 # fzf
 export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
 export FZF_DEFAULT_COMMAND='ag -g ""'
-
-plugins=(git)
-#exec $SHELL
-echo 'eval "$(exenv init -)"' >> ~/.bash_profile
 
 export LESS='--RAW-CONTROL-CHARS -R --tabs=2'
 export LESSOPEN="| $DOTFILES/zsh/src-hilite-lesspipe.sh %s"

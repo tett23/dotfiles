@@ -1,5 +1,7 @@
 export DOTFILES=~/dotfiles
 
+source ~/.fzf.zsh
+
 source $DOTFILES/zsh/exports.sh
 source $DOTFILES/zsh/common.sh
 source $DOTFILES/zsh/colors.sh
@@ -17,8 +19,6 @@ eval "$(direnv hook zsh)"
 
 ## load user .zshrc configuration file
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
-
-source ~/.fzf.zsh
 
 if (which zprof > /dev/null) ;then
   zprof | less
