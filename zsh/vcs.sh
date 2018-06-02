@@ -3,8 +3,6 @@ autoload -Uz is-at-least
 if is-at-least 4.3.7; then
   # バージョン管理関連の表示用
   autoload -Uz add-zsh-hook
-  autoload -Uz colors
-  colors
   autoload -Uz vcs_info
 
   zstyle ':vcs_info:*' enable git svn hg bzr

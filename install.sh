@@ -34,9 +34,17 @@ if [ ! $? ] ; then
   $DOTFILES/zsh/fzf/install
 fi
 
+# zplug
 
 if [ -z "$ZPLUG_HOME" ]; then
   export ZPLUG_HOME=/usr/local/opt/zplug
-  source $ZPLUG_HOME/init.zsh
 fi
-source $DOTFILES/zsh/zplug.sh
+source $DOTFILES/zplug.sh
+
+if ! zplug check --verbose; then
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo; zplug install
+  fi
+fi
+zplug load

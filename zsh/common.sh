@@ -42,12 +42,6 @@ SAVEHIST=50000
 setopt hist_ignore_dups # ignore duplication command history list
 setopt share_history # share command history data
 
-
-## Completion configuration
-#
-autoload -U compinit
-compinit
-
 ## Alias configuration
 #
 # expand aliases before completing

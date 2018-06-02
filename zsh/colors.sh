@@ -1,57 +1,51 @@
-autoload colors
-colors
-case ${UID} in
-0)
-  PROMPT="%B%{${fg[red]}%}%/#%{${reset_color}%}%b "
-  PROMPT2="%B%{${fg[red]}%}%_#%{${reset_color}%}%b "
-  SPROMPT="%B%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
-  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-    PROMPT="%{${fg[white]}%}${HOST%%.*} ${PROMPT}"
-  ;;
-*)
-  PROMPT="%{${fg[red]}%}%/%%%{${reset_color}%} "
-  PROMPT2="%{${fg[red]}%}%_%%%{${reset_color}%} "
-  SPROMPT="%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%} "
-  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-    PROMPT="%{${fg[white]}%}${HOST%%.*} ${PROMPT}"
-  ;;
-esac
+# Copyright (c) 2014, Christian Ludwig
+#
+# Set 256color terminal mode if available.
 
-## terminal configuration
-unset LSCOLORS
-case "${TERM}" in
-xterm)
-  export TERM=xterm-color
-  ;;
-kterm)
-  export TERM=kterm-color
-  # set BackSpace control character
-  stty erase
-  ;;
-cons25)
-  unset LANG
-  export LSCOLORS=ExFxCxdxBxegedabagacad
-  export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-  zstyle ':completion:*' list-colors \
-    'di=;34;1' 'ln=;35;1' 'so=;32;1' 'ex=31;1' 'bd=46;34' 'cd=43;34'
-  ;;
-esac
 
-# set terminal title including current directory
-case "${TERM}" in
-kterm*|xterm*)
-  precmd() {
-    echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
-  }
-  export LSCOLORS=exfxcxdxbxegedabagacad
-  export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-  zstyle ':completion:*' list-colors \
-    'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'cd=43;34'
-  ;;
-esac
+_zsh_256color_debug()
+{
+	[[ -n "${ZSH_256COLOR_DEBUG}" ]] && echo "zsh-256color: $@" >&2
+}
 
-# zenburn color
-function EXT_COLOR () { echo -ne "\e[38;5;$1m"; }
-function CLOSE_COLOR () { echo -ne '\e[m'; }
-export PS1="\[`EXT_COLOR 187`\]\u@\h\[`CLOSE_COLOR`\]\[`EXT_COLOR 174`\] \w \$ \[`CLOSE_COLOR`\] > "
-export LS_COLORS='di=38;5;108:fi=00:*svn-commit.tmp=31:ln=38;5;116:ex=38;5;186'
+_zsh_terminal_set_256color()
+{
+	if [[ "$TERM" =~ "-256color$" ]] ; then
+		_zsh_256color_debug "256 color terminal already set."
+		return
+	fi
+
+	local TERM256="${TERM}-256color"
+
+	# Use (n-)curses binaries, if installed.
+	if [[ -x "$( which toe )" ]] ; then
+		if toe -a | egrep -q "^$TERM256" ; then
+			_zsh_256color_debug "Found $TERM256 from (n-)curses binaries."
+			export TERM="$TERM256"
+			return
+		fi
+	fi
+
+	# Search through termcap descriptions, if binaries are not installed.
+	for termcaps in $TERMCAP "$HOME/.termcap" "/etc/termcap" "/etc/termcap.small" ; do
+		if [[ -e "$termcaps" ]] && egrep -q "(^$TERM256|\|$TERM256)\|" "$termcaps" ; then
+			_zsh_256color_debug "Found $TERM256 from $termcaps."
+			export TERM="$TERM256"
+			return
+		fi
+	done
+
+	# Search through terminfo descriptions, if binaries are not installed.
+	for terminfos in $TERMINFO "$HOME/.terminfo" "/etc/terminfo" "/lib/terminfo" "/usr/share/terminfo" ; do
+		if [[ -e "$terminfos"/$TERM[1]/"$TERM256" || \
+				-e "$terminfos"/"$TERM256" ]] ; then
+			_zsh_256color_debug "Found $TERM256 from $terminfos."
+			export TERM="$TERM256"
+			return
+		fi
+	done
+}
+
+_zsh_terminal_set_256color
+unset -f _zsh_terminal_set_256color
+unset -f _zsh_256color_debug
