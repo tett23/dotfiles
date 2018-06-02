@@ -9,20 +9,21 @@ let g:lightline = {
         \ 'active': {
         \   'left': [
         \     ['mode', 'paste'],
-        \     ['gitbranch', 'gitgutter', 'filepath'],
+        \     ['gitbranch', 'gitgutter'],
+        \     ['parent_path', 'filename'],
         \     ['character_count', 'line_count'],
         \   ],
         \   'right': [
-        \     ['lineinfo'],
-        \     ['percent'],
         \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
+        \     ['lineinfo', 'percent'],
         \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
         \   ]
         \ },
         \ 'component_function': {
         \   'modified': 'MyModified',
         \   'readonly': 'MyReadonly',
-        \   'filepath': 'MyFilepath',
+        \   'gitbranch': 'fugitive#head',
+        \   'parent_path': 'MyParentPath',
         \   'filename': 'MyFilename',
         \   'fileformat': 'MyFileformat',
         \   'filetype': 'MyFiletype',
@@ -127,8 +128,54 @@ function! MyFilepath()
   \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
-function! MyFilename()
-  return expand('%:t')
+function! MyParentPath() abort
+  let l:path = expand('%:h')
+
+  if l:path ==# ''
+    return ''
+  endif
+
+  let l:path_string = substitute(expand('%:h'), $HOME, '~', '')
+  if match(l:path_string, '^/') ==# 0
+    return l:path_string
+  endif
+
+  let l:path_items = split(l:path_string, '/')
+  if len(l:path_string) < 20
+    return l:path_string
+  endif
+  if len(l:path_items) < 3
+    return l:path_string
+  endif
+
+  let l:short = []
+  for item in l:path_items
+    call add(l:short, item[0])
+  endfor
+
+  return join(l:short, '/')
+endfunction
+
+function! MyFilename() abort
+  let l:filetype = &filetype
+  let l:buftype = &buftype
+  if l:buftype ==# 'terminal'
+    return b:term_title . ' (' . b:terminal_job_pid . ')'
+  endif
+
+  if l:buftype ==# 'nerdtree'
+    return 'NERDTree'
+  endif
+
+  if l:filetype ==# 'unite'
+    return unite#get_status_string()
+  end
+
+  if l:filetype ==# 'denite'
+    return denite#get_status_sources()
+  endif
+
+  return expand('%:t') ==# '' ? '[No Name]' : expand('%:t')
 endfunction
 
 function! MyFileformat()
