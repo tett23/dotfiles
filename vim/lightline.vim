@@ -10,7 +10,7 @@ let g:lightline = {
         \   'left': [
         \     ['mode', 'paste'],
         \     ['gitbranch', 'gitgutter'],
-        \     ['readonly', 'parent_path', 'filename'],
+        \     ['readonly', 'file_path'],
         \     ['character_count', 'line_count'],
         \   ],
         \   'right': [
@@ -23,8 +23,7 @@ let g:lightline = {
         \   'modified': 'MyModified',
         \   'readonly': 'MyReadonly',
         \   'gitbranch': 'fugitive#head',
-        \   'parent_path': 'MyParentPath',
-        \   'filename': 'MyFilename',
+        \   'file_path': 'MyFilePath',
         \   'fileformat': 'MyFileformat',
         \   'filetype': 'MyFiletype',
         \   'fileencoding': 'MyFileencoding',
@@ -121,6 +120,9 @@ function! MyParentPath() abort
   if l:path ==# ''
     return ''
   endif
+  if l:path ==# '.'
+    return ''
+  endif
 
   let l:path_string = substitute(expand('%:h'), $HOME, '~', '')
   if match(l:path_string, '^/') ==# 0
@@ -163,6 +165,16 @@ function! MyFilename() abort
   endif
 
   return expand('%:t') ==# '' ? '[No Name]' : expand('%:t')
+endfunction
+
+function! MyFilePath() abort
+  let l:parent = MyParentPath()
+  let l:filename = MyFilename()
+  if l:parent ==# ''
+    return l:filename
+  endif
+
+  return l:parent . '/' . l:filename
 endfunction
 
 function! MyFileformat()
