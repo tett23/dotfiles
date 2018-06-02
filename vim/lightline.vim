@@ -9,14 +9,13 @@ let g:lightline = {
         \ 'active': {
         \   'left': [
         \     ['mode', 'paste'],
-        \     ['gitbranch', 'gitgutter'],
+        \     ['gitbranch'],
         \     ['readonly', 'file_path'],
         \     ['character_count', 'line_count'],
         \   ],
         \   'right': [
         \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
-        \     ['lineinfo', 'percent'],
-        \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
+        \     ['gitgutter'],
         \   ]
         \ },
         \ 'component_function': {
