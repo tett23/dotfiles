@@ -18,6 +18,7 @@ Plug 'w0rp/ale'
 
 " powerline
 Plug 'itchyny/lightline.vim'
+Plug 'maximbaz/lightline-ale'
 
 " general utilities
 Plug 'thinca/vim-quickrun'

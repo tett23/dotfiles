@@ -13,8 +13,9 @@ let g:lightline = {
         \     ['character_count', 'line_count'],
         \   ],
         \   'right': [
-        \     ['lineinfo', 'ale'],
+        \     ['lineinfo'],
         \     ['percent'],
+        \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
         \     ['charcode', 'fileformat', 'fileencoding', 'filetype'],
         \   ]
         \ },
@@ -32,9 +33,20 @@ let g:lightline = {
         \   'buffer_character_counter': 'MyCharacterCount',
         \   'character_count': 'MyCharacterCount',
         \   'line_count': 'MyLineCount',
-        \   'ale': 'ALEStatus',
         \ },
         \ 'component': { },
+        \ 'component_expand': {
+        \   'linter_checking': 'lightline#ale#checking',
+        \   'linter_warnings': 'lightline#ale#warnings',
+        \   'linter_errors': 'lightline#ale#errors',
+        \   'linter_ok': 'lightline#ale#ok',
+        \ },
+        \ 'component_type': {
+        \   'linter_checking': 'left',
+        \   'linter_warnings': 'warning',
+        \   'linter_errors': 'error',
+        \   'linter_ok': 'left',
+        \ },
         \ 'separator': {'left': '', 'right': ''},
         \ 'subseparator': {'left': '|', 'right': '|'}
         \ }
