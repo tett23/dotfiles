@@ -37,3 +37,5 @@ echo 'eval "$(exenv init -)"' >> ~/.bash_profile
 
 export LESS='--RAW-CONTROL-CHARS -R --tabs=2'
 export LESSOPEN="| $DOTFILES/zsh/src-hilite-lesspipe.sh %s"
+
+export ZPLUG_HOME=/usr/local/opt/zplug

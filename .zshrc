@@ -2,6 +2,7 @@ export DOTFILES=~/dotfiles
 
 source $DOTFILES/zsh/exports.sh
 source $DOTFILES/zsh/common.sh
+source $DOTFILES/zsh/zplug.sh
 source $DOTFILES/zsh/vcs.sh
 source $DOTFILES/zsh/aliases.sh
 source $DOTFILES/zsh/colors.sh

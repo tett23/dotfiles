@@ -34,3 +34,9 @@ if [ ! $? ] ; then
   $DOTFILES/zsh/fzf/install
 fi
 
+
+if [ -z "$ZPLUG_HOME" ]; then
+  export ZPLUG_HOME=/usr/local/opt/zplug
+  source $ZPLUG_HOME/init.zsh
+fi
+source $DOTFILES/zsh/zplug.sh
