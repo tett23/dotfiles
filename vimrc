@@ -1,3 +1,7 @@
+if $DOTFILES ==# ''
+  let $DOTFILES = $HOME.'/dotfiles'
+end
+
 if has('nvim')
   let $VIMRUNTIME = expand($XDG_CONFIG_HOME . '/nvim')
 else
