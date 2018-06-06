@@ -22,7 +22,7 @@ bindkey "^g" repo
 
 __fbr() {
   local branches branch
-  local cmd="git branch --all --sort=committerdate --color | grep -v HEAD | sed 's/.* //'"
+  local cmd="git branch --all --sort=committerdate --color | grep -v HEAD | sed 's/.* //' | sed 's/remotes\///'"
 
   setopt localoptions pipefail 2> /dev/null
   eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" | while read item; do
