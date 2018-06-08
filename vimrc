@@ -20,6 +20,7 @@ source $DOTFILES/vim/fzf.vim
 source $DOTFILES/vim/nerd_tree.vim
 source $DOTFILES/vim/lightline.vim
 source $DOTFILES/vim/goyo.vim
+source $DOTFILES/vim/caw.vim
 source $DOTFILES/vim/keymap.vim
 
 " language
