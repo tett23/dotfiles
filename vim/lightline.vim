@@ -10,11 +10,19 @@ let g:lightline = {
         \   'left': [
         \     ['mode', 'paste'],
         \     ['gitbranch'],
-        \     ['readonly', 'file_path'],
+        \     ['readonly', 'file_path', 'modified'],
         \     ['character_count', 'line_count'],
         \   ],
         \   'right': [
         \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
+        \     ['gitgutter'],
+        \   ]
+        \ },
+        \ 'inactive': {
+        \   'left': [
+        \     ['full_path', 'modified']
+        \   ],
+        \   'right': [
         \     ['gitgutter'],
         \   ]
         \ },
@@ -23,6 +31,7 @@ let g:lightline = {
         \   'readonly': 'MyReadonly',
         \   'gitbranch': 'fugitive#head',
         \   'file_path': 'MyFilePath',
+        \   'full_path': 'MyFullPath',
         \   'fileformat': 'MyFileformat',
         \   'filetype': 'MyFiletype',
         \   'fileencoding': 'MyFileencoding',
@@ -113,6 +122,10 @@ function! MyReadonly()
   return &ro ? 'RO' : ''
 endfunction
 
+function! MyModified()
+  return &modified ? '+' : ''
+endfunction
+
 function! MyParentPath() abort
   let l:path = expand('%:h')
 
@@ -168,6 +181,16 @@ endfunction
 
 function! MyFilePath() abort
   let l:parent = MyParentPath()
+  let l:filename = MyFilename()
+  if l:parent ==# ''
+    return l:filename
+  endif
+
+  return l:parent . '/' . l:filename
+endfunction
+
+function! MyFullPath() abort
+  let l:parent = expand('%:h')
   let l:filename = MyFilename()
   if l:parent ==# ''
     return l:filename
