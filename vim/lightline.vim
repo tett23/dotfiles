@@ -15,6 +15,7 @@ let g:lightline = {
         \   ],
         \   'right': [
         \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
+        \     ['lineinfo'],
         \     ['gitgutter'],
         \   ]
         \ },
@@ -23,6 +24,7 @@ let g:lightline = {
         \     ['full_path', 'modified']
         \   ],
         \   'right': [
+        \     ['lineinfo'],
         \     ['gitgutter'],
         \   ]
         \ },
