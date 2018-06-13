@@ -11,7 +11,9 @@ set ambiwidth=double
 set display+=lastline
 
 " IM制御
-set noimdisableactivate
+if has('noimdisableactivate')
+  set noimdisableactivate
+end
 
 " 最終行の表示
 set display+=lastline

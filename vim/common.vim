@@ -53,6 +53,14 @@ set novisualbell
 
 set clipboard=unnamed " クリップボード共有
 
+" マウス
+if has('mouse')
+  set mouse=a " マウス有効
+endif
+if has('ttymouse')
+  set ttymouse=xterm2 " スクロール有効
+endif
+
 filetype plugin on
 filetype indent on
 set shellslash
