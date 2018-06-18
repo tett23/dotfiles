@@ -26,7 +26,10 @@ setopt nolistbeep
 #
 # vim like keybind
 #
-bindkey -v
+if [[ -v $VIMRUNTIME ]]; then
+else
+  bindkey -v
+fi
 
 # historical backward/forward search with linehead string binded to ^P/^N
 #
