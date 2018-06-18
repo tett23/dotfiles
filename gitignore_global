@@ -50,8 +50,10 @@ pickle-email-*.html
 Gemfile.local
 
 node_modules
+yarn-error.log
 
 .env
 .capistrano
 
-yarn-error.log
+.Rhistory
+.python-version
