@@ -13,11 +13,14 @@ let g:ale_linters = {
 \   'txt': ['textlint'],
 \   'json': ['eslint'],
 \   'javascript': ['eslint'],
+\   'typescript': ['eslint'],
 \   'ruby': ['rubocop'],
+\   'go': ['gometalinter'],
 \}
 let g:ale_fixers = {
 \   'json': ['eslint'],
 \   'javascript': ['eslint'],
+\   'typescript': ['eslint'],
 \   'ruby': ['rubocop'],
 \}
 
