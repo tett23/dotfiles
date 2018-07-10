@@ -10,6 +10,7 @@ source $DOTFILES/zsh/fzf.sh
 source $HOME/.fzf.zsh
 source $DOTFILES/zsh/anyenv.sh
 source $DOTFILES/zsh/completions.sh
+source $DOTFILES/zsh/docker.sh
 
 eval "$(direnv hook zsh)"
 
