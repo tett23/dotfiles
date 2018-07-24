@@ -51,6 +51,7 @@ Gemfile.local
 
 node_modules
 yarn-error.log
+.eslintcache
 
 .env
 .capistrano
