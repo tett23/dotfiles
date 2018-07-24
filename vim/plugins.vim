@@ -75,4 +75,7 @@ Plug 'othree/yajs.vim'
 "" html
 Plug 'mattn/emmet-vim'
 
+" skk
+Plug 'tyru/eskk.vim'
+
 call plug#end()

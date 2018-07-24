@@ -29,6 +29,8 @@ source $DOTFILES/vim/rspec.vim
 source $DOTFILES/vim/go.vim
 source $DOTFILES/vim/coffee.vim
 
+source $DOTFILES/vim/eskk.vim
+
 if has('nvim')
   " let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
