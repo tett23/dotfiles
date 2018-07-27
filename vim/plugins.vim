@@ -10,6 +10,12 @@ else
 endif
 Plug 'Shougo/neosnippet-snippets'
 
+" LSP
+Plug 'autozimu/LanguageClient-neovim', {
+  \ 'branch': 'next',
+  \ 'do': 'bash install.sh',
+  \ }
+
 " colors
 Plug 'tomasr/molokai'
 
@@ -71,6 +77,9 @@ Plug 'zchee/deoplete-go', { 'do': 'make'}
 "" javascript
 Plug 'jiangmiao/simple-javascript-indenter'
 Plug 'othree/yajs.vim'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue'] }
 
 "" html
 Plug 'mattn/emmet-vim'

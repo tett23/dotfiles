@@ -24,6 +24,7 @@ source $DOTFILES/vim/caw.vim
 source $DOTFILES/vim/keymap.vim
 
 " language
+source $DOTFILES/vim/lsp.vim
 source $DOTFILES/vim/ruby.vim
 source $DOTFILES/vim/rspec.vim
 source $DOTFILES/vim/go.vim
