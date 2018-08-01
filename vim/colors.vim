@@ -24,3 +24,6 @@ set background=dark
 
 hi IndentGuidesOdd ctermbg=grey
 hi IndentGuidesEven ctermbg=darkgrey
+
+" highlight parenthes
+let g:rainbow_active = 1

@@ -18,6 +18,7 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 " colors
 Plug 'tomasr/molokai'
+Plug 'luochen1990/rainbow'
 
 " linter
 Plug 'w0rp/ale'
