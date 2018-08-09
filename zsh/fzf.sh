@@ -58,4 +58,17 @@ zle -N fkill
 alias pskill='(){ fkill }'
 bindkey "^K" fkill
 
+docker_stop() {
+  local cid
+  cid=$(docker ps | sed 1d | fzf -m | awk '{print $1}')
+
+  if [ "x$cid" != "x" ]
+  then
+    echo "stop container $cid"
+    docker stop $cid
+  fi
+}
+zle -N docker_stop
+bindkey "^f" docker_stop
+
 bindkey "^p" fzf-file-widget
