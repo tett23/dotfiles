@@ -11,14 +11,16 @@ let g:ale_fix_on_save = 1
 let g:ale_echo_msg_format = '[%linter%] [%severity%] %s'
 let g:ale_linters = {
 \   'txt': ['textlint'],
-\   'json': ['eslint'],
+\   'markdown': ['prettier'],
+\   'json': ['prettier'],
 \   'javascript': ['eslint'],
 \   'typescript': ['tslint', 'tsserver'],
 \   'ruby': ['rubocop'],
 \   'go': ['gometalinter'],
 \}
 let g:ale_fixers = {
-\   'json': ['eslint'],
+\   'json': ['prettier'],
+\   'markdown': ['prettier'],
 \   'javascript': ['eslint'],
 \   'typescript': ['tslint'],
 \   'ruby': ['rubocop'],
