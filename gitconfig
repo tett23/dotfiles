@@ -32,6 +32,7 @@
   lsf = ls-files
   today = log --since=midnight --author='$(git config user.name)' --oneline
   adp = add -p
+  cp = cherry-pick
 
 [log]
   date = local
