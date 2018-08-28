@@ -13,3 +13,4 @@ nnoremap <S-w> :BD<CR>
 " タブ
 noremap <S-Tab> :tabn<CR>
 noremap <S-t> :tabe<CR>
+noremap <C-W>o :tabnew %<CR>
