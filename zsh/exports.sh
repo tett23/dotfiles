@@ -30,5 +30,8 @@ export XDG_CACHE_HOME=$HOME/.cache
 export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
 export FZF_DEFAULT_COMMAND='ag -g ""'
 
+# GCP
+export PATH=$PATH:$HOME/google-cloud-sdk/bin/
+
 export LESS='--RAW-CONTROL-CHARS -R --tabs=2'
 export LESSOPEN="| $DOTFILES/zsh/src-hilite-lesspipe.sh %s"
