@@ -28,6 +28,9 @@ brew "wget"
 brew "yarn", args: ["without-node"]
 brew "zsh"
 brew "gpg"
+brew "go"
+brew "dep"
+
 brew "sanemat/font/ricty", args: ["with-powerline"]
 
 cask "java"
