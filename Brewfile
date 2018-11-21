@@ -13,6 +13,7 @@ brew "colordiff"
 brew "coreutils"
 brew "direnv"
 brew "gawk"
+brew "gnu-sed"
 brew "ghq"
 brew "git"
 brew "pkg-config"
@@ -36,4 +37,4 @@ brew "sanemat/font/ricty", args: ["with-powerline"]
 cask "java"
 cask "aquaskk"
 cask "homebrew/cask-versions/iterm2-beta"
-
+cask "docker"

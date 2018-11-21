@@ -7,3 +7,6 @@
 [submodule "exenv"]
 	path = exenv
 	url = git://github.com/mururu/exenv.git
+[submodule "fzf"]
+	path = fzf
+	url = git@github.com:junegunn/fzf.git
