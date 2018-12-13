@@ -26,6 +26,7 @@
   gr = grep -n -c --color -p
   br = branch
   bra = branch -a
+  brm = branch -m
   cob = checkout -b
   lop = log -p --ignore-space-change
   delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
