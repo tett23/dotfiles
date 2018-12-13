@@ -34,6 +34,8 @@ ln -nsf $DOTFILES/karabiner $XDG_CONFIG_HOME/karabiner
 mkdir -p "$HOME/Library/Application Support/AquaSKK"
 ln -nsf $DOTFILES/skk/keymap.conf "$HOME/Library/Application Support/AquaSKK/keymap.conf"
 
+ln -nsf $DOTFILES/eskk $XDG_CONFIG_HOME/eskk
+
 command -v fzf > /dev/null
 if [ ! $? ] ; then
   $DOTFILES/zsh/fzf/install
