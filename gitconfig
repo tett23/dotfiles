@@ -20,6 +20,7 @@
   ld = log --stat -p
   cl = commit -av
   lgraph = log --oneline --graph --decorate --all
+  lg = log --oneline --graph --decorate --all
   oneline = log --pretty=oneline
   logg = log --stat --pretty=format:'%Cblue%h %Cgreen%ar %Cred%an %Creset%s %Cred%d'
   lgraph2 = log --graph --date-order --pretty=format:'%Cblue%h %Cgreen%ci %Cred%an %Cblue%m %Creset%s %Cred%d'
