@@ -4,6 +4,8 @@ fi
 alias where="command -v"
 alias j="jobs -l"
 alias g="git"
+alias gi="git"
+alias gti="git"
 alias la="ls -a"
 alias lf="ls -F"
 alias ll="ls -l"

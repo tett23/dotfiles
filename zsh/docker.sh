@@ -1,11 +1,15 @@
 alias fig='docker-compose'
 
 function figrm() {
-  docker-compose run --rm app "$@"
+  docker-compose run --rm $1 "${@:2}"
 }
 
 function figbe() {
   figrm bundle exec "$@"
+}
+
+function figsh() {
+  docker-compose run --rm $1 bash
 }
 
 # 不要なimageであまりにディスクを圧迫した場合などに便利です。

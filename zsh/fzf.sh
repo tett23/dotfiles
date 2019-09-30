@@ -42,10 +42,9 @@ fbr() {
   return $ret
 }
 zle -N fbr
-alias fzf-branch='(){ fbr }'
 bindkey "^b" fbr
 
-fkill() {
+__fkill() {
   local pid
   pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
 
@@ -54,11 +53,18 @@ fkill() {
     echo $pid | xargs kill -${1:-9}
   fi
 }
+
+fkill() {
+  LBUFFER="${LBUFFER}$(__fkill)"
+  local ret=$?
+  zle redisplay
+  typeset -f zle-line-init >/dev/null && zle zle-line-init
+  return $ret
+}
 zle -N fkill
-alias pskill='(){ fkill }'
 bindkey "^K" fkill
 
-docker_stop() {
+__docker_stop() {
   local cid
   cid=$(docker ps | sed 1d | fzf -m | awk '{print $1}')
 
@@ -68,7 +74,34 @@ docker_stop() {
     docker stop $cid
   fi
 }
+
+docker_stop() {
+  LBUFFER="${LBUFFER}$(__docker_stop)"
+  local ret=$?
+  zle redisplay
+  typeset -f zle-line-init >/dev/null && zle zle-line-init
+  return $ret
+}
 zle -N docker_stop
 bindkey "^f" docker_stop
 
 bindkey "^p" fzf-file-widget
+
+fzf_command_finder() {
+  local commands
+  commands=('__repo' '__fbr' '__fkill' '__docker_stop')
+  local joined
+  joined=$(printf "\n%s" "${commands[@]}")
+  joined=${joined:1}
+
+  eval echo $joined | fzf -m | while read item; do
+    echo -n "${(q)item} "
+  done
+
+  local ret=$?
+  echo
+  return $ret
+}
+
+zle -N fzf_command_finder
+bindkey "^n" fzf_command_finder
