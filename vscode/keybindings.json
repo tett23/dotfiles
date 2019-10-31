@@ -91,5 +91,10 @@
     "key": "ctrl+shift+w",
     "command": "workbench.action.closeOtherEditors",
     "when": "editorTextFocus"
+  },
+  {
+    "key": "shift+space",
+    "command": "editor.action.showHover",
+    "when": "editorTextFocus"
   }
 ]

@@ -26,11 +26,15 @@
   "vim.useSystemClipboard": true,
   "diffEditor.renderSideBySide": false,
   "diffEditor.ignoreTrimWhitespace": true,
-  "go.gopath": "/Users/tett23/repositories",
-  "go.vetOnSave": "workspace",
-  "go.lintOnSave": "workspace",
-  "go.buildOnSave": "workspace",
+  "search.useIgnoreFiles": false,
+  "window.zoomLevel": 0,
+  //
+  // Go
+  //
   "go.useLanguageServer": true,
+  "go.alternateTools": {
+    "go-langserver": "gopls"
+  },
   "go.languageServerExperimentalFeatures": {
     "format": true,
     "autoComplete": true,
@@ -42,16 +46,32 @@
     "goToImplementation": true,
     "documentSymbols": true,
     "workspaceSymbols": true,
-    "findReferences": true
+    "findReferences": true,
+    "diagnostics": true
   },
-  "search.useIgnoreFiles": false,
+  "go.testFlags": [
+    "-v"
+  ],
+  "go.testEnvVars": {
+    "GO_ENV": "test"
+  },
   "[go]": {
-    "editor.formatOnSave": true
+    "editor.snippetSuggestions": "none",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    },
   },
+  "gopls": {
+    "usePlaceholders": false,
+    "enhancedHover": false
+  },
+  //
+  // Rust
+  //
   "[rust]": {
     "editor.formatOnSave": true
   },
-  "window.zoomLevel": 0,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
@@ -66,5 +86,6 @@
   "prettier.singleQuote": true,
   "prettier.arrowParens": "always",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "emmet.showExpandedAbbreviation": "never"
+  "emmet.showExpandedAbbreviation": "never",
+  "jest.autoEnable": false
 }
