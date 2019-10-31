@@ -28,6 +28,7 @@ ln -nsf $DOTFILES/rubocop.yml $HOME/.rubocop.yml
 
 ln -nsf $DOTFILES/vscode/settings.json "$HOME/Library/Application Support/Code/User/settings.json"
 ln -nsf $DOTFILES/vscode/keybindings.json "$HOME/Library/Application Support/Code/User/keybindings.json"
+ln -nsf $DOTFILES/vscode/snippets "$HOME/Library/Application Support/Code/User/snippets"
 
 mkdir -p $XDG_CONFIG_HOME/brewfile
 ln -nsf $DOTFILES/Brewfile $XDG_CONFIG_HOME/brewfile/Brewfile
