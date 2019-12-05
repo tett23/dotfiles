@@ -10,6 +10,7 @@ export CABAL_BIN=$HOME/.cabal/bin
 export PATH=/sbin:/usr/sbin:/usr/local/bin:$HOME/local/bin:$PATH:$CABAL_BIN
 export PATH=$PATH:/home/tett23/local/bin:/home/tett23/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
 export PATH=$PATH:~/Library/Python/3.6/bin
+export PATH=$PATH//usr/local/sbin
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/repositories
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
