@@ -6,6 +6,8 @@
   "workbench.colorTheme": "Monokai Pro",
   "workbench.iconTheme": "Monokai Pro Icons",
   "files.autoSave": "off",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
   "eslint.autoFixOnSave": true,
   "eslint.enable": true,
   "eslint.alwaysShowStatus": true,
