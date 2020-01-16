@@ -87,9 +87,26 @@ bindkey "^f" docker_stop
 
 bindkey "^p" fzf-file-widget
 
+__select_git_status_items() {
+  local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS " $(__fzfcmd) -m)
+  for item in $items; do
+    echo -n $(echo $item | awk '{print $2} ')
+  done
+  local ret=$?
+  echo
+  return $ret
+}
+
+select_git_status_items() {
+  LBUFFER="${LBUFFER}$(__select_git_status_items)"
+  local ret=$?
+  zle redisplay
+  typeset -f zle-line-init >/dev/null && zle zle-line-init
+  return $ret
+}
+
 fzf_command_finder() {
-  local commands
-  commands=('repo' 'fbr' 'fkill' 'docker_stop')
+  local commands=('select_git_status_items' 'repo' 'fbr' 'fkill' 'docker_stop')
   local joined
   joined=$(printf "\n%s" "${commands[@]}")
   joined=${joined:1}
@@ -100,10 +117,6 @@ fzf_command_finder() {
   then
     $cmd
   fi
-
-  # local ret=$?
-  # echo
-  # return $ret
 }
 
 zle -N fzf_command_finder
