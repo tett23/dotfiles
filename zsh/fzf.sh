@@ -88,20 +88,12 @@ bindkey "^f" docker_stop
 bindkey "^p" fzf-file-widget
 
 __select_git_status_items() {
-  local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS " $(__fzfcmd) -m)
+  local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m)
   for item in $items; do
     echo -n $(echo $item | awk '{print $2} ')
   done
   local ret=$?
   echo
-  return $ret
-}
-
-select_git_status_items() {
-  LBUFFER="${LBUFFER}$(__select_git_status_items)"
-  local ret=$?
-  zle redisplay
-  typeset -f zle-line-init >/dev/null && zle zle-line-init
   return $ret
 }
 
@@ -112,11 +104,14 @@ fzf_command_finder() {
   joined=${joined:1}
 
   local cmd
-  cmd=$(echo $joined | fzf +m)
+  cmd=$(echo $joined | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) +m)
   if [ "x$cmd" != "x" ]
   then
-    $cmd
+    LBUFFER="${LBUFFER}$(__$cmd)"
   fi
+
+  zle redisplay
+  typeset -f zle-line-init >/dev/null && zle zle-line-init
 }
 
 zle -N fzf_command_finder
