@@ -89,18 +89,21 @@ bindkey "^p" fzf-file-widget
 
 fzf_command_finder() {
   local commands
-  commands=('__repo' '__fbr' '__fkill' '__docker_stop')
+  commands=('repo' 'fbr' 'fkill' 'docker_stop')
   local joined
   joined=$(printf "\n%s" "${commands[@]}")
   joined=${joined:1}
 
-  eval echo $joined | fzf -m | while read item; do
-    echo -n "${(q)item} "
-  done
+  local cmd
+  cmd=$(echo $joined | fzf +m)
+  if [ "x$cmd" != "x" ]
+  then
+    $cmd
+  fi
 
-  local ret=$?
-  echo
-  return $ret
+  # local ret=$?
+  # echo
+  # return $ret
 }
 
 zle -N fzf_command_finder
