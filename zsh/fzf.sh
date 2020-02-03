@@ -66,6 +66,11 @@ bindkey "^K" fkill
 
 bindkey "^p" fzf-file-widget
 
+__find_pid() {
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+  echo $pid
+}
+
 __select_git_status_items() {
   local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" --preview "git diff --color {2}")
   for item in $items; do
@@ -146,6 +151,7 @@ fzf_command_finder() {
     'repo'
     'fbr'
     'fkill'
+    'find_pid'
   )
   local joined
   joined=$(printf "\n%s" "${commands[@]}")
