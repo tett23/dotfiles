@@ -36,6 +36,21 @@
     "when": "editorTextFocus"
   },
   {
+    "key": "ctrl+n",
+    "command": "editor.action.triggerSuggest",
+    "when": "textInputFocus && !suggestWidgetVisible"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "selectNextSuggestion",
+    "when": "suggestWidgetVisible"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "selectPrevSuggestion",
+    "when": "suggestWidgetVisible"
+  },
+  {
     "key": "alt+cmd+up",
     "command": "-editor.action.insertCursorAbove",
     "when": "editorTextFocus"
