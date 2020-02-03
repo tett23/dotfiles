@@ -64,31 +64,10 @@ fkill() {
 zle -N fkill
 bindkey "^K" fkill
 
-__docker_stop() {
-  local cid
-  cid=$(docker ps | sed 1d | fzf -m | awk '{print $1}')
-
-  if [ "x$cid" != "x" ]
-  then
-    echo "stop container $cid"
-    docker stop $cid
-  fi
-}
-
-docker_stop() {
-  LBUFFER="${LBUFFER}$(__docker_stop)"
-  local ret=$?
-  zle redisplay
-  typeset -f zle-line-init >/dev/null && zle zle-line-init
-  return $ret
-}
-zle -N docker_stop
-bindkey "^f" docker_stop
-
 bindkey "^p" fzf-file-widget
 
 __select_git_status_items() {
-  local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m)
+  local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@")
   for item in $items; do
     echo -n $(echo $item | awk '{print $2} ')
   done
@@ -97,8 +76,46 @@ __select_git_status_items() {
   return $ret
 }
 
+__docker_container_id() {
+  local items=$(docker ps | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@")
+  for item in $items; do
+    echo -n $(echo $item | awk '{print $1} ')
+  done
+  local ret=$?
+  echo
+  return $ret
+}
+
+__docker_stop_container() {
+  local cid=$(__docker_container_id)
+
+  if [ "x$cid" != "x" ]
+  then
+    docker stop $cid
+  fi
+}
+
+__docker_image_id() {
+  local items=$(docker images | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@")
+  for item in $items; do
+    echo -n $(echo $item | awk '{print $3} ')
+  done
+  local ret=$?
+  echo
+  return $ret
+}
+
+__docker_remove_image() {
+  local image_id=$(__docker_image_id)
+
+  if [ "x$image_id" != "x" ]
+  then
+    docker rmi --force $image_id
+  fi
+}
+
 fzf_command_finder() {
-  local commands=('select_git_status_items' 'repo' 'fbr' 'fkill' 'docker_stop')
+  local commands=('select_git_status_items' 'docker_container_id' 'docker_image_id' 'docker_stop_container' 'docker_remove_image' 'repo' 'fbr' 'fkill')
   local joined
   joined=$(printf "\n%s" "${commands[@]}")
   joined=${joined:1}
