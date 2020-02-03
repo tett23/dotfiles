@@ -67,9 +67,29 @@ bindkey "^K" fkill
 bindkey "^p" fzf-file-widget
 
 __select_git_status_items() {
-  local items=$(git status -s | awk '{print $2}' | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" --preview "git diff --color {}")
+  local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" --preview "git diff --color {2}")
   for item in $items; do
     echo -n "$item "
+  done
+  local ret=$?
+  echo
+  return $ret
+}
+
+__git_log_oneline_commit_hash() {
+  local items=$(git log --oneline --decorate | nl | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd)  -m "$@" --preview 'git log --numstat --color {2}')
+  for item in $items; do
+    echo -n $(echo $item | awk '{print $2} ')
+  done
+  local ret=$?
+  echo
+  return $ret
+}
+
+__git_log_oneline_commit_number() {
+  local items=$(git log --oneline --decorate | nl | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd)  -m "$@" --preview 'git log --numstat --color {2}')
+  for item in $items; do
+    echo -n $(echo $item | awk '{print $1} ')
   done
   local ret=$?
   echo
@@ -115,7 +135,18 @@ __docker_remove_image() {
 }
 
 fzf_command_finder() {
-  local commands=('select_git_status_items' 'docker_container_id' 'docker_image_id' 'docker_stop_container' 'docker_remove_image' 'repo' 'fbr' 'fkill')
+  local commands=(
+    'select_git_status_items'
+    'git_log_oneline_commit_hash'
+    'git_log_oneline_commit_number'
+    'docker_container_id'
+    'docker_image_id'
+    'docker_stop_container'
+    'docker_remove_image'
+    'repo'
+    'fbr'
+    'fkill'
+  )
   local joined
   joined=$(printf "\n%s" "${commands[@]}")
   joined=${joined:1}
