@@ -67,9 +67,9 @@ bindkey "^K" fkill
 bindkey "^p" fzf-file-widget
 
 __select_git_status_items() {
-  local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@")
+  local items=$(git status -s | awk '{print $2}' | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" --preview "git diff --color {}")
   for item in $items; do
-    echo -n $(echo $item | awk '{print $2} ')
+    echo -n "$item "
   done
   local ret=$?
   echo
