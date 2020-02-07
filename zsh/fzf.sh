@@ -74,7 +74,7 @@ __find_pid() {
 __select_git_status_items() {
   local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" --preview "git diff --color {2}")
   for item in $items; do
-    echo -n "$item "
+    echo -n $(echo $item | awk '{print $2} ')
   done
   local ret=$?
   echo
