@@ -81,6 +81,14 @@ __select_git_status_items() {
   return $ret
 }
 
+__git_rebase_interactive() {
+  local number=$(git log --oneline --decorate | nl | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) "$@" --preview 'git log --numstat --color {2}')
+  if [ "x$number" != "x" ]
+  then
+    echo -n "git rebase -i HEAD~$(echo $number | awk '{print $1} ')"
+  fi
+}
+
 __git_log_oneline_commit_hash() {
   local items=$(git log --oneline --decorate | nl | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd)  -m "$@" --preview 'git log --numstat --color {2}')
   for item in $items; do
@@ -142,6 +150,7 @@ __docker_remove_image() {
 fzf_command_finder() {
   local commands=(
     'select_git_status_items'
+    "git_rebase_interactive"
     'git_log_oneline_commit_hash'
     'git_log_oneline_commit_number'
     'docker_container_id'
