@@ -89,6 +89,14 @@ __git_rebase_interactive() {
   fi
 }
 
+__gh_pr_branch() {
+  local branch=$(hub pr list --format "%i %H %pS %t%n" --limit 50 | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) "$@")
+  if [ "x$branch" != "x" ]
+  then
+    echo -n "$(echo $branch | awk '{print $2} ')"
+  fi
+}
+
 __git_log_oneline_commit_hash() {
   local items=$(git log --oneline --decorate | nl | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd)  -m "$@" --preview 'git log --numstat --color {2}')
   for item in $items; do
@@ -150,7 +158,8 @@ __docker_remove_image() {
 fzf_command_finder() {
   local commands=(
     'select_git_status_items'
-    "git_rebase_interactive"
+    'git_rebase_interactive'
+    'gh_pr_branch'
     'git_log_oneline_commit_hash'
     'git_log_oneline_commit_number'
     'docker_container_id'
