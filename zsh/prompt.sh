@@ -1,8 +1,8 @@
 PROMPT="[%n@%m %~]$ "
 
 __short_pwd() {
-  if [[ -x `which ruby` ]]; then
-    local cmd="ruby $DOTFILES/zsh/scripts/short_pwd.rb"
+  if [[ -x `which shorten-path` ]]; then
+    local cmd="shorten-path $(pwd)"
   else
     local cmd="pwd"
   fi
