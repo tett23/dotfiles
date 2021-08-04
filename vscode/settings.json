@@ -2,21 +2,45 @@
   "editor.wordWrap": "on",
   "editor.minimap.enabled": false,
   "editor.tabSize": 2,
+  "editor.renderLineHighlight": "all",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoIndent": "advanced",
+  "editor.renderWhitespace": "all",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "workbench.colorTheme": "Monokai Pro",
-  "workbench.iconTheme": "Monokai Pro Icons",
+  "editor.formatOnType": false,
+
+  "diffEditor.renderSideBySide": false,
+  "diffEditor.ignoreTrimWhitespace": true,
+
+  "workbench.colorTheme": "ktrz-monokai",
+  "workbench.editor.showTabs": true,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.editor.tabSizing": "shrink",
+
   "files.autoSave": "off",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "eslint.enable": true,
-  "eslint.alwaysShowStatus": true,
-  "eslint.run": "onSave",
-  "explorer.autoReveal": false,
+
+  "prettier.trailingComma": "all",
+  "prettier.singleQuote": true,
+  "prettier.arrowParens": "always",
+
   "vim.useSystemClipboard": true,
-  "diffEditor.renderSideBySide": false,
-  "diffEditor.ignoreTrimWhitespace": true,
+  "vim.surround": true,
+
+  "explorer.autoReveal": false,
+
   "search.useIgnoreFiles": false,
-  "window.zoomLevel": 0,
+
+  "[go]": {
+    "editor.snippetSuggestions": "none",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
   "go.useLanguageServer": true,
   "go.alternateTools": {
     "go-langserver": "gopls"
@@ -35,41 +59,72 @@
     "findReferences": true,
     "diagnostics": true
   },
-  "go.testFlags": [
-    "-v"
-  ],
+  "go.testFlags": ["-v"],
   "go.testEnvVars": {
     "GO_ENV": "test"
   },
-  "[go]": {
-    "editor.snippetSuggestions": "none",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    },
-  },
+
   "[rust]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "matklad.rust-analyzer"
   },
+  "rust-analyzer.cargo.allFeatures": true,
+  "rust-analyzer.cargo.autoreload": false,
+  "rust-analyzer.updates.askBeforeDownload": false,
+  "rust-analyzer.updates.channel": "nightly",
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+  "rust-analyzer.procMacro.enable": false,
+
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.formatOnType": false,
+    "editor.formatOnType": false
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.formatOnType": false,
+    "editor.formatOnType": false
   },
-  "prettier.trailingComma": "all",
-  "prettier.singleQuote": true,
-  "prettier.arrowParens": "always",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.updateImportsOnFileMove.enabled": "always",
+  "eslint.alwaysShowStatus": true,
+  "eslint.run": "onSave",
+  "eslint.packageManager": "yarn",
   "emmet.showExpandedAbbreviation": "never",
-  "jest.autoEnable": false,
-  "editor.renderWhitespace": "all",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+
+  "[ruby]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false
   },
-  "workbench.editor.showTabs": true
+  "solargraph.formatting": true,
+
+  // swift
+  "sourcekit-lsp.serverPath": "/Users/tett23/repositories/src/github.com/apple/sourcekit-lsp/.build/release/sourcekit-lsp",
+  "sourcekit-lsp.toolchainPath": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift",
+
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // drawio
+  "hediet.vscode-drawio.local-storage": "eyIuZHJhd2lvLWNvbmZpZyI6IntcImxhbmd1YWdlXCI6XCJcIixcImN1c3RvbUZvbnRzXCI6W10sXCJsaWJyYXJpZXNcIjpcImdlbmVyYWxcIixcImN1c3RvbUxpYnJhcmllc1wiOltcIkwuc2NyYXRjaHBhZFwiXSxcInBsdWdpbnNcIjpbXSxcInJlY2VudENvbG9yc1wiOltdLFwiZm9ybWF0V2lkdGhcIjpcIjI0MFwiLFwiY3JlYXRlVGFyZ2V0XCI6ZmFsc2UsXCJwYWdlRm9ybWF0XCI6e1wieFwiOjAsXCJ5XCI6MCxcIndpZHRoXCI6ODI3LFwiaGVpZ2h0XCI6MTE2OX0sXCJzZWFyY2hcIjp0cnVlLFwic2hvd1N0YXJ0U2NyZWVuXCI6dHJ1ZSxcImdyaWRDb2xvclwiOlwiI2QwZDBkMFwiLFwiZGFya0dyaWRDb2xvclwiOlwiIzZlNmU2ZVwiLFwiYXV0b3NhdmVcIjp0cnVlLFwicmVzaXplSW1hZ2VzXCI6bnVsbCxcIm9wZW5Db3VudGVyXCI6MCxcInZlcnNpb25cIjoxOCxcInVuaXRcIjoxLFwiaXNSdWxlck9uXCI6ZmFsc2UsXCJ1aVwiOlwiXCJ9In0="
 }

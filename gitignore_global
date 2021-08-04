@@ -63,3 +63,6 @@ yarn-error.log
 .vscode
 
 docker-compose.local.yml
+
+*.report.html
+.solargraph.yml

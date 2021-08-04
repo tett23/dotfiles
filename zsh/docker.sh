@@ -9,7 +9,8 @@ function figbe() {
 }
 
 function figsh() {
-  docker-compose run --rm $1 bash
+  # docker-compose run --rm $1 bash
+  docker-compose run --rm $1 sh
 }
 
 # 不要なimageであまりにディスクを圧迫した場合などに便利です。

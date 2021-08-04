@@ -15,7 +15,7 @@
   cia = commit -a
   df = diff --ignore-space-change
   dfc = diff --cached --ignore-space-change
-  st = status
+  st = status --short
   wd = diff --word-diff
   ld = log --stat -p
   cl = commit -av

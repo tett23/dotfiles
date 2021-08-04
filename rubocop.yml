@@ -4,14 +4,14 @@ AllCops:
 Metrics/AbcSize:
   Max: 20
 
-Metrics/LineLength:
-  Max: 150
+# Metrics/LineLength:
+#   Max: 150
 
 Metrics/MethodLength:
   Max: 100
 
-Style/MultilineBlockChain:
-  Enabled: false
+# Style/MultilineBlockChain:
+#   Enabled: false
 
 Style/TrailingCommaInArrayLiteral:
   Enabled: true
@@ -37,9 +37,6 @@ Style/SelfAssignment:
   Enabled: false
 
 Style/AsciiComments:
-  Enabled: false
-
-Style/RedundantReturn:
   Enabled: false
 
 Style/MethodCallWithoutArgsParentheses:
@@ -70,8 +67,8 @@ Layout/ElseAlignment:
 Layout/EndAlignment:
   Enabled: false
 
-Layout/IndentFirstArrayElement:
-  EnforcedStyle: consistent
+# Layout/IndentFirstArrayElement:
+#   EnforcedStyle: consistent
 
 Layout/EmptyLinesAroundAccessModifier:
   Enabled: false

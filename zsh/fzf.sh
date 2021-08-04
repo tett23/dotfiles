@@ -90,10 +90,10 @@ __git_rebase_interactive() {
 }
 
 __gh_pr_branch() {
-  local branch=$(hub pr list --format "%i %H %pS %t%n" --limit 50 | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) "$@")
+  local branch=$(hub pr list --format "%i %au %H %pS %t%n" --limit 50 | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) "$@")
   if [ "x$branch" != "x" ]
   then
-    echo -n "$(echo $branch | awk '{print $2} ')"
+    echo -n "$(echo $branch | awk '{print $3} ')"
   fi
 }
 
