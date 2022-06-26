@@ -6,15 +6,13 @@ if is-at-least 4.3.7; then
   autoload -Uz vcs_info
 
   zstyle ':vcs_info:*' enable git svn hg bzr
-  zstyle ':vcs_info:*' formats '(%s)-[%b]'
-  zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
-  zstyle ':vcs_info:(svn|bzr):*' branchformat '%b:r%r'
-  zstyle ':vcs_info:bzr:*' use-simple true
+  zstyle ':vcs_info:*' formats '[%b]'
+  zstyle ':vcs_info:*' actionformats '[%b|%a]'
   zstyle ':vcs_info:*' check-for-changes true
-  zstyle ':vcs_info:*' stagedstr "++"    # 適当な文字列に変更する
-  zstyle ':vcs_info:*' unstagedstr "!!"  # 適当の文字列に変更する
-  zstyle ':vcs_info:*' formats '(%s)-[%b] %c%u'
-  zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a] %c%u'
+  zstyle ':vcs_info:*' stagedstr "++"
+  zstyle ':vcs_info:*' unstagedstr "!!"
+  zstyle ':vcs_info:*' formats '[%b] %c%u'
+  zstyle ':vcs_info:*' actionformats '[%b|%a] %c%u'
 
   function _update_vcs_info_msg() {
     psvar=()
