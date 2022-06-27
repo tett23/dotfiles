@@ -66,6 +66,10 @@ bindkey "^K" fkill
 
 bindkey "^p" fzf-file-widget
 
+__find_node_modules(){
+  find_node_packages $(pwd)| jq -r '.[] | [.name + "@" + .version + " " + .path] | .[]' | fzf | awk '{print $2}'
+}
+
 __find_pid() {
   pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
   echo $pid
@@ -166,6 +170,7 @@ fzf_command_finder() {
     'docker_image_id'
     'docker_stop_container'
     'docker_remove_image'
+    'find_node_modules'
     'repo'
     'fbr'
     'fkill'
