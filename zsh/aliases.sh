@@ -14,6 +14,7 @@ alias du="du -h"
 alias df="df -h"
 alias su="su -l"
 alias gg="git grep --ignore-case"
+alias yw="yarn workspace"
 
 if which nvim >/dev/null 2>&1; then
   alias vim=nvim
