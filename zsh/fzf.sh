@@ -159,10 +159,15 @@ __docker_remove_image() {
   fi
 }
 
+__yarn_workspaces(){
+  yarn workspaces --silent info | jq 'keys | .[]' | fzf
+}
+
 fzf_command_finder() {
   local commands=(
     'select_git_status_items'
     'git_rebase_interactive'
+    'yarn_workspaces'
     'gh_pr_branch'
     'git_log_oneline_commit_hash'
     'git_log_oneline_commit_number'
