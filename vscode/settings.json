@@ -9,6 +9,13 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.formatOnType": false,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.unicodeHighlight.invisibleCharacters": true,
+  // "editor.unicodeHighlight.allowedLocales": true,
+  // "editor.unicodeHighlight.allowedCharacters": { "　": false },
+  // "editor.unicodeHighlight.nonBasicASCII": true,
+
+  "terminal.integrated.macOptionClickForcesSelection": true,
 
   "diffEditor.renderSideBySide": false,
   "diffEditor.ignoreTrimWhitespace": true,
@@ -16,6 +23,8 @@
   "workbench.editor.enablePreview": false,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "workbench.editor.tabSizing": "shrink",
+  "workbench.colorTheme": "ktrz-monokai",
+  "workbench.startupEditor": "none",
 
   "files.autoSave": "off",
   "files.insertFinalNewline": true,
@@ -30,7 +39,18 @@
 
   "explorer.autoReveal": false,
 
-  "search.useIgnoreFiles": false,
+  "search.useIgnoreFiles": true,
+  "search.useGlobalIgnoreFiles": true,
+  "search.exclude": {
+    // haskellのビルドしたファイルを非表示にする
+    "**/*.hi": { "when": "$(basename).hs" },
+    "**/*.o": { "when": "$(basename).hs" }
+  },
+  "files.exclude": {
+    // haskellのビルドしたファイルを非表示にする
+    "**/*.hi": { "when": "$(basename).hs" },
+    "**/*.o": { "when": "$(basename).hs" }
+  },
 
   "[go]": {
     "editor.snippetSuggestions": "none",
@@ -65,14 +85,14 @@
   "[rust]": {
     "editor.formatOnSave": true,
     "editor.tabSize": 4,
-    "editor.defaultFormatter": "matklad.rust-analyzer"
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
   "rust-analyzer.cargo.allFeatures": true,
   "rust-analyzer.cargo.autoreload": false,
   "rust-analyzer.updates.askBeforeDownload": false,
   "rust-analyzer.updates.channel": "nightly",
-  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
   "rust-analyzer.procMacro.enable": false,
+  "rust-analyzer.cargo.buildScripts.enable": true,
 
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -99,8 +119,12 @@
   "[ruby]": {
     // "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.formatOnType": false
+    "editor.formatOnType": false,
+    "editor.defaultFormatter": "misogi.ruby-rubocop"
   },
+  // "ruby.rubocop.executePath": "",
+  "ruby.format": "rubocop",
+  "ruby.lint": { "rubocop": true },
 
   // swift
   "sourcekit-lsp.serverPath": "/Users/tett23/repositories/src/github.com/apple/sourcekit-lsp/.build/release/sourcekit-lsp",
@@ -121,9 +145,40 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[makefile]": {
+    "editor.insertSpaces": false
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "bodil.prettier-toml"
+  },
+
+  // haskell
+  // "haskell.ghcupExecutablePath": "/Users/tett23/.ghcup/bin/ghcup",
+  // "haskell.serverExecutablePath": "~/.ghcup/bin/haskell-language-server-9.0.2",
+  "haskell.formattingProvider": "stylish-haskell",
+  // "haskell.formattingProvider": "ormolu",
+  // "haskell.serverEnvironment": {
+  //   "PATH": "${HOME}/.ghcup/bin:$PATH"
+  // },
+  "haskell.ghcupExecutablePath": "~/.ghcup/bin/ghcup",
+  "haskell.manageHLS": "GHCup",
+  "haskell.toolchain": {
+    "ghc": "9.2.4",
+    "hls": "latest",
+    "cabal": "recommended",
+    "stack": "recommended"
+  },
+  "[haskell]": {
+    // "editor.tabSize": 2,
+    "editor.defaultFormatter": "vigoo.stylish-haskell",
+    "editor.formatOnSave": true
+  },
+
+  "[elm]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "elmTooling.elm-ls-vscode"
+  },
 
   // drawio
-  "hediet.vscode-drawio.local-storage": "eyIuZHJhd2lvLWNvbmZpZyI6IntcImxhbmd1YWdlXCI6XCJcIixcImN1c3RvbUZvbnRzXCI6W10sXCJsaWJyYXJpZXNcIjpcImdlbmVyYWxcIixcImN1c3RvbUxpYnJhcmllc1wiOltcIkwuc2NyYXRjaHBhZFwiXSxcInBsdWdpbnNcIjpbXSxcInJlY2VudENvbG9yc1wiOltdLFwiZm9ybWF0V2lkdGhcIjpcIjI0MFwiLFwiY3JlYXRlVGFyZ2V0XCI6ZmFsc2UsXCJwYWdlRm9ybWF0XCI6e1wieFwiOjAsXCJ5XCI6MCxcIndpZHRoXCI6ODI3LFwiaGVpZ2h0XCI6MTE2OX0sXCJzZWFyY2hcIjp0cnVlLFwic2hvd1N0YXJ0U2NyZWVuXCI6dHJ1ZSxcImdyaWRDb2xvclwiOlwiI2QwZDBkMFwiLFwiZGFya0dyaWRDb2xvclwiOlwiIzZlNmU2ZVwiLFwiYXV0b3NhdmVcIjp0cnVlLFwicmVzaXplSW1hZ2VzXCI6bnVsbCxcIm9wZW5Db3VudGVyXCI6MCxcInZlcnNpb25cIjoxOCxcInVuaXRcIjoxLFwiaXNSdWxlck9uXCI6ZmFsc2UsXCJ1aVwiOlwiXCJ9In0=",
-  "bracket-pair-colorizer-2.depreciation-notice": false,
-  "workbench.colorTheme": "ktrz-monokai"
+  "hediet.vscode-drawio.local-storage": "eyIuZHJhd2lvLWNvbmZpZyI6IntcImxhbmd1YWdlXCI6XCJcIixcImN1c3RvbUZvbnRzXCI6W10sXCJsaWJyYXJpZXNcIjpcImdlbmVyYWxcIixcImN1c3RvbUxpYnJhcmllc1wiOltcIkwuc2NyYXRjaHBhZFwiXSxcInBsdWdpbnNcIjpbXSxcInJlY2VudENvbG9yc1wiOltdLFwiZm9ybWF0V2lkdGhcIjpcIjI0MFwiLFwiY3JlYXRlVGFyZ2V0XCI6ZmFsc2UsXCJwYWdlRm9ybWF0XCI6e1wieFwiOjAsXCJ5XCI6MCxcIndpZHRoXCI6ODI3LFwiaGVpZ2h0XCI6MTE2OX0sXCJzZWFyY2hcIjp0cnVlLFwic2hvd1N0YXJ0U2NyZWVuXCI6dHJ1ZSxcImdyaWRDb2xvclwiOlwiI2QwZDBkMFwiLFwiZGFya0dyaWRDb2xvclwiOlwiIzZlNmU2ZVwiLFwiYXV0b3NhdmVcIjp0cnVlLFwicmVzaXplSW1hZ2VzXCI6bnVsbCxcIm9wZW5Db3VudGVyXCI6MCxcInZlcnNpb25cIjoxOCxcInVuaXRcIjoxLFwiaXNSdWxlck9uXCI6ZmFsc2UsXCJ1aVwiOlwiXCJ9In0="
 }

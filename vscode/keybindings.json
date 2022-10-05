@@ -2,48 +2,39 @@
 [
   {
     "key": "ctrl+k",
-    "command": "-deleteAllRight",
-    "when": "textInputFocus && !editorReadonly"
+    "command": "editor.action.commentLine"
   },
   {
-    "key": "cmd+/",
-    "command": "editor.action.jumpToBracket",
+    "key": "ctrl+shift+n",
+    "command": "editor.action.marker.next",
     "when": "editorTextFocus"
   },
   {
-    "key": "shift+cmd+\\",
-    "command": "-editor.action.jumpToBracket",
+    "key": "ctrl+shift+p",
+    "command": "editor.action.marker.prev",
     "when": "editorTextFocus"
   },
-  {
-    "key": "cmd+p",
-    "command": "-workbench.action.quickOpenNavigateNextInFilePicker",
-    "when": "inFilesPicker && inQuickOpen"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "workbench.action.quickOpenNavigateNextInFilePicker",
-    "when": "inFilesPicker && inQuickOpen"
-  },
+
   {
     "key": "ctrl+p",
     "command": "workbench.action.quickOpen",
     "when": "editorTextFocus"
   },
   {
-    "key": "cmd+p",
-    "command": "-workbench.action.quickOpen",
-    "when": "editorTextFocus"
+    "key": "ctrl+p",
+    "command": "workbench.action.switchWindow",
+    "when": "inQuickOpen"
   },
+  {
+    "key": "ctrl+o",
+    "command": "workbench.action.gotoSymbol",
+    "when": "inQuickOpen"
+  },
+
   {
     "key": "ctrl+n",
     "command": "editor.action.triggerSuggest",
     "when": "textInputFocus && !suggestWidgetVisible"
-  },
-  {
-    "key": "ctrl+n",
-    "command": "selectNextSuggestion",
-    "when": "suggestWidgetVisible"
   },
   {
     "key": "ctrl+p",
@@ -51,37 +42,21 @@
     "when": "suggestWidgetVisible"
   },
   {
-    "key": "alt+cmd+up",
-    "command": "-editor.action.insertCursorAbove",
-    "when": "editorTextFocus"
+    "key": "ctrl+n",
+    "command": "selectNextSuggestion",
+    "when": "suggestWidgetVisible"
   },
   {
-    "key": "cmd+/",
-    "command": "-editor.action.commentLine",
-    "when": "editorTextFocus && !editorReadonly"
+    "key": "escape",
+    "command": "extension.vim_escape",
+    "when": "suggestWidgetVisible"
   },
-  {
-    "key": "ctrl+k",
-    "command": "editor.action.commentLine"
-  },
-  {
-    "key": "cmd+o",
-    "command": "editor.action.addCommentLine",
-    "when": "editorTextFocus && !editorReadonly"
-  },
-  {
-    "key": "cmd+k cmd+c",
-    "command": "-editor.action.addCommentLine",
-    "when": "editorTextFocus && !editorReadonly"
-  },
-  {
-    "key": "ctrl+o",
-    "command": "workbench.action.gotoSymbol"
-  },
-  {
-    "key": "shift+cmd+o",
-    "command": "-workbench.action.gotoSymbol"
-  },
+  // {
+  //   "key": "escape",
+  //   "command": "extension.vim_escape",
+  //   "when": "suggestWidgetVisible"
+  // },
+
   {
     "key": "cmd+r",
     "command": "-workbench.action.reloadWindow",
@@ -92,34 +67,112 @@
     "command": "editor.action.rename",
     "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
   },
+
   {
     "key": "ctrl+y",
-    "command": "terminal.focus",
-    "when": "editorTextFocus"
+    "command": "terminal.focus"
   },
   {
     "key": "ctrl+y",
     "command": "workbench.action.focusActiveEditorGroup",
     "when": "terminalFocus"
   },
-  {
-    "key": "ctrl+y",
-    "command": "workbench.explorer.fileView.focus",
-    "when": "fileViewFocus"
-  },
+  // {
+  //   "key": "ctrl+p",
+  //   "command": "-workbench.action.quickOpen",
+  //   "when": "terminalFocus"
+  // },
+
   {
     "key": "ctrl+shift+d",
     "command": "editor.action.revealDefinitionAside",
     "when": "editorTextFocus"
   },
   {
-    "key": "ctrl+shift+w",
-    "command": "workbench.action.closeOtherEditors",
+    "key": "ctrl+shift+f",
+    "command": "editor.action.revealDefinition",
     "when": "editorTextFocus"
   },
+
   {
-    "key": "shift+space",
-    "command": "editor.action.showHover",
+    "key": "ctrl+shift+h",
+    "command": "workbench.action.focusLeftGroup"
+  },
+  {
+    "key": "ctrl+shift+j",
+    "command": "workbench.action.focusBelowGroup"
+  },
+  {
+    "key": "ctrl+shift+k",
+    "command": "workbench.action.focusAboveGroup"
+  },
+  {
+    "key": "ctrl+shift+l",
+    "command": "workbench.action.focusRightGroup"
+  },
+  {
+    "key": "ctrl+shift+m",
+    "command": "workbench.action.minimizeOtherEditors",
     "when": "editorTextFocus"
+  },
+
+  {
+    "key": "ctrl+q",
+    "command": "-workbench.action.quickOpenView"
+  },
+  {
+    "key": "cmd+shift+n",
+    "command": "-workbench.action.newWindow"
   }
+  // {
+  //   "key": "ctrl+k",
+  //   "command": "-deleteAllRight",
+  //   "when": "textInputFocus && !editorReadonly"
+  // },
+  // {
+  //   "key": "cmd+p",
+  //   "command": "-workbench.action.quickOpenNavigateNextInFilePicker",
+  //   "when": "inFilesPicker && inQuickOpen"
+  // },
+  // {
+  //   "key": "ctrl+p",
+  //   "command": "workbench.action.quickOpenNavigateNextInFilePicker",
+  //   "when": "inFilesPicker && inQuickOpen"
+  // },
+  // {
+  //   "key": "ctrl+w",
+  //   "command": "extension.vim_ctrl+w",
+  //   "when": "vim.active && vim.use<C-w> && !inDebugRepl"
+  // },
+  // {
+  //   "key": "ctrl+y",
+  //   "command": "workbench.explorer.fileView.focus",
+  //   "when": "fileViewFocus"
+  // },
+  // {
+  //   "key": "alt+cmd+up",
+  //   "command": "-editor.action.insertCursorAbove",
+  //   "when": "editorTextFocus"
+  // },
+  // {
+  //   "key": "cmd+/",
+  //   "command": "-editor.action.commentLine",
+  //   "when": "editorTextFocus && !editorReadonly"
+  // },
+  // {
+  //   "key": "shift+space",
+  //   "command": "editor.action.showHover",
+  //   "when": "editorTextFocus"
+  // },
+  // {
+  //   "key": "ctrl+shift+m",
+  //   "command": "workbench.action.othereditor",
+  //   "when": "editorFocus"
+  // }
+
+  // {
+  //   "key": "ctrl+shift+w",
+  //   "command": "workbench.action.closeOtherEditors",
+  //   "when": "editorTextFocus"
+  // }
 ]

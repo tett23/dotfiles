@@ -11,6 +11,7 @@ source $HOME/.fzf.zsh
 source $DOTFILES/zsh/anyenv.sh
 source $DOTFILES/zsh/completions.sh
 source $DOTFILES/zsh/docker.sh
+source $HOME/.ghcup/env
 
 eval "$(direnv hook zsh)"
 

@@ -11,12 +11,15 @@ export PATH=/sbin:/usr/sbin:/opt/homebrew/bin:/usr/local/bin:$HOME/local/bin:$PA
 export PATH=$PATH:/home/tett23/local/bin:/home/tett23/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
 export PATH=$PATH:~/Library/Python/3.6/bin
 export PATH=$PATH//usr/local/sbin
+export PATH=$PATH:$HOME/.local/bin
 export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/repositories
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export PATH=$PATH:/opt/homebrew/bin
+export PATH=$PATH:$HOME/dotfiles/shellcommands
 
 export PATH=/opt/homebrew/opt/openssl@3/bin:$PATH
+export PATH=/opt/homebrew/opt/llvm@13/bin:$PATH
 
 # rust
 if [[ -x `which rustc` ]]; then
