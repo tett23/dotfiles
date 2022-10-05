@@ -1,0 +1,12 @@
+#!/bin/sh
+
+rtouch() {
+  if [ -z $1 ] ; then exit -1; fi
+
+  local path=$1
+  local dir=$(dirname $path)
+
+  mkdir -p $dir && touch $path
+}
+
+rtouch $1
