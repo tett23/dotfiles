@@ -1,5 +1,3 @@
-.PHONY: git curl prebuild
-
 os:=$(shell uname -s)
 arch:=$(shell uname -m)
 installer=$(shell setup/detect_package_manager.sh)
@@ -34,7 +32,12 @@ endif
 install:
 	@git submodule update --init --recursive
 	@/bin/bash -c "install.sh"
+	@~/.fzf/install
 
 .PHONY: setup-rust
 setup-rust:
 	$(MAKE) -C makefiles/languages/rust setup
+
+.PHONY: setup-python
+setup-python:
+	$(MAKE) -C makefiles/languages/python setup

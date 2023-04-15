@@ -4,3 +4,9 @@
 [submodule "zsh/fzf"]
 	path = zsh/fzf
 	url = https://github.com/junegunn/fzf.git
+[submodule "exenv"]
+      path = exenv
+      url = git://github.com/mururu/exenv.git
+[submodule "fzf"]
+      path = fzf
+      url = git@github.com:junegunn/fzf.git
