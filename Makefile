@@ -31,7 +31,7 @@ endif
 .PHONY: install
 install:
 	@git submodule update --init --recursive
-	@/bin/bash -c "install.sh"
+	@/bin/bash -c "setup/install.sh"
 	@~/.fzf/install
 
 .PHONY: setup-rust
