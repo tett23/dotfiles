@@ -5,6 +5,7 @@ fi
 if [ -z "$XDG_CONFIG_HOME" ]; then
   export XDG_CONFIG_HOME=$HOME/.config
 fi
+mkdir -p $XDG_CONFIG_HOME
 
 ln -nsf $DOTFILES/vimrc $HOME/.vimrc
 ln -nsf $DOTFILES/nvimrc $HOME/.nvimrc
