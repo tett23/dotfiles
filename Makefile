@@ -4,7 +4,7 @@ os:=$(shell uname -s)
 arch:=$(shell uname -m)
 installer=$(shell setup/detect_package_manager.sh)
 
-required_commands := git curl zsh fzf tmux nvim
+required_commands := git curl zsh fzf tmux nvim direnv
 none_commands := $(strip $(foreach cmd,$(required_commands),$(if $(shell command -v $(cmd)),,$(cmd))))
 
 .PHONY: doctor
@@ -34,3 +34,7 @@ endif
 install:
 	@git submodule update --init --recursive
 	@/bin/bash -c "install.sh"
+
+.PHONY: setup-rust
+setup-rust:
+	$(MAKE) -C makefiles/languages/rust setup

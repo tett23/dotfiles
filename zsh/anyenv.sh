@@ -11,4 +11,6 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
 # rbenv
-eval "$(rbenv init - zsh)"
+if command -v rbenv 1>/dev/null 2>&1; then
+  eval "$(rbenv init - zsh)"
+fi
