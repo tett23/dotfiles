@@ -21,6 +21,13 @@ export PATH=$PATH:$HOME/dotfiles/shellcommands
 export PATH=/opt/homebrew/opt/openssl@3/bin:$PATH
 export PATH=/opt/homebrew/opt/llvm@13/bin:$PATH
 
+export LD_LIBRARY_PATH=/opt/homebrew/lib:$LD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH=/opt/homebrew/lib:$DYLD_LIBRARY_PATH
+export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib:$DYLD_FALLBACK_LIBRARY_PATH
+export LDFLAGS="$LDFLAGS -L/usr/local/opt/zlib/lib"
+export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/zlib/include"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/zlib/lib/pkgconfig"
+
 # rust
 if [[ -x `which rustc` ]]; then
   export PATH="$HOME/.cargo/bin:$PATH"

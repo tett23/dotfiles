@@ -123,6 +123,10 @@
   {
     "key": "cmd+shift+n",
     "command": "-workbench.action.newWindow"
+  },
+  {
+    "key": "ctrl+shift+q",
+    "command": "editor.action.quickFix"
   }
   // {
   //   "key": "ctrl+k",

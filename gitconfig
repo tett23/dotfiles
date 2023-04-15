@@ -8,6 +8,8 @@
   pager = LESS=-R less
   filemode = false
   quotepath = false
+[init]
+  defaultBranch = main
 [alias]
   tr = log --graph --pretty='format:%C(yellow)%h%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset'
   co = checkout

@@ -66,3 +66,7 @@ docker-compose.local.yml
 
 *.report.html
 .solargraph.yml
+
+packages/backend/python/fit/build/
+
+foo

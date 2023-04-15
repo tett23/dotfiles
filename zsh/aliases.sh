@@ -13,8 +13,11 @@ alias llh="ls -lh"
 alias du="du -h"
 alias df="df -h"
 alias su="su -l"
-alias gg="git grep --ignore-case"
+alias gg="git grep --ignore-case --color"
 alias yw="yarn workspace"
+alias ag="ag --color"
+
+LESS="-R"
 
 if which nvim >/dev/null 2>&1; then
   alias vim=nvim

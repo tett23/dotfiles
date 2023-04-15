@@ -1,0 +1,28 @@
+.PHONY: haskell ghcup ghc cabal stack hls
+
+haskell: ghc cabal stack hls
+
+ghcup: curl
+ifeq (, $(shell command -v ghcup))
+	curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+endif
+
+ghc: ghcup
+ifeq (, $(shell command -v ghc))
+	ghcup install ghc recommended
+endif
+
+cabal: ghcup
+ifeq (, $(shell command -v cabal))
+	ghcup install cabal recommended
+endif
+
+stack: ghcup
+ifeq (, $(shell command -v stack))
+	ghcup install stack recommended
+endif
+
+hls: ghcup
+ifeq (, $(shell command -v hls))
+	ghcup install hls recommended
+endif
