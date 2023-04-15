@@ -18,3 +18,5 @@ eval "$(direnv hook zsh)"
 ## load user .zshrc configuration file
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
