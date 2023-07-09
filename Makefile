@@ -38,6 +38,6 @@ install:
 setup-rust:
 	$(MAKE) -C makefiles/languages/rust setup
 
-.PHONY: setup-python
+PHONY: setup-python
 setup-python:
 	$(MAKE) -C makefiles/languages/python setup

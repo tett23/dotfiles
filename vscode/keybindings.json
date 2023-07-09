@@ -1,5 +1,30 @@
 // Place your key bindings in this file to overwrite the defaults
 [
+  // disable defaults
+  {
+    "key": "cmd+r",
+    "command": "-workbench.action.reloadWindow",
+    "when": "isDevelopment"
+  },
+  {
+    "key": "cmd+shift+n",
+    "command": "-workbench.action.newWindow"
+  },
+  {
+    "key": "ctrl+q",
+    "command": "-workbench.action.quickOpenView"
+  },
+  {
+    "key": "cmd+l",
+    "command": "-expandLineSelection",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "cmd+i",
+    "command": "-focusSuggestion",
+    "when": "suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+  },
+
   {
     "key": "ctrl+k",
     "command": "editor.action.commentLine"
@@ -48,26 +73,18 @@
   },
   {
     "key": "escape",
-    "command": "extension.vim_escape",
-    "when": "suggestWidgetVisible"
-  },
-  // {
-  //   "key": "escape",
-  //   "command": "extension.vim_escape",
-  //   "when": "suggestWidgetVisible"
-  // },
-
-  {
-    "key": "cmd+r",
-    "command": "-workbench.action.reloadWindow",
-    "when": "isDevelopment"
+    "command": "hideSuggestWidget",
+    "when": "suggestWidgetVisible && textInputFocus"
   },
   {
-    "key": "cmd+r",
-    "command": "editor.action.rename",
-    "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+    "key": "escape",
+    "command": "editor.action.inlineSuggest.hide",
+    "when": "inlineSuggestionVisible"
   },
-
+  {
+    "key": "escape",
+    "command": "extension.vim_escape"
+  },
   {
     "key": "ctrl+y",
     "command": "terminal.focus"
@@ -77,57 +94,63 @@
     "command": "workbench.action.focusActiveEditorGroup",
     "when": "terminalFocus"
   },
-  // {
-  //   "key": "ctrl+p",
-  //   "command": "-workbench.action.quickOpen",
-  //   "when": "terminalFocus"
-  // },
-
   {
-    "key": "ctrl+shift+d",
-    "command": "editor.action.revealDefinitionAside",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+shift+f",
-    "command": "editor.action.revealDefinition",
-    "when": "editorTextFocus"
+    "key": "ctrl+p",
+    "command": "-workbench.action.quickOpen",
+    "when": "terminalFocus"
   },
 
   {
-    "key": "ctrl+shift+h",
-    "command": "workbench.action.focusLeftGroup"
-  },
-  {
-    "key": "ctrl+shift+j",
-    "command": "workbench.action.focusBelowGroup"
-  },
-  {
-    "key": "ctrl+shift+k",
-    "command": "workbench.action.focusAboveGroup"
-  },
-  {
-    "key": "ctrl+shift+l",
-    "command": "workbench.action.focusRightGroup"
-  },
-  {
-    "key": "ctrl+shift+m",
+    "key": "space m",
     "command": "workbench.action.minimizeOtherEditors",
-    "when": "editorTextFocus"
-  },
-
-  {
-    "key": "ctrl+q",
-    "command": "-workbench.action.quickOpenView"
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
   },
   {
-    "key": "cmd+shift+n",
-    "command": "-workbench.action.newWindow"
+    "key": "space d",
+    "command": "editor.action.revealDefinitionAside",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
   },
   {
-    "key": "ctrl+shift+q",
-    "command": "editor.action.quickFix"
+    "key": "space f",
+    "command": "editor.action.revealDefinition",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
+  },
+  {
+    "key": "space g",
+    "command": "editor.action.showHover",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
+  },
+  {
+    "key": "space s",
+    "command": "github.copilot.generate",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
+  },
+  {
+    "key": "space q",
+    "command": "editor.action.quickFix",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
+  },
+  {
+    "key": "space r",
+    "command": "editor.action.rename",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert' && editorHasRenameProvider && !editorReadonly"
+  },
+  {
+    "key": "space e",
+    "command": "editor.action.inlineSuggest.trigger",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert' && config.github.copilot.inlineSuggest.enable && !editorHasSelection && !inlineSuggestionVisible"
+  },
+  {
+    "key": "tab",
+    "command": "tab",
+    "when": "editorTextFocus && !editorReadonly && !inlineSuggestionVisible && !suggestWidgetVisible && vim.mode == 'Insert'"
+  },
+  {
+    "key": "tab",
+    "command": "editor.action.inlineSuggest.commit",
+    "when": "editorTextFocus && !editorReadonly && inlineSuggestionVisible"
   }
+
   // {
   //   "key": "ctrl+k",
   //   "command": "-deleteAllRight",

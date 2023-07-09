@@ -35,3 +35,11 @@ esac
 if command -v python3 >/dev/null 2>&1; then
   alias python="python3"
 fi
+
+if command -v gsed >/dev/null 2>&1; then
+  alias sed="gsed"
+fi
+
+if command -v gawk >/dev/null 2>&1; then
+  alias awk="gawk"
+fi
