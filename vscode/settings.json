@@ -13,22 +13,21 @@
   "editor.unicodeHighlight.invisibleCharacters": true,
   "editor.inlineSuggest.enabled": true,
   "editor.inlineSuggest.showToolbar": "always",
-  // "editor.unicodeHighlight.allowedLocales": true,
-  // "editor.unicodeHighlight.allowedCharacters": { "　": false },
-  // "editor.unicodeHighlight.nonBasicASCII": true,
+  "editor.suggest.showReferences": true,
 
   "terminal.integrated.macOptionClickForcesSelection": true,
+  "terminal.integrated.showExitAlert": false,
 
   "diffEditor.renderSideBySide": false,
   "diffEditor.ignoreTrimWhitespace": true,
-  "workbench.editor.showTabs": true,
+  "workbench.editor.showTabs": "multiple",
   "workbench.editor.enablePreview": false,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "workbench.editor.tabSizing": "shrink",
   "workbench.colorTheme": "ktrz-monokai",
   "workbench.startupEditor": "none",
 
-  "files.autoSave": "off",
+  "files.autoSave": "afterDelay",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
 
@@ -58,7 +57,7 @@
     "editor.snippetSuggestions": "none",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     }
   },
   "go.useLanguageServer": true,
@@ -117,15 +116,10 @@
   "emmet.showExpandedAbbreviation": "never",
 
   "[ruby]": {
-    // "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.formatOnType": false,
-    "editor.defaultFormatter": "misogi.ruby-rubocop"
+    "editor.defaultFormatter": "Shopify.ruby-lsp"
   },
-  // "ruby.rubocop.executePath": "",
-  "ruby.format": "rubocop",
-  "ruby.lint": { "rubocop": true },
-  "ruby.rubocop.executePath": "/Users/tett23/.rbenv/shims/",
 
   // swift
   "sourcekit-lsp.serverPath": "/Users/tett23/repositories/src/github.com/apple/sourcekit-lsp/.build/release/sourcekit-lsp",
@@ -180,8 +174,9 @@
     "*": true,
     "yaml": false,
     "plaintext": true,
-    "markdown": false
+    "markdown": false,
+    "mdx": false,
+    "md": false
   },
-  "liquid.format.enable": false,
   "go.toolsManagement.autoUpdate": true
 }

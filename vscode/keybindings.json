@@ -24,26 +24,95 @@
     "command": "-focusSuggestion",
     "when": "suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
   },
+  {
+    "key": "ctrl+p",
+    "command": "-workbench.action.quickOpen",
+    "when": "terminalFocus"
+  },
 
   {
     "key": "ctrl+k",
     "command": "editor.action.commentLine"
   },
   {
-    "key": "ctrl+shift+n",
-    "command": "editor.action.marker.next",
-    "when": "editorTextFocus"
+    "key": "ctrl+shift+l",
+    "command": "workbench.view.explorer"
   },
   {
-    "key": "ctrl+shift+p",
-    "command": "editor.action.marker.prev",
-    "when": "editorTextFocus"
+    "key": "ctrl+shift+l",
+    "command": "workbench.action.closeSidebar",
+    "when": "explorerViewletVisible && !inputFocus"
+  },
+  {
+    "key": "n",
+    "command": "explorer.newFile",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
+  },
+  {
+    "key": "f",
+    "command": "explorer.newFolder",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
+  },
+  {
+    "key": "r",
+    "command": "renameFile",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
+  },
+  {
+    "key": "d",
+    "command": "deleteFile",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
+  },
+  {
+    "key": "j",
+    "command": "list.focusDown",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
+  },
+  {
+    "key": "k",
+    "command": "list.focusUp",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
+  },
+  {
+    "key": "h",
+    "command": "list.collapse",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
+  },
+  {
+    "key": "l",
+    "command": "list.expand",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
+  },
+  {
+    "key": "enter",
+    "command": "explorer.openToSide",
+    "when": "explorerViewletFocus && explorerViewletVisible && !inputFocus"
   },
 
   {
+    "key": "space w",
+    "command": "editor.action.marker.next",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "editor.action.marker.next",
+    "when": "editorTextFocus && markersNavigationVisible"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "editor.action.marker.prev",
+    "when": "editorTextFocus && markersNavigationVisible"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "closeMarkersNavigation",
+    "when": "editorTextFocus && markersNavigationVisible"
+  },
+  {
     "key": "ctrl+p",
     "command": "workbench.action.quickOpen",
-    "when": "editorTextFocus"
+    "when": "editorTextFocus && !suggestWidgetVisible && !inlineSuggestionVisible && !markersNavigationVisible"
   },
   {
     "key": "ctrl+p",
@@ -51,39 +120,54 @@
     "when": "inQuickOpen"
   },
   {
-    "key": "ctrl+o",
-    "command": "workbench.action.gotoSymbol",
-    "when": "inQuickOpen"
-  },
-
-  {
     "key": "ctrl+n",
     "command": "editor.action.triggerSuggest",
-    "when": "textInputFocus && !suggestWidgetVisible"
+    "when": "textInputFocus && !suggestWidgetVisible && !markersNavigationVisible"
   },
   {
     "key": "ctrl+p",
     "command": "selectPrevSuggestion",
-    "when": "suggestWidgetVisible"
+    "when": "suggestWidgetVisible && !inlineSuggestionVisible && !markersNavigationVisible"
   },
   {
     "key": "ctrl+n",
     "command": "selectNextSuggestion",
+    "when": "suggestWidgetVisible && !inlineSuggestionVisible && !markersNavigationVisible"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "hideSuggestWidget",
     "when": "suggestWidgetVisible"
   },
   {
-    "key": "escape",
-    "command": "hideSuggestWidget",
+    "key": "left",
+    "command": "editor.action.inlineSuggest.showNext",
     "when": "suggestWidgetVisible && textInputFocus"
   },
   {
-    "key": "escape",
-    "command": "editor.action.inlineSuggest.hide",
-    "when": "inlineSuggestionVisible"
+    "key": "right",
+    "command": "editor.action.inlineSuggest.showPrevious",
+    "when": "suggestWidgetVisible && textInputFocus"
   },
   {
-    "key": "escape",
-    "command": "extension.vim_escape"
+    "key": "tab",
+    "command": "editor.action.inlineSuggest.commit",
+    "when": "inlineSuggestionVisible && textInputFocus"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "editor.action.inlineSuggest.showNext",
+    "when": "!suggestWidgetVisible && inlineSuggestionVisible"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "editor.action.inlineSuggest.showPrevious",
+    "when": "!suggestWidgetVisible && inlineSuggestionVisible"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "editor.action.inlineSuggest.hide",
+    "when": "inlineSuggestionVisible && textInputFocus"
   },
   {
     "key": "ctrl+y",
@@ -92,11 +176,6 @@
   {
     "key": "ctrl+y",
     "command": "workbench.action.focusActiveEditorGroup",
-    "when": "terminalFocus"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "-workbench.action.quickOpen",
     "when": "terminalFocus"
   },
 
@@ -121,6 +200,16 @@
     "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
   },
   {
+    "key": "space p",
+    "command": "problems.action.openToSide",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "editor.action.escapeFocusHover",
+    "when": "editorHoverFocused"
+  },
+  {
     "key": "space s",
     "command": "github.copilot.generate",
     "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
@@ -141,14 +230,55 @@
     "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert' && config.github.copilot.inlineSuggest.enable && !editorHasSelection && !inlineSuggestionVisible"
   },
   {
+    "key": "ctrl+e",
+    "command": "editor.action.inlineSuggest.trigger",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Insert' && config.github.copilot.inlineSuggest.enable && !editorHasSelection && !inlineSuggestionVisible && !suggestWidgetVisible && !markersNavigationVisible"
+  },
+  {
+    "key": "space a",
+    "command": "editor.action.findReferences",
+    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
+  },
+
+  {
+    "key": "ctrl+shift+f",
+    "command": "editor.action.startFindReplaceAction",
+    "when": "editorFocus || editorIsOpen"
+  },
+
+  {
     "key": "tab",
     "command": "tab",
     "when": "editorTextFocus && !editorReadonly && !inlineSuggestionVisible && !suggestWidgetVisible && vim.mode == 'Insert'"
   },
   {
-    "key": "tab",
-    "command": "editor.action.inlineSuggest.commit",
-    "when": "editorTextFocus && !editorReadonly && inlineSuggestionVisible"
+    "key": "ctrl+e",
+    "command": "-cursorLineEnd",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "escape",
+    "command": "-editor.action.inlineSuggest.hide",
+    "when": "inlineSuggestionVisible"
+  },
+  {
+    "key": "escape",
+    "command": "-editor.action.escapeFocusHover",
+    "when": "editorHoverFocused"
+  },
+  {
+    "key": "ctrl+w",
+    "command": "-workbench.action.switchWindow"
+  },
+  {
+    "key": "alt+cmd+f",
+    "command": "-editor.action.startFindReplaceAction",
+    "when": "editorFocus || editorIsOpen"
+  },
+  {
+    "key": "ctrl+o",
+    "command": "-lineBreakInsert",
+    "when": "textInputFocus && !editorReadonly"
   }
 
   // {

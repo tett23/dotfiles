@@ -12,6 +12,7 @@ spec/reports
 test/tmp
 test/version_tmp
 vender/bundle
+.ruby-lsp/
 
 # YARD artifacts
 .yardoc
@@ -39,6 +40,7 @@ config/*.yml
 rerun.txt
 pickle-email-*.html
 /public/assets
+dist
 
 *.swl
 *.swm

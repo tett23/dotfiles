@@ -1,26 +1,39 @@
 PROMPT="[%n@%m %~]$ "
 
 __short_pwd() {
-  if [[ -x `which shorten-path` ]]; then
-    local cmd="shorten-path $(pwd)"
-  else
-    local cmd="pwd"
-  fi
+  shorten-path $(pwd) 2>/dev/null || echo -n $(pwd)
+}
 
-  echo -n $(eval "$cmd")
+__keymap_name() {
+  case $KEYMAP in
+  vicmd)
+    local mode="%F{green}N%f"
+  ;;
+  main|viins)
+    local mode="%F{cyan}I%f"
+  ;;
+  visual)
+    local mode="%F{yellow}V%f"
+  ;;
+  .safe)
+    local mode=""
+  ;;
+  esac
+
+  echo -n $mode
 }
 
 # zsh line editor mode
 function zle-line-init zle-keymap-select {
-  case $KEYMAP in
-    vicmd)
-      PROMPT="%{$fg_bold[green]%}N%{$reset_color%} [%n@%m $(__short_pwd)]$ "
-    ;;
-    main|viins)
-      PROMPT="%{$fg_bold[cyan]%}I%{$reset_color%} [%n@%m $(__short_pwd)]$ "
-    ;;
-  esac
+  PROMPT="$(__keymap_name) [%n@%m $(__short_pwd)]$ "
   zle reset-prompt
 }
+
+function zle-line-finish {
+  PROMPT="$(__keymap_name) [%n@%m $(__short_pwd)]$ "
+  zle reset-prompt
+}
+
 zle -N zle-line-init
+zle -N zle-line-finish
 zle -N zle-keymap-select

@@ -35,8 +35,8 @@ if test "$(uname -s)" = "Darwin" ; then
   export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl@3/lib"
   export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/openssl@3/include"
 
-  export PATH="/opt/homebrew/opt/openssl@3/bin:$PATH";
-  export PATH="/opt/homebrew/opt/llvm@13/bin:$PATH";
+  export PATH="/opt/homebrew/opt/openssl@3/bin:$PATH"
+  export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
   export PATH="/opt/homebrew/opt/gawk/libexec/gnubin:$PATH"
   export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
@@ -76,3 +76,7 @@ export LESSOPEN="| $DOTFILES/zsh/src-hilite-lesspipe.sh %s"
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+if [[ -x `which bat` ]]; then
+  export BAT_THEME='Monokai Extended Origin'
+fi

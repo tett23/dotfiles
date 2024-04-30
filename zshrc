@@ -12,5 +12,6 @@ source $DOTFILES/zsh/anyenv.sh
 source $DOTFILES/zsh/completions.sh
 source $DOTFILES/zsh/docker.sh
 source $DOTFILES/zsh/langs/haskell.sh
+source $DOTFILES/zsh/langs/deno.sh
 
 eval "$(direnv hook zsh)"
