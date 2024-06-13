@@ -90,11 +90,6 @@
   },
 
   {
-    "key": "space w",
-    "command": "editor.action.marker.next",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
-  },
-  {
     "key": "ctrl+n",
     "command": "editor.action.marker.next",
     "when": "editorTextFocus && markersNavigationVisible"
@@ -180,64 +175,14 @@
   },
 
   {
-    "key": "space m",
-    "command": "workbench.action.minimizeOtherEditors",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
-  },
-  {
-    "key": "space d",
-    "command": "editor.action.revealDefinitionAside",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
-  },
-  {
-    "key": "space f",
-    "command": "editor.action.revealDefinition",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
-  },
-  {
-    "key": "space g",
-    "command": "editor.action.showHover",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
-  },
-  {
-    "key": "space p",
-    "command": "problems.action.openToSide",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
-  },
-  {
     "key": "ctrl+e",
     "command": "editor.action.escapeFocusHover",
     "when": "editorHoverFocused"
   },
   {
-    "key": "space s",
-    "command": "github.copilot.generate",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
-  },
-  {
-    "key": "space q",
-    "command": "editor.action.quickFix",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
-  },
-  {
-    "key": "space r",
-    "command": "editor.action.rename",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert' && editorHasRenameProvider && !editorReadonly"
-  },
-  {
-    "key": "space e",
-    "command": "editor.action.inlineSuggest.trigger",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert' && config.github.copilot.inlineSuggest.enable && !editorHasSelection && !inlineSuggestionVisible"
-  },
-  {
     "key": "ctrl+e",
     "command": "editor.action.inlineSuggest.trigger",
     "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Insert' && config.github.copilot.inlineSuggest.enable && !editorHasSelection && !inlineSuggestionVisible && !suggestWidgetVisible && !markersNavigationVisible"
-  },
-  {
-    "key": "space a",
-    "command": "editor.action.findReferences",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode != 'Insert'"
   },
 
   {
@@ -280,56 +225,4 @@
     "command": "-lineBreakInsert",
     "when": "textInputFocus && !editorReadonly"
   }
-
-  // {
-  //   "key": "ctrl+k",
-  //   "command": "-deleteAllRight",
-  //   "when": "textInputFocus && !editorReadonly"
-  // },
-  // {
-  //   "key": "cmd+p",
-  //   "command": "-workbench.action.quickOpenNavigateNextInFilePicker",
-  //   "when": "inFilesPicker && inQuickOpen"
-  // },
-  // {
-  //   "key": "ctrl+p",
-  //   "command": "workbench.action.quickOpenNavigateNextInFilePicker",
-  //   "when": "inFilesPicker && inQuickOpen"
-  // },
-  // {
-  //   "key": "ctrl+w",
-  //   "command": "extension.vim_ctrl+w",
-  //   "when": "vim.active && vim.use<C-w> && !inDebugRepl"
-  // },
-  // {
-  //   "key": "ctrl+y",
-  //   "command": "workbench.explorer.fileView.focus",
-  //   "when": "fileViewFocus"
-  // },
-  // {
-  //   "key": "alt+cmd+up",
-  //   "command": "-editor.action.insertCursorAbove",
-  //   "when": "editorTextFocus"
-  // },
-  // {
-  //   "key": "cmd+/",
-  //   "command": "-editor.action.commentLine",
-  //   "when": "editorTextFocus && !editorReadonly"
-  // },
-  // {
-  //   "key": "shift+space",
-  //   "command": "editor.action.showHover",
-  //   "when": "editorTextFocus"
-  // },
-  // {
-  //   "key": "ctrl+shift+m",
-  //   "command": "workbench.action.othereditor",
-  //   "when": "editorFocus"
-  // }
-
-  // {
-  //   "key": "ctrl+shift+w",
-  //   "command": "workbench.action.closeOtherEditors",
-  //   "when": "editorTextFocus"
-  // }
 ]

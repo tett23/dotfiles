@@ -15,33 +15,35 @@
   "editor.inlineSuggest.showToolbar": "always",
   "editor.suggest.showReferences": true,
 
+  "workbench.editor.enablePreview": false,
+  "workbench.colorTheme": "ktrz-monokai",
+
   "terminal.integrated.macOptionClickForcesSelection": true,
   "terminal.integrated.showExitAlert": false,
 
   "diffEditor.renderSideBySide": false,
   "diffEditor.ignoreTrimWhitespace": true,
+
   "workbench.editor.showTabs": "multiple",
-  "workbench.editor.enablePreview": false,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "workbench.editor.tabSizing": "shrink",
-  "workbench.colorTheme": "ktrz-monokai",
   "workbench.startupEditor": "none",
-
-  "files.autoSave": "afterDelay",
+  "files.autoSave": "onFocusChange",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-
-  "prettier.trailingComma": "all",
-  "prettier.singleQuote": true,
-  "prettier.arrowParens": "always",
-
-  "vim.useSystemClipboard": true,
-  "vim.surround": true,
-
-  "explorer.autoReveal": false,
+  "files.eol": "\n",
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/.hg/store/**": true,
+    "**/dist/**": true,
+    "**/lib/**": true
+  },
 
   "search.useIgnoreFiles": true,
   "search.useGlobalIgnoreFiles": true,
+  "search.followSymlinks": false,
   "search.exclude": {
     // haskellのビルドしたファイルを非表示にする
     "**/*.hi": { "when": "$(basename).hs" },
@@ -52,6 +54,98 @@
     "**/*.hi": { "when": "$(basename).hs" },
     "**/*.o": { "when": "$(basename).hs" }
   },
+
+  "prettier.trailingComma": "all",
+  "prettier.singleQuote": true,
+  "prettier.arrowParens": "always",
+
+  "vim.useSystemClipboard": true,
+  "vim.surround": true,
+  "vim.easymotion": true,
+  "vim.leader": "<space>",
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "s"],
+      "commands": ["workbench.action.files.save"]
+    },
+    {
+      "before": ["<leader>", "m"],
+      "commands": ["workbench.action.minimizeOtherEditors"]
+    },
+    {
+      "before": ["<leader>", "d"],
+      "commands": ["editor.action.revealDefinitionAside"]
+    },
+    {
+      "before": ["<leader>", "f"],
+      "commands": ["editor.action.revealDefinition"]
+    },
+    {
+      "before": ["<leader>", "g"],
+      "commands": ["editor.action.showHover"]
+    },
+    {
+      "before": ["<leader>", "p"],
+      "commands": ["problems.action.openToSide"]
+    },
+    {
+      "before": ["<leader>", "s"],
+      "commands": ["workbench.action.files.save"]
+    },
+    {
+      "before": ["<leader>", "q"],
+      "commands": ["editor.action.quickFix"]
+    },
+    {
+      "before": ["<leader>", "r"],
+      "commands": ["editor.action.rename"]
+    },
+    {
+      "before": ["<leader>", "a"],
+      "commands": ["editor.action.findReferences"]
+    },
+    {
+      "before": ["<leader>", "w"],
+      "commands": ["workbench.action.closeActiveEditor"]
+    },
+    {
+      "before": ["<leader>", "c"],
+      "commands": ["editor.action.inlineSuggest.trigger"]
+    },
+    {
+      "before": ["<leader>", "c", "i"],
+      "commands": ["github.copilot.interactiveEditor.generate"]
+    },
+    {
+      "before": ["<leader>", "c", "c"],
+      "commands": ["github.copilot.generate"]
+    },
+    {
+      "before": ["<leader>", "n"],
+      "commands": ["editor.action.marker.next"]
+    },
+    {
+      "before": ["<leader>", "<C-f>"],
+      "commands": ["actions.find"]
+    },
+    {
+      "before": ["<leader>", "<C-r>"],
+      "commands": ["editor.action.startFindReplaceAction"]
+    }
+  ],
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "q"],
+      "commands": ["editor.action.quickFix"]
+    },
+    {
+      "before": ["<leader>", "c"],
+      "commands": ["editor.action.inlineSuggest.trigger"]
+    }
+  ],
+
+  "explorer.autoReveal": false,
+  "explorer.excludeGitIgnore": true,
 
   "[go]": {
     "editor.snippetSuggestions": "none",
@@ -64,24 +158,11 @@
   "go.alternateTools": {
     "go-langserver": "gopls"
   },
-  "go.languageServerExperimentalFeatures": {
-    "format": true,
-    "autoComplete": true,
-    "rename": true,
-    "goToDefinition": true,
-    "hover": true,
-    "signatureHelp": true,
-    "goToTypeDefinition": true,
-    "goToImplementation": true,
-    "documentSymbols": true,
-    "workspaceSymbols": true,
-    "findReferences": true,
-    "diagnostics": true
-  },
   "go.testFlags": ["-v"],
   "go.testEnvVars": {
     "GO_ENV": "test"
   },
+  "go.toolsManagement.autoUpdate": true,
 
   "[rust]": {
     "editor.formatOnSave": true,
@@ -163,8 +244,7 @@
   },
 
   "[elm]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "elmTooling.elm-ls-vscode"
+    "editor.formatOnSave": true
   },
 
   // drawio
@@ -178,5 +258,15 @@
     "mdx": false,
     "md": false
   },
-  "go.toolsManagement.autoUpdate": true
+  "prisma.showPrismaDataPlatformNotification": false,
+  "github.copilot.editor.enableAutoCompletions": true,
+
+  "tailwindCSS.files.exclude": [
+    "**/lib",
+    "**/dist",
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/.hg/**",
+    "**/.svn/**"
+  ]
 }
