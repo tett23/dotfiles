@@ -1,9 +1,9 @@
-[submodule "tmux/tmux-powerline"]
-	path = tmux/tmux-powerline
-	url = git@github.com:erikw/tmux-powerline.git
 [submodule "zsh/fzf"]
 	path = zsh/fzf
 	url = https://github.com/junegunn/fzf.git
 [submodule "fzf"]
       path = fzf
       url = git@github.com:junegunn/fzf.git
+[submodule "tmux/tpm"]
+	path = tmux/tpm
+	url = git@github.com:tmux-plugins/tpm.git
