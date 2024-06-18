@@ -20,6 +20,7 @@ export PATH="$HOME/usr/sbin:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
 export PATH="$HOME/usr/local/sbin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$DOTFILES/bin:$PATH"
 
 if test "$(uname -s)" = "Darwin" ; then
   export PATH="/opt/homebrew/bin:$PATH"
