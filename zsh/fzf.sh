@@ -17,9 +17,6 @@ function repo() {
   return $ret
 }
 
-zle -N repo
-bindkey "^g" repo
-
 __fbr() {
   local branches branch
   local cmd="git branch --all --sort=committerdate --color | grep -v HEAD | sed 's/.* //' | sed 's/remotes\///'"
@@ -41,8 +38,6 @@ fbr() {
   typeset -f zle-line-init >/dev/null && zle zle-line-init
   return $ret
 }
-zle -N fbr
-bindkey "^b" fbr
 
 __fkill() {
   local pid
@@ -61,11 +56,6 @@ fkill() {
   typeset -f zle-line-init >/dev/null && zle zle-line-init
   return $ret
 }
-zle -N fkill
-bindkey "^K" fkill
-
-export FZF_CTRL_T_COMMAND=find
-bindkey "^p" fzf-file-widget
 
 __find_node_modules(){
   find_node_packages $(pwd)| jq -r '.[] | [.name + "@" + .version + " " + .path] | .[]' | fzf | awk '{print $2}'
@@ -83,6 +73,14 @@ __select_git_status_items() {
   done
   local ret=$?
   echo
+  return $ret
+}
+
+select_git_status_items() {
+  LBUFFER="${LBUFFER}$(__select_git_status_items)"
+  local ret=$?
+  zle redisplay
+  typeset -f zle-line-init >/dev/null && zle zle-line-init
   return $ret
 }
 
@@ -197,5 +195,19 @@ fzf_command_finder() {
   typeset -f zle-line-init >/dev/null && zle zle-line-init
 }
 
+zle -N repo
+bindkey "^g" repo
+zle -N fbr
+bindkey "^b" fbr
 zle -N fzf_command_finder
 bindkey "^n" fzf_command_finder
+export FZF_CTRL_T_COMMAND=find
+zle -N fkill
+bindkey "^k" fkill
+bindkey "^p" fzf-file-widget
+zle -N select_git_status_items
+bindkey "^e" select_git_status_items
+
+# fzf
+export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
+# export FZF_DEFAULT_COMMAND='ag -g ""'

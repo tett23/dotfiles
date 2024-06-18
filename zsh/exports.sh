@@ -20,7 +20,9 @@ export PATH="$HOME/usr/sbin:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
 export PATH="$HOME/usr/local/sbin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$DOTFILES/bin:$PATH"
+
+export PATH="$PATH:$DOTFILES/bin"
+export PATH="$PATH:$HOME/dotfiles/shellcommands"
 
 if test "$(uname -s)" = "Darwin" ; then
   export PATH="/opt/homebrew/bin:$PATH"
@@ -58,13 +60,7 @@ export XDG_CACHE_HOME=$HOME/.cache
 if [[ -x `which go` ]]; then
   export GOPATH=$HOME/repositories
   export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
-  export PATH=$PATH:$HOME/dotfiles/shellcommands
 fi
-
-# fzf
-export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
-export FZF_DEFAULT_COMMAND='ag -g ""'
-
 # GCP
 if [[ -x `which gcloud` ]]; then
   export PATH=$PATH:$HOME/google-cloud-sdk/bin/
@@ -72,12 +68,3 @@ fi
 
 export LESS='--RAW-CONTROL-CHARS -R --tabs=2'
 export LESSOPEN="| $DOTFILES/zsh/src-hilite-lesspipe.sh %s"
-
-## load user .zshrc configuration file
-[ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-if [[ -x `which bat` ]]; then
-  export BAT_THEME='Monokai Extended Origin'
-fi
