@@ -229,6 +229,13 @@
   "[toml]": {
     "editor.defaultFormatter": "bodil.prettier-toml"
   },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.trailingComma": "none"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
 
   // haskell
   "haskell.formattingProvider": "ormolu",
@@ -244,7 +251,6 @@
     "editor.defaultFormatter": "sjurmillidahl.ormolu-vscode",
     "editor.formatOnSave": true
   },
-
   "[elm]": {
     "editor.formatOnSave": true
   },
@@ -269,5 +275,7 @@
     "**/node_modules/**",
     "**/.hg/**",
     "**/.svn/**"
-  ]
+  ],
+
+  "redhat.telemetry.enabled": false
 }
