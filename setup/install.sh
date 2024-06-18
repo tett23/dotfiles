@@ -31,6 +31,9 @@ ln -nsf $DOTFILES/Brewfile $XDG_CONFIG_HOME/brewfile/Brewfile
 
 ln -nsf $DOTFILES/karabiner $XDG_CONFIG_HOME/karabiner
 
+mkdir -p $XDG_CONFIG_HOME/bat
+ln -nsf $DOTFILES/bat-config $XDG_CONFIG_HOME/bat/config
+
 mkdir -p "$HOME/Library/Application Support/AquaSKK"
 ln -nsf $DOTFILES/skk/keymap.conf "$HOME/Library/Application Support/AquaSKK/keymap.conf"
 
