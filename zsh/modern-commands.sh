@@ -12,3 +12,8 @@ if command -v bat >/dev/null 2>&1; then
   alias ncat="$(command -v cat)"
   alias cat="bat"
 fi
+
+if command -v rg >/dev/null 2>&1; then
+  alias ngrep="$(command -v grep)"
+  alias grep="rg"
+fi
