@@ -1,0 +1,66 @@
+#!/usr/bin/env -S deno run -A --ext=ts
+
+import 'npm:@types/node/index.d.ts';
+import { parseArgs } from 'node:util';
+import { basename, join } from 'node:path';
+import nodemailer from 'npm:nodemailer@6';
+import * as mod from 'https://deno.land/std@0.224.0/dotenv/mod.ts';
+import { createReadStream } from 'node:fs';
+
+const env: {
+  EMAIL: string;
+  SEND_TO_KINDLE_EMAIL: string;
+  SMTP_HOST: string;
+  SMTP_PORT: string;
+  SMTP_USER_NAME: string;
+  SMTP_PASSWORD: string;
+} = mod.parse(Deno.readTextFileSync('.env')) as never;
+
+const {
+  positionals: [file],
+} = parseArgs({
+  args: Deno.args,
+  allowPositionals: true,
+  options: {
+    file: {
+      type: 'string',
+      short: 'f',
+      description: 'file to send',
+    },
+  },
+});
+
+export async function sendToKindle(conf: {
+  filename: string;
+}): Promise<true | Error> {
+  const transporter = nodemailer.createTransport({
+    host: env.SMTP_HOST,
+    port: env.SMTP_PORT,
+    auth: {
+      user: env.SMTP_USER_NAME,
+      pass: env.SMTP_PASSWORD,
+    },
+  });
+
+  const info = await transporter
+    .sendMail({
+      from: env.EMAIL,
+      to: env.SEND_TO_KINDLE_EMAIL,
+      subject: '',
+      text: '',
+      attachments: [
+        {
+          filename: basename(conf.filename),
+          content: createReadStream(join(Deno.cwd(), conf.filename)),
+        },
+      ],
+    })
+    .catch((err: Error) => err);
+  if (info instanceof Error) {
+    return info;
+  }
+
+  return true;
+}
+
+await sendToKindle({ filename: file });
