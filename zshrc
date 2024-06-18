@@ -12,4 +12,6 @@ source $DOTFILES/zsh/docker.sh
 source $DOTFILES/zsh/langs/haskell.sh
 source $DOTFILES/zsh/langs/deno.sh
 
+source $DOTFILES/zsh/modern-commands.sh
+
 eval "$(direnv hook zsh)"

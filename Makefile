@@ -2,7 +2,7 @@ os:=$(shell uname -s)
 arch:=$(shell uname -m)
 installer=$(shell setup/detect_package_manager.sh)
 
-required_commands := git curl zsh fzf tmux nvim direnv
+required_commands := git curl zsh fzf tmux nvim direnv exa bat fd
 none_commands := $(strip $(foreach cmd,$(required_commands),$(if $(shell command -v $(cmd)),,$(cmd))))
 
 .PHONY: doctor

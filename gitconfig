@@ -5,9 +5,16 @@
   excludesfile = ~/.gitignore_global
   autocrlf = input
   editor = nvim
-  pager = LESS=-R less
+  pager = delta
   filemode = false
   quotepath = false
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+[interactive]
+  diffFilter = delta --color-only
 [init]
   defaultBranch = main
 [alias]
@@ -17,6 +24,7 @@
   cia = commit -a
   df = diff --ignore-space-change
   dfc = diff --cached --ignore-space-change
+  dfp = !GIT_PAGER=less git diff
   st = status --short
   wd = diff --word-diff
   ld = log --stat -p
@@ -42,6 +50,7 @@
   date = local
 [merge]
   tool = vimdiff
+  conflictstyle = diff3
 [branch "master"]
   rebase = true
 [branch]
@@ -50,6 +59,7 @@
   prompt = false
 [diff]
   tool = vimdiff
+  colorMoved = default
 [mergetool]
   prompt = true
 [grep]
@@ -58,6 +68,15 @@
   default = tracking
 [pull]
   rebase = true
+
+[delta]
+  hyperlinks = true
+  hyperlinks-file-link-format = "vscode://file/{path}:{line}"
+  side-by-side = true
+  line-numbers = true
+  navigate = true
+  light = false
+  true-color = always
 
 [color]
   ui = auto
@@ -72,12 +91,6 @@
   changed = green
   untracked = cyan reverse
   branch = magenta
-[difftool "sourcetree"]
-  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-  path =
-[mergetool "sourcetree"]
-  cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-  trustExitCode = true
 
 [ghq]
   root = ~/repositories/src

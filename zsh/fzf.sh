@@ -64,6 +64,7 @@ fkill() {
 zle -N fkill
 bindkey "^K" fkill
 
+export FZF_CTRL_T_COMMAND=find
 bindkey "^p" fzf-file-widget
 
 __find_node_modules(){
