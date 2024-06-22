@@ -4,6 +4,7 @@ import 'npm:@types/node/index.d.ts';
 import { parseArgs } from 'node:util';
 import { basename, join } from 'node:path';
 import nodemailer from 'npm:nodemailer@6';
+import 'npm:@types/nodemailer';
 import * as mod from 'https://deno.land/std@0.224.0/dotenv/mod.ts';
 import { createReadStream } from 'node:fs';
 
@@ -46,8 +47,8 @@ export async function sendToKindle(conf: {
     .sendMail({
       from: env.EMAIL,
       to: env.SEND_TO_KINDLE_EMAIL,
-      subject: '',
-      text: '',
+      subject: '変換',
+      text: 'book',
       attachments: [
         {
           filename: basename(conf.filename),
