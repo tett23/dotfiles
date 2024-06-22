@@ -15,7 +15,7 @@ alias df="df -h"
 alias su="su -l"
 alias gg="git grep --ignore-case --color"
 alias yw="yarn workspace"
-alias ag="ag --color"
+alias be="bundle exec"
 
 LESS="-R"
 
