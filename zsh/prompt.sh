@@ -1,9 +1,5 @@
 PROMPT="[%n@%m %~]$ "
 
-__short_pwd() {
-  shorten-path $(pwd) 2>/dev/null || echo -n $(pwd)
-}
-
 __keymap_name() {
   case $KEYMAP in
   vicmd)
@@ -56,12 +52,12 @@ fi
 
 # zsh line editor mode
 function zle-line-init zle-keymap-select {
-  PROMPT="$(__keymap_name) ${VCS_INFO} [%n@%m $(__short_pwd)]$ "
+  PROMPT="$(__keymap_name) ${VCS_INFO} [%n@%m $(short-pwd)]$ "
   zle reset-prompt
 }
 
 function zle-line-finish {
-  PROMPT="$(__keymap_name) ${VCS_INFO} [%n@%m $(__short_pwd)]$ "
+  PROMPT="$(__keymap_name) ${VCS_INFO} [%n@%m $(short-pwd)]$ "
   zle reset-prompt
 }
 
