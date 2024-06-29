@@ -17,6 +17,7 @@ alias su="su -l"
 alias gg="git grep --ignore-case --color"
 alias yw="yarn workspace"
 alias be="bundle exec"
+alias fig='docker compose'
 
 if which nvim >/dev/null 2>&1; then
   alias vim=nvim

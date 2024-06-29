@@ -1,1 +1,3 @@
-[ -f $HOME/.ghcup/env ] && source $HOME/.ghcup/env # ghcup-env
+if [ -d "$HOME/.ghcup" ]; then
+  source $HOME/.ghcup/env
+fi

@@ -1,9 +1,3 @@
-alias fig='docker-compose'
-
-function figrm() {
-  docker-compose run --rm $1 "${@:2}"
-}
-
 function figbe() {
   figrm bundle exec "$@"
 }

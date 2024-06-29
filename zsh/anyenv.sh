@@ -7,18 +7,3 @@ if [ -d "$PYENV_ROOT" ]; then
   eval "$(pyenv init -)"
 fi
 
-# volta
-if [ -d "$HOME/.volta" ]; then
-  export VOLTA_HOME="$HOME/.volta"
-  export PATH="$VOLTA_HOME/bin:$PATH"
-fi
-
-# rbenv
-if [ -d "$HOME/.rbenv" ]; then
-  eval "$(rbenv init -)"
-fi
-
-# haskell
-if [ -d "$HOME/.ghcup" ]; then
-  source $HOME/.ghcup/env
-fi

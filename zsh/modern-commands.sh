@@ -28,5 +28,5 @@ fi
 if command -v broot >/dev/null 2>&1; then
   alias ntree="$(command -v tree)"
   alias tree="broot"
-  source /Users/tett23/.config/broot/launcher/bash/br
+  source "$XDG_CONFIG_HOME/broot/launcher/bash/br"
 fi

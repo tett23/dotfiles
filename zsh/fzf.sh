@@ -206,7 +206,7 @@ zle -N fkill
 bindkey "^k" fkill
 bindkey "^p" fzf-file-widget
 zle -N select_git_status_items
-bindkey "^e" select_git_status_items
+bindkey "^f" select_git_status_items
 
 # fzf
 export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
