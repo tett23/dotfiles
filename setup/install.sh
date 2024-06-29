@@ -15,7 +15,7 @@ ln -nsf $DOTFILES/vim $HOME/.vim
 mkdir -p $HOME/.vimbackup
 
 ln -nsf $DOTFILES/zshenv $HOME/.zshenv
-ln -nsf $DOTFILES/zshrc $HOME/.zshrc
+ln -nsf $DOTFILES/zsh/zshrc $HOME/.zshrc
 ln -nsf $DOTFILES/gitconfig $HOME/.gitconfig
 ln -nsf $DOTFILES/gitignore_global $HOME/.gitignore_global
 ln -nsf $DOTFILES/tmux.conf $HOME/.tmux.conf
