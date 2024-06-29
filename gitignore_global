@@ -62,8 +62,6 @@ yarn-error.log
 .Rhistory
 .python-version
 
-.vscode
-
 docker-compose.local.yml
 
 *.report.html
