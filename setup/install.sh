@@ -18,7 +18,7 @@ ln -nsf $DOTFILES/zshenv $HOME/.zshenv
 ln -nsf $DOTFILES/zsh/zshrc $HOME/.zshrc
 ln -nsf $DOTFILES/gitconfig $HOME/.gitconfig
 ln -nsf $DOTFILES/gitignore_global $HOME/.gitignore_global
-ln -nsf $DOTFILES/tmux.conf $HOME/.tmux.conf
+ln -nsf $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
 ln -nsf $DOTFILES/exenv $HOME/.exenv
 ln -nsf $DOTFILES/rubocop.yml $HOME/.rubocop.yml
 
