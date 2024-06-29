@@ -1,3 +1,5 @@
+let mapleader = "\<space>"
+
 "マッピングとか
 map ^? ^H
 map! ^? ^H
@@ -14,3 +16,15 @@ nnoremap <S-w> :BD<CR>
 noremap <S-Tab> :tabn<CR>
 noremap <S-t> :tabe<CR>
 noremap <C-W>o :tabnew %<CR>
+
+nmap <silent> <Leader><Leader> :<C-u>CocList<cr>
+"スペースhでHover
+nmap <silent> <space>g :<C-u>call CocAction('doHover')<cr>
+"スペースdfでDefinition
+nmap <silent> <space>df <Plug>(coc-definition)
+"スペースrfでReferences
+nmap <silent> <space>rf <Plug>(coc-references)
+"スペースrnでRename
+nmap <silent> <space>rn <Plug>(coc-rename)
+"スペースfmtでFormat
+nmap <silent> <space>fmt <Plug>(coc-format)

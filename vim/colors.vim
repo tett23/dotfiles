@@ -12,10 +12,6 @@ augroup END
 " highlight CursorLine ctermbg=gray guibg=gray
 " hi CursorColumn ctermbg=235 cterm=none
 
-" 色の設定
-set t_ut=
-set t_Co=256
-
 colorscheme molokai
 highlight Normal ctermbg=none
 let g:molokai_original = 1
