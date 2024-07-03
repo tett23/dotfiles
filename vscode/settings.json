@@ -6,7 +6,8 @@
   "editor.autoClosingBrackets": "always",
   "editor.autoIndent": "advanced",
   "editor.renderWhitespace": "all",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true,
   "editor.formatOnType": false,
   "editor.unicodeHighlight.ambiguousCharacters": false,
@@ -136,19 +137,19 @@
       "commands": ["editor.action.findReferences"]
     },
     {
-      "before": ["<leader>", "e"],
-      "commands": ["editor.action.inlineSuggest.trigger"]
-    },
-    {
       "before": ["<leader>", "c"],
       "commands": ["editor.action.inlineSuggest.trigger"]
     },
     {
       "before": ["<leader>", "c", "i"],
+      "commands": ["editor.action.inlineSuggest.trigger"]
+    },
+    {
+      "before": ["<leader>", "c", "i", "g"],
       "commands": ["github.copilot.interactiveEditor.generate"]
     },
     {
-      "before": ["<leader>", "c", "c"],
+      "before": ["<leader>", "c", "g"],
       "commands": ["github.copilot.generate"]
     },
     {
@@ -162,6 +163,10 @@
     {
       "before": ["<leader>", "<C-r>"],
       "commands": ["editor.action.startFindReplaceAction"]
+    },
+    {
+      "before": ["<C-k>"],
+      "commands": ["editor.action.commentLine"]
     }
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
@@ -172,8 +177,27 @@
     {
       "before": ["<leader>", "c"],
       "commands": ["editor.action.inlineSuggest.trigger"]
+    },
+    {
+      "before": ["<C-k>"],
+      "commands": ["editor.action.commentLine"]
     }
   ],
+  "vim.operatorPendingModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "q"],
+      "commands": ["editor.action.quickFix"]
+    },
+    {
+      "before": ["<leader>", "c"],
+      "commands": ["editor.action.inlineSuggest.trigger"]
+    },
+    {
+      "before": ["<C-k>"],
+      "commands": ["editor.action.commentLine"]
+    }
+  ],
+  "vim.insertModeKeyBindingsNonRecursive": [],
 
   "explorer.autoReveal": false,
   "explorer.excludeGitIgnore": true,
@@ -213,12 +237,12 @@
     "editor.formatOnType": false
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    // "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.formatOnType": false
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    // "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.formatOnType": false
   },
@@ -305,5 +329,8 @@
     "**/.svn/**"
   ],
 
-  "redhat.telemetry.enabled": false
+  "redhat.telemetry.enabled": false,
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  }
 }

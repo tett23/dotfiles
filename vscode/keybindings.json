@@ -15,6 +15,10 @@
     "command": "-workbench.action.quickOpenView"
   },
   {
+    "key": "cmd+s",
+    "command": "-workbench.action.files.save"
+  },
+  {
     "key": "cmd+l",
     "command": "-expandLineSelection",
     "when": "textInputFocus"
@@ -29,11 +33,10 @@
     "command": "-workbench.action.quickOpen",
     "when": "terminalFocus"
   },
-
-  {
-    "key": "ctrl+k",
-    "command": "editor.action.commentLine"
-  },
+  // {
+  //   "key": "ctrl+k",
+  //   "command": "editor.action.commentLine"
+  // },
   {
     "key": "ctrl+shift+l",
     "command": "workbench.view.explorer"
@@ -178,11 +181,6 @@
     "key": "ctrl+e",
     "command": "editor.action.escapeFocusHover",
     "when": "editorHoverFocused"
-  },
-  {
-    "key": "ctrl+e",
-    "command": "editor.action.inlineSuggest.trigger",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && vim.mode == 'Insert' && config.github.copilot.inlineSuggest.enable && !editorHasSelection && !inlineSuggestionVisible && !suggestWidgetVisible && !markersNavigationVisible"
   },
 
   {
