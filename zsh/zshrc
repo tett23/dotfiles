@@ -13,6 +13,7 @@ source $DOTFILES/zsh/docker.sh
 source $DOTFILES/zsh/langs/rust.sh
 source $DOTFILES/zsh/langs/js.sh
 source $DOTFILES/zsh/langs/deno.sh
+source $DOTFILES/zsh/langs/bun.sh
 source $DOTFILES/zsh/langs/go.sh
 source $DOTFILES/zsh/langs/ruby.sh
 source $DOTFILES/zsh/langs/swift.sh
