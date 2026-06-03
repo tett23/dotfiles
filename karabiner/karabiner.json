@@ -171,6 +171,10 @@
                 {
                     "from": { "key_code": "left_control" },
                     "to": [{ "key_code": "left_gui" }]
+                },
+                {
+                    "from": { "key_code": "left_command" },
+                    "to": [{ "key_code": "escape" }]
                 }
             ],
             "virtual_hid_keyboard": {

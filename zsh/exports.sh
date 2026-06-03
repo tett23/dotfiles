@@ -31,11 +31,11 @@ if test "$(uname -s)" = "Darwin" ; then
   export PATH="/opt/homebrew/sbin:$PATH"
   export PATH="/opt/homebrew/opt:$PATH"
 
-  export LD_LIBRARY_PATH=/opt/homebrew/lib:$LD_LIBRARY_PATH;
-  export LD_LIBRARY_PATH=/opt/homebrew/opt:$LD_LIBRARY_PATH;
-  export DYLD_LIBRARY_PATH=/opt/homebrew/lib:$DYLD_LIBRARY_PATH;
-  export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib:$DYLD_FALLBACK_LIBRARY_PATH;
-  export LIBRARY_PATH=$LIBRARY_PATH:$(brew --prefix zstd)/lib
+  # export LD_LIBRARY_PATH=/opt/homebrew/lib:$LD_LIBRARY_PATH;
+  # export LD_LIBRARY_PATH=/opt/homebrew/opt:$LD_LIBRARY_PATH;
+  # export DYLD_LIBRARY_PATH=/opt/homebrew/lib:$DYLD_LIBRARY_PATH;
+  # export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib:$DYLD_FALLBACK_LIBRARY_PATH;
+  # export LIBRARY_PATH=$LIBRARY_PATH:$(brew --prefix zstd)/lib
 
   export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl@3/lib"
   export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/openssl@3/include"
