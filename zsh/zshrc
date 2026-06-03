@@ -18,6 +18,7 @@ source $DOTFILES/zsh/langs/go.sh
 source $DOTFILES/zsh/langs/ruby.sh
 source $DOTFILES/zsh/langs/swift.sh
 source $DOTFILES/zsh/langs/haskell.sh
+source $DOTFILES/zsh/langs/scala.sh
 
 source $DOTFILES/zsh/plugins.sh
 

@@ -35,6 +35,13 @@
   "terminal.integrated.macOptionClickForcesSelection": true,
   "terminal.integrated.showExitAlert": false,
   "terminal.integrated.defaultProfile.osx": "tmux",
+  "terminal.integrated.profiles.osx": {
+    "tmux": {
+      "overrideName": true,
+      "path": "zsh",
+      "args": ["-c", "tmux new-session -A -s \"$(basename `short-pwd`)#$\""]
+    }
+  },
   "terminal.integrated.copyOnSelection": true,
 
   "diffEditor.renderSideBySide": false,
@@ -50,7 +57,10 @@
     "**/node_modules/*/**": true,
     "**/.hg/store/**": true,
     "**/dist/**": true,
-    "**/lib/**": true
+    "**/lib/**": true,
+    "**/.bloop": true,
+    "**/.metals": true,
+    "**/.ammonite": true
   },
 
   "search.useIgnoreFiles": true,
@@ -89,15 +99,15 @@
       "after": ["$"]
     },
     {
-      "before": ["<leader>", "s"],
+      "before": ["<leader>", "q"],
+      "commands": [":q"]
+    },
+    {
+      "before": ["<leader>", "w"],
       "commands": [":w"]
     },
     {
-      "before": ["<leader>", "w"],
-      "commands": [":wq"]
-    },
-    {
-      "before": ["<leader>", "w"],
+      "before": ["<leader>", "w", "q"],
       "commands": [":wq"]
     },
     {
@@ -294,10 +304,10 @@
   "haskell.serverEnvironment": { "PATH": "${HOME}/.ghcup/bin:${PATH}" },
   "haskell.manageHLS": "GHCup",
   "haskell.toolchain": {
-    "ghcup": "latest",
-    "stack": "latest",
-    "ghc": "latest",
-    "hls": "latest"
+    "ghcup": "recommend",
+    "stack": "recommend",
+    "ghc": "recommend",
+    "hls": "recommend"
   },
   "[haskell]": {
     "editor.defaultFormatter": "sjurmillidahl.ormolu-vscode",
@@ -332,5 +342,8 @@
   "redhat.telemetry.enabled": false,
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
+  },
+  "[scala]": {
+    "editor.defaultFormatter": "scalameta.metals"
   }
 }

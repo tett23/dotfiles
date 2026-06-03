@@ -56,7 +56,6 @@ node_modules
 yarn-error.log
 .eslintcache
 
-.env
 .capistrano
 
 .Rhistory
@@ -69,4 +68,38 @@ docker-compose.local.yml
 
 packages/backend/python/fit/build/
 
-foo
+.vimbackup
+
+*.class
+*.log
+*~
+
+# sbt specific
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+project/local-plugins.sbt
+.history
+.bsp
+.metals
+.bloop
+
+# Scala-IDE specific
+.scala_dependencies
+.cache
+.classpath
+.project
+.settings
+classes/
+
+# idea
+.idea
+.idea_modules
+/.worksheet/
+
+# Dotty-IDE
+.dotty-ide-artifact
+.dotty-ide.json
