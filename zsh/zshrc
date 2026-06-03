@@ -26,3 +26,4 @@ source $DOTFILES/zsh/plugins.sh
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
 
 eval "$(direnv hook zsh)"
+

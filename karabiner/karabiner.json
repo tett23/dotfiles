@@ -163,6 +163,14 @@
                 {
                     "from": { "key_code": "caps_lock" },
                     "to": [{ "key_code": "left_control" }]
+                },
+                {
+                    "from": { "key_code": "right_alt" },
+                    "to": [{ "key_code": "escape" }]
+                },
+                {
+                    "from": { "key_code": "left_control" },
+                    "to": [{ "key_code": "left_gui" }]
                 }
             ],
             "virtual_hid_keyboard": {
