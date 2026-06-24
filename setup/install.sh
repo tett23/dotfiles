@@ -26,9 +26,6 @@ ln -nsf $DOTFILES/vscode/settings.json "$HOME/Library/Application Support/Code/U
 ln -nsf $DOTFILES/vscode/keybindings.json "$HOME/Library/Application Support/Code/User/keybindings.json"
 ln -nsf $DOTFILES/vscode/snippets "$HOME/Library/Application Support/Code/User/snippets"
 
-mkdir -p $XDG_CONFIG_HOME/brewfile
-ln -nsf $DOTFILES/Brewfile $XDG_CONFIG_HOME/brewfile/Brewfile
-
 ln -nsf $DOTFILES/karabiner $XDG_CONFIG_HOME/karabiner
 
 mkdir -p $XDG_CONFIG_HOME/bat

@@ -3,9 +3,9 @@ if command -v fd >/dev/null 2>&1; then
   alias find="fd"
 fi
 
-if command -v exa >/dev/null 2>&1; then
+if command -v eza >/dev/null 2>&1; then
   alias nls="$(command -v ls)"
-  alias ls="exa"
+  alias ls="eza"
 fi
 
 if command -v bat >/dev/null 2>&1; then

@@ -34,11 +34,11 @@
                         ]
                     },
                     {
-                        "description": "Map ctrl + j to enter",
+                        "description": "Map ctrl + n to enter",
                         "manipulators": [
                             {
                                 "from": {
-                                    "key_code": "j",
+                                    "key_code": "n",
                                     "modifiers": {
                                         "mandatory": ["control"],
                                         "optional": ["any"]
@@ -165,7 +165,7 @@
                     "to": [{ "key_code": "left_control" }]
                 },
                 {
-                    "from": { "key_code": "right_command" },
+                    "from": { "key_code": "left_command" },
                     "to": [{ "key_code": "escape" }]
                 },
                 {
@@ -173,7 +173,7 @@
                     "to": [{ "key_code": "left_gui" }]
                 },
                 {
-                    "from": { "key_code": "left_command" },
+                    "from": { "key_code": "right_command" },
                     "to": [{ "key_code": "escape" }]
                 }
             ],

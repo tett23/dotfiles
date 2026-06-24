@@ -103,3 +103,5 @@ classes/
 # Dotty-IDE
 .dotty-ide-artifact
 .dotty-ide.json
+
+**/.claude/settings.local.json
