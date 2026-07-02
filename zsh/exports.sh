@@ -9,6 +9,11 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_RUNTIME_DIR=$HOME/.local/run
 export XDG_STATE_HOME=$HOME/.local/state
 
+# Nix
+if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
+
 export PATH="/bin:$PATH"
 export PATH="/sbin:$PATH"
 export PATH="/usr/bin:$PATH"
@@ -49,9 +54,4 @@ fi
 # GCP
 if [[ -x `which gcloud` ]]; then
   export PATH=$PATH:$HOME/google-cloud-sdk/bin/
-fi
-
-# Nix
-if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 fi
