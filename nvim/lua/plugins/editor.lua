@@ -1,0 +1,1 @@
+-- 編集補助 (autopairs / comment / which-key など)

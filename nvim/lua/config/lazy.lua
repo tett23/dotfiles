@@ -1,0 +1,1 @@
+-- lazy.nvim のブートストラップと setup

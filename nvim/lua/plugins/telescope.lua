@@ -1,0 +1,1 @@
+-- telescope.nvim (ファジーファインダ)

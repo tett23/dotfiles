@@ -1,0 +1,1 @@
+-- gitsigns.nvim (Git 差分表示)
