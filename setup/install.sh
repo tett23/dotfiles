@@ -7,11 +7,7 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
 fi
 mkdir -p $XDG_CONFIG_HOME
 
-ln -nsf $DOTFILES/vimrc $HOME/.vimrc
-ln -nsf $DOTFILES/nvimrc $HOME/.nvimrc
-ln -nsf $DOTFILES/gvimrc $HOME/.gvimrc
 ln -nsf $DOTFILES/vim $XDG_CONFIG_HOME/nvim
-ln -nsf $DOTFILES/vim $HOME/.vim
 mkdir -p $HOME/.vimbackup
 
 ln -nsf $DOTFILES/zshenv $HOME/.zshenv
