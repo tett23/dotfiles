@@ -1,0 +1,12 @@
+# Ghostty configuration
+
+# 終了時の確認ダイアログを無効化
+confirm-close-surface = false
+quit-after-last-window-closed = true
+
+# ⌘P を Kitty プロトコルの super+p (CSI-u: 112='p', 9=super) として nvim に送る。
+# nvim 側の <D-p> マッピング (Telescope commands = コマンドパレット) で拾う。
+keybind = cmd+p=csi:112;9u
+
+# Ctrl+J の改行(LF)送出を無効化 (子プロセスに送らず破棄)
+keybind = ctrl+j=ignore

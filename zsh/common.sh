@@ -33,7 +33,9 @@ fi
 
 # historical backward/forward search with linehead string binded to ^P/^N
 #
-autoload history-search-end
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
 bindkey "\\ep" history-beginning-search-backward-end
 bindkey "\\en" history-beginning-search-forward-end
 

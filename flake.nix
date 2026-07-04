@@ -21,18 +21,66 @@
       username = "tett23";
       homeDirectory = "/Users/tett23";
       hostname = "dione";
+
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ claude-code.overlays.default ];
+        config.allowUnfree = true;
+      };
+
+      # CLI 群 (dependencies.md)。darwin / standalone 両方で共有
+      homeModule = { pkgs, ... }: {
+        home.username = username;
+        home.homeDirectory = homeDirectory;
+        home.stateVersion = "24.05";
+
+        home.packages = [
+          pkgs.claude-code
+          pkgs.git
+          pkgs.curl
+          pkgs.fzf
+          pkgs.ghq
+          pkgs.tmux
+          pkgs.neovim
+          pkgs.direnv
+          pkgs.jq
+          pkgs.eza
+          pkgs.bat
+          pkgs.fd
+          pkgs.ripgrep  # rg
+          pkgs.mise
+          pkgs.awscli2  # awscli
+          pkgs.gnused   # GNU sed
+          pkgs.gawk     # GNU awk
+          pkgs.gnumake  # GNU make
+          pkgs.sqlite
+          pkgs.gh
+          pkgs.bun
+          pkgs.deno
+          pkgs.textlint
+        ];
+
+        programs.home-manager.enable = true;
+      };
     in {
+      # sudo 不要: `home-manager switch --flake .#tett23`
+      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ homeModule ];
+      };
+
       darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
         inherit system;
 
         modules = [
-          ({ pkgs, ... }: {
-            nixpkgs.overlays = [ claude-code.overlays.default ];
-            nixpkgs.config.allowUnfree = true;
+          ({ ... }: {
+            nixpkgs.pkgs = pkgs;
 
             system.stateVersion = 5;
             system.primaryUser = username;
-            nix.settings.experimental-features = [ "nix-command" "flakes" ];
+            # Determinate Nix が Nix 本体を管理するため nix-darwin 側の管理は無効化
+            # (flakes/experimental-features は Determinate 側で有効化済み)
+            nix.enable = false;
             programs.zsh.enable = true;
 
             # システムユーザー定義 (home-manager が home ディレクトリを参照する)
@@ -47,7 +95,7 @@
               onActivation.cleanup = "zap";
               casks = [
                 "aquaskk"
-                "docker"
+                "docker-desktop"  # 旧 "docker" cask からリネーム
                 "ghostty"
                 "claude"
               ];
@@ -69,37 +117,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.${username} = { pkgs, ... }: {
-              home.username = username;
-              home.homeDirectory = homeDirectory;
-              home.stateVersion = "24.05";
-
-              # 恒久的にインストールする CLI (dependencies.md)
-              home.packages = [
-                pkgs.claude-code
-                pkgs.git
-                pkgs.curl
-                pkgs.fzf
-                pkgs.ghq
-                pkgs.tmux
-                pkgs.neovim
-                pkgs.direnv
-                pkgs.jq
-                pkgs.eza
-                pkgs.bat
-                pkgs.fd
-                pkgs.ripgrep  # rg
-                pkgs.mise
-                pkgs.awscli2  # awscli
-                pkgs.gnused   # GNU sed
-                pkgs.gawk     # GNU awk
-                pkgs.gnumake  # GNU make
-                pkgs.sqlite
-                pkgs.gh
-              ];
-
-              programs.home-manager.enable = true;
-            };
+            home-manager.users.${username} = homeModule;
           }
         ];
       };

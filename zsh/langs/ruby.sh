@@ -1,6 +1,3 @@
 export BUNDLER_EDITOR=nvim
 
-# rbenv
-if [ -d "$HOME/.rbenv" ]; then
-  eval "$(rbenv init -)"
-fi
+# ruby は mise で管理 (rbenv は廃止 -> zshrc の `mise activate` を参照)

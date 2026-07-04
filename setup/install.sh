@@ -7,7 +7,7 @@ if [ -z "$XDG_CONFIG_HOME" ]; then
 fi
 mkdir -p $XDG_CONFIG_HOME
 
-ln -nsf $DOTFILES/vim $XDG_CONFIG_HOME/nvim
+ln -nsf $DOTFILES/nvim $XDG_CONFIG_HOME/nvim
 mkdir -p $HOME/.vimbackup
 
 ln -nsf $DOTFILES/zshenv $HOME/.zshenv
@@ -27,12 +27,18 @@ ln -nsf $DOTFILES/karabiner $XDG_CONFIG_HOME/karabiner
 mkdir -p $XDG_CONFIG_HOME/bat
 ln -nsf $DOTFILES/bat-config $XDG_CONFIG_HOME/bat/config
 
+mkdir -p $XDG_CONFIG_HOME/ghostty
+ln -nsf $DOTFILES/ghostty/config $XDG_CONFIG_HOME/ghostty/config
+
+# mise のグローバル設定 (言語/ツールのバージョン定義)
+mkdir -p $XDG_CONFIG_HOME/mise
+ln -nsf $DOTFILES/mise/config.toml $XDG_CONFIG_HOME/mise/config.toml
+
 mkdir -p "$HOME/Library/Application Support/AquaSKK"
 ln -nsf $DOTFILES/skk/keymap.conf "$HOME/Library/Application Support/AquaSKK/keymap.conf"
 
 ln -nsf $DOTFILES/eskk $XDG_CONFIG_HOME/eskk
 
-command -v fzf > /dev/null
-if [ ! $? ] ; then
-  $DOTFILES/zsh/fzf/install
-fi
+# Claude Code の設定ファイル (実行時データ projects/ sessions/ 等は対象外)
+mkdir -p $HOME/.claude
+ln -nsf $DOTFILES/claude/settings.json $HOME/.claude/settings.json

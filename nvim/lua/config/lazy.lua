@@ -1,1 +1,19 @@
 -- lazy.nvim のブートストラップと setup
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  vim.fn.system({
+    "git", "clone", "--filter=blob:none", "--branch=stable",
+    "https://github.com/folke/lazy.nvim.git", lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- リーダーはプラグイン読込前に設定
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+require("lazy").setup({
+  spec = { { import = "plugins" } },
+  install = { colorscheme = { "habamax" } },
+  checker = { enabled = true, notify = false },
+})

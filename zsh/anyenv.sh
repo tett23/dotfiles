@@ -1,9 +1,1 @@
-# python
-if [ -d "$PYENV_ROOT" ]; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
-  export PATH="$PYENV_ROOT/shims:$PATH"
-  eval "$(pyenv init --path)"
-  eval "$(pyenv init -)"
-fi
-
+# python は mise で管理 (pyenv/anyenv は廃止 -> zshrc の `mise activate` を参照)

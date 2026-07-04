@@ -14,6 +14,9 @@ if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
   . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 fi
 
+# mise: dotfiles 実体へ symlink した設定を無条件に信頼する (別マシンでの `mise trust` を不要にする)
+export MISE_TRUSTED_CONFIG_PATHS="$HOME/dotfiles/mise:$HOME/.config/mise"
+
 export PATH="/bin:$PATH"
 export PATH="/sbin:$PATH"
 export PATH="/usr/bin:$PATH"
@@ -42,14 +45,19 @@ if test "$(uname -s)" = "Darwin" ; then
   # export DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib:$DYLD_FALLBACK_LIBRARY_PATH;
   # export LIBRARY_PATH=$LIBRARY_PATH:$(brew --prefix zstd)/lib
 
-  export LDFLAGS="$LDFLAGS -L/usr/local/opt/openssl@3/lib"
-  export CPPFLAGS="$CPPFLAGS -I/usr/local/opt/openssl@3/include"
+  # Apple Silicon の homebrew prefix を使う (旧: /usr/local は Intel 用で存在しない)
+  export LDFLAGS="$LDFLAGS -L/opt/homebrew/opt/openssl@3/lib"
+  export CPPFLAGS="$CPPFLAGS -I/opt/homebrew/opt/openssl@3/include"
 
   export PATH="/opt/homebrew/opt/openssl@3/bin:$PATH"
-  export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+  # NOTE: homebrew LLVM の clang を PATH 先頭に置くと -lSystem を解決できずビルドが壊れるため無効化。
+  # 必要なときだけ明示的に PATH に足す: export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
   export PATH="/opt/homebrew/opt/gawk/libexec/gnubin:$PATH"
   export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
+
+# home-manager / nix profile を Homebrew より優先させる
+export PATH="$HOME/.nix-profile/bin:$PATH"
 
 # GCP
 if [[ -x `which gcloud` ]]; then

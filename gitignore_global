@@ -11,9 +11,7 @@ rdoc
 spec/reports
 test/tmp
 test/version_tmp
-vender/bundle
-.ruby-lsp/
-
+vender/bundle .ruby-lsp/
 # YARD artifacts
 .yardoc
 _yardoc
@@ -105,3 +103,5 @@ classes/
 .dotty-ide.json
 
 **/.claude/settings.local.json
+
+tmux-client-*

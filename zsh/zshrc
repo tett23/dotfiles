@@ -20,6 +20,11 @@ source $DOTFILES/zsh/langs/swift.sh
 source $DOTFILES/zsh/langs/haskell.sh
 source $DOTFILES/zsh/langs/scala.sh
 
+# 言語/ツールは mise で一元管理。langs/* の後に activate して shims を最優先にする
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
+
 source $DOTFILES/zsh/plugins.sh
 
 ## load user .zshrc configuration file

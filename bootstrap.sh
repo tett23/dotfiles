@@ -26,6 +26,24 @@ load_nix_env() {
   fi
 }
 
+# 0. Xcode Command Line Tools のインストール (未導入のときだけ)
+ensure_xcode_clt() {
+  if xcode-select -p >/dev/null 2>&1; then
+    log "Xcode Command Line Tools はインストール済み"
+    return
+  fi
+
+  log "Xcode Command Line Tools が見つからないためインストールします"
+  xcode-select --install || true
+
+  # GUI インストーラの完了を待つ
+  until xcode-select -p >/dev/null 2>&1; do
+    log "Xcode Command Line Tools のインストール完了を待機中... (完了したら Enter)"
+    read -r _
+  done
+  log "Xcode Command Line Tools をインストールしました"
+}
+
 # 1. Nix のインストール (未導入のときだけ)
 ensure_nix() {
   load_nix_env
@@ -61,6 +79,7 @@ apply_darwin() {
 
 main() {
   log "bootstrap 開始 (flake: ${FLAKE_DIR}, host: ${HOSTNAME_TARGET})"
+  ensure_xcode_clt
   ensure_nix
   apply_darwin
   log "完了しました。新しいシェルを開くと反映されます。"

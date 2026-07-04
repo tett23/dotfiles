@@ -1,1 +1,57 @@
--- vim.opt / エディタ基本設定
+-- vim.opt / エディタ基本設定 (vim/common.vim から移植)
+local opt = vim.opt
+
+-- エンコーディング
+opt.encoding = "utf-8"
+opt.fileencodings = "utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932"
+
+-- 表示
+opt.number = true
+opt.showmode = true
+opt.title = true
+opt.ruler = true
+opt.showcmd = true
+opt.showmatch = true
+opt.laststatus = 3 -- グローバルステータスライン (lualine)
+opt.wildmenu = true
+opt.cursorline = true
+opt.list = true
+opt.listchars = { tab = ">-", trail = "_", nbsp = "+" }
+opt.display:append("lastline")
+
+-- ファイル (旧: nobackup / noswapfile)
+opt.backup = false
+opt.swapfile = false
+
+-- インデント
+opt.smartindent = true
+opt.tabstop = 2
+opt.shiftwidth = 2
+opt.expandtab = true
+
+-- 検索
+opt.ignorecase = true
+opt.smartcase = true
+opt.wrapscan = true
+opt.hlsearch = false
+opt.incsearch = true
+
+-- タグ
+opt.tags = "tags"
+
+-- ベル
+opt.errorbells = false
+opt.visualbell = false
+
+-- クリップボード共有 / マウス
+opt.clipboard = "unnamed"
+opt.mouse = "a"
+
+-- 整形: デフォルトを壊さず自動改行(t)のみ無効化 (旧 formatoptions=q のバグ回避)
+opt.formatoptions:remove("t")
+
+-- grep に ripgrep を使用 (旧 grepprg のコマンド欠落バグを修正)
+if vim.fn.executable("rg") == 1 then
+  opt.grepprg = "rg --vimgrep --no-heading --smart-case"
+  opt.grepformat = "%f:%l:%c:%m"
+end
