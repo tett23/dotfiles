@@ -200,7 +200,7 @@ bindkey "^g" repo
 zle -N fbr
 bindkey "^b" fbr
 zle -N fzf_command_finder
-bindkey "^b" fzf_command_finder
+bindkey "^," fzf_command_finder
 export FZF_CTRL_T_COMMAND=find
 zle -N fkill
 bindkey "^k" fkill
