@@ -16,13 +16,6 @@ return {
       require("nvim-tree").setup({
         view = { width = 40 }, -- デフォルト30から10広げる
       })
-      -- 起動時にファイラを自動で開き、フォーカスは編集ウィンドウに戻す
-      vim.api.nvim_create_autocmd("VimEnter", {
-        callback = function()
-          require("nvim-tree.api").tree.open()
-          vim.cmd("wincmd p")
-        end,
-      })
     end,
   },
 }

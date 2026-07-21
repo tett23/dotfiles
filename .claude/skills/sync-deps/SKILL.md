@@ -1,0 +1,106 @@
+---
+name: sync-deps
+description: dependencies.md を一次ソースとして Nix (flake.nix) と mise (mise/config.toml) の依存を同期・適用・アップデートする。ユーザーが「依存をセットアップして」「dependencies.md を反映して」「パッケージをアップデートして」「nix / mise を更新して」と言ったとき、または dependencies.md を編集した後に必ずこのスキルを使う。セットアップ済みで差分がない場合はパッケージのアップデートを行う。
+---
+
+# sync-deps
+
+`dependencies.md` が依存の一次ソース。`flake.nix`(CLI + Casks)と
+`mise/config.toml`(言語・ツール)がその実装。このスキルは
+一次ソースと実装の差分を同期し、システムに適用する。
+
+パスはすべて dotfiles リポジトリのルート(このスキルの 2 つ上の階層)からの相対。
+
+## 名前マッピング
+
+dependencies.md の名前と実装側の名前は一致しないものがある。
+既知のマッピング:
+
+| dependencies.md | 実装 |
+|---|---|
+| `rg` | `pkgs.ripgrep` |
+| `nvim` | `pkgs.neovim` |
+| `awscli` | `pkgs.awscli2` |
+| `sed` / `awk` / `make` | `pkgs.gnused` / `pkgs.gawk` / `pkgs.gnumake`(GNU 版指定のため) |
+| `claude-code` | `pkgs.claude-code`(claude-code overlay 由来) |
+| `docker`(cask) | `"docker-desktop"`(旧 cask 名からリネーム済み) |
+| `haskell`(mise) | `ghc` + `cabal` の 2 エントリに展開 |
+
+未知のパッケージが出てきたら `nix search nixpkgs <name>` で attr 名を
+確認してから追加する。見つからない場合は勝手に近い名前で代用せず、
+ユーザーに確認する。
+
+## 手順
+
+### 1. 差分検出
+
+`dependencies.md`、`flake.nix`、`mise/config.toml` を読み、
+マッピングを考慮して 3 つのリストを突き合わせる:
+
+- **CLI** → `flake.nix` の `home.packages`
+- **Casks** → `flake.nix` の `homebrew.casks`
+- **言語・ツール** → `mise/config.toml` の `[tools]`(バージョンは `"latest"`)
+
+### 2. 同期
+
+- 足りないものは追加する。
+- 実装側にあって dependencies.md にないものは**勝手に削除しない**。
+  削除候補として提示し、ユーザーの承認を得てから消す。
+
+### 3. 適用
+
+変更した範囲だけ適用する:
+
+- **mise**: `mise install` (新規追加時)
+- **CLI のみの変更**: sudo 不要の home-manager で適用
+  ```bash
+  nix run home-manager -- switch --flake .#tett23
+  ```
+  (`home-manager` コマンドが PATH にあればそれを直接使う)
+- **Casks の変更を含む**: `darwin-rebuild switch` が必要で sudo を要する。
+  自分では実行せず、ユーザーにこのコマンドの実行を提案する:
+  ```
+  ! sudo darwin-rebuild switch --flake ~/dotfiles#dione
+  ```
+
+### 4. アップデート(差分がなかった場合)
+
+セットアップ済みで同期差分がない場合はアップデートを行う:
+
+```bash
+nix flake update          # flake.lock を更新
+nix run home-manager -- switch --flake .#tett23
+mise up                   # mise 管理のツールを latest に
+```
+
+Casks も更新したい場合は上記の `darwin-rebuild switch` をユーザーに提案する
+(`homebrew.onActivation` が upgrade を担う)。
+
+### 5. 検証
+
+適用後に実際にコマンドが引けることを確認する:
+
+```bash
+command -v <追加したコマンド>
+mise ls --current
+```
+
+## 初回セットアップ(nix が無い場合)
+
+`command -v nix` が失敗する場合は初回セットアップ。`bootstrap.sh` が
+Nix インストール → nix-darwin 適用まで冪等に行うが、対話入力
+(Xcode CLT の完了待ち・sudo)を含むためユーザーに実行を提案する:
+
+```
+! ./bootstrap.sh
+```
+
+## 注意
+
+- `flake.nix` の構造(overlay、nix-homebrew、home-manager モジュール)は
+  変更しない。触るのは `home.packages` と `homebrew.casks` のリストだけ。
+- `mise/config.toml` のバージョンは常に `"latest"`。特定バージョンへの
+  固定を求められた場合のみ例外。
+- 適用まで完了したら、変更ファイル(`flake.nix`, `flake.lock`,
+  `mise/config.toml`)の diff を要約して報告する。コミットは求められた
+  場合のみ。

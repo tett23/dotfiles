@@ -9,13 +9,13 @@ hostname は dione にしてください。
 以下のコマンドをインストールしてください。
 sed, awk, make は GNU のものを利用してください。
 
-claude-code git curl fzf ghq tmux nvim direnv jq eza bat fd rg mise awscli sed awk make sqlite gh textlint
+claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat fd rg mise awscli sed awk make sqlite gh textlint
 
 ## Install Casks
 
 以下のアプリケーションを nix-darwin 経由でインストールしてください
 
-aquaskk docker ghostty claude
+aquaskk docker ghostty claude codex
 
 # mise languages and tools dependencies
 
@@ -28,4 +28,4 @@ node python ruby go rust deno bun haskell
 
 ## Install tools
 
-yarn pnpm shfmt biome
+yarn pnpm shfmt biomeskill-creator

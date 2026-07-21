@@ -36,6 +36,7 @@
 
         home.packages = [
           pkgs.claude-code
+          pkgs.codex   # codex-cli
           pkgs.git
           pkgs.curl
           pkgs.fzf
@@ -55,8 +56,6 @@
           pkgs.gnumake  # GNU make
           pkgs.sqlite
           pkgs.gh
-          pkgs.bun
-          pkgs.deno
           pkgs.textlint
         ];
 
@@ -98,6 +97,7 @@
                 "docker-desktop"  # 旧 "docker" cask からリネーム
                 "ghostty"
                 "claude"
+                "codex"
               ];
             };
           })
