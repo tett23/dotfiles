@@ -3,14 +3,13 @@ function figbe() {
 }
 
 function figsh() {
-  # docker-compose run --rm $1 bash
-  docker-compose run --rm $1 sh
+  docker compose run --rm $1 sh
 }
 
-# 不要なimageであまりにディスクを圧迫した場合などに便利です。
-# ただ、ローカルでforkwellの全てのimage, volumeやcontainerが削除されますので使用にはご注意を
+# 不要な image / volume がディスクを圧迫した場合の掃除用。
+# compose を停止して未使用の image / volume を prune する (volume は確認なしで消えるので注意)
 function remove_all_images_and_containers() {
-  docker-compose down
+  docker compose down
   docker image prune
   docker volume prune -f
 }
