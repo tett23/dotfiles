@@ -8,16 +8,10 @@ source $DOTFILES/zsh/prompt.sh
 source $DOTFILES/zsh/fzf.sh
 source $DOTFILES/zsh/modern-commands.sh
 source $DOTFILES/zsh/anyenv.sh
-source $DOTFILES/zsh/completions.sh
 source $DOTFILES/zsh/docker.sh
-source $DOTFILES/zsh/langs/rust.sh
-source $DOTFILES/zsh/langs/js.sh
-source $DOTFILES/zsh/langs/deno.sh
-source $DOTFILES/zsh/langs/bun.sh
 source $DOTFILES/zsh/langs/go.sh
 source $DOTFILES/zsh/langs/ruby.sh
 source $DOTFILES/zsh/langs/swift.sh
-source $DOTFILES/zsh/langs/haskell.sh
 source $DOTFILES/zsh/langs/scala.sh
 
 # 言語/ツールは mise で一元管理。langs/* の後に activate して shims を最優先にする
@@ -26,9 +20,12 @@ if command -v mise >/dev/null 2>&1; then
 fi
 
 source $DOTFILES/zsh/plugins.sh
+# compinit はプラグインの fpath 追加より後に実行する
+source $DOTFILES/zsh/completions.sh
 
 ## load user .zshrc configuration file
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
 
-eval "$(direnv hook zsh)"
-
+if command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+fi

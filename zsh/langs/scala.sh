@@ -1,1 +1,1 @@
-export PATH="$PATH:$HOME/Library/Application Support/Coursier/bin:$HOME"
+export PATH="$PATH:$HOME/Library/Application Support/Coursier/bin"

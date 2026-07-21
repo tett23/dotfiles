@@ -26,8 +26,8 @@ setopt nolistbeep
 #
 # vim like keybind
 #
-if [[ -v $VIMRUNTIME ]]; then
-else
+# vim/nvim 内の :terminal では vi キーバインドにしない
+if [[ ! -v VIMRUNTIME ]]; then
   bindkey -v
 fi
 
