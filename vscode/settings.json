@@ -345,5 +345,9 @@
   },
   "[scala]": {
     "editor.defaultFormatter": "scalameta.metals"
+  },
+
+  "[python]": {
+    "editor.wrappingIndent": "deepIndent"
   }
 }

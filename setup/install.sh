@@ -42,3 +42,4 @@ ln -nsf $DOTFILES/eskk $XDG_CONFIG_HOME/eskk
 # Claude Code の設定ファイル (実行時データ projects/ sessions/ 等は対象外)
 mkdir -p $HOME/.claude
 ln -nsf $DOTFILES/claude/settings.json $HOME/.claude/settings.json
+ln -nsf $DOTFILES/CLAUDE.md $HOME/CLAUDE.md

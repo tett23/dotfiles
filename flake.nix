@@ -57,6 +57,7 @@
           pkgs.sqlite
           pkgs.gh
           pkgs.textlint
+          pkgs.delta   # git pager (gitconfig で使用)
         ];
 
         programs.home-manager.enable = true;

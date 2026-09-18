@@ -1,0 +1,331 @@
+#!/usr/bin/env bash
+# orch — 司令塔(Claude)から codex exec / claude -p へバッチ委譲する一時的な配管ツール
+#
+# 設計方針:
+#   - 委譲は使い捨てのバッチプロセス (codex exec / claude -p)。対話 REPL への send-keys はしない
+#   - 完了シグナル (tmux wait-for -S) は LLM ではなく外側シェルがプロセス終了時に撃つ
+#   - 真実は結果ファイル。シグナルは待ち時間短縮の最適化にすぎない
+#   - 全待機にタイムアウト。wait はスライス待機で、シグナル空振り時もファイル確認で復帰する
+#   - 実装係は git worktree (orch/<role> ブランチ) に隔離。.orch/ は .git/info/exclude で不可視化
+#
+# 使い方:
+#   orch init                                     セッションを初期化 (.orch/ を作成)
+#   orch spawn --role <R> --model <M> [--worktree] [--prompt-file <F>]
+#                                                 委譲先を起動。プロンプトは --prompt-file か stdin
+#   orch list                                     全ロールの状態を表示
+#   orch wait --role <R> [--timeout <sec>]        完了を待つ (既定900秒。タイムアウトは exit 124)
+#   orch wait-all [--timeout <sec>]               未完了の全ロールを待つ
+#   orch collect --role <R>                       結果 (output) を stdout に出す
+#   orch cleanup (--role <R> | --all)             ウィンドウ/worktree/状態ファイルを片付ける
+#   orch help                                     このヘルプを表示
+#
+# モデル指定 (--model, 大文字小文字非区別):
+#   opus / sonnet / haiku / fable   Claude CLI + 釘付け版 (ORCH_MODEL_<別名> で上書き可)
+#   sol                             Codex CLI + gpt-5.6-sol (推定値。ORCH_MODEL_SOL で上書き可)
+#   claude / codex                  その CLI の既定モデル (--model フラグを付けない)
+#   claude-* / gpt-* / codex-*      完全な識別子はそのまま素通しし接頭辞で CLI を判定
+#   上記以外                        エラー (この表に一行足すこと)
+#
+# 環境変数:
+#   CODEX_EXEC_FLAGS   codex exec の追加フラグ (既定: --sandbox workspace-write)
+#   CLAUDE_P_FLAGS     claude -p の追加フラグ (既定: なし)
+#   ORCH_MODEL_OPUS / _SONNET / _HAIKU / _FABLE / _SOL   別名の展開先を上書き
+#
+# 使用例 (司令塔の SKILL から):
+#   orch init
+#   printf '%s\n' "仕様..." | orch spawn --role impl-1 --model sol --worktree
+#   orch wait --role impl-1 --timeout 900   # Bash tool の run_in_background で張る
+#   orch collect --role impl-1              # 差分をレビューしてから統合判断
+set -u
+
+ORCH_DIR=".orch"
+
+die() { printf 'orch: %s\n' "$*" >&2; exit 1; }
+
+usage() {
+  # ヘッダコメント (2行目からコメントが途切れるまで) をそのまま出す
+  sed -n '2,/^[^#]/p' "$0" | sed -n 's/^# \{0,1\}//p'
+}
+
+repo_root() {
+  git rev-parse --show-toplevel 2>/dev/null || die "git リポジトリの中で実行してください"
+}
+
+require_session() {
+  [ -f "$ORCH_DIR/session" ] || die "セッションがありません。先に 'orch init' を実行してください"
+  SID=$(cat "$ORCH_DIR/session")
+}
+
+role_dir()  { printf '%s/roles/%s' "$ORCH_DIR" "$1"; }
+chan_name() { printf 'orch-%s-%s' "$SID" "$1"; }
+
+# --- モデル解決 -------------------------------------------------------------
+# resolve_model <名前> → KIND (claude|codex) と MODEL (空なら CLI 既定) を設定
+resolve_model() {
+  local name="$1" lower
+  lower=$(printf '%s' "$name" | tr '[:upper:]' '[:lower:]')
+  case "$lower" in
+    opus)   KIND=claude MODEL="${ORCH_MODEL_OPUS:-claude-opus-4-8}" ;;
+    sonnet) KIND=claude MODEL="${ORCH_MODEL_SONNET:-claude-sonnet-5}" ;;
+    haiku)  KIND=claude MODEL="${ORCH_MODEL_HAIKU:-claude-haiku-4-5-20251001}" ;;
+    fable)  KIND=claude MODEL="${ORCH_MODEL_FABLE:-claude-fable-5}" ;;
+    sol)    KIND=codex  MODEL="${ORCH_MODEL_SOL:-gpt-5.6-sol}" ;;
+    claude) KIND=claude MODEL="" ;;
+    codex)  KIND=codex  MODEL="" ;;
+    claude-*)        KIND=claude MODEL="$name" ;;
+    gpt-*|codex-*)   KIND=codex  MODEL="$name" ;;
+    *) die "モデル '$name' の所属を判定できません。orch の resolve_model の表に追加してください" ;;
+  esac
+}
+
+# --- サブコマンド -----------------------------------------------------------
+
+cmd_init() {
+  local root exclude
+  root=$(repo_root)
+  cd "$root" || die "cd failed: $root"
+  mkdir -p "$ORCH_DIR/roles" "$ORCH_DIR/worktrees"
+  if [ ! -f "$ORCH_DIR/session" ]; then
+    printf '%s\n' "$(date +%Y%m%d%H%M%S)-$$" > "$ORCH_DIR/session"
+  fi
+  # .orch/ を親リポジトリの status から不可視化 (共有リポジトリを汚さないローカル限定 exclude)
+  exclude="$(git rev-parse --git-common-dir)/info/exclude"
+  mkdir -p "$(dirname "$exclude")"
+  grep -qx '\.orch/' "$exclude" 2>/dev/null || printf '.orch/\n' >> "$exclude"
+  printf 'orch: initialized (session %s)\n' "$(cat "$ORCH_DIR/session")"
+}
+
+cmd_spawn() {
+  local role="" model="" use_worktree=0 prompt_file="" root rdir workdir launch
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --role)        role="${2:-}"; shift 2 ;;
+      --model)       model="${2:-}"; shift 2 ;;
+      --worktree)    use_worktree=1; shift ;;
+      --prompt-file) prompt_file="${2:-}"; shift 2 ;;
+      *) die "spawn: 不明な引数 '$1'" ;;
+    esac
+  done
+  [ -n "$role" ]  || die "spawn: --role は必須です"
+  [ -n "$model" ] || die "spawn: --model は必須です (claude / codex で CLI 既定モデル)"
+  case "$role" in (*[!a-zA-Z0-9_-]*) die "spawn: role は [a-zA-Z0-9_-] のみ: '$role'" ;; esac
+
+  root=$(repo_root); cd "$root" || die "cd failed: $root"
+  require_session
+  resolve_model "$model"
+  command -v "$KIND" >/dev/null 2>&1 || die "spawn: '$KIND' CLI が見つかりません"
+  command -v tmux    >/dev/null 2>&1 || die "spawn: tmux が見つかりません"
+
+  rdir=$(role_dir "$role")
+  [ -f "$rdir/status" ] && die "spawn: role '$role' は完了済みです。再利用する前に 'orch cleanup --role $role' を"
+  [ -d "$rdir" ] && die "spawn: role '$role' は実行中です"
+  mkdir -p "$rdir"
+
+  # プロンプト: --prompt-file か stdin
+  if [ -n "$prompt_file" ]; then
+    [ -f "$prompt_file" ] || die "spawn: プロンプトファイルがありません: $prompt_file"
+    cp "$prompt_file" "$rdir/prompt"
+  elif [ ! -t 0 ]; then
+    cat > "$rdir/prompt"
+  else
+    die "spawn: プロンプトを --prompt-file か stdin で渡してください"
+  fi
+
+  # worktree 隔離 (ブランチ orch/<role>)
+  workdir="$root"
+  if [ "$use_worktree" = 1 ]; then
+    git worktree add "$ORCH_DIR/worktrees/$role" -b "orch/$role" >/dev/null 2>"$rdir/log" \
+      || die "spawn: worktree 作成に失敗 (branch orch/$role が残っていないか確認)。詳細: $rdir/log"
+    workdir="$root/$ORCH_DIR/worktrees/$role"
+  fi
+
+  # ランナー生成: CLI 終了 → status 書き込み → シグナル、の順序を外側シェルが保証する
+  case "$KIND" in
+    codex)
+      launch="codex exec${MODEL:+ --model $(printf '%q' "$MODEL")} ${CODEX_EXEC_FLAGS:---sandbox workspace-write} -C $(printf '%q' "$workdir") --output-last-message $(printf '%q' "$root/$rdir/output") - < $(printf '%q' "$root/$rdir/prompt") >> $(printf '%q' "$root/$rdir/log") 2>&1"
+      ;;
+    claude)
+      launch="cd $(printf '%q' "$workdir") && claude -p${MODEL:+ --model $(printf '%q' "$MODEL")} ${CLAUDE_P_FLAGS:-} < $(printf '%q' "$root/$rdir/prompt") > $(printf '%q' "$root/$rdir/output") 2>> $(printf '%q' "$root/$rdir/log")"
+      ;;
+  esac
+  {
+    printf '#!/usr/bin/env bash\n'
+    printf '%s\n' "$launch"
+    printf 'rc=$?\n'
+    printf 'echo "$rc" > %q\n' "$root/$rdir/status"
+    printf 'tmux wait-for -S %q 2>/dev/null || true\n' "$(chan_name "$role")"
+    printf 'exit "$rc"\n'
+  } > "$rdir/run.sh"
+  chmod +x "$rdir/run.sh"
+
+  {
+    printf 'KIND=%s\n' "$KIND"
+    printf 'MODEL=%s\n' "${MODEL:-<cli-default>}"
+    printf 'WORKTREE=%s\n' "$([ "$use_worktree" = 1 ] && printf '%s' "$ORCH_DIR/worktrees/$role" || printf none)"
+  } > "$rdir/meta"
+
+  if [ -n "${TMUX:-}" ]; then
+    tmux new-window -d -n "$role" "bash $(printf '%q' "$root/$rdir/run.sh")"
+  else
+    tmux new-session -d -s "orch-$SID" 2>/dev/null || true
+    tmux new-window -d -t "orch-$SID" -n "$role" "bash $(printf '%q' "$root/$rdir/run.sh")"
+  fi
+  printf 'orch: spawned %s (%s%s)%s\n' "$role" "$KIND" "${MODEL:+ $MODEL}" \
+    "$([ "$use_worktree" = 1 ] && printf ' [worktree orch/%s]' "$role")"
+}
+
+cmd_list() {
+  local root d role status
+  root=$(repo_root); cd "$root" || die "cd failed: $root"
+  require_session
+  for d in "$ORCH_DIR/roles"/*/; do
+    [ -d "$d" ] || { printf 'orch: ロールはありません\n'; return 0; }
+    role=$(basename "$d")
+    if [ -f "$d/status" ]; then
+      status="done (exit $(cat "$d/status"))"
+    else
+      status="running"
+    fi
+    printf '%-16s %-20s %s\n' "$role" "$status" "$(tr '\n' ' ' < "$d/meta" 2>/dev/null)"
+  done
+}
+
+# wait_one <role> <deadline_epoch> → 0=完了 / 124=タイムアウト
+# 真実はファイル。tmux wait-for は背景で張るだけの最適化で、1秒刻みのファイル確認が主経路。
+# (この環境に timeout(1) が無いため、スライスは純 bash で実装している)
+wait_one() {
+  local role="$1" deadline="$2" rdir waiter_pid=""
+  rdir=$(role_dir "$role")
+  [ -d "$rdir" ] || die "wait: role '$role' がありません"
+  [ -f "$rdir/status" ] && return 0
+  if command -v tmux >/dev/null 2>&1 && tmux info >/dev/null 2>&1; then
+    tmux wait-for "$(chan_name "$role")" >/dev/null 2>&1 &
+    waiter_pid=$!
+  fi
+  while [ ! -f "$rdir/status" ]; do
+    if [ "$(date +%s)" -ge "$deadline" ]; then
+      [ -n "$waiter_pid" ] && kill "$waiter_pid" 2>/dev/null
+      return 124
+    fi
+    sleep 1
+  done
+  [ -n "$waiter_pid" ] && kill "$waiter_pid" 2>/dev/null
+  return 0
+}
+
+cmd_wait() {
+  local role="" timeout=900 root rc
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --role)    role="${2:-}"; shift 2 ;;
+      --timeout) timeout="${2:-}"; shift 2 ;;
+      *) die "wait: 不明な引数 '$1'" ;;
+    esac
+  done
+  [ -n "$role" ] || die "wait: --role は必須です"
+  root=$(repo_root); cd "$root" || die "cd failed: $root"
+  require_session
+  if wait_one "$role" "$(( $(date +%s) + timeout ))"; then
+    rc=$(cat "$(role_dir "$role")/status")
+    printf 'orch: %s done (exit %s)\n' "$role" "$rc"
+  else
+    printf 'orch: %s timeout (%ss)\n' "$role" "$timeout" >&2
+    exit 124
+  fi
+}
+
+cmd_wait_all() {
+  local timeout=900 root deadline d role failed=0
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --timeout) timeout="${2:-}"; shift 2 ;;
+      *) die "wait-all: 不明な引数 '$1'" ;;
+    esac
+  done
+  root=$(repo_root); cd "$root" || die "cd failed: $root"
+  require_session
+  deadline=$(( $(date +%s) + timeout ))
+  for d in "$ORCH_DIR/roles"/*/; do
+    [ -d "$d" ] || continue
+    role=$(basename "$d")
+    if wait_one "$role" "$deadline"; then
+      printf 'orch: %s done (exit %s)\n' "$role" "$(cat "$d/status")"
+    else
+      printf 'orch: %s timeout\n' "$role" >&2
+      failed=124
+    fi
+  done
+  exit "$failed"
+}
+
+cmd_collect() {
+  local role="" root rdir rc
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --role) role="${2:-}"; shift 2 ;;
+      *) die "collect: 不明な引数 '$1'" ;;
+    esac
+  done
+  [ -n "$role" ] || die "collect: --role は必須です"
+  root=$(repo_root); cd "$root" || die "cd failed: $root"
+  rdir=$(role_dir "$role")
+  [ -d "$rdir" ] || die "collect: role '$role' がありません"
+  [ -f "$rdir/status" ] || die "collect: role '$role' は未完了です ('orch wait --role $role' で待つ)"
+  rc=$(cat "$rdir/status")
+  [ "$rc" = 0 ] || printf 'orch: 警告: %s は exit %s で終了 (ログ: %s/log)\n' "$role" "$rc" "$rdir" >&2
+  [ -f "$rdir/output" ] || die "collect: output がありません (ログ: $rdir/log)"
+  cat "$rdir/output"
+}
+
+cleanup_role() {
+  local role="$1" rdir
+  rdir=$(role_dir "$role")
+  [ -d "$rdir" ] || die "cleanup: role '$role' がありません"
+  tmux kill-window -t "$role" 2>/dev/null || true
+  if [ -d "$ORCH_DIR/worktrees/$role" ]; then
+    git worktree remove --force "$ORCH_DIR/worktrees/$role" 2>/dev/null \
+      || rm -rf "$ORCH_DIR/worktrees/$role"
+    printf 'orch: worktree を削除しました。ブランチ orch/%s は残っています (不要なら git branch -D orch/%s)\n' "$role" "$role"
+  fi
+  rm -rf "$rdir"
+  printf 'orch: cleaned %s\n' "$role"
+}
+
+cmd_cleanup() {
+  local role="" all=0 root d
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --role) role="${2:-}"; shift 2 ;;
+      --all)  all=1; shift ;;
+      *) die "cleanup: 不明な引数 '$1'" ;;
+    esac
+  done
+  root=$(repo_root); cd "$root" || die "cd failed: $root"
+  require_session
+  if [ "$all" = 1 ]; then
+    for d in "$ORCH_DIR/roles"/*/; do
+      [ -d "$d" ] || continue
+      cleanup_role "$(basename "$d")"
+    done
+    tmux kill-session -t "orch-$SID" 2>/dev/null || true
+    rm -rf "$ORCH_DIR"
+    printf 'orch: セッションを削除しました\n'
+  elif [ -n "$role" ]; then
+    cleanup_role "$role"
+  else
+    die "cleanup: --role <R> か --all を指定してください"
+  fi
+}
+
+# --- ディスパッチ -----------------------------------------------------------
+case "${1:-help}" in
+  init)     shift; cmd_init "$@" ;;
+  spawn)    shift; cmd_spawn "$@" ;;
+  list)     shift; cmd_list "$@" ;;
+  wait)     shift; cmd_wait "$@" ;;
+  wait-all) shift; cmd_wait_all "$@" ;;
+  collect)  shift; cmd_collect "$@" ;;
+  cleanup)  shift; cmd_cleanup "$@" ;;
+  help|-h|--help) usage ;;
+  *) die "不明なサブコマンド '$1' ('orch help' で使い方を表示)" ;;
+esac
