@@ -18,7 +18,8 @@ ln -nsf $DOTFILES/tmux/tmux.conf $HOME/.tmux.conf
 ln -nsf $DOTFILES/exenv $HOME/.exenv
 ln -nsf $DOTFILES/rubocop.yml $HOME/.rubocop.yml
 
-ln -nsf $DOTFILES/vscode/settings.json "$HOME/Library/Application Support/Code/User/settings.json"
+mkdir -p "$HOME/Library/Application Support/Code/User"
+ln -nsf $DOTFILES/vscode/settings.json"$HOME/Library/Application Support/Code/User/settings.json"
 ln -nsf $DOTFILES/vscode/keybindings.json "$HOME/Library/Application Support/Code/User/keybindings.json"
 ln -nsf $DOTFILES/vscode/snippets "$HOME/Library/Application Support/Code/User/snippets"
 
