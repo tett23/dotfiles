@@ -4,7 +4,7 @@ source $DOTFILES/zsh/exports.sh
 source $DOTFILES/zsh/common.sh
 source $DOTFILES/zsh/aliases.sh
 source $DOTFILES/zsh/prompt.sh
-[ -f ~/.fzf.zsh ] && source $HOME/.fzf.zsh
+command -v fzf >/dev/null && source <(fzf --zsh)  # キーバインド・補完 (docs/adr/0002)
 source $DOTFILES/zsh/fzf.sh
 source $DOTFILES/zsh/modern-commands.sh
 source $DOTFILES/zsh/anyenv.sh

@@ -201,7 +201,6 @@ zle -N fbr
 bindkey "^b" fbr
 zle -N fzf_command_finder
 bindkey "^," fzf_command_finder
-export FZF_CTRL_T_COMMAND=find
 zle -N fkill
 bindkey "^k" fkill
 bindkey "^p" fzf-file-widget
@@ -210,4 +209,6 @@ bindkey "^f" select_git_status_items
 
 # fzf
 export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
-# export FZF_DEFAULT_COMMAND='ag -g ""'
+# ファイル検索は fd (macOS の BSD find は引数なしで失敗する。docs/adr/0002 参照)
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
