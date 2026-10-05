@@ -1,0 +1,9 @@
+{
+  "name": "usage-hint",
+  "version": "0.1.0",
+  "description": "入力欄の下に 5h / 週 / Fable の上限とコンテキスト使用率を % で表示する",
+  "types": "./types/index.d.ts",
+  "author": {
+    "name": "tett23"
+  }
+}
