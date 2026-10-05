@@ -1,8 +1,14 @@
 import { atom, read, update } from 'claude-code'
-import type { Register, SessionContextUsage, SessionRateLimit } from 'claude-code'
+import type {
+  Register,
+  RenderElement,
+  SessionContextUsage,
+  SessionRateLimit,
+} from 'claude-code'
 
 import type { Snapshot } from '../types'
-import { formatUsage } from './format'
+import type { Segment } from './format'
+import { SEPARATOR, usageSegments } from './format'
 
 const EMPTY: Snapshot = { contextPercent: null, rateLimits: [] }
 
@@ -19,6 +25,15 @@ const toSnapshot = (
     resetsAt,
   })),
 })
+
+// 75% を超えた項目は黄色、それ以外は dim (docs/adr/0005)
+const toText =
+  (Text: (props: { color?: string; dimColor?: boolean; children: string }) => RenderElement) =>
+  ({ text, isWarning }: Segment): RenderElement =>
+    isWarning ? <Text color="yellow">{text}</Text> : <Text dimColor>{text}</Text>
+
+const interleave = <T,>(items: readonly T[], separator: T): T[] =>
+  items.flatMap((item, index) => (index === 0 ? [item] : [separator, item]))
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -58,14 +73,20 @@ export const register: Register = on => {
     }
   })
 
-  // terminal: 入力欄の下のヒント行に tail で追記する (既存のピルは残る)
+  // terminal: 項目ごとに色を付けるため tail ではなくヒント行ごと描く (docs/adr/0005)
   on('ui.render', { component: 'PromptHint' }, async ($, e, next) => {
     if (e.surface !== 'terminal') {
       return next(e)
     }
-    const tail = formatUsage(await read($, snapshot))
+    const { Box, Text } = $.ui.resolve(e)
+    const segments = usageSegments(await read($, snapshot))
+    const hint = e.props.hint === '' ? [] : [<Text dimColor>{e.props.hint}</Text>]
 
-    return next({ ...e, props: { ...e.props, tail } })
+    return (
+      <Box flexDirection="row">
+        {interleave([...hint, ...segments.map(toText(Text))], <Text dimColor>{SEPARATOR}</Text>)}
+      </Box>
+    )
   })
 
   // desktop は PromptHint を描かないため、入力欄のすぐ上の帯に出す (docs/adr/0004)
@@ -73,8 +94,13 @@ export const register: Register = on => {
     if (e.surface === 'terminal' || e.props.hasSurvey) {
       return next(e)
     }
-    const { Text } = $.ui.resolve(e)
+    const { Box, Text } = $.ui.resolve(e)
+    const segments = usageSegments(await read($, snapshot))
 
-    return <Text dimColor>{formatUsage(await read($, snapshot))}</Text>
+    return (
+      <Box flexDirection="row">
+        {interleave(segments.map(toText(Text)), <Text dimColor>{SEPARATOR}</Text>)}
+      </Box>
+    )
   })
 }

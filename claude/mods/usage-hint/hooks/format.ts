@@ -1,9 +1,10 @@
 import type { Limit, Snapshot } from '../types'
 
-const SEPARATOR = ' · '
+export const SEPARATOR = ' · '
 
-const percent = (value: number | null | undefined): string =>
-  value === null || value === undefined ? '--' : `${Math.round(value)}%`
+const WARNING_PERCENT = 75
+
+export type Segment = { text: string; isWarning: boolean }
 
 const byKind =
   (kind: string) =>
@@ -17,10 +18,19 @@ export const fableLimit = (limits: readonly Limit[]): Limit | undefined =>
   limits.find(limit => limit.kind.includes('fable')) ??
   byKind('seven_day_overage_included')(limits)
 
-export const formatUsage = ({ contextPercent, rateLimits }: Snapshot): string =>
-  [
-    `5h ${percent(byKind('five_hour')(rateLimits)?.percentUsed)}`,
-    `7d ${percent(byKind('seven_day')(rateLimits)?.percentUsed)}`,
-    `Fable ${percent(fableLimit(rateLimits)?.percentUsed)}`,
-    `ctx ${percent(contextPercent)}`,
-  ].join(SEPARATOR)
+const segment = (label: string, value: number | null | undefined): Segment =>
+  value === null || value === undefined
+    ? { text: `${label} --`, isWarning: false }
+    : { text: `${label} ${Math.round(value)}%`, isWarning: value > WARNING_PERCENT }
+
+export const usageSegments = ({ contextPercent, rateLimits }: Snapshot): Segment[] => [
+  segment('5h', byKind('five_hour')(rateLimits)?.percentUsed),
+  segment('7d', byKind('seven_day')(rateLimits)?.percentUsed),
+  segment('Fable', fableLimit(rateLimits)?.percentUsed),
+  segment('ctx', contextPercent),
+]
+
+export const formatUsage = (snapshot: Snapshot): string =>
+  usageSegments(snapshot)
+    .map(({ text }) => text)
+    .join(SEPARATOR)

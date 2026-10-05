@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { fableLimit, formatUsage } from '../hooks/format'
+import { fableLimit, formatUsage, usageSegments } from '../hooks/format'
 
 describe('formatUsage', () => {
   test('4 項目を % で並べる', () => {
@@ -35,5 +35,24 @@ describe('fableLimit', () => {
 
   test('コードネームの seven_day_omelette は Fable と見なさない', () => {
     expect(fableLimit([{ kind: 'seven_day_omelette', percentUsed: 5 }])).toBeUndefined()
+  })
+})
+
+describe('usageSegments', () => {
+  test('75% を超えた項目だけ警告にする', () => {
+    const segments = usageSegments({
+      contextPercent: 75,
+      rateLimits: [
+        { kind: 'five_hour', percentUsed: 75.4 },
+        { kind: 'seven_day', percentUsed: 75.6 },
+      ],
+    })
+
+    expect(segments).toEqual([
+      { text: '5h 75%', isWarning: true },
+      { text: '7d 76%', isWarning: true },
+      { text: 'Fable --', isWarning: false },
+      { text: 'ctx 75%', isWarning: false },
+    ])
   })
 })

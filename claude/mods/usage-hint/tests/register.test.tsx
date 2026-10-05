@@ -4,12 +4,12 @@ import type { Engine } from 'claude-code/testing'
 
 const TEXT = '5h 23% · 7d 41% · Fable 12% · ctx 37%'
 
-const measure = async ($: Engine, on: On) => {
+const measure = async ($: Engine, on: On, fiveHour = 23) => {
   on('session.measure', ($, e) => ({ changed: e.changed }))
   await $.session.measure({
     context: { window: 200000, tokens: 74000, percent: 37 },
     rateLimits: [
-      { kind: 'five_hour', percentUsed: 23 },
+      { kind: 'five_hour', percentUsed: fiveHour },
       { kind: 'seven_day', percentUsed: 41 },
       { kind: 'seven_day_overage_included', percentUsed: 12 },
     ],
@@ -40,17 +40,29 @@ const BAND_PROPS = {
   bodyColumns: 80,
 } as const
 
-test('terminal: 入力欄の下のヒント行の末尾に追記する', async ($, on) => {
-  engineHint(on)
-  await measure($, on)
-  const ui = await $.ui.mount({
+const mountHint = ($: Engine) =>
+  $.ui.mount({
     plugin: 'usage-hint',
     surface: 'terminal',
     component: 'PromptHint',
     props: { isDraft: false, isWorking: false, hint: '? for shortcuts' },
   })
 
-  expect(await ui.find({ type: 'Text', text: `? for shortcuts|${TEXT}` })).toBeDefined()
+test('terminal: 入力欄の下のヒント行に、既存のヒントに続けて表示する', async ($, on) => {
+  engineHint(on)
+  await measure($, on)
+  const ui = await mountHint($)
+
+  expect((await ui.find({ type: 'Box' }))?.text).toBe(`? for shortcuts · ${TEXT}`)
+})
+
+test('terminal: 75% を超えた項目だけ黄色にする', async ($, on) => {
+  engineHint(on)
+  await measure($, on, 80)
+  const ui = await mountHint($)
+
+  expect((await ui.find({ type: 'Text', text: '5h 80%' }))?.props.color).toBe('yellow')
+  expect((await ui.find({ type: 'Text', text: '7d 41%' }))?.props.color).toBeUndefined()
 })
 
 test('terminal: 入力欄の上の帯には出さない', async ($, on) => {
@@ -76,7 +88,21 @@ test('desktop: PromptHint を描かないので入力欄のすぐ上の帯に出
     props: BAND_PROPS,
   })
 
-  expect(await ui.find({ type: 'Text', text: TEXT })).toBeDefined()
+  expect((await ui.find({ type: 'Box' }))?.text).toBe(TEXT)
+})
+
+test('desktop: 75% を超えた項目だけ黄色にする', async ($, on) => {
+  engineBand(on)
+  await measure($, on, 80)
+  const ui = await $.ui.mount({
+    plugin: 'usage-hint',
+    surface: 'desktop',
+    component: 'AbovePrompt',
+    props: BAND_PROPS,
+  })
+
+  expect((await ui.find({ type: 'Text', text: '5h 80%' }))?.props.color).toBe('yellow')
+  expect((await ui.find({ type: 'Text', text: 'ctx 37%' }))?.props.color).toBeUndefined()
 })
 
 test('desktop: アンケート表示中は帯を譲る', async ($, on) => {
