@@ -4,7 +4,7 @@ export const SEPARATOR = ' · '
 
 const WARNING_PERCENT = 75
 
-export type Segment = { text: string; isWarning: boolean }
+export type Segment = { label: string; value: string; isWarning: boolean }
 
 const byKind =
   (kind: string) =>
@@ -20,8 +20,8 @@ export const fableLimit = (limits: readonly Limit[]): Limit | undefined =>
 
 const segment = (label: string, value: number | null | undefined): Segment =>
   value === null || value === undefined
-    ? { text: `${label} --`, isWarning: false }
-    : { text: `${label} ${Math.round(value)}%`, isWarning: value > WARNING_PERCENT }
+    ? { label, value: '--', isWarning: false }
+    : { label, value: `${Math.round(value)}%`, isWarning: value > WARNING_PERCENT }
 
 export const usageSegments = ({ contextPercent, rateLimits }: Snapshot): Segment[] => [
   segment('5h', byKind('five_hour')(rateLimits)?.percentUsed),
@@ -32,5 +32,5 @@ export const usageSegments = ({ contextPercent, rateLimits }: Snapshot): Segment
 
 export const formatUsage = (snapshot: Snapshot): string =>
   usageSegments(snapshot)
-    .map(({ text }) => text)
+    .map(({ label, value }) => `${label} ${value}`)
     .join(SEPARATOR)

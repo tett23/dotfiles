@@ -105,6 +105,33 @@ test('desktop: 75% を超えた項目だけ黄色にする', async ($, on) => {
   expect((await ui.find({ type: 'Text', text: 'ctx 37%' }))?.props.color).toBeUndefined()
 })
 
+for (const surface of ['terminal', 'desktop'] as const) {
+  test(`${surface}: 項目のラベルを太字にする`, async ($, on) => {
+    engineHint(on)
+    engineBand(on)
+    await measure($, on)
+    const ui = await $.ui.mount({
+      plugin: 'usage-hint',
+      surface,
+      ...(surface === 'terminal'
+        ? {
+            component: 'PromptHint',
+            props: { isDraft: false, isWorking: false, hint: '? for shortcuts' },
+          }
+        : { component: 'AbovePrompt', props: BAND_PROPS }),
+    } as const)
+
+    for (const label of ['5h', '7d', 'Fable', 'ctx']) {
+      const found = await ui.find({ type: 'Text', text: new RegExp(`^${label}$`) })
+      expect(found?.props.bold).toBe(true)
+    }
+    // 項目全体 (値を含む) は太字にしない
+    const item = await ui.find({ type: 'Text', text: 'ctx 37%' })
+    expect(item).toBeDefined()
+    expect(item?.props.bold).toBeUndefined()
+  })
+}
+
 test('desktop: アンケート表示中は帯を譲る', async ($, on) => {
   engineBand(on)
   await measure($, on)

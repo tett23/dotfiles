@@ -49,10 +49,10 @@ describe('usageSegments', () => {
     })
 
     expect(segments).toEqual([
-      { text: '5h 75%', isWarning: true },
-      { text: '7d 76%', isWarning: true },
-      { text: 'Fable --', isWarning: false },
-      { text: 'ctx 75%', isWarning: false },
+      { label: '5h', value: '75%', isWarning: true },
+      { label: '7d', value: '76%', isWarning: true },
+      { label: 'Fable', value: '--', isWarning: false },
+      { label: 'ctx', value: '75%', isWarning: false },
     ])
   })
 })

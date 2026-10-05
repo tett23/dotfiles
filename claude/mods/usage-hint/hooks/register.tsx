@@ -4,6 +4,7 @@ import type {
   RenderElement,
   SessionContextUsage,
   SessionRateLimit,
+  TextProps,
 } from 'claude-code'
 
 import type { Snapshot } from '../types'
@@ -26,11 +27,15 @@ const toSnapshot = (
   })),
 })
 
-// 75% を超えた項目は黄色、それ以外は dim (docs/adr/0005)
+// 75% を超えた項目は黄色、それ以外は dim (docs/adr/0005)。ラベルは太字 (docs/adr/0006)
 const toText =
-  (Text: (props: { color?: string; dimColor?: boolean; children: string }) => RenderElement) =>
-  ({ text, isWarning }: Segment): RenderElement =>
-    isWarning ? <Text color="yellow">{text}</Text> : <Text dimColor>{text}</Text>
+  (Text: (props: TextProps & { children?: unknown }) => RenderElement) =>
+  ({ label, value, isWarning }: Segment): RenderElement => (
+    <Text {...(isWarning ? { color: 'yellow' } : { dimColor: true })}>
+      <Text bold>{label}</Text>
+      {` ${value}`}
+    </Text>
+  )
 
 const interleave = <T,>(items: readonly T[], separator: T): T[] =>
   items.flatMap((item, index) => (index === 0 ? [item] : [separator, item]))
