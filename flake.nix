@@ -58,6 +58,7 @@
           pkgs.gh
           pkgs.textlint
           pkgs.delta   # git pager (gitconfig で使用)
+          pkgs.wget
         ];
 
         programs.home-manager.enable = true;

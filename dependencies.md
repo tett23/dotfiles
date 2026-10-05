@@ -9,7 +9,7 @@ hostname は dione にしてください。
 以下のコマンドをインストールしてください。
 sed, awk, make は GNU のものを利用してください。
 
-claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat fd rg mise awscli sed awk make sqlite gh textlint delta
+claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat fd rg mise awscli sed awk make sqlite gh textlint delta wget
 
 ## Install Casks
 
