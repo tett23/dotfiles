@@ -34,3 +34,31 @@ export const formatUsage = (snapshot: Snapshot): string =>
   usageSegments(snapshot)
     .map(({ label, value }) => `${label} ${value}`)
     .join(SEPARATOR)
+
+const isLimit = (value: unknown): value is Limit => {
+  if (typeof value !== 'object' || value === null) {
+    return false
+  }
+  const { kind, percentUsed, resetsAt } = value as Record<string, unknown>
+
+  return (
+    typeof kind === 'string' &&
+    typeof percentUsed === 'number' &&
+    (resetsAt === undefined || typeof resetsAt === 'string')
+  )
+}
+
+// $.store の値は unknown なので、形の正しい窓だけを取り出す
+export const parseLimits = (stored: unknown): Limit[] =>
+  Array.isArray(stored) ? stored.filter(isLimit) : []
+
+// リセット時刻を過ぎた窓は使用量 0、次のリセット時刻は不明として扱う (docs/adr/0008)
+export const restoreLimits = (limits: readonly Limit[], now: number): Limit[] =>
+  limits.map(limit =>
+    limit.resetsAt !== undefined && Date.parse(limit.resetsAt) <= now
+      ? { kind: limit.kind, percentUsed: 0 }
+      : limit,
+  )
+
+export const estimatePercent = (tokens: number, window: number): number | null =>
+  window > 0 ? Math.round((tokens / window) * 100) : null

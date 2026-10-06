@@ -1,31 +1,52 @@
 import { atom, read, update } from 'claude-code'
 import type {
+  Engine,
   Register,
   RenderElement,
-  SessionContextUsage,
   SessionRateLimit,
   TextProps,
 } from 'claude-code'
 
-import type { Snapshot } from '../types'
+import type { Limit, Snapshot } from '../types'
 import type { Segment } from './format'
-import { SEPARATOR, usageSegments } from './format'
+import {
+  SEPARATOR,
+  estimatePercent,
+  parseLimits,
+  restoreLimits,
+  usageSegments,
+} from './format'
 
 const EMPTY: Snapshot = { contextPercent: null, rateLimits: [] }
 
 const snapshot = atom({ plugin: 'usage-hint', key: 'snapshot' } as const, EMPTY)
 
-const toSnapshot = (
-  context: SessionContextUsage,
-  rateLimits: readonly SessionRateLimit[],
-): Snapshot => ({
-  contextPercent: context.percent ?? null,
-  rateLimits: rateLimits.map(({ kind, percentUsed, resetsAt }) => ({
-    kind,
-    percentUsed,
-    resetsAt,
-  })),
-})
+const STORE_KEY = 'rateLimits'
+
+const toLimits = (rateLimits: readonly SessionRateLimit[]): Limit[] =>
+  rateLimits.map(({ kind, percentUsed, resetsAt }) => ({ kind, percentUsed, resetsAt }))
+
+// 最初の API 応答の前は、窓を前回保存した値から、コンテキストをローカルの推定から作る
+// (docs/adr/0008)
+const initialSnapshot = async ($: Engine): Promise<Snapshot> => {
+  const { context, rateLimits } = await $.session.usage()
+  const contextPercent =
+    context.percent ??
+    (await $.session
+      .usage({ breakdown: 'summary' })
+      .then(({ context: estimated }) =>
+        estimated.breakdown
+          ? estimatePercent(estimated.breakdown.totalTokens, estimated.window)
+          : null,
+      )
+      .catch(() => null))
+  const limits =
+    rateLimits.length > 0
+      ? toLimits(rateLimits)
+      : restoreLimits(parseLimits(await $.store.get(STORE_KEY)), await $.clock.now())
+
+  return { contextPercent, rateLimits: limits }
+}
 
 // 75% を超えた項目は黄色、それ以外は dim (docs/adr/0005)。ラベルは太字 (docs/adr/0006)
 const toText =
@@ -48,16 +69,23 @@ export const register: Register = on => {
     })
 
     const result = await next(e)
-    const usage = await $.session.usage().catch(() => undefined)
-    if (usage) {
-      await update($, snapshot, () => toSnapshot(usage.context, usage.rateLimits))
+    const initial = await initialSnapshot($).catch(() => undefined)
+    if (initial) {
+      await update($, snapshot, () => initial)
     }
 
     return result
   })
 
   on('session.measure', async ($, e, next) => {
-    await update($, snapshot, () => toSnapshot(e.context, e.rateLimits))
+    if (e.rateLimits.length > 0) {
+      await $.store.set(STORE_KEY, toLimits(e.rateLimits))
+    }
+    // 窓が空の報告では直前の窓を残す (docs/adr/0008)
+    await update($, snapshot, previous => ({
+      contextPercent: e.context.percent ?? null,
+      rateLimits: e.rateLimits.length > 0 ? toLimits(e.rateLimits) : previous.rateLimits,
+    }))
 
     return next(e)
   })

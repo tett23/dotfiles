@@ -1,10 +1,11 @@
-import { expect, test } from 'claude-code/testing'
+import { expect, mock, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 import type { Engine } from 'claude-code/testing'
 
 const TEXT = '5h 23% · 7d 41% · Fable 12% · ctx 37%'
 
 const measure = async ($: Engine, on: On, fiveHour = 23) => {
+  mock.store(on)
   on('session.measure', ($, e) => ({ changed: e.changed }))
   await $.session.measure({
     context: { window: 200000, tokens: 74000, percent: 37 },
