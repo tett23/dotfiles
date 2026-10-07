@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+#
+# update-mise - mise で管理している言語とツールを最新化する (docs/adr/0012)
+#
+# mise 本体は Nix で入れているので、bin/update-nix で更新する (mise self-update は使わない)。
+#
+# 使い方:
+#   update-mise          mise/config.toml の言語とツールを最新版にする
+#   update-mise --prune  あわせて、使われなくなった古いバージョンを削除する
+#
+set -euo pipefail
+
+log() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
+die() {
+  printf '\033[1;31m==> ERROR:\033[0m %s\n' "$*" >&2
+  exit 1
+}
+
+main() {
+  local prune=0
+  case "${1:-}" in
+  --prune) prune=1 ;;
+  "") ;;
+  *) die "不明な引数です: $1" ;;
+  esac
+
+  command -v mise >/dev/null 2>&1 || die "mise が見つかりません (bin/update-nix で入れてください)"
+
+  log "mise 管理の言語とツールを最新化します"
+  mise upgrade --yes
+
+  if ((prune)); then
+    log "使われなくなった古いバージョンを削除します"
+    mise prune --yes
+  fi
+
+  log "現在のバージョン"
+  mise ls --current
+}
+
+main "$@"

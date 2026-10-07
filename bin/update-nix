@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+#
+# update-nix - Nix で管理しているパッケージを最新化する (docs/adr/0012)
+#
+#   1. flake.lock を更新する (nixpkgs / nix-darwin / home-manager など)
+#   2. nixpkgs に無い自前パッケージ (nix/pkgs/sources.json) を最新版にする
+#      最新版は Homebrew の公開 API (formulae.brew.sh) から調べる。Homebrew 本体は使わない
+#   3. 一般ユーザーでビルドして失敗を早めに検出する
+#   4. darwin-rebuild switch で適用する (sudo のパスワードを聞かれる)
+#
+# 使い方:
+#   update-nix              更新して適用する
+#   update-nix --no-switch  更新とビルドだけ行い、適用しない
+#
+set -euo pipefail
+
+DOTFILES="${DOTFILES:-$HOME/dotfiles}"
+HOST="dione"
+SOURCES="$DOTFILES/nix/pkgs/sources.json"
+
+# "sources.json のキー:Homebrew の cask 名" の対応 (macOS の bash 3.2 でも動くよう連想配列は使わない)
+SOURCES_TO_CASKS=(
+  claude-desktop:claude
+  aquaskk:aquaskk
+)
+
+log() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
+die() {
+  printf '\033[1;31m==> ERROR:\033[0m %s\n' "$*" >&2
+  exit 1
+}
+
+update_flake() {
+  log "flake.lock を更新します"
+  nix flake update --flake "$DOTFILES"
+}
+
+# 自前パッケージ 1 つを最新版にする
+update_source() {
+  local name=$1 cask=$2 json version url sha256
+  json=$(curl -fsSL "https://formulae.brew.sh/api/cask/${cask}.json") ||
+    die "$cask の情報を取得できませんでした"
+
+  # cask のバージョンは "2.26454.0,<コミット>" のようにカンマ以降を含むことがある
+  version=$(jq -r '.version | split(",")[0]' <<<"$json")
+  url=$(jq -r '.url' <<<"$json")
+  sha256=$(jq -r '.sha256' <<<"$json")
+  [[ $sha256 =~ ^[0-9a-f]{64}$ ]] || die "$cask の sha256 が取得できませんでした: $sha256"
+
+  local current
+  current=$(jq -r --arg n "$name" '.[$n].version' "$SOURCES")
+  if [[ $current == "$version" ]]; then
+    log "$name は最新です ($version)"
+    return
+  fi
+
+  log "$name を更新します: $current -> $version"
+  local tmp
+  tmp=$(mktemp)
+  jq --arg n "$name" --arg v "$version" --arg u "$url" --arg s "$sha256" \
+    '.[$n] = {version: $v, url: $u, sha256: $s}' "$SOURCES" >"$tmp"
+  mv "$tmp" "$SOURCES"
+}
+
+update_sources() {
+  local pair
+  for pair in "${SOURCES_TO_CASKS[@]}"; do
+    update_source "${pair%%:*}" "${pair#*:}"
+  done
+}
+
+build() {
+  log "ビルドします (まだ適用しません)"
+  nix build --no-link "$DOTFILES#darwinConfigurations.${HOST}.system"
+}
+
+switch() {
+  log "darwin-rebuild switch で適用します (sudo)"
+  if command -v darwin-rebuild >/dev/null 2>&1; then
+    sudo darwin-rebuild switch --flake "$DOTFILES#$HOST"
+  else
+    sudo nix run nix-darwin -- switch --flake "$DOTFILES#$HOST"
+  fi
+}
+
+main() {
+  local do_switch=1
+  case "${1:-}" in
+  --no-switch) do_switch=0 ;;
+  "") ;;
+  *) die "不明な引数です: $1" ;;
+  esac
+
+  update_flake
+  update_sources
+  build
+  if ((do_switch)); then
+    switch
+    log "完了しました"
+  else
+    log "ビルドまで完了しました。適用するには: sudo darwin-rebuild switch --flake $DOTFILES#$HOST"
+  fi
+}
+
+# source されたときは関数の定義だけ行う (テスト用)
+if [[ ${BASH_SOURCE[0]} == "$0" ]]; then
+  main "$@"
+fi
