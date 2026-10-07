@@ -16,15 +16,17 @@ if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
 fi
 
 # mise: dotfiles 実体へ symlink した設定を無条件に信頼する (別マシンでの `mise trust` を不要にする)
-export MISE_TRUSTED_CONFIG_PATHS="$HOME/dotfiles/mise:$HOME/.config/mise"
+export MISE_TRUSTED_CONFIG_PATHS="$DOTFILES/mise:$HOME/.config/mise"
 
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$DOTFILES/bin"
 
 if test "$(uname -s)" = "Darwin" ; then
-  export PATH="/opt/homebrew/bin:$PATH"
-  export PATH="/opt/homebrew/sbin:$PATH"
+  # Homebrew の PATH / FPATH / MANPATH などは brew 自身に設定させる (docs/adr/0010)
+  if [ -x /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+  fi
 
   # NOTE: homebrew LLVM の clang を PATH 先頭に置くと -lSystem を解決できずビルドが壊れるため無効化。
   # 必要なときだけ明示的に PATH に足す: export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
