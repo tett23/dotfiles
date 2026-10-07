@@ -1,4 +1,5 @@
-export DOTFILES=~/dotfiles
+# 通常は ~/.zshenv (zsh/zshenv) で設定済み。無い場合はこのファイルの実体から求める
+export DOTFILES="${DOTFILES:-${${(%):-%x}:A:h:h}}"
 
 source $DOTFILES/zsh/exports.sh
 source $DOTFILES/zsh/common.sh
@@ -6,8 +7,6 @@ source $DOTFILES/zsh/aliases.sh
 source $DOTFILES/zsh/prompt.sh
 command -v fzf >/dev/null && source <(fzf --zsh)  # キーバインド・補完 (docs/adr/0002)
 source $DOTFILES/zsh/fzf.sh
-source $DOTFILES/zsh/modern-commands.sh
-source $DOTFILES/zsh/anyenv.sh
 source $DOTFILES/zsh/docker.sh
 source $DOTFILES/zsh/langs/go.sh
 source $DOTFILES/zsh/langs/ruby.sh
@@ -22,6 +21,9 @@ fi
 source $DOTFILES/zsh/plugins.sh
 # compinit はプラグインの fpath 追加より後に実行する
 source $DOTFILES/zsh/completions.sh
+# fast-syntax-highlighting は compinit の後に読み込む (公式の推奨。docs/adr/0010)
+zinit ice ver"cf318e06a9b7c9f2219d78f41b46fa6e06011fd9"
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 ## load user .zshrc configuration file
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine

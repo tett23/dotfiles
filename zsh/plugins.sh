@@ -10,7 +10,11 @@ source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
+# プラグインは現在のコミットに固定する。更新するときは ver を書き換える (docs/adr/0010)
+# fast-syntax-highlighting は compinit の後に読み込むため zshrc で読む
+zinit ice ver"7a884c75b4f3ce2d8d24df8e55dcc359a020be3f"
 zinit light zsh-users/zsh-completions
+zinit ice ver"c3d4e576c9c86eac62884bd47c01f6faed043fc5"
 zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma-continuum/fast-syntax-highlighting
+zinit ice ver"803d26eef526bff1494d1a584e46a6e08d25d918"
 zinit light popstas/zsh-command-time
