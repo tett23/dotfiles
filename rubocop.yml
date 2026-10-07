@@ -1,5 +1,5 @@
-AllCops:
-  TargetRubyVersion: 2.5
+# 対象の Ruby バージョン (AllCops: TargetRubyVersion) は指定せず、
+# プロジェクトの .ruby-version などから RuboCop に判断させる (docs/adr/0015)
 
 Metrics/AbcSize:
   Max: 20
