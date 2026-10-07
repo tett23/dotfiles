@@ -1,11 +1,13 @@
 # 通常は ~/.zshenv (zsh/zshenv) で設定済み。無い場合はこのファイルの実体から求める
 export DOTFILES="${DOTFILES:-${${(%):-%x}:A:h:h}}"
 
+source $DOTFILES/zsh/lib/cached-eval.zsh
+
 source $DOTFILES/zsh/exports.sh
 source $DOTFILES/zsh/common.sh
 source $DOTFILES/zsh/aliases.sh
 source $DOTFILES/zsh/prompt.sh
-command -v fzf >/dev/null && source <(fzf --zsh)  # キーバインド・補完 (docs/adr/0002)
+__cached_eval fzf fzf --zsh  # キーバインド・補完 (docs/adr/0002)。出力はキャッシュする (docs/adr/0011)
 source $DOTFILES/zsh/fzf.sh
 source $DOTFILES/zsh/docker.sh
 source $DOTFILES/zsh/langs/go.sh
@@ -14,22 +16,15 @@ source $DOTFILES/zsh/langs/swift.sh
 source $DOTFILES/zsh/langs/scala.sh
 
 # 言語/ツールは mise で一元管理。langs/* の後に activate して shims を最優先にする
-if command -v mise >/dev/null 2>&1; then
-  eval "$(mise activate zsh)"
-fi
+__cached_eval mise mise activate zsh
 
 source $DOTFILES/zsh/plugins.sh
 # compinit はプラグインの fpath 追加より後に実行する
 source $DOTFILES/zsh/completions.sh
-# fast-syntax-highlighting は compinit の後に読み込む (公式の推奨。docs/adr/0010)
-zinit ice ver"cf318e06a9b7c9f2219d78f41b46fa6e06011fd9"
-zinit light zdharma-continuum/fast-syntax-highlighting
 
 ## load user .zshrc configuration file
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
 
-if command -v direnv >/dev/null 2>&1; then
-  eval "$(direnv hook zsh)"
-fi
+__cached_eval direnv direnv hook zsh
 
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
