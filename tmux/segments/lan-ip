@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ostype() { echo "$OSTYPE" | tr '[:upper:]' '[:lower:]'; }
 
