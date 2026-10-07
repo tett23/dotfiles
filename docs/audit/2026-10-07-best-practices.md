@@ -19,11 +19,11 @@
 - **Z3 [リスク]** `XDG_RUNTIME_DIR=~/.local/run` が XDG 仕様に反する。仕様では本人専用 (0700) でログアウト時に消える一時領域であるべきで、macOS では通常設定しない。
   - 状況: ⏸ 見送り — cc-socks / sbt が ~/.local/run を使っているため (ADR 0010)
 - **Z4 [整理]** `~/dotfiles` という場所が複数箇所に固定で書かれている (`zshrc`、`MISE_TRUSTED_CONFIG_PATHS`、`tmux.conf`、`claude/settings.json` の `CLAUDE_CODE_PLUGIN_DIRS`)。`install.sh` は `DOTFILES` で clone 先を変えられるので、別の場所に入れると壊れる。
-  - 状況: 🔶 一部対応 — zshrc / MISE_TRUSTED_CONFIG_PATHS は対応。tmux.conf と claude/settings.json に残る
+  - 状況: 🔶 一部対応 — zshrc / MISE_TRUSTED_CONFIG_PATHS は対応 (ADR 0010)。tmux.conf、claude/settings.json、flake.nix (dotfilesDirectory) に残る
 - **Z5 [故障]** dotfiles の外から古いツールのディレクトリが PATH に混入している (`~/.volta`、`~/.rbenv/shims`、`~/.pyenv/shims`、`~/.bun`、`~/.deno`、`~/Library/pnpm`)。
   - `node` / `python3` / `ruby` が mise 版と旧ツール版の二重に解決される。
   - Neovim の `prettier` と `rubocop` はこの旧ディレクトリ経由でしか見つからない (クリーンな環境では見つからないことを確認)。
-  - 状況: ⬜ 未対応 — Ruby は mise 版で直ったので、旧ディレクトリはもう削除できる
+  - 状況: ✅ 対応済み — 旧ツールのディレクトリをゴミ箱に移した。nvim の rubocop は mason 版に切り替え (ADR 0015)
 - **Z6 [陳腐化]** Homebrew の PATH を手で足している (`brew shellenv` を使っていない)。PATH の優先順位が「nix-profile → Homebrew → … → mise → `/etc/profiles/per-user`」で、Nix の home-manager の bin が後ろにある。
   - 状況: 🔶 一部対応 — Homebrew は廃止 (ADR 0012)。/etc/profiles/per-user の優先順位は使われるバイナリが変わるため見送り
 - **Z7 [陳腐化]** 履歴の設定で `hist_ignore_space`、`extended_history`、`hist_reduce_blanks` が未設定。`HISTFILE` も XDG の場所ではなくホーム直下。
@@ -52,34 +52,34 @@
 ## 2. bin / スクリプト
 
 - **B1 [リスク]** `bin/docker-sh` と `bin/figrm` は shebang が `#!/bin/sh` なのに bash 専用の書き方 (`${@:2}`) を使っている。`$1` もクォートされていない。
-  - 状況: ⬜ 未対応
+  - 状況: ✅ 対応済み — shebang を bash にし、引数をクォート (ADR 0014)
 - **B2 [故障]** `bin/rtouch` は POSIX sh で不正な書き方をしている (`exit -1`、`local`、クォートなし)。
-  - 状況: ⬜ 未対応
+  - 状況: ✅ 対応済み — POSIX sh として書き直し (ADR 0014)
 - **B3 [故障/整理]** `bin/short-pwd` は shebang が `#/bin/env` (`!` 抜け) で壊れている。プロンプトと tmux は代替済み (ADR 0007) で、今は使われていない。
-  - 状況: ⬜ 未対応
+  - 状況: ✅ 対応済み — VSCode のターミナル設定が使っているので削除せず、shebang だけ修正 (ADR 0014)
 - **B4 [リスク]** `tmux/segments/lan-ip` も `#!/bin/sh` なのに `[[ ]]`、配列、`read -ra`、`<<<` を使っている。macOS の `/bin/sh` が bash なのでたまたま動いているだけ。
   - 状況: ✅ 対応済み — shebang を bash に (ADR 0009)
 - **B5 [陳腐化]** `bin/send-to-kindle` に古い書き方が残っている。
   - `deno.land/std@0.224.0` を使っている (JSR の `@std/dotenv` が推奨)。
   - `-A` で全権限を与えている。
   - カレントディレクトリの `.env` に依存している。
-  - 状況: ⬜ 未対応
+  - 状況: 🔶 一部対応 — dotenv を JSR の @std/dotenv に置き換え (ADR 0014)。権限と .env の場所は docs/audit/2026-10-07-breaking-changes.md を参照
 - **B6 [陳腐化]** `bin/orch` の、モデルの別名から実際のモデル ID への対応表が古い (`claude-opus-4-8`、`claude-fable-5`、`claude-sonnet-5`、推定値の `gpt-5.6-sol`)。
-  - 状況: ⬜ 未対応
+  - 状況: ⬜ 未対応 — 使うモデルが変わるため見送り。docs/audit/2026-10-07-breaking-changes.md を参照
 
 ## 3. インストール / ルート直下
 
 - **I1 [故障/整理]** `clean_install.sh` は旧手順で壊れている (Homebrew の行のクォートが閉じていない、廃止されたキーサーバー `keys.gnupg.net`、Intel Mac のパス、volta、RVM の鍵)。`install.sh` で代替済み。
-  - 状況: ⬜ 未対応
+  - 状況: ✅ 対応済み — 削除 (ADR 0014)
 - **I2 [整理]** 使われていないファイル: `setup/install_curl.sh`、`setup/detect_package_manager.sh`、空の `docs/ask.md`、ルートの空の `node_modules/`。
-  - 状況: ⬜ 未対応
+  - 状況: ✅ 対応済み — 削除 (ADR 0014)
 - **I3 [リスク]** `setup/install.sh` の書き方に危険がある。
   - `ln -nsf` で既存の実ファイルをバックアップなしで上書きする。
   - 変数がクォートされておらず、shebang も無い。
   - `CLAUDE.md` を `~/CLAUDE.md` にリンクしているが、Claude Code のユーザー設定の正しい場所は `~/.claude/CLAUDE.md`。現在 `~/CLAUDE.md` は存在しない。
-  - 状況: 🔶 一部対応 — zshenv のリンク先は修正 (ADR 0010)。上書き・クォート・exenv・CLAUDE.md は未対応
+  - 状況: ✅ 対応済み — setup/install.sh を廃止し、リンクは home-manager で張る。exenv と ~/CLAUDE.md のリンクはやめた (ADR 0015)
 - **I4 [整理]** home-manager があるのに、dotfiles のリンクは `setup/install.sh` で張っている。同じ dotfiles を 2 つの仕組みで管理している。
-  - 状況: ⬜ 未対応 — 単体の home-manager switch (sync-deps スキル) と nix-darwin の home-manager の二重管理もある
+  - 状況: ✅ 対応済み — リンクを home-manager に移し、単体の home-manager をやめて nix-darwin に一本化 (ADR 0015)
 
 ## 4. git
 
@@ -110,7 +110,7 @@
 - **N3 [リスク]** `flake.lock` の所有者が `root` (sudo で書かれたため)。一般ユーザーでの `nix flake update` が失敗する恐れがある。flake の入力は 2026-06 時点のまま約 4 か月更新されていない。
   - 状況: ✅ 対応済み — flake.lock の所有者を戻し、bin/update-nix で最新化 (ADR 0012)
 - **N4 [陳腐化]** flake の入力元 `github:LnL7/nix-darwin` は `nix-darwin/nix-darwin` に移転している。`nixpkgs_2` は claude-code の flake が自前の nixpkgs を持っているための重複。
-  - 状況: ⬜ 未対応
+  - 状況: ✅ 対応済み — 入力元を nix-darwin/nix-darwin に変更 (システムのビルド結果は同一)。claude-code の nixpkgs を follows でそろえた (ADR 0014)
 - **N5 [整理]** 同じツールが二重に入っている。
   - claude: Nix 版 2.1.168 と公式インストーラ版 2.1.289。Nix 版は使われていない。
   - codex: Homebrew の Cask 版と Nix 版。
@@ -136,7 +136,7 @@
   - nvim-lint の `eslint` が未インストール。
   - `stylua.toml` はあるのに `stylua` が無い。
   - `prettier` と `rubocop` は Z5 の旧ディレクトリ経由でしか見つからない。
-  - 状況: 🔶 一部対応 — stylua / prettier / eslint_d は mason で導入 (ADR 0009)。rubocop は Ruby が直ったので戻せる
+  - 状況: ✅ 対応済み — stylua / prettier / eslint_d / rubocop を mason で導入 (ADR 0009, 0015)
 - **V5 [故障]** Ghostty が Cmd+P を `<D-p>` として送る設定だが、nvim 側は `<C-p>` にしか割り当てていない。コメントに書かれた意図と実装が食い違っている。
   - 状況: ✅ 対応済み — ADR 0009
 - **V6 [整理]** 効果の無い設定。
@@ -155,18 +155,18 @@
 - **C1 [リスク]** `claude/settings.json` は全リポジトリに効くユーザー設定だが、その `autoMode.environment` に別リポジトリ (golem) 向けの説明が入っている。
   - 内容は「リモートの無いローカル専用リポジトリなので非公開扱い」というもの。
   - これを GitHub で公開されている dotfiles を含むすべてのリポジトリに当てはめている。auto mode の判断材料として誤っている。
-  - 状況: ⬜ 未対応
+  - 状況: ⬜ 未対応 — auto mode の判断が変わるため見送り。docs/audit/2026-10-07-breaking-changes.md を参照
 - **C2 [整理]** `statusLine` の表示内容が usage-hint mod と一部重なっている (ctx)。
-  - 状況: ⬜ 未対応
+  - 状況: ⬜ 未対応 — 表示が変わるため見送り。docs/audit/2026-10-07-breaking-changes.md を参照
 - **C3 [リスク]** CI が無い。shellcheck、stylua、`nix flake check`、`claude plugin test` のどれも自動で実行されない。mod の `tsconfig.json` が継承している型定義ファイルは git で無視されているので、新しく clone した環境ではエディタの型チェックが効かない。
-  - 状況: ⬜ 未対応
+  - 状況: 🔶 一部対応 — GitHub Actions の CI を追加 (ADR 0014)。mod の型定義は docs/audit/2026-10-07-breaking-changes.md を参照
 
 ## 9. その他
 
 - **O1 [陳腐化]** `rubocop.yml` の `TargetRubyVersion: 2.5` はサポートが終わったバージョンで、現行の RuboCop が対象にする最小バージョンより古い。
-  - 状況: ⬜ 未対応
+  - 状況: ✅ 対応済み — TargetRubyVersion の指定を削除 (ADR 0015)
 - **O2 [リスク]** VSCode のグローバル設定で既定のフォーマッタが `denoland.vscode-deno` になっており、Node のプロジェクトでも TypeScript を deno で整形してしまう。`go.alternateTools` の `go-langserver` も古い設定。
-  - 状況: ⬜ 未対応
+  - 状況: 🔶 一部対応 — go-langserver の指定を削除 (ADR 0014)。既定のフォーマッタは docs/audit/2026-10-07-breaking-changes.md を参照
 
 ## 確認して問題なかったもの
 
@@ -178,18 +178,18 @@
 ## 10. 移行後に見つかったもの
 
 - **M1 [整理]** `/opt/homebrew` に Homebrew の残骸 (275 MB) がある。`brew` コマンドは無く、公式アンインストーラが消し残したもの。
-  - 状況: ⬜ 未対応
+  - 状況: ✅ 対応済み — 本人が手動で削除
 - **M2 [整理]** 手動で入れた VSCode 1.138 (`/Applications/Visual Studio Code.app`) が、Nix 版 (`/Applications/Nix Apps`) と並んで残っている。
-  - 状況: ⬜ 未対応
+  - 状況: ✅ 対応済み — 手動版をゴミ箱に移し、/usr/local/bin/code を削除 (ADR 0015)
 
 ## 対応状況のまとめ
 
-- ✅ 対応済み: Z1, Z8〜Z11, Z13, B4, G1, G3〜G5, N1〜N3, V1〜V3, V5, V6
-- 🔶 一部対応: Z4, Z6, Z7, Z12, I3, G2, N5, V4, T1
+- ✅ 対応済み: Z1, Z5, Z8〜Z11, Z13, B1〜B4, I1〜I4, G1, G3〜G5, N1〜N4, V1〜V6, O1, M1, M2
+- 🔶 一部対応: Z4, Z6, Z7, Z12, B5, G2, N5, T1, C3, O2
 - ⏸ 見送り: Z2, Z3, N6
-- ⬜ 未対応: Z5, B1〜B3, B5, B6, I1, I2, I4, N4, C1〜C3, O1, O2, M1, M2
+- ⬜ 未対応 (直すと挙動が変わる。docs/audit/2026-10-07-breaking-changes.md を参照): B6, C1, C2
 
-関連する ADR: 0009 (git / tmux / nvim)、0010 (zsh / fzf)、0011 (zsh の高速化)、0012 (Homebrew の廃止)、0013 (dependencies.md からの設定生成)。
+関連する ADR: 0009 (git / tmux / nvim)、0010 (zsh / fzf)、0011 (zsh の高速化)、0012 (Homebrew の廃止)、0013 (dependencies.md からの設定生成)、0014 (挙動を変えない残りの是正)、0015 (挙動が変わる項目の是正)。
 
 ## 判断できなかったこと
 
