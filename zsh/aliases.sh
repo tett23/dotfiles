@@ -1,4 +1,4 @@
-if [[ -x `which colordiff` ]]; then
+if (( $+commands[colordiff] )); then
   alias diff='colordiff -u'
 fi
 
@@ -19,18 +19,18 @@ alias yw="yarn workspace"
 alias be="bundle exec"
 alias fig='docker compose'
 
-if which nvim >/dev/null 2>&1; then
+if (( $+commands[nvim] )); then
   alias vim=nvim
 fi
 
-if command -v python3 >/dev/null 2>&1; then
+if (( $+commands[python3] )); then
   alias python="python3"
 fi
 
-if command -v gsed >/dev/null 2>&1; then
+if (( $+commands[gsed] )); then
   alias sed="gsed"
 fi
 
-if command -v gawk >/dev/null 2>&1; then
+if (( $+commands[gawk] )); then
   alias awk="gawk"
 fi

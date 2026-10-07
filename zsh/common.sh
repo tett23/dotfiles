@@ -46,6 +46,7 @@ HISTSIZE=50000
 SAVEHIST=50000
 setopt hist_ignore_dups # ignore duplication command history list
 setopt share_history # share command history data
+setopt extended_history # 実行時刻と所要時間も記録する (share_history との併用が推奨。docs/adr/0010)
 
 ## Alias configuration
 #
