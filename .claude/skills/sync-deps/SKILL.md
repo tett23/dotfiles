@@ -61,12 +61,8 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 変更した範囲だけ適用する:
 
 - **mise**: `mise install` (新規追加時)
-- **CLI のみの変更**: sudo 不要の home-manager で適用
-  ```bash
-  nix run home-manager -- switch --flake .#tett23
-  ```
-  (`home-manager` コマンドが PATH にあればそれを直接使う)
-- **GUI アプリの変更を含む**: `darwin-rebuild switch` が必要で sudo を要する。
+- **Nix の変更 (CLI・GUI アプリとも)**: `darwin-rebuild switch` が必要で sudo を要する。
+  home-manager は nix-darwin のモジュールとしてだけ使う (単体の `home-manager switch` は使わない。docs/adr/0015)。
   自分では実行せず、ユーザーにこのコマンドの実行を提案する:
   ```
   ! sudo darwin-rebuild switch --flake ~/dotfiles#dione
@@ -74,17 +70,13 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 
 ### 4. アップデート(差分がなかった場合)
 
-セットアップ済みで同期差分がない場合はアップデートを行う:
+セットアップ済みで同期差分がない場合はアップデートを行う。
+どちらも本人に実行を提案する (`bin/update-nix` は sudo を要する):
 
 ```bash
-nix flake update          # flake.lock を更新
-nix run home-manager -- switch --flake .#tett23
-mise up                   # mise 管理のツールを latest に
+bin/update-nix    # flake.lock と nix/pkgs/sources.json を更新し、ビルドしてから darwin-rebuild switch で適用
+bin/update-mise   # mise 管理の言語・ツールを latest に
 ```
-
-GUI アプリを含めて更新する場合は、`bin/update-nix` の実行をユーザーに提案する
-(`flake.lock` と `nix/pkgs/sources.json` を更新して `darwin-rebuild switch` まで行う。sudo を要する)。
-mise 管理の言語・ツールは `bin/update-mise` でも更新できる。
 
 ### 5. 検証
 

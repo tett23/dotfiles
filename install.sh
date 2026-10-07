@@ -9,9 +9,8 @@
 #   1. Xcode Command Line Tools の確認 / インストール
 #   2. リポジトリを $DOTFILES に HTTPS で clone (既にあれば pull)
 #   3. submodule の取得
-#   4. bootstrap.sh (Nix → nix-darwin / home-manager / GUI アプリ)
-#   5. setup/install.sh (シンボリックリンク)
-#   6. mise install (言語 / ツール)
+#   4. bootstrap.sh (Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク)
+#   5. mise install (言語 / ツール)
 #
 # 環境変数で上書き可能: DOTFILES, DOTFILES_REPO, DOTFILES_BRANCH
 #
@@ -86,13 +85,8 @@ run_bootstrap() {
   fi
 }
 
-# 5. シンボリックリンク
-link_dotfiles() {
-  log "シンボリックリンクを作成します"
-  DOTFILES="$DOTFILES" sh "$DOTFILES/setup/install.sh"
-}
-
-# 6. mise 管理の言語 / ツール
+# 5. mise 管理の言語 / ツール
+# (dotfiles のリンクは bootstrap.sh の darwin-rebuild switch で home-manager が張る。docs/adr/0015)
 install_mise_tools() {
   # nix-darwin / home-manager 適用直後は PATH に入っていないため明示的に追加する
   PATH="/etc/profiles/per-user/$(id -un)/bin:/run/current-system/sw/bin:$HOME/.nix-profile/bin:$PATH"
@@ -114,7 +108,6 @@ main() {
   fetch_repo
   fetch_submodules
   run_bootstrap
-  link_dotfiles
   install_mise_tools
   log "すべて完了しました。新しいシェルを開いてください。"
 }

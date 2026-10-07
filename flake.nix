@@ -35,11 +35,46 @@
       claude-desktop = pkgs.callPackage ./nix/pkgs/claude-desktop.nix { };
       aquaskk = pkgs.callPackage ./nix/pkgs/aquaskk.nix { };
 
-      # CLI 群 (dependencies.md)。darwin / standalone 両方で共有
-      homeModule = { pkgs, ... }: {
+      # dotfiles の置き場所。リンクはここの実体を直接指す (docs/adr/0015)
+      dotfilesDirectory = "${homeDirectory}/dotfiles";
+
+      # CLI 群 (dependencies.md) と dotfiles のリンク。nix-darwin の home-manager で使う
+      homeModule = { pkgs, config, lib, ... }:
+        let
+          # dotfiles の実体へのリンク。リポジトリの編集がすぐ反映される (docs/adr/0015)
+          link = path: config.lib.file.mkOutOfStoreSymlink "${dotfilesDirectory}/${path}";
+        in
+        {
         home.username = username;
         home.homeDirectory = homeDirectory;
         home.stateVersion = "24.05";
+
+        # dotfiles のリンク (旧 setup/install.sh。docs/adr/0015)
+        home.file = {
+          ".zshenv".source = link "zsh/zshenv";
+          ".zshrc".source = link "zsh/zshrc";
+          ".gitconfig".source = link "gitconfig";
+          ".gitignore_global".source = link "gitignore_global";
+          ".tmux.conf".source = link "tmux/tmux.conf";
+          ".rubocop.yml".source = link "rubocop.yml";
+          ".claude/settings.json".source = link "claude/settings.json";
+          "Library/Application Support/Code/User/settings.json".source = link "vscode/settings.json";
+          "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
+          "Library/Application Support/Code/User/snippets".source = link "vscode/snippets";
+          "Library/Application Support/AquaSKK/keymap.conf".source = link "skk/keymap.conf";
+        };
+        xdg.configFile = {
+          "nvim".source = link "nvim";
+          "karabiner".source = link "karabiner";
+          "bat/config".source = link "bat-config";
+          "ghostty/config".source = link "ghostty/config";
+          "mise/config.toml".source = link "mise/config.toml";
+          "eskk".source = link "eskk";
+        };
+        # nvim のバックアップ先
+        home.activation.createVimBackupDirectory = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          mkdir -p "$HOME/.vimbackup"
+        '';
 
         home.packages = [
           pkgs.claude-code
@@ -77,12 +112,6 @@
         programs.home-manager.enable = true;
       };
     in {
-      # sudo 不要: `home-manager switch --flake .#tett23`
-      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [ homeModule ];
-      };
-
       darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
         inherit system;
 
@@ -130,6 +159,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # 既存のファイルやリンクと衝突したら、上書きせず .hm-backup を付けて退避する (docs/adr/0015)
+            home-manager.backupFileExtension = "hm-backup";
             home-manager.users.${username} = homeModule;
           }
         ];
