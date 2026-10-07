@@ -28,10 +28,9 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     dependencies = { "mason-org/mason.nvim" },
     event = "VeryLazy",
-    -- rubocop は mise の Ruby が壊れていて gem でのインストールに失敗するため、当面は含めない
-    -- (Ruby を直したら追加する。docs/adr/0009)
+    -- rubocop は mise の Ruby で gem としてインストールされる (docs/adr/0009, 0015)
     opts = {
-      ensure_installed = { "stylua", "prettier", "eslint_d" },
+      ensure_installed = { "stylua", "prettier", "eslint_d", "rubocop" },
     },
   },
 }
