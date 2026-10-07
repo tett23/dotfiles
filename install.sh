@@ -8,11 +8,12 @@
 # やること (docs/adr/0001-curl-sh-install.md):
 #   1. Xcode Command Line Tools の確認 / インストール
 #   2. リポジトリを $DOTFILES に HTTPS で clone (既にあれば pull)
-#   3. submodule の取得
-#   4. bootstrap.sh (Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク)
-#   5. mise install (言語 / ツール)
+#   3. origin を SSH の URL に切り替える (docs/adr/0016)
+#   4. submodule の取得
+#   5. bootstrap.sh (Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク)
+#   6. mise install (言語 / ツール)
 #
-# 環境変数で上書き可能: DOTFILES, DOTFILES_REPO, DOTFILES_BRANCH
+# 環境変数で上書き可能: DOTFILES, DOTFILES_REPO, DOTFILES_BRANCH, DOTFILES_REMOTE
 #
 # NOTE: `| sh` で実行されるため POSIX sh で書くこと。
 #       ダウンロードが途中で切れても部分実行されないよう、全体を main で包んでいる。
@@ -21,6 +22,20 @@ set -eu
 DOTFILES="${DOTFILES:-$HOME/dotfiles}"
 DOTFILES_REPO="${DOTFILES_REPO:-https://github.com/tett23/dotfiles.git}"
 DOTFILES_BRANCH="${DOTFILES_BRANCH:-master}"
+
+# GitHub の HTTPS の URL を SSH の URL に変換する。それ以外はそのまま返す
+ssh_url_of() {
+  case "$1" in
+  https://github.com/*)
+    repo=${1#https://github.com/}
+    printf 'git@github.com:%s.git\n' "${repo%.git}"
+    ;;
+  *) printf '%s\n' "$1" ;;
+  esac
+}
+
+# clone 後の origin (docs/adr/0016)
+DOTFILES_REMOTE="${DOTFILES_REMOTE:-$(ssh_url_of "$DOTFILES_REPO")}"
 
 log() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m==> WARN:\033[0m %s\n' "$*" >&2; }
@@ -69,13 +84,25 @@ fetch_repo() {
   git clone --branch "$DOTFILES_BRANCH" "$DOTFILES_REPO" "$DOTFILES"
 }
 
-# 3. submodule
+# 3. origin を SSH の URL に切り替える (push できるようにする。docs/adr/0016)
+# このスクリプトの中の pull / submodule update は git_https で HTTPS に読み替えるので、
+# SSH 鍵がまだ無くても再実行できる
+set_origin() {
+  current=$(git -C "$DOTFILES" remote get-url origin)
+  if [ "$current" = "$DOTFILES_REMOTE" ]; then
+    return 0
+  fi
+  log "origin を切り替えます: $current → $DOTFILES_REMOTE"
+  git -C "$DOTFILES" remote set-url origin "$DOTFILES_REMOTE"
+}
+
+# 4. submodule
 fetch_submodules() {
   log "submodule を取得します"
   git_https -C "$DOTFILES" submodule update --init --recursive
 }
 
-# 4. Nix / nix-darwin。対話入力 (sudo 等) のため、可能なら端末を stdin に渡す
+# 5. Nix / nix-darwin。対話入力 (sudo 等) のため、可能なら端末を stdin に渡す
 run_bootstrap() {
   log "bootstrap.sh を実行します"
   if (: </dev/tty) 2>/dev/null; then
@@ -85,7 +112,7 @@ run_bootstrap() {
   fi
 }
 
-# 5. mise 管理の言語 / ツール
+# 6. mise 管理の言語 / ツール
 # (dotfiles のリンクは bootstrap.sh の darwin-rebuild switch で home-manager が張る。docs/adr/0015)
 install_mise_tools() {
   # nix-darwin / home-manager 適用直後は PATH に入っていないため明示的に追加する
@@ -106,6 +133,7 @@ main() {
   log "dotfiles のインストールを開始します (dest: $DOTFILES)"
   ensure_xcode_clt
   fetch_repo
+  set_origin
   fetch_submodules
   run_bootstrap
   install_mise_tools

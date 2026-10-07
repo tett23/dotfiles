@@ -13,12 +13,10 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 3. `bootstrap.sh`: Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク (途中で sudo のパスワードを聞かれます)
 4. `mise install`: 言語 / ツール
 
-`DOTFILES` / `DOTFILES_REPO` / `DOTFILES_BRANCH` 環境変数で clone 先などを上書きできます。
+`DOTFILES` / `DOTFILES_REPO` / `DOTFILES_BRANCH` / `DOTFILES_REMOTE` 環境変数で clone 先などを上書きできます。
 
-clone 後の `origin` は HTTPS です。SSH 鍵を設定したら切り替えてください。
-
-```sh
-git -C ~/dotfiles remote set-url origin git@github.com:tett23/dotfiles.git
-```
+clone は SSH 鍵が無くてもできるよう HTTPS で行い、その後 `origin` を SSH の URL
+(`git@github.com:tett23/dotfiles.git`) に切り替えます。手元で `git pull` / `push` するには SSH 鍵の設定が必要です
+(`install.sh` の再実行は SSH 鍵が無くても動きます)。
 
 依存の一覧は [dependencies.md](dependencies.md)、設計判断は [docs/adr](docs/adr) を参照。
