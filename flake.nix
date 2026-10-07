@@ -59,6 +59,7 @@
           pkgs.textlint
           pkgs.delta   # git pager (gitconfig で使用)
           pkgs.wget
+          pkgs.tree-sitter  # nvim-treesitter (main) のパーサービルドに必要
         ];
 
         programs.home-manager.enable = true;
