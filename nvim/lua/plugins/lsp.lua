@@ -1,10 +1,11 @@
 -- LSP: mason + mason-lspconfig v2 (旧 coc.nvim / LanguageClient / lsp.vim を置換)
 -- nvim 0.11+ の vim.lsp.config / vim.lsp.enable を使用。mason-lspconfig v2 が
 -- installed サーバを automatic_enable で自動 enable する。
+-- mason は williamboman/ から mason-org/ に移転済み (docs/adr/0009)
 return {
-  { "williamboman/mason.nvim", config = true },
+  { "mason-org/mason.nvim", config = true },
   {
-    "williamboman/mason-lspconfig.nvim",
+    "mason-org/mason-lspconfig.nvim",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "neovim/nvim-lspconfig",
@@ -20,5 +21,17 @@ return {
         -- automatic_enable = true (デフォルト) で installed サーバを vim.lsp.enable
       })
     end,
+  },
+  -- conform / nvim-lint が使う外部ツールも mason で入れる。
+  -- dotfiles の外にある旧ツール (volta / rbenv) に依存しないため (docs/adr/0009)
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "mason-org/mason.nvim" },
+    event = "VeryLazy",
+    -- rubocop は mise の Ruby が壊れていて gem でのインストールに失敗するため、当面は含めない
+    -- (Ruby を直したら追加する。docs/adr/0009)
+    opts = {
+      ensure_installed = { "stylua", "prettier", "eslint_d" },
+    },
   },
 }

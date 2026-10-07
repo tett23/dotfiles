@@ -1,23 +1,18 @@
 -- vim.opt / エディタ基本設定 (vim/common.vim から移植)
 local opt = vim.opt
 
--- エンコーディング
-opt.encoding = "utf-8"
+-- エンコーディング (encoding は Neovim では常に utf-8)
 opt.fileencodings = "utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932"
 
 -- 表示
+-- showmode / ruler / showcmd / wildmenu / display=lastline は Neovim の既定値なので書かない
 opt.number = true
-opt.showmode = true
 opt.title = true
-opt.ruler = true
-opt.showcmd = true
 opt.showmatch = true
 opt.laststatus = 3 -- グローバルステータスライン (lualine)
-opt.wildmenu = true
 opt.cursorline = true
 opt.list = true
 opt.listchars = { tab = ">-", trail = "_", nbsp = "+" }
-opt.display:append("lastline")
 
 -- ファイル (旧: nobackup / noswapfile)
 opt.backup = false
@@ -29,19 +24,13 @@ opt.tabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 
--- 検索
+-- 検索 (wrapscan / incsearch は既定値)
 opt.ignorecase = true
 opt.smartcase = true
-opt.wrapscan = true
 opt.hlsearch = false
-opt.incsearch = true
 
 -- タグ
 opt.tags = "tags"
-
--- ベル
-opt.errorbells = false
-opt.visualbell = false
 
 -- クリップボード共有 / マウス
 opt.clipboard = "unnamed"

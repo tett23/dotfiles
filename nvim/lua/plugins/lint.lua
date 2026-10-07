@@ -4,7 +4,7 @@ return {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
     opts = {
-      format_on_save = { timeout_ms = 2000, lsp_fallback = true }, -- 旧 ale_fix_on_save
+      format_on_save = { timeout_ms = 2000, lsp_format = "fallback" }, -- 旧 ale_fix_on_save
       formatters_by_ft = {
         javascript = { "prettier" },
         typescript = { "prettier" },
@@ -60,8 +60,8 @@ return {
       }
 
       lint.linters_by_ft = {
-        javascript = { "eslint" },
-        typescript = { "eslint" },
+        javascript = { "eslint_d" },
+        typescript = { "eslint_d" },
         ruby = { "rubocop" },
         markdown = { "textlint" },
       }

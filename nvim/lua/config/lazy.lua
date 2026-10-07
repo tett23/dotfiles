@@ -8,10 +8,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- リーダーはプラグイン読込前に設定
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
-
 require("lazy").setup({
   spec = { { import = "plugins" } },
   install = { colorscheme = { "habamax" } },
