@@ -1,12 +1,10 @@
 #!/bin/sh
+#
+# rtouch <パス> - 親ディレクトリを作ってからファイルを touch する
 
-rtouch() {
-  if [ -z $1 ] ; then exit -1; fi
+if [ -z "$1" ]; then
+  echo "usage: rtouch <path>" >&2
+  exit 1
+fi
 
-  local path=$1
-  local dir=$(dirname $path)
-
-  mkdir -p $dir && touch $path
-}
-
-rtouch $1
+mkdir -p "$(dirname "$1")" && touch "$1"
