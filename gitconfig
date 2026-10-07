@@ -3,10 +3,8 @@
   email = tett23@gmail.com
 [core]
   excludesfile = ~/.gitignore_global
-  autocrlf = input
   editor = nvim
   pager = delta
-  filemode = false
   quotepath = false
 [pager]
     diff = delta
@@ -40,7 +38,7 @@
   brm = branch -m
   cob = checkout -b
   lop = log -p --ignore-space-change
-  delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
+  delete-merged-branches = !git branch --merged | grep -vE '^\\*|^[[:space:]]*(main|master|develop)$' | xargs -I % git branch -d %
   lsf = ls-files
   today = log --since=midnight --author='$(git config user.name)' --oneline
   adp = add -p
@@ -49,25 +47,28 @@
 [log]
   date = local
 [merge]
-  tool = vimdiff
-  conflictstyle = diff3
-[branch "master"]
-  rebase = true
-[branch]
-  autosetuprebase = always
+  tool = nvimdiff
+  conflictstyle = zdiff3
+[rerere]
+  enabled = true
 [difftool]
   prompt = false
 [diff]
-  tool = vimdiff
+  tool = nvimdiff
+  algorithm = histogram
   colorMoved = default
 [mergetool]
   prompt = true
 [grep]
   lineNumbers = true
 [push]
-  default = tracking
+  autoSetupRemote = true
 [pull]
   rebase = true
+[rebase]
+  autoStash = true
+[fetch]
+  prune = true
 
 [delta]
   hyperlinks = true

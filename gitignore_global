@@ -1,107 +1,49 @@
-*~
+# 全リポジトリに効くため、どのプロジェクトでもコミットしないもの (OS・エディタのゴミ、
+# 依存のインストール先、キャッシュ、ログ) だけを書く。設定ファイルやビルド成果物のように
+# プロジェクトによってはコミットするものは、各リポジトリの .gitignore に任せる (docs/adr/0009)
+
+# macOS
 .DS_Store
-# ruby
-*.gem
-.config
-coverage
-InstalledFiles
-lib/bundler/man
-pkg
-rdoc
-spec/reports
-test/tmp
-test/version_tmp
-vender/bundle .ruby-lsp/
-# YARD artifacts
-.yardoc
-_yardoc
 
-# ruby
-.rvmrc
-.byebug_history
-
-# rails
-*.rbc
-*.sassc
-.sass-cache
-capybara-*.html
-.rspec
-/vendor/bundle
-/log/*
-/tmp/*
-/db/*.sqlite3
-/public/system/*
-/coverage/
-/spec/tmp/*
-**.orig
-config/*.yml
-rerun.txt
-pickle-email-*.html
-/public/assets
-dist
-
-*.swl
-*.swm
-*.swn
-*.swo
+# Vim / Neovim
+*~
 *.swp
-.rvmrc
-.ruby-version
-.ruby-gemset
-Gemfile.local
-
-node_modules
-yarn-error.log
-.eslintcache
-
-.capistrano
-
-.Rhistory
-.python-version
-
-docker-compose.local.yml
-
-*.report.html
-.solargraph.yml
-
-packages/backend/python/fit/build/
-
+*.swo
+*.swn
+*.swm
+*.swl
 .vimbackup
 
-*.class
+# エディタ / IDE のローカル設定
+.idea/
+.idea_modules/
+.history/
+
+# 言語サーバー / ビルドサーバーのキャッシュ
+.ruby-lsp/
+.solargraph.yml
+.metals/
+.bloop/
+.bsp/
+
+# 依存のインストール先
+node_modules/
+/vendor/bundle/
+
+# キャッシュ / ログ / 一時ファイル
+.eslintcache
+.sass-cache/
+.yardoc/
 *.log
-*~
+/log/*
+/tmp/*
+.byebug_history
+.Rhistory
+*.orig
 
-# sbt specific
-dist/*
-target/
-lib_managed/
-src_managed/
-project/boot/
-project/plugins/project/
-project/local-plugins.sbt
-.history
-.bsp
-.metals
-.bloop
-
-# Scala-IDE specific
-.scala_dependencies
-.cache
-.classpath
-.project
-.settings
-classes/
-
-# idea
-.idea
-.idea_modules
-/.worksheet/
-
-# Dotty-IDE
-.dotty-ide-artifact
-.dotty-ide.json
-
+# Claude Code のローカル設定
 **/.claude/settings.local.json
 
-tmux-client-*
+# tmux のデバッグログ
+tmux-client-*.log
+tmux-server-*.log
