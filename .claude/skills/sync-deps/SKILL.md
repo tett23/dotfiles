@@ -5,7 +5,7 @@ description: dependencies.md を一次ソースとして Nix (flake.nix) と mis
 
 # sync-deps
 
-`dependencies.md` が依存の一次ソース。`flake.nix`(CLI + Casks)と
+`dependencies.md` が依存の一次ソース。`flake.nix`(CLI + GUI アプリ)と
 `mise/config.toml`(言語・ツール)がその実装。このスキルは
 一次ソースと実装の差分を同期し、システムに適用する。
 
@@ -23,12 +23,20 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 | `awscli` | `pkgs.awscli2` |
 | `sed` / `awk` / `make` | `pkgs.gnused` / `pkgs.gawk` / `pkgs.gnumake`(GNU 版指定のため) |
 | `claude-code` | `pkgs.claude-code`(claude-code overlay 由来) |
-| `docker`(cask) | `"docker-desktop"`(旧 cask 名からリネーム済み) |
+| `docker` / `docker-compose` | `pkgs.docker` / `pkgs.docker-compose`(エンジンは `services.colima`) |
+| `colima` | `services.colima.enable = true`(home-manager。パッケージもこれで入る) |
+| `ghostty`(GUI) | `pkgs.ghostty-bin`(darwin 向けはこちら) |
+| `claude`(GUI) | `claude-desktop`(`nix/pkgs/claude-desktop.nix` の自前パッケージ) |
+| `aquaskk`(GUI) | `aquaskk`(`nix/pkgs/aquaskk.nix` の自前パッケージ。アクティベーションで `/Library/Input Methods` にコピー) |
+| `vscode`(GUI) | `pkgs.vscode`(unfree) |
 | `haskell`(mise) | `ghc` + `cabal` の 2 エントリに展開 |
 
 未知のパッケージが出てきたら `nix search nixpkgs <name>` で attr 名を
 確認してから追加する。見つからない場合は勝手に近い名前で代用せず、
 ユーザーに確認する。
+
+非対話で同期する場合は `bin/sync-deps` を使う(`claude -p` でこのスキルの手順 1〜2 を実行し、
+スクリプトが `nix build` で検証して差分を表示する。`--switch` で適用まで行う。docs/adr/0013)。
 
 ## 手順
 
@@ -38,7 +46,8 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 マッピングを考慮して 3 つのリストを突き合わせる:
 
 - **CLI** → `flake.nix` の `home.packages`
-- **Casks** → `flake.nix` の `homebrew.casks`
+- **GUI apps** → `flake.nix` の `environment.systemPackages`(Homebrew は使わない)
+  - nixpkgs に無いものは `nix/pkgs/<name>.nix` に自前で作り、取得元を `nix/pkgs/sources.json` に書く
 - **言語・ツール** → `mise/config.toml` の `[tools]`(バージョンは `"latest"`)
 
 ### 2. 同期
@@ -57,7 +66,7 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
   nix run home-manager -- switch --flake .#tett23
   ```
   (`home-manager` コマンドが PATH にあればそれを直接使う)
-- **Casks の変更を含む**: `darwin-rebuild switch` が必要で sudo を要する。
+- **GUI アプリの変更を含む**: `darwin-rebuild switch` が必要で sudo を要する。
   自分では実行せず、ユーザーにこのコマンドの実行を提案する:
   ```
   ! sudo darwin-rebuild switch --flake ~/dotfiles#dione
@@ -73,8 +82,9 @@ nix run home-manager -- switch --flake .#tett23
 mise up                   # mise 管理のツールを latest に
 ```
 
-Casks も更新したい場合は上記の `darwin-rebuild switch` をユーザーに提案する
-(`homebrew.onActivation` が upgrade を担う)。
+GUI アプリを含めて更新する場合は、`bin/update-nix` の実行をユーザーに提案する
+(`flake.lock` と `nix/pkgs/sources.json` を更新して `darwin-rebuild switch` まで行う。sudo を要する)。
+mise 管理の言語・ツールは `bin/update-mise` でも更新できる。
 
 ### 5. 検証
 
@@ -97,8 +107,11 @@ Nix インストール → nix-darwin 適用まで冪等に行うが、対話入
 
 ## 注意
 
-- `flake.nix` の構造(overlay、nix-homebrew、home-manager モジュール)は
-  変更しない。触るのは `home.packages` と `homebrew.casks` のリストだけ。
+- `flake.nix` の構造(overlay、home-manager モジュール)は変更しない。触るのは
+  `home.packages`、`environment.systemPackages`、`services.colima` などのパッケージの指定と、
+  `dependencies.md` の「自前パッケージ」「システム設定」の節に書かれた設定
+  (`nix/pkgs/`、AquaSKK のアクティベーション、`programs.zsh` の設定など)だけ。
+- Homebrew は使わない。nixpkgs に無い GUI アプリはユーザーに確認してから `nix/pkgs/` に自前で作る。
 - `mise/config.toml` のバージョンは常に `"latest"`。特定バージョンへの
   固定を求められた場合のみ例外。
 - 適用まで完了したら、変更ファイル(`flake.nix`, `flake.lock`,
