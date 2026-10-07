@@ -71,9 +71,11 @@ apply_darwin() {
     sudo darwin-rebuild switch --flake "${FLAKE_DIR}#${HOSTNAME_TARGET}"
   else
     log "darwin-rebuild が未導入のため nix run で初回適用します"
-    sudo nix run nix-darwin -- switch \
-      --flake "${FLAKE_DIR}#${HOSTNAME_TARGET}" \
-      --extra-experimental-features "${NIX_FEATURES}"
+    # 実験的機能の指定は nix に渡す (darwin-rebuild は受け付けない)。
+    # nix-darwin は flake.lock で固定した版を使う (docs/adr/0017)
+    sudo nix --extra-experimental-features "${NIX_FEATURES}" \
+      run --inputs-from "${FLAKE_DIR}" nix-darwin -- \
+      switch --flake "${FLAKE_DIR}#${HOSTNAME_TARGET}"
   fi
 }
 

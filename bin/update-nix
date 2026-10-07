@@ -79,7 +79,9 @@ switch() {
   if command -v darwin-rebuild >/dev/null 2>&1; then
     sudo darwin-rebuild switch --flake "$DOTFILES#$HOST"
   else
-    sudo nix run nix-darwin -- switch --flake "$DOTFILES#$HOST"
+    # nix-darwin は flake.lock で固定した版を使う (docs/adr/0017)
+    sudo nix --extra-experimental-features "nix-command flakes" \
+      run --inputs-from "$DOTFILES" nix-darwin -- switch --flake "$DOTFILES#$HOST"
   fi
 }
 
