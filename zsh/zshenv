@@ -1,0 +1,5 @@
+# すべての zsh (非対話シェルを含む) で読まれる。重い処理や PATH の変更はここに書かない
+# (macOS のログインシェルでは /etc/zprofile の path_helper が後から PATH を並べ替えるため。docs/adr/0010)
+
+# dotfiles の場所は、このファイル (~/.zshenv からのリンク) の実体から求める
+export DOTFILES="${DOTFILES:-${${(%):-%x}:A:h:h}}"

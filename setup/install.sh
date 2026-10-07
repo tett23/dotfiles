@@ -10,7 +10,7 @@ mkdir -p $XDG_CONFIG_HOME
 ln -nsf $DOTFILES/nvim $XDG_CONFIG_HOME/nvim
 mkdir -p $HOME/.vimbackup
 
-ln -nsf $DOTFILES/zshenv $HOME/.zshenv
+ln -nsf $DOTFILES/zsh/zshenv $HOME/.zshenv
 ln -nsf $DOTFILES/zsh/zshrc $HOME/.zshrc
 ln -nsf $DOTFILES/gitconfig $HOME/.gitconfig
 ln -nsf $DOTFILES/gitignore_global $HOME/.gitignore_global
