@@ -92,8 +92,10 @@ __git_rebase_interactive() {
   fi
 }
 
+# 廃止された hub の代わりに gh を使う。3 列目がブランチ名の形式は hub 時代と同じ (docs/adr/0010)
 __gh_pr_branch() {
-  local branch=$(hub pr list --format "%i %au %H %pS %t%n" --limit 50 | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) "$@")
+  local branch=$(gh pr list --limit 50 --json number,author,headRefName,state,title \
+    --jq '.[] | "#\(.number) \(.author.login) \(.headRefName) \(.state) \(.title)"' | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) "$@")
   if [ "x$branch" != "x" ]
   then
     echo -n "$(echo $branch | awk '{print $3} ')"
