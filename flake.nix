@@ -83,7 +83,14 @@
             # Determinate Nix が Nix 本体を管理するため nix-darwin 側の管理は無効化
             # (flakes/experimental-features は Determinate 側で有効化済み)
             nix.enable = false;
-            programs.zsh.enable = true;
+            programs.zsh = {
+              enable = true;
+              # 以下は自分の .zshrc が同等の処理をするので、/etc/zshrc では行わない (docs/adr/0011)。
+              # 補完ファイルの配置 (enableCompletion) は残す
+              enableGlobalCompInit = false;
+              enableBashCompletion = false;
+              promptInit = "";
+            };
 
             # システムユーザー定義 (home-manager が home ディレクトリを参照する)
             users.users.${username} = {
