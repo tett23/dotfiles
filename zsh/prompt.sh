@@ -25,30 +25,10 @@ __update_keymap_indicator() {
 __update_keymap_indicator
 
 ## バージョン管理関連の表示 (git のみ。docs/adr/0010)
+# よくある場合は git status 1 回で、それ以外は vcs_info で表示を作る (docs/adr/0011)
 autoload -Uz add-zsh-hook
-autoload -Uz vcs_info
-
-zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' stagedstr "++"
-zstyle ':vcs_info:*' unstagedstr "!!"
-zstyle ':vcs_info:*' formats '[%b] %c%u'
-zstyle ':vcs_info:*' actionformats '[%b|%a] %c%u'
-
-function _update_vcs_info_msg() {
-  psvar=()
-  LANG=en_US.UTF-8 vcs_info
-  # git リポジトリの外では stash 数を数えない (毎回の git の起動を省く)
-  [[ -z "$vcs_info_msg_0_" ]] && return
-  psvar[1]="$vcs_info_msg_0_"
-
-  local stash_count=$(git stash list 2>/dev/null | wc -l | tr -d ' ')
-  if [ "$stash_count" -gt 0 ]; then
-    psvar[2]="& $stash_count"
-  fi
-}
-
-add-zsh-hook precmd _update_vcs_info_msg
+source $DOTFILES/zsh/lib/git-prompt.zsh
+add-zsh-hook precmd __git_prompt_update
 VCS_INFO="%1(v|%F{green}%1v%f%F{yellow}%2v%f|)"
 
 # パス表示: 4階層を超えたら「先頭1階層/…/末尾3階層」に短縮 (旧 short-pwd 相当、fork しない)
