@@ -220,9 +220,6 @@
     }
   },
   "go.useLanguageServer": true,
-  "go.alternateTools": {
-    "go-langserver": "gopls"
-  },
   "go.testFlags": ["-v"],
   "go.testEnvVars": {
     "GO_ENV": "test"
