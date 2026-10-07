@@ -1,0 +1,45 @@
+# dotfiles の CI (docs/adr/0014)
+# - shell スクリプトの静的解析 (警告以上)
+# - zsh のテスト
+# - nix-darwin の設定の評価 (ビルドはしない)
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck
+        run: |
+          shellcheck --severity=warning \
+            bin/docker-sh bin/figrm bin/orch bin/rtouch bin/short-pwd \
+            bin/sync-deps bin/update-mise bin/update-nix \
+            tmux/segments/lan-ip tmux/segments/time-local tmux/segments/time-utc \
+            install.sh bootstrap.sh
+
+  zsh-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install zsh
+        run: sudo apt-get update && sudo apt-get install -y zsh
+      - name: git-prompt
+        run: zsh zsh/tests/git-prompt.test.zsh
+      - name: cached-eval
+        run: zsh zsh/tests/cached-eval.test.zsh
+
+  nix-eval:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - name: evaluate nix-darwin configuration
+        run: nix eval --raw .#darwinConfigurations.dione.system.drvPath
