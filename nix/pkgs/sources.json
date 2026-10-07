@@ -1,0 +1,12 @@
+{
+  "claude-desktop": {
+    "version": "2.26454.0",
+    "url": "https://downloads.claude.ai/releases/darwin/universal/2.26454.0/Claude-98e3cc1cd15d9a6adac008c6e9aac52e08f0f1b1.zip",
+    "sha256": "f65f0abee0098d2f03239430c68afea65e15cc1011524c13ed1468a6f368a4b3"
+  },
+  "aquaskk": {
+    "version": "4.7.3",
+    "url": "https://github.com/codefirst/aquaskk/releases/download/4.7.3/AquaSKK-4.7.3.pkg",
+    "sha256": "bf3300ceb8f5fd2433e244de0f43f1962073b5048f1536ef58e617f7c4785abd"
+  }
+}

@@ -9,7 +9,7 @@
 #   1. Xcode Command Line Tools の確認 / インストール
 #   2. リポジトリを $DOTFILES に HTTPS で clone (既にあれば pull)
 #   3. submodule の取得
-#   4. bootstrap.sh (Nix → nix-darwin / home-manager / Homebrew Cask)
+#   4. bootstrap.sh (Nix → nix-darwin / home-manager / GUI アプリ)
 #   5. setup/install.sh (シンボリックリンク)
 #   6. mise install (言語 / ツール)
 #

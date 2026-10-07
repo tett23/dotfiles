@@ -11,11 +11,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     claude-code.url = "github:sadjow/claude-code-nix";
   };
 
-  outputs = { self, nixpkgs, nix-darwin, home-manager, nix-homebrew, claude-code }:
+  outputs = { self, nixpkgs, nix-darwin, home-manager, claude-code }:
     let
       system = "aarch64-darwin";
       username = "tett23";
@@ -27,6 +26,10 @@
         overlays = [ claude-code.overlays.default ];
         config.allowUnfree = true;
       };
+
+      # nixpkgs に無いため自前で作るパッケージ (docs/adr/0012)
+      claude-desktop = pkgs.callPackage ./nix/pkgs/claude-desktop.nix { };
+      aquaskk = pkgs.callPackage ./nix/pkgs/aquaskk.nix { };
 
       # CLI 群 (dependencies.md)。darwin / standalone 両方で共有
       homeModule = { pkgs, ... }: {
@@ -60,7 +63,12 @@
           pkgs.delta   # git pager (gitconfig で使用)
           pkgs.wget
           pkgs.tree-sitter  # nvim-treesitter (main) のパーサービルドに必要
+          pkgs.docker          # docker CLI (エンジンは colima)
+          pkgs.docker-compose  # docker compose
         ];
+
+        # Docker のエンジンは colima を常駐させて使う (Docker Desktop から移行。docs/adr/0012)
+        services.colima.enable = true;
 
         programs.home-manager.enable = true;
       };
@@ -98,30 +106,21 @@
               home = homeDirectory;
             };
 
-            # GUI アプリは nix-darwin の Homebrew モジュールで管理 (Casks)
-            homebrew = {
-              enable = true;
-              onActivation.cleanup = "zap";
-              casks = [
-                "aquaskk"
-                "docker-desktop"  # 旧 "docker" cask からリネーム
-                "ghostty"
-                "claude"
-                "codex"
-              ];
-            };
-          })
+            # GUI アプリ (dependencies.md)。/Applications/Nix Apps に置かれる (docs/adr/0012)
+            environment.systemPackages = [
+              pkgs.ghostty-bin
+              pkgs.vscode
+              claude-desktop
+            ];
 
-          # Homebrew 本体のインストール自体も宣言的に管理
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              user = username;
-              enableRosetta = false;  # Apple Silicon ネイティブのみ
-              autoMigrate = true;     # 既存 Homebrew があれば引き継ぐ
-            };
-          }
+            # 入力メソッドは実体のファイルとして /Library/Input Methods に置く必要がある (docs/adr/0012)。
+            # 初めて入れたときはログアウトが必要
+            system.activationScripts.postActivation.text = ''
+              echo "installing AquaSKK to /Library/Input Methods..." >&2
+              ${pkgs.rsync}/bin/rsync -a --delete --chmod=u+w \
+                "${aquaskk}/Library/Input Methods/AquaSKK.app/" "/Library/Input Methods/AquaSKK.app/"
+            '';
+          })
 
           home-manager.darwinModules.home-manager
           {

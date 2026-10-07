@@ -22,17 +22,9 @@ export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$DOTFILES/bin"
 
-if test "$(uname -s)" = "Darwin" ; then
-  # Homebrew の PATH / FPATH / MANPATH などは brew 自身に設定させる (docs/adr/0010)
-  if [ -x /opt/homebrew/bin/brew ]; then
-    eval "$(/opt/homebrew/bin/brew shellenv zsh)"
-  fi
+# Homebrew は使わない (Nix と mise に統一。docs/adr/0012)
 
-  # NOTE: homebrew LLVM の clang を PATH 先頭に置くと -lSystem を解決できずビルドが壊れるため無効化。
-  # 必要なときだけ明示的に PATH に足す: export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-fi
-
-# home-manager / nix profile を Homebrew より優先させる
+# home-manager / nix profile を優先させる
 export PATH="$HOME/.nix-profile/bin:$PATH"
 
 # GCP (SDK がインストールされている場合のみ)

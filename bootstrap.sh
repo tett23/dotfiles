@@ -4,7 +4,7 @@
 #
 # 何度実行しても安全:
 #   1. Nix が無ければインストール
-#   2. nix-darwin (flake) を適用して Homebrew 本体 / CLI / Cask を一括構築
+#   2. nix-darwin (flake) を適用して CLI / GUI アプリを一括構築 (Homebrew は使わない)
 #
 # 使い方:
 #   ./bootstrap.sh
