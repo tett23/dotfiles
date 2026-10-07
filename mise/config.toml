@@ -1,3 +1,8 @@
+# ghc は ghcup のプラグインで入れる。このプラグインはプラグイン名を扱うツール名として使うので、
+# ghc という名前で明示する (docs/adr/0018)
+[plugins]
+ghc = "https://github.com/mise-plugins/mise-ghcup.git"
+
 [tools]
 go = "latest"
 node = "latest"

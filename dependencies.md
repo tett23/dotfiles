@@ -58,6 +58,11 @@ mise を使って以下の依存を管理してください。ここで指定す
 
 node python ruby go rust deno bun haskell
 
+- haskell は ghc と cabal に分けて入れてください。
+  ghc は mise の既定の取得先では解決できないので、ghcup のプラグイン
+  (https://github.com/mise-plugins/mise-ghcup.git) を ghc という名前で [plugins] に明示してください。
+  このプラグインはプラグイン名を扱うツール名として使うため、名前は ghc でなければなりません。
+
 ## Install tools
 
 yarn pnpm shfmt biome

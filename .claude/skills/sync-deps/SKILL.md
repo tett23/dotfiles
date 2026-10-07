@@ -29,7 +29,7 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 | `claude`(GUI) | `claude-desktop`(`nix/pkgs/claude-desktop.nix` の自前パッケージ) |
 | `aquaskk`(GUI) | `aquaskk`(`nix/pkgs/aquaskk.nix` の自前パッケージ。アクティベーションで `/Library/Input Methods` にコピー) |
 | `vscode`(GUI) | `pkgs.vscode`(unfree) |
-| `haskell`(mise) | `ghc` + `cabal` の 2 エントリに展開 |
+| `haskell`(mise) | `ghc` + `cabal` の 2 エントリに展開。`ghc` は `[plugins]` に `ghc = "https://github.com/mise-plugins/mise-ghcup.git"` を明示する(プラグイン名がツール名になるため。docs/adr/0018) |
 
 未知のパッケージが出てきたら `nix search nixpkgs <name>` で attr 名を
 確認してから追加する。見つからない場合は勝手に近い名前で代用せず、
