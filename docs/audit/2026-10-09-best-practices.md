@@ -10,10 +10,10 @@
 
 | 状況 | 項目 |
 |---|---|
-| ✅ 対応済み | Z1, Z5〜Z11, Z13, B1〜B4, I1〜I4, G1, G3〜G5, N1〜N5, V1〜V6, C1, O1, O2, M1, M2, P2〜P6 |
+| ✅ 対応済み | Z1, Z5〜Z11, Z13, B1〜B4, B6, I1〜I4, G1, G3〜G5, N1〜N5, V1〜V6, C1, O1, O2, M1, M2, P1〜P6 |
 | 🔶 一部対応 | Z4, Z12, B5, G2, T1, C3 |
 | ⏸ 見送り | Z2, Z3, N6 |
-| ⬜ 未対応 | B6, C2, P1 |
+| ⬜ 未対応 | C2 |
 
 監査後に見つかった項目 (P1〜P6) は下の「監査後に見つかった項目」を参照。
 
@@ -31,16 +31,20 @@
   biome の拡張機能を入れた。biome が整形しない HTML・Markdown などは従来どおり。
 - **P2** ✅ CI の `actions/checkout` を Node.js 24 で動く v7 に上げた。
 
+## 追加で対応したもの (ADR 0024)
+
+- **B6** ✅ `bin/orch` の別名の既定値を現行の最新にした (`opus` → `claude-opus-5-5`、`sonnet` → `claude-sonnet-5-5`、
+  `haiku` → `claude-haiku-5-5`、`fable` → `claude-fable-5-1`)。それぞれ `claude -p --model` で呼べることを確認した。
+  `sol` (`gpt-5.6-sol`、OpenAI) は確かめる手段が無いため推定値のまま。
+- **P1** ✅ 画面にログインしていない状態で `bootstrap.sh` が失敗したときは、警告を出して `mise install` まで続け、
+  ログイン後に `sudo darwin-rebuild switch` を実行するよう案内するようにした。ログインしている状態での失敗は従来どおり止める。
+  VM (画面にログインしていないユーザー) で、`install.sh` が最後まで進み終了コード 0 で終わることを確認した。
+
 ## 残っている項目
 
 ### 未対応
 
-- **B6 [陳腐化]** `bin/orch` のモデル ID が古い (`claude-opus-4-8`、`claude-fable-5`、`claude-sonnet-5`、推定値の `gpt-5.6-sol`)。
-  直すと委譲先が使うモデルが変わる。
 - **C2 [整理]** ステータスライン (`statusLine`) のコンテキスト使用率の表示が、usage-hint mod と重なっている。直すと表示が変わる。
-- **P1 [故障]** 画面にログインしていない状態 (SSH 越しなど) で `curl | sh` を実行すると、colima の常駐設定
-  (home-manager の LaunchAgent) の登録に失敗し、`install.sh` がそこで止まる (以降の `mise install` が実行されない)。
-  通常どおりログインした状態で実行すれば起きない。VM での検証で判明 (ADR 0017 の検証時)。
 
 ### 一部対応 (残りの部分)
 
@@ -63,7 +67,7 @@
 
 | ID | 内容 | 状況 |
 |---|---|---|
-| P1 | 画面にログインしていない状態での `curl \| sh` が colima の LaunchAgent の登録で止まる | ⬜ 未対応 |
+| P1 | 画面にログインしていない状態での `curl \| sh` が colima の LaunchAgent の登録で止まる | ✅ ADR 0024 |
 | P2 | CI の `actions/checkout@v4` が非推奨の Node.js 20 で動く | ✅ ADR 0023 |
 | P3 | 新規マシンで nix-darwin の初回適用が `--extra-experimental-features` を受け付けずに止まる | ✅ ADR 0017 |
 | P4 | 新規マシンで mise の ghc が解決できない (ghcup のプラグインはプラグイン名をツール名に使う) | ✅ ADR 0018 |
