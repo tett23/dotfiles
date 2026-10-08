@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/claude/mods/usage-hint"
+  },
   "statusLine": {
     "type": "command",
     "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name // \"unknown\"'); dir=$(echo \"$input\" | jq -r '.workspace.current_dir // .cwd // \".\"' | xargs basename); cost=$(echo \"$input\" | jq -r 'if .cost.total_cost_usd then \"$\" + (.cost.total_cost_usd | tostring) else \"\" end'); ctx=$(echo \"$input\" | jq -r 'if .context_window.used_percentage then (.context_window.used_percentage | floor | tostring) + \"% ctx\" elif .context_window.remaining_percentage then (.context_window.remaining_percentage | floor | tostring) + \"% left\" else \"\" end'); parts=\"$model $dir\"; [ -n \"$cost\" ] && parts=\"$parts $cost\"; [ -n \"$ctx\" ] && parts=\"$parts $ctx\"; echo \"$parts\""
@@ -43,8 +46,5 @@
       "- **Trusted repo**: The git repository the agent started in. Its visibility follows its git remote (see Repository visibility); secrets and sensitive personal/entrusted data are never committed regardless of visibility. Content ported, repointed, or first read from outside this session's repo is not its own work.",
       "- **Org-specific CLIs**: None configured — codex and claude appear in this project's transcripts but are general-purpose AI coding CLIs, not org-specific tools"
     ]
-  },
-  "env": {
-    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/claude/mods/usage-hint"
   }
 }
