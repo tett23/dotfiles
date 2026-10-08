@@ -45,7 +45,7 @@ jobs:
         with:
           deno-version: v2.x
       - name: send-to-kindle
-        run: deno test bin/lib/send-to-kindle/
+        run: deno test -A --ext=ts bin/send-to-kindle
 
   nix-eval:
     runs-on: macos-latest

@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run -A --ext=ts
 //
 // send-to-kindle [--env-file <パス>] <ファイル> - ファイルを Kindle のメールアドレスへ添付して送る
-// (docs/adr/0021, 0022)
+// (docs/adr/0021, 0022, 0025)
 //
 // 設定は --env-file (短縮形 -e) で指定したファイルから読む。指定しなければカレントディレクトリの .env から、
 // それも無ければ環境変数から読む。指定したファイルが無い場合はエラーにする:
@@ -9,13 +9,149 @@
 //   SEND_TO_KINDLE_EMAIL  Kindle のメールアドレス
 //   SMTP_HOST / SMTP_PORT / SMTP_USER_NAME / SMTP_PASSWORD  送信に使う SMTP サーバー
 //
-// 引数の解釈、設定の読み込み、送信内容の組み立ては bin/lib/send-to-kindle/ (deno test でテストする)
+// 1 ファイルで完結させる (ADR 0025)。テストは末尾の Deno.test で、次で実行する:
+//   deno test -A --ext=ts bin/send-to-kindle
 // @ts-types="npm:@types/nodemailer@^8"
 import nodemailer from "npm:nodemailer@^10";
+import { parse } from "jsr:@std/dotenv@^0.225";
+import { assertEquals } from "jsr:@std/assert@^1";
+import { basename, resolve } from "node:path";
+import { parseArgs } from "node:util";
 
-import { parseCliArgs } from "./lib/send-to-kindle/args.ts";
-import { loadConfig } from "./lib/send-to-kindle/config.ts";
-import { buildMail } from "./lib/send-to-kindle/mail.ts";
+// ---- 引数の解釈 ----
+
+export type CliArgs =
+  | { ok: true; file: string; envFile: string | undefined }
+  | { ok: false; error: string };
+
+const USAGE = "使い方: send-to-kindle [--env-file <パス>] <ファイル>";
+
+export const parseCliArgs = (args: string[]): CliArgs => {
+  try {
+    const { values, positionals } = parseArgs({
+      args,
+      allowPositionals: true,
+      strict: true,
+      options: { "env-file": { type: "string", short: "e" } },
+    });
+    return positionals.length === 1
+      ? { ok: true, file: positionals[0], envFile: values["env-file"] }
+      : { ok: false, error: USAGE };
+  } catch (error) {
+    // 知らないオプションや、値の無い --env-file
+    return { ok: false, error: `${error instanceof Error ? error.message : String(error)}\n${USAGE}` };
+  }
+};
+
+// ---- 設定の読み込み ----
+// .env (--env-file で指定したファイル、または カレントディレクトリの .env) があればそこから、無ければ環境変数から読む
+
+export type Config = {
+  from: string;
+  to: string;
+  smtp: { host: string; port: number; user: string; pass: string };
+};
+
+export type ConfigResult =
+  | { ok: true; source: ConfigSource; config: Config }
+  | { ok: false; error: string };
+
+// 読んだ場所: .env のパス、または "環境変数"
+type ConfigSource = string;
+
+const ENV_SOURCE = "環境変数";
+
+// エラーメッセージでの読んだ場所の書き方 (パスの後には空白を入れる)
+const sourceLabel = (source: ConfigSource): string =>
+  source === ENV_SOURCE ? ENV_SOURCE : `${source} `;
+
+const REQUIRED_KEYS = [
+  "EMAIL",
+  "SEND_TO_KINDLE_EMAIL",
+  "SMTP_HOST",
+  "SMTP_PORT",
+  "SMTP_USER_NAME",
+  "SMTP_PASSWORD",
+] as const;
+
+type Values = Record<(typeof REQUIRED_KEYS)[number], string>;
+
+const parsePort = (value: string): number | undefined =>
+  /^[1-9][0-9]*$/.test(value) ? Number(value) : undefined;
+
+const toConfig = (values: Values, port: number): Config => ({
+  from: values.EMAIL,
+  to: values.SEND_TO_KINDLE_EMAIL,
+  smtp: {
+    host: values.SMTP_HOST,
+    port,
+    user: values.SMTP_USER_NAME,
+    pass: values.SMTP_PASSWORD,
+  },
+});
+
+/**
+ * @param dotenv 読んだ .env のパスと中身。.env が無ければ undefined (環境変数を使う)
+ * @param getEnv 環境変数を読む関数
+ */
+export const loadConfig = (
+  dotenv: { path: string; text: string } | undefined,
+  getEnv: (key: string) => string | undefined,
+): ConfigResult => {
+  const source: ConfigSource = dotenv === undefined ? ENV_SOURCE : dotenv.path;
+  const values = readValues(dotenv === undefined ? undefined : parse(dotenv.text), getEnv);
+  return validate(values, source);
+};
+
+const readValues = (
+  dotenv: Record<string, string> | undefined,
+  getEnv: (key: string) => string | undefined,
+): Values => {
+  const lookup = (key: string) => (dotenv === undefined ? getEnv(key) : dotenv[key]) ?? "";
+  return Object.fromEntries(REQUIRED_KEYS.map((key) => [key, lookup(key)])) as Values;
+};
+
+const validate = (values: Values, source: ConfigSource): ConfigResult => {
+  const missing = REQUIRED_KEYS.filter((key) => values[key] === "");
+  if (missing.length > 0) {
+    return {
+      ok: false,
+      error: `${sourceLabel(source)}に次の設定がありません: ${missing.join(", ")}`,
+    };
+  }
+
+  const port = parsePort(values.SMTP_PORT);
+  if (port === undefined) {
+    return { ok: false, error: `SMTP_PORT は正の整数で指定してください: ${values.SMTP_PORT}` };
+  }
+
+  return { ok: true, source, config: toConfig(values, port) };
+};
+
+// ---- 送るメールの組み立て ----
+
+export type Mail = {
+  from: string;
+  to: string;
+  subject: string;
+  text: string;
+  attachments: { filename: string; path: string }[];
+};
+
+/**
+ * @param file 送るファイル。相対パスなら cwd を基準に解決する
+ * @param cwd カレントディレクトリ
+ */
+export const buildMail = (config: Config, file: string, cwd: string): Mail => ({
+  from: config.from,
+  to: config.to,
+  // Kindle のメールアドレスは件名が「変換」だと、送ったファイルを Kindle の形式に変換する
+  subject: "変換",
+  text: "book",
+  attachments: [{ filename: basename(file), path: resolve(cwd, file) }],
+});
+
+// ---- 実行 (副作用) ----
 
 // 関数宣言にして戻り値を never にし、呼び出し後の型の絞り込みを効かせる
 function fail(message: string): never {
@@ -50,34 +186,183 @@ const isFile = async (path: string): Promise<boolean> => {
   }
 };
 
-const args = parseCliArgs(Deno.args);
-if (!args.ok) {
-  fail(args.error);
-}
-const { file, envFile } = args;
+const main = async (): Promise<void> => {
+  const args = parseCliArgs(Deno.args);
+  if (!args.ok) {
+    fail(args.error);
+  }
+  const { file, envFile } = args;
 
-const result = loadConfig(await readDotenv(envFile), (key) => Deno.env.get(key));
-if (!result.ok) {
-  fail(result.error);
-}
-const { config } = result;
+  const result = loadConfig(await readDotenv(envFile), (key) => Deno.env.get(key));
+  if (!result.ok) {
+    fail(result.error);
+  }
+  const { config } = result;
 
-const mail = buildMail(config, file, Deno.cwd());
-const [attachment] = mail.attachments;
-if (!(await isFile(attachment.path))) {
-  fail(`ファイルがありません: ${attachment.path}`);
+  const mail = buildMail(config, file, Deno.cwd());
+  const [attachment] = mail.attachments;
+  if (!(await isFile(attachment.path))) {
+    fail(`ファイルがありません: ${attachment.path}`);
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: config.smtp.host,
+    port: config.smtp.port,
+    auth: { user: config.smtp.user, pass: config.smtp.pass },
+  });
+
+  try {
+    await transporter.sendMail(mail);
+  } catch (error) {
+    fail(`送信できませんでした: ${error instanceof Error ? error.message : String(error)}`);
+  }
+
+  console.log(`送信しました: ${attachment.filename} → ${config.to}`);
+};
+
+if (import.meta.main) {
+  await main();
 }
 
-const transporter = nodemailer.createTransport({
-  host: config.smtp.host,
-  port: config.smtp.port,
-  auth: { user: config.smtp.user, pass: config.smtp.pass },
+// ---- テスト (deno test -A --ext=ts bin/send-to-kindle。deno run では実行されない) ----
+
+Deno.test("引数: ファイルだけを指定する", () => {
+  assertEquals(parseCliArgs(["book.epub"]), { ok: true, file: "book.epub", envFile: undefined });
 });
 
-try {
-  await transporter.sendMail(mail);
-} catch (error) {
-  fail(`送信できませんでした: ${error instanceof Error ? error.message : String(error)}`);
-}
+Deno.test("引数: --env-file で .env のパスを指定する", () => {
+  assertEquals(parseCliArgs(["--env-file", "/conf/kindle.env", "book.epub"]), {
+    ok: true,
+    file: "book.epub",
+    envFile: "/conf/kindle.env",
+  });
+});
 
-console.log(`送信しました: ${attachment.filename} → ${config.to}`);
+Deno.test("引数: --env-file=<パス> の形でも指定できる", () => {
+  assertEquals(parseCliArgs(["book.epub", "--env-file=/conf/kindle.env"]), {
+    ok: true,
+    file: "book.epub",
+    envFile: "/conf/kindle.env",
+  });
+});
+
+Deno.test("引数: 短縮形 -e でも指定できる", () => {
+  assertEquals(parseCliArgs(["-e", "kindle.env", "book.epub"]), {
+    ok: true,
+    file: "book.epub",
+    envFile: "kindle.env",
+  });
+});
+
+Deno.test("引数: ファイルが無ければエラーにする", () => {
+  assertEquals(parseCliArgs(["--env-file", "kindle.env"]), { ok: false, error: USAGE });
+});
+
+Deno.test("引数: ファイルを 2 つ以上渡したらエラーにする", () => {
+  assertEquals(parseCliArgs(["a.epub", "b.epub"]), { ok: false, error: USAGE });
+});
+
+Deno.test("引数: --env-file の値が無ければエラーにする", () => {
+  assertEquals(parseCliArgs(["book.epub", "--env-file"]).ok, false);
+});
+
+Deno.test("引数: 知らないオプションはエラーにする", () => {
+  assertEquals(parseCliArgs(["--unknown", "book.epub"]).ok, false);
+});
+
+const TEST_DOTENV = `EMAIL=me@example.com
+SEND_TO_KINDLE_EMAIL=me@kindle.com
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER_NAME=user
+SMTP_PASSWORD=secret
+`;
+
+const TEST_ENV: Record<string, string> = {
+  EMAIL: "env@example.com",
+  SEND_TO_KINDLE_EMAIL: "env@kindle.com",
+  SMTP_HOST: "smtp.env.example.com",
+  SMTP_PORT: "465",
+  SMTP_USER_NAME: "env-user",
+  SMTP_PASSWORD: "env-secret",
+};
+const fromEnv = (env: Record<string, string>) => (key: string) => env[key];
+
+Deno.test("設定: .env があれば .env の値を使い、環境変数は見ない", () => {
+  assertEquals(loadConfig({ path: ".env", text: TEST_DOTENV }, fromEnv(TEST_ENV)), {
+    ok: true,
+    source: ".env",
+    config: {
+      from: "me@example.com",
+      to: "me@kindle.com",
+      smtp: { host: "smtp.example.com", port: 587, user: "user", pass: "secret" },
+    },
+  });
+});
+
+Deno.test("設定: .env が無ければ環境変数の値を使う", () => {
+  assertEquals(loadConfig(undefined, fromEnv(TEST_ENV)), {
+    ok: true,
+    source: "環境変数",
+    config: {
+      from: "env@example.com",
+      to: "env@kindle.com",
+      smtp: { host: "smtp.env.example.com", port: 465, user: "env-user", pass: "env-secret" },
+    },
+  });
+});
+
+Deno.test("設定: 足りない項目を、読んだ場所とともに列挙してエラーにする", () => {
+  const { SMTP_HOST: _host, SMTP_PASSWORD: _pass, ...partial } = TEST_ENV;
+  assertEquals(loadConfig(undefined, fromEnv(partial)), {
+    ok: false,
+    error: "環境変数に次の設定がありません: SMTP_HOST, SMTP_PASSWORD",
+  });
+});
+
+Deno.test("設定: 空文字の項目は足りないものとして扱う", () => {
+  const text = TEST_DOTENV.replace("SMTP_USER_NAME=user", "SMTP_USER_NAME=");
+  assertEquals(loadConfig({ path: ".env", text }, fromEnv({})), {
+    ok: false,
+    error: ".env に次の設定がありません: SMTP_USER_NAME",
+  });
+});
+
+Deno.test("設定: 指定したファイルから読んだときは、そのパスを source とエラーに出す", () => {
+  const path = "/conf/kindle.env";
+  assertEquals(loadConfig({ path, text: TEST_DOTENV }, fromEnv({})).ok && "ok", "ok");
+  assertEquals(loadConfig({ path, text: "EMAIL=me@example.com\n" }, fromEnv(TEST_ENV)), {
+    ok: false,
+    error: "/conf/kindle.env に次の設定がありません: SEND_TO_KINDLE_EMAIL, SMTP_HOST, SMTP_PORT, SMTP_USER_NAME, SMTP_PASSWORD",
+  });
+});
+
+Deno.test("設定: SMTP_PORT が正の整数でなければエラーにする", () => {
+  assertEquals(loadConfig(undefined, fromEnv({ ...TEST_ENV, SMTP_PORT: "smtp" })), {
+    ok: false,
+    error: "SMTP_PORT は正の整数で指定してください: smtp",
+  });
+});
+
+const TEST_CONFIG: Config = {
+  from: "me@example.com",
+  to: "me@kindle.com",
+  smtp: { host: "smtp.example.com", port: 587, user: "user", pass: "secret" },
+};
+
+Deno.test("メール: 送信元・送信先・件名・本文と、ファイルの添付を組み立てる", () => {
+  assertEquals(buildMail(TEST_CONFIG, "books/novel.epub", "/home/me"), {
+    from: "me@example.com",
+    to: "me@kindle.com",
+    subject: "変換",
+    text: "book",
+    attachments: [{ filename: "novel.epub", path: "/home/me/books/novel.epub" }],
+  });
+});
+
+Deno.test("メール: 絶対パスのファイルはカレントディレクトリと結合しない", () => {
+  assertEquals(
+    buildMail(TEST_CONFIG, "/tmp/novel.epub", "/home/me").attachments,
+    [{ filename: "novel.epub", path: "/tmp/novel.epub" }],
+  );
+});
