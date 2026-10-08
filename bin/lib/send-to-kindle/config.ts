@@ -1,5 +1,5 @@
-// send-to-kindle の設定を読む (docs/adr/0021)
-// カレントディレクトリに .env があればそこから、無ければ環境変数から読む
+// send-to-kindle の設定を読む (docs/adr/0021, 0022)
+// .env (--env-file で指定したファイル、または カレントディレクトリの .env) があればそこから、無ければ環境変数から読む
 import { parse } from "jsr:@std/dotenv@^0.225";
 
 export type Config = {
@@ -12,10 +12,14 @@ export type ConfigResult =
   | { ok: true; source: ConfigSource; config: Config }
   | { ok: false; error: string };
 
-type ConfigSource = ".env" | "環境変数";
+// 読んだ場所: .env のパス、または "環境変数"
+type ConfigSource = string;
 
-// エラーメッセージでの読んだ場所の書き方 (英字の後には空白を入れる)
-const SOURCE_LABEL: Record<ConfigSource, string> = { ".env": ".env ", "環境変数": "環境変数" };
+const ENV_SOURCE = "環境変数";
+
+// エラーメッセージでの読んだ場所の書き方 (パスの後には空白を入れる)
+const sourceLabel = (source: ConfigSource): string =>
+  source === ENV_SOURCE ? ENV_SOURCE : `${source} `;
 
 const REQUIRED_KEYS = [
   "EMAIL",
@@ -43,23 +47,32 @@ const toConfig = (values: Values, port: number): Config => ({
 });
 
 /**
- * @param dotenvText .env の中身。.env が無ければ undefined
+ * @param dotenv 読んだ .env のパスと中身。.env が無ければ undefined (環境変数を使う)
  * @param getEnv 環境変数を読む関数
  */
 export const loadConfig = (
-  dotenvText: string | undefined,
+  dotenv: { path: string; text: string } | undefined,
   getEnv: (key: string) => string | undefined,
 ): ConfigResult => {
-  const source: ConfigSource = dotenvText === undefined ? "環境変数" : ".env";
-  const dotenv = dotenvText === undefined ? undefined : parse(dotenvText);
-  const lookup = (key: string) => (dotenv === undefined ? getEnv(key) : dotenv[key]) ?? "";
+  const source: ConfigSource = dotenv === undefined ? ENV_SOURCE : dotenv.path;
+  const values = readValues(dotenv === undefined ? undefined : parse(dotenv.text), getEnv);
+  return validate(values, source);
+};
 
-  const values = Object.fromEntries(REQUIRED_KEYS.map((key) => [key, lookup(key)])) as Values;
+const readValues = (
+  dotenv: Record<string, string> | undefined,
+  getEnv: (key: string) => string | undefined,
+): Values => {
+  const lookup = (key: string) => (dotenv === undefined ? getEnv(key) : dotenv[key]) ?? "";
+  return Object.fromEntries(REQUIRED_KEYS.map((key) => [key, lookup(key)])) as Values;
+};
+
+const validate = (values: Values, source: ConfigSource): ConfigResult => {
   const missing = REQUIRED_KEYS.filter((key) => values[key] === "");
   if (missing.length > 0) {
     return {
       ok: false,
-      error: `${SOURCE_LABEL[source]}に次の設定がありません: ${missing.join(", ")}`,
+      error: `${sourceLabel(source)}に次の設定がありません: ${missing.join(", ")}`,
     };
   }
 

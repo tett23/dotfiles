@@ -21,7 +21,7 @@ const ENV: Record<string, string> = {
 const fromEnv = (env: Record<string, string>) => (key: string) => env[key];
 
 Deno.test(".env があれば .env の値を使い、環境変数は見ない", () => {
-  assertEquals(loadConfig(DOTENV, fromEnv(ENV)), {
+  assertEquals(loadConfig({ path: ".env", text: DOTENV }, fromEnv(ENV)), {
     ok: true,
     source: ".env",
     config: {
@@ -53,9 +53,19 @@ Deno.test("足りない項目を、読んだ場所とともに列挙してエラ
 });
 
 Deno.test("空文字の項目は足りないものとして扱う", () => {
-  assertEquals(loadConfig(DOTENV.replace("SMTP_USER_NAME=user", "SMTP_USER_NAME="), fromEnv({})), {
+  const text = DOTENV.replace("SMTP_USER_NAME=user", "SMTP_USER_NAME=");
+  assertEquals(loadConfig({ path: ".env", text }, fromEnv({})), {
     ok: false,
     error: ".env に次の設定がありません: SMTP_USER_NAME",
+  });
+});
+
+Deno.test("指定したファイルから読んだときは、そのパスを source とエラーに出す", () => {
+  const path = "/conf/kindle.env";
+  assertEquals(loadConfig({ path, text: DOTENV }, fromEnv({})).ok && "ok", "ok");
+  assertEquals(loadConfig({ path, text: "EMAIL=me@example.com\n" }, fromEnv(ENV)), {
+    ok: false,
+    error: "/conf/kindle.env に次の設定がありません: SEND_TO_KINDLE_EMAIL, SMTP_HOST, SMTP_PORT, SMTP_USER_NAME, SMTP_PASSWORD",
   });
 });
 
