@@ -65,10 +65,10 @@ resolve_model() {
   local name="$1" lower
   lower=$(printf '%s' "$name" | tr '[:upper:]' '[:lower:]')
   case "$lower" in
-    opus)   KIND=claude MODEL="${ORCH_MODEL_OPUS:-claude-opus-4-8}" ;;
-    sonnet) KIND=claude MODEL="${ORCH_MODEL_SONNET:-claude-sonnet-5}" ;;
-    haiku)  KIND=claude MODEL="${ORCH_MODEL_HAIKU:-claude-haiku-4-5-20251001}" ;;
-    fable)  KIND=claude MODEL="${ORCH_MODEL_FABLE:-claude-fable-5}" ;;
+    opus)   KIND=claude MODEL="${ORCH_MODEL_OPUS:-claude-opus-5-5}" ;;
+    sonnet) KIND=claude MODEL="${ORCH_MODEL_SONNET:-claude-sonnet-5-5}" ;;
+    haiku)  KIND=claude MODEL="${ORCH_MODEL_HAIKU:-claude-haiku-5-5}" ;;
+    fable)  KIND=claude MODEL="${ORCH_MODEL_FABLE:-claude-fable-5-1}" ;;
     sol)    KIND=codex  MODEL="${ORCH_MODEL_SOL:-gpt-5.6-sol}" ;;
     claude) KIND=claude MODEL="" ;;
     codex)  KIND=codex  MODEL="" ;;
