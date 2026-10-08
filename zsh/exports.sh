@@ -10,10 +10,9 @@ export XDG_STATE_HOME=$HOME/.local/state
 # PATH の重複エントリを除去 (tmux などのネストシェルで際限なく増えるのを防ぐ)
 typeset -U path PATH
 
-# Nix
-if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-fi
+# Nix の環境 (PATH・NIX_PROFILES・NIX_SSL_CERT_FILE) は nix-darwin の /etc/zshenv が設定する。
+# nix-daemon.sh は NIX_PROFILES を不完全な値で上書きし、tmux の中のシェルで補完が見つからなくなるので
+# 読み込まない (docs/adr/0020)
 
 # mise: dotfiles 実体へ symlink した設定を無条件に信頼する (別マシンでの `mise trust` を不要にする)
 export MISE_TRUSTED_CONFIG_PATHS="$DOTFILES/mise:$HOME/.config/mise"
