@@ -6,8 +6,8 @@
   "editor.autoClosingBrackets": "always",
   "editor.autoIndent": "advanced",
   "editor.renderWhitespace": "all",
-  // "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.defaultFormatter": "denoland.vscode-deno",
+  // 既定は biome。biome が整形しない言語は言語ごとの設定を使う (docs/adr/0023)
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,
   "editor.formatOnType": false,
   "editor.unicodeHighlight.ambiguousCharacters": false,
@@ -239,17 +239,17 @@
   "pestIdeTools.alwaysUsedRuleNames": ["ws", "br"],
 
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true,
     "editor.formatOnType": false
   },
   "[typescript]": {
-    // "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true,
     "editor.formatOnType": false
   },
   "[typescriptreact]": {
-    // "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "biomejs.biome",
     "editor.formatOnSave": true,
     "editor.formatOnType": false
   },
@@ -271,13 +271,13 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[terraform]": {
     "editor.defaultFormatter": "hashicorp.terraform"
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[makefile]": {
     "editor.insertSpaces": false
@@ -286,8 +286,7 @@
     "editor.defaultFormatter": "bodil.prettier-toml"
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "prettier.trailingComma": "none"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
