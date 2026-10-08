@@ -1,17 +1,19 @@
 #!/usr/bin/env -S deno run -A --ext=ts
 //
-// send-to-kindle <ファイル> - ファイルを Kindle のメールアドレスへ添付して送る (docs/adr/0021)
+// send-to-kindle [--env-file <パス>] <ファイル> - ファイルを Kindle のメールアドレスへ添付して送る
+// (docs/adr/0021, 0022)
 //
-// 設定はカレントディレクトリの .env から、無ければ環境変数から読む:
+// 設定は --env-file (短縮形 -e) で指定したファイルから読む。指定しなければカレントディレクトリの .env から、
+// それも無ければ環境変数から読む。指定したファイルが無い場合はエラーにする:
 //   EMAIL                 送信元のメールアドレス (Kindle の承認済みアドレス)
 //   SEND_TO_KINDLE_EMAIL  Kindle のメールアドレス
 //   SMTP_HOST / SMTP_PORT / SMTP_USER_NAME / SMTP_PASSWORD  送信に使う SMTP サーバー
 //
-// 設定の読み込みと送信内容の組み立ては bin/lib/send-to-kindle/ (deno test でテストする)
-import { parseArgs } from "node:util";
+// 引数の解釈、設定の読み込み、送信内容の組み立ては bin/lib/send-to-kindle/ (deno test でテストする)
 // @ts-types="npm:@types/nodemailer@^8"
 import nodemailer from "npm:nodemailer@^10";
 
+import { parseCliArgs } from "./lib/send-to-kindle/args.ts";
 import { loadConfig } from "./lib/send-to-kindle/config.ts";
 import { buildMail } from "./lib/send-to-kindle/mail.ts";
 
@@ -21,15 +23,22 @@ function fail(message: string): never {
   Deno.exit(1);
 }
 
-// .env が無ければ undefined (環境変数を使う)
-const readDotenv = async (): Promise<string | undefined> => {
+// 設定を読む .env のパスと中身。--env-file を指定しておらず、カレントディレクトリにも .env が無ければ
+// undefined (環境変数を使う)。指定したファイルが無ければエラーにする
+const readDotenv = async (
+  envFile: string | undefined,
+): Promise<{ path: string; text: string } | undefined> => {
+  const path = envFile ?? ".env";
   try {
-    return await Deno.readTextFile(".env");
+    return { path, text: await Deno.readTextFile(path) };
   } catch (error) {
-    if (error instanceof Deno.errors.NotFound) {
-      return undefined;
+    if (!(error instanceof Deno.errors.NotFound)) {
+      throw error;
     }
-    throw error;
+    if (envFile !== undefined) {
+      fail(`指定した .env がありません: ${envFile}`);
+    }
+    return undefined;
   }
 };
 
@@ -41,13 +50,13 @@ const isFile = async (path: string): Promise<boolean> => {
   }
 };
 
-const { positionals } = parseArgs({ args: Deno.args, allowPositionals: true });
-const [file] = positionals;
-if (file === undefined || positionals.length !== 1) {
-  fail("使い方: send-to-kindle <ファイル>");
+const args = parseCliArgs(Deno.args);
+if (!args.ok) {
+  fail(args.error);
 }
+const { file, envFile } = args;
 
-const result = loadConfig(await readDotenv(), (key) => Deno.env.get(key));
+const result = loadConfig(await readDotenv(envFile), (key) => Deno.env.get(key));
 if (!result.ok) {
   fail(result.error);
 }
