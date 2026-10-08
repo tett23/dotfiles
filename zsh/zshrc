@@ -27,4 +27,5 @@ source $DOTFILES/zsh/completions.sh
 
 __cached_eval direnv direnv hook zsh
 
-[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
+# ~/.local/bin は exports.sh で PATH に入っている。uv のインストーラが追記する
+# `. ~/.local/bin/env` は ~/.local/bin を PATH の先頭に足し mise より優先させるので読み込まない (docs/adr/0023)

@@ -23,8 +23,9 @@ export PATH="$PATH:$DOTFILES/bin"
 
 # Homebrew は使わない (Nix と mise に統一。docs/adr/0012)
 
-# home-manager / nix profile を優先させる
-export PATH="$HOME/.nix-profile/bin:$PATH"
+# PATH の優先順位: mise (言語・ツール。zshrc の mise activate で先頭に入る) → ~/.local/bin・~/bin →
+# home-manager (/etc/profiles/per-user) → Nix 本体 → システム。後ろ 3 つは nix-darwin の /etc/zshenv が設定する
+# (単体の home-manager は廃止したので ~/.nix-profile/bin は足さない。docs/adr/0023)
 
 # GCP (SDK がインストールされている場合のみ)
 if [ -d "$HOME/google-cloud-sdk/bin" ]; then
