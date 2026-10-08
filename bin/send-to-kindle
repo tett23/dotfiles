@@ -1,67 +1,74 @@
 #!/usr/bin/env -S deno run -A --ext=ts
-
-import "npm:@types/node/index.d.ts";
+//
+// send-to-kindle <ファイル> - ファイルを Kindle のメールアドレスへ添付して送る (docs/adr/0021)
+//
+// 設定はカレントディレクトリの .env から、無ければ環境変数から読む:
+//   EMAIL                 送信元のメールアドレス (Kindle の承認済みアドレス)
+//   SEND_TO_KINDLE_EMAIL  Kindle のメールアドレス
+//   SMTP_HOST / SMTP_PORT / SMTP_USER_NAME / SMTP_PASSWORD  送信に使う SMTP サーバー
+//
+// 設定の読み込みと送信内容の組み立ては bin/lib/send-to-kindle/ (deno test でテストする)
 import { parseArgs } from "node:util";
-import { basename, join } from "node:path";
-import nodemailer from "npm:nodemailer@6";
-// import 'npm:@types/nodemailer';
-import * as mod from "jsr:@std/dotenv@^0.225";
-import { createReadStream } from "node:fs";
+// @ts-types="npm:@types/nodemailer@^8"
+import nodemailer from "npm:nodemailer@^10";
 
-const env: {
-  EMAIL: string;
-  SEND_TO_KINDLE_EMAIL: string;
-  SMTP_HOST: string;
-  SMTP_PORT: string;
-  SMTP_USER_NAME: string;
-  SMTP_PASSWORD: string;
-} = mod.parse(Deno.readTextFileSync(".env")) as never;
+import { loadConfig } from "./lib/send-to-kindle/config.ts";
+import { buildMail } from "./lib/send-to-kindle/mail.ts";
 
-const {
-  positionals: [file],
-} = parseArgs({
-  args: Deno.args,
-  allowPositionals: true,
-  options: {
-    file: {
-      type: "string",
-      short: "f",
-      description: "file to send",
-    },
-  },
-});
-
-export async function sendToKindle(conf: {
-  filename: string;
-}): Promise<true | Error> {
-  const transporter = nodemailer.createTransport({
-    host: env.SMTP_HOST,
-    port: env.SMTP_PORT,
-    auth: {
-      user: env.SMTP_USER_NAME,
-      pass: env.SMTP_PASSWORD,
-    },
-  });
-
-  const info = await transporter
-    .sendMail({
-      from: env.EMAIL,
-      to: env.SEND_TO_KINDLE_EMAIL,
-      subject: "変換",
-      text: "book",
-      attachments: [
-        {
-          filename: basename(conf.filename),
-          content: createReadStream(join(Deno.cwd(), conf.filename)),
-        },
-      ],
-    })
-    .catch((err: Error) => err);
-  if (info instanceof Error) {
-    return info;
-  }
-
-  return true;
+// 関数宣言にして戻り値を never にし、呼び出し後の型の絞り込みを効かせる
+function fail(message: string): never {
+  console.error(`send-to-kindle: ${message}`);
+  Deno.exit(1);
 }
 
-await sendToKindle({ filename: file });
+// .env が無ければ undefined (環境変数を使う)
+const readDotenv = async (): Promise<string | undefined> => {
+  try {
+    return await Deno.readTextFile(".env");
+  } catch (error) {
+    if (error instanceof Deno.errors.NotFound) {
+      return undefined;
+    }
+    throw error;
+  }
+};
+
+const isFile = async (path: string): Promise<boolean> => {
+  try {
+    return (await Deno.stat(path)).isFile;
+  } catch {
+    return false;
+  }
+};
+
+const { positionals } = parseArgs({ args: Deno.args, allowPositionals: true });
+const [file] = positionals;
+if (file === undefined || positionals.length !== 1) {
+  fail("使い方: send-to-kindle <ファイル>");
+}
+
+const result = loadConfig(await readDotenv(), (key) => Deno.env.get(key));
+if (!result.ok) {
+  fail(result.error);
+}
+const { config } = result;
+
+const mail = buildMail(config, file, Deno.cwd());
+const [attachment] = mail.attachments;
+if (!(await isFile(attachment.path))) {
+  fail(`ファイルがありません: ${attachment.path}`);
+}
+
+const transporter = nodemailer.createTransport({
+  host: config.smtp.host,
+  port: config.smtp.port,
+  auth: { user: config.smtp.user, pass: config.smtp.pass },
+});
+
+try {
+  await transporter.sendMail(mail);
+} catch (error) {
+  fail(`送信できませんでした: ${error instanceof Error ? error.message : String(error)}`);
+}
+
+console.log(`送信しました: ${attachment.filename} → ${config.to}`);
