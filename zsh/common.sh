@@ -41,11 +41,18 @@ bindkey "\\en" history-beginning-search-forward-end
 
 ## Command history configuration
 #
-HISTFILE=~/.zsh_history
+# 履歴は XDG の場所に置く。旧 ~/.zsh_history があれば移す (docs/adr/0023)
+HISTFILE=${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history
+if [[ ! -e $HISTFILE ]]; then
+  mkdir -p ${HISTFILE:h}
+  [[ -f $HOME/.zsh_history ]] && mv $HOME/.zsh_history $HISTFILE
+fi
 HISTSIZE=50000
 SAVEHIST=50000
 setopt hist_ignore_dups # ignore duplication command history list
 setopt share_history # share command history data
+setopt hist_ignore_space # 先頭が空白のコマンドは履歴に残さない
+setopt hist_reduce_blanks # 余分な空白を詰めて記録する
 setopt extended_history # 実行時刻と所要時間も記録する (share_history との併用が推奨。docs/adr/0010)
 
 ## Alias configuration
