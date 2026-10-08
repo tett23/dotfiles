@@ -102,6 +102,13 @@ fetch_submodules() {
   git_https -C "$DOTFILES" submodule update --init --recursive
 }
 
+# 画面にログインしているか (GUI セッションの launchd ドメインがあるか)。
+# ログインしていないと home-manager が LaunchAgent (colima) を登録できず、bootstrap.sh が失敗する (docs/adr/0024)
+has_gui_session() {
+  [ "$(uname -s)" = "Darwin" ] || return 0
+  launchctl print "gui/$(id -u)" >/dev/null 2>&1
+}
+
 # 5. Nix / nix-darwin。対話入力 (sudo 等) のため、可能なら端末を stdin に渡す
 run_bootstrap() {
   log "bootstrap.sh を実行します"
@@ -110,6 +117,18 @@ run_bootstrap() {
   else
     "$DOTFILES/bootstrap.sh"
   fi
+}
+
+# 画面にログインしていない状態での失敗は、LaunchAgent の登録以外は済んでいるので、警告して続ける。
+# ログインしている状態での失敗は別の原因なので止める (docs/adr/0024)
+BOOTSTRAP_INCOMPLETE=0
+run_bootstrap_allowing_headless() {
+  if run_bootstrap; then
+    return 0
+  fi
+  has_gui_session && die "bootstrap.sh が失敗しました"
+  warn "画面にログインしていないため、LaunchAgent (colima) を登録できませんでした。続けます"
+  BOOTSTRAP_INCOMPLETE=1
 }
 
 # 6. mise 管理の言語 / ツール
@@ -135,8 +154,13 @@ main() {
   fetch_repo
   set_origin
   fetch_submodules
-  run_bootstrap
+  run_bootstrap_allowing_headless
   install_mise_tools
+  if [ "$BOOTSTRAP_INCOMPLETE" -eq 1 ]; then
+    warn "画面にログインしてから、次を実行して LaunchAgent を登録してください:"
+    warn "  sudo darwin-rebuild switch --flake $DOTFILES#dione"
+    return 0
+  fi
   log "すべて完了しました。新しいシェルを開いてください。"
 }
 
