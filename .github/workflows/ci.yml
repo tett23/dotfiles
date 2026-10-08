@@ -1,6 +1,7 @@
 # dotfiles の CI (docs/adr/0014)
 # - shell スクリプトの静的解析 (警告以上)
 # - zsh のテスト
+# - bin の Deno スクリプトのテスト (docs/adr/0021)
 # - nix-darwin の設定の評価 (ビルドはしない)
 name: CI
 
@@ -35,6 +36,16 @@ jobs:
         run: zsh zsh/tests/git-prompt.test.zsh
       - name: cached-eval
         run: zsh zsh/tests/cached-eval.test.zsh
+
+  deno-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: send-to-kindle
+        run: deno test bin/lib/send-to-kindle/
 
   nix-eval:
     runs-on: macos-latest
