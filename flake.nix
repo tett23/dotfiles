@@ -69,7 +69,6 @@
           "bat/config".source = link "bat-config";
           "ghostty/config".source = link "ghostty/config";
           "mise/config.toml".source = link "mise/config.toml";
-          "eskk".source = link "eskk";
         };
         # nvim のバックアップ先
         home.activation.createVimBackupDirectory = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
