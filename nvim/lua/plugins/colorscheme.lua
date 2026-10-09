@@ -6,7 +6,12 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      require("monokai-pro").setup({ filter = "classic" })
+      require("monokai-pro").setup({
+        filter = "classic",
+        override = function()
+          return { Visual = { bg = "#55564e" } }
+        end,
+      })
       vim.opt.background = "dark"
       vim.cmd.colorscheme("monokai-pro")
     end,

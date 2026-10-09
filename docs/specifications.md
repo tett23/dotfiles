@@ -81,6 +81,11 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `Ctrl-F` | `git status` の項目を選ぶ |
 | `Ctrl-K` | プロセスを選んで終了させる |
 
+## nvim
+
+- カラースキームは monokai-pro.nvim の `classic` フィルタ (ADR 0009)。
+- 選択範囲 (`Visual`) の背景色は、テーマの既定 (約 `#3e3f38`) では見分けにくいため `#55564e` に上書きしている (ADR 0026)。
+
 ## tmux
 
 - プレフィックスは `Ctrl-Q`。プラグインは TPM (`tmux/tpm`、submodule) で管理する。
