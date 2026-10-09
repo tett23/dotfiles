@@ -62,6 +62,7 @@
           "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
           "Library/Application Support/Code/User/snippets".source = link "vscode/snippets";
           "Library/Application Support/AquaSKK/keymap.conf".source = link "skk/keymap.conf";
+          ".claude/CLAUDE.md".source = link ".claude/CLAUDE.md";
         };
         xdg.configFile = {
           "nvim".source = link "nvim";
