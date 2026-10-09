@@ -19,4 +19,5 @@ clone は SSH 鍵が無くてもできるよう HTTPS で行い、その後 `ori
 (`git@github.com:tett23/dotfiles.git`) に切り替えます。手元で `git pull` / `push` するには SSH 鍵の設定が必要です
 (`install.sh` の再実行は SSH 鍵が無くても動きます)。
 
-依存の一覧は [dependencies.md](dependencies.md)、設計判断は [docs/adr](docs/adr) を参照。
+現在の仕様は [docs/specifications.md](docs/specifications.md)、依存の一覧は [dependencies.md](dependencies.md)、
+設計判断は [docs/adr](docs/adr) を参照。
