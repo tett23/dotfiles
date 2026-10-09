@@ -7,7 +7,7 @@ ADRを破棄する場合は、破棄理由を後述のspecifications.mdに理由
 
 ### ADRの構成
 
-docs/adr に配置する。ファイル名には `00001-feature-details.md` のように連番のprefixをつけなくてはいけない。連番以降はkebab-caseで、内容を表すような人間に可読な名前をつける。
+docs/adr に配置する。ファイル名には `0001-feature-details.md` のように連番のprefixをつけなくてはいけない。連番以降はkebab-caseで、内容を表すような人間に可読な名前をつける。
 
 ### ADRの中身
 
