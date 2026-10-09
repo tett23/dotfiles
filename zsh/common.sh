@@ -47,8 +47,8 @@ if [[ ! -e $HISTFILE ]]; then
   mkdir -p ${HISTFILE:h}
   [[ -f $HOME/.zsh_history ]] && mv $HOME/.zsh_history $HISTFILE
 fi
-HISTSIZE=50000
-SAVEHIST=50000
+HISTSIZE=500000
+SAVEHIST=500000
 setopt hist_ignore_dups # ignore duplication command history list
 setopt share_history # share command history data
 setopt hist_ignore_space # 先頭が空白のコマンドは履歴に残さない
