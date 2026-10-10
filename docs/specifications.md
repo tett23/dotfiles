@@ -53,13 +53,13 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | リンク先 | リンク元 |
 |---|---|
 | `~/.zshenv`、`~/.zshrc` | `zsh/zshenv`、`zsh/zshrc` |
-| `~/.gitconfig`、`~/.gitignore_global` | `gitconfig`、`gitignore_global` |
+| `~/.gitconfig`、`~/.gitignore_global` | `git/config`、`git/ignore` |
 | `~/.tmux.conf` | `tmux/tmux.conf` |
-| `~/.rubocop.yml` | `rubocop.yml` |
+| `~/.rubocop.yml` | `rubocop/config.yml` |
 | `~/.claude/settings.json` | `claude/settings.json` |
 | `~/.claude/CLAUDE.md` | `.claude/CLAUDE.md` |
 | `~/.config/nvim`、`~/.config/karabiner` | `nvim/`、`karabiner/` |
-| `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml` | `bat-config`、`ghostty/config`、`mise/config.toml` |
+| `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml` | `bat/config`、`ghostty/config`、`mise/config.toml` |
 | `~/Library/Application Support/Code/User/` の `settings.json`・`keybindings.json`・`snippets` | `vscode/` |
 | `~/Library/Application Support/AquaSKK/keymap.conf` | `skk/keymap.conf` |
 

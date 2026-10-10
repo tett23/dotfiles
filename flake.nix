@@ -53,10 +53,10 @@
         home.file = {
           ".zshenv".source = link "zsh/zshenv";
           ".zshrc".source = link "zsh/zshrc";
-          ".gitconfig".source = link "gitconfig";
-          ".gitignore_global".source = link "gitignore_global";
+          ".gitconfig".source = link "git/config";
+          ".gitignore_global".source = link "git/ignore";
           ".tmux.conf".source = link "tmux/tmux.conf";
-          ".rubocop.yml".source = link "rubocop.yml";
+          ".rubocop.yml".source = link "rubocop/config.yml";
           ".claude/settings.json".source = link "claude/settings.json";
           "Library/Application Support/Code/User/settings.json".source = link "vscode/settings.json";
           "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
@@ -67,7 +67,7 @@
         xdg.configFile = {
           "nvim".source = link "nvim";
           "karabiner".source = link "karabiner";
-          "bat/config".source = link "bat-config";
+          "bat/config".source = link "bat/config";
           "ghostty/config".source = link "ghostty/config";
           "mise/config.toml".source = link "mise/config.toml";
         };
