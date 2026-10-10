@@ -23,7 +23,7 @@ jobs:
           shellcheck --severity=warning \
             bin/docker-sh bin/figrm bin/orch bin/rtouch bin/short-pwd \
             bin/sync-deps bin/update-mise bin/update-nix \
-            tmux/segments/lan-ip tmux/segments/time-local tmux/segments/time-utc \
+            tmux/segments/lan-ip tmux/segments/time-local tmux/segments/time-utc tmux/scripts/copy-line \
             install.sh bootstrap.sh
 
   zsh-tests:

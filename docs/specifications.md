@@ -90,7 +90,13 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 ## tmux
 
-- プレフィックスは `Ctrl-Q`。プラグインは TPM (`tmux/tpm`、submodule) で管理する。
+- プレフィックスは `Ctrl-Q`。プラグインマネージャー (TPM) は使わない (ADR 0029)。
+  - ステータスラインは tmux-nova で組み立てる。Nix (`pkgs.tmuxPlugins.tmux-nova`) で入れ、
+    `~/.config/tmux/plugins/tmux-nova` にリンクして `tmux.conf` から読み込む。バージョンは `flake.lock` で固定される。
+  - tmux-sensible・tmux-yank は使わず、必要な設定と割り当てを `tmux.conf` に書いている。
+- コピーモード (vi) の `y` とマウスでの選択はクリップボードへ、`Y` は入力欄へ貼り付ける。
+  `prefix + y` はシェルの入力行を、`prefix + Y` はペインのカレントディレクトリのパスをクリップボードへコピーする
+  (`prefix + y` は zsh の vi モードが前提)。
 - スクロールバックは 200 万行。
 - ステータスラインのウィンドウ名には、実行中のプロセス名ではなくディレクトリ名を出す (ADR 0007)。
 

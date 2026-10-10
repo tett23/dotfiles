@@ -70,6 +70,9 @@
           "bat/config".source = link "bat/config";
           "ghostty/config".source = link "ghostty/config";
           "mise/config.toml".source = link "mise/config.toml";
+          # tmux-nova は Nix で入れる (docs/adr/0029)。nova.tmux は自分の置き場所から scripts/ を読むため、
+          # ファイル単体ではなくディレクトリをリンクする
+          "tmux/plugins/tmux-nova".source = "${pkgs.tmuxPlugins.tmux-nova}/share/tmux-plugins/tmux-nova";
         };
         # nvim のバックアップ先
         home.activation.createVimBackupDirectory = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

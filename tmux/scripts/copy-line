@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# copy-line - シェルの入力行をクリップボードへコピーする (tmux の prefix + y。docs/adr/0029)
+#
+# tmux-yank の copy_line.sh を zsh の vi モード (bindkey -v) に合わせて再実装したもの。
+# 複数行にまたがる入力行も、末尾までコピーする。
+
+# ノーマルモードにして行頭へ移る
+tmux send-keys Escape 0
+# シェルがカーソルを動かすのを待つ
+sleep 0.1
+
+# コピーモードで行頭から入力行の末尾までを選択してコピーする。
+# 下へ大きく進んでから行末 → 前の単語 → 次の単語の末尾へ移り、空行を除いた最後の文字で止める
+tmux copy-mode
+tmux send-keys -X begin-selection
+tmux send-keys -X -N 150 cursor-down
+tmux send-keys -X end-of-line
+tmux send-keys -X previous-word
+tmux send-keys -X next-word-end
+tmux send-keys -X copy-pipe-and-cancel pbcopy
+
+# 行末に戻って挿入モードに戻す
+tmux send-keys '$' a
+tmux display-message 'Line copied to clipboard!'
