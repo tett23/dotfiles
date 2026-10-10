@@ -19,5 +19,17 @@ clone は SSH 鍵が無くてもできるよう HTTPS で行い、その後 `ori
 (`git@github.com:tett23/dotfiles.git`) に切り替えます。手元で `git pull` / `push` するには SSH 鍵の設定が必要です
 (`install.sh` の再実行は SSH 鍵が無くても動きます)。
 
+## テスト
+
+テストはツールごとに置き場所が違います。CI (`.github/workflows/ci.yml`) では zsh と send-to-kindle のテストを実行します。
+
+| 対象 | 置き場所 | 実行コマンド |
+|---|---|---|
+| zsh | `zsh/tests/` | `zsh zsh/tests/git-prompt.test.zsh`、`zsh zsh/tests/cached-eval.test.zsh` |
+| usage-hint (Claude Code の mod) | `claude/mods/usage-hint/tests/` | `claude plugin test claude/mods/usage-hint` |
+| send-to-kindle | `bin/send-to-kindle` の末尾 | `deno test -A --ext=ts bin/send-to-kindle` |
+
+## ドキュメント
+
 現在の仕様は [docs/specifications.md](docs/specifications.md)、依存の一覧は [dependencies.md](dependencies.md)、
 設計判断は [docs/adr](docs/adr) を参照。
