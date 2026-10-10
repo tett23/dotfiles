@@ -1,0 +1,4 @@
+# このリポジトリで出るもの (本人の global ignore にもあるが、別の環境で clone したときのために書く。docs/adr/0027)
+.DS_Store
+.ruby-lsp/
+.claude/settings.local.json
