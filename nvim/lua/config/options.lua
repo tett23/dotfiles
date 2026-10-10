@@ -12,7 +12,8 @@ opt.showmatch = true
 opt.laststatus = 3 -- グローバルステータスライン (lualine)
 opt.cursorline = true
 opt.list = true
-opt.listchars = { tab = ">-", trail = "_", nbsp = "+" }
+-- すべての半角スペースと改行も表示する。全角スペースは autocmds.lua でハイライトする (docs/adr/0028)
+opt.listchars = { tab = ">-", trail = "_", nbsp = "+", space = "·", eol = "↲" }
 
 -- ファイル (旧: nobackup / noswapfile)
 opt.backup = false
