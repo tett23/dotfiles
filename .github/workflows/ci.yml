@@ -38,6 +38,8 @@ jobs:
         run: zsh zsh/tests/cached-eval.test.zsh
       - name: fzf-command-finder
         run: zsh zsh/tests/fzf-command-finder.test.zsh
+      - name: gitignore-completion
+        run: zsh zsh/tests/gitignore-completion.test.zsh
 
   adr:
     runs-on: ubuntu-latest

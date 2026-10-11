@@ -23,5 +23,10 @@ fi
 # cd の補完では、候補のディレクトリの中身をプレビューする
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
+# . で始まるファイル・ディレクトリも補完の候補に出す。setopt glob_dots と違い、補完だけに効く (docs/adr/0038)
+_comp_options+=(globdots)
+# 補完の候補から .git と、git が無視するもの (.gitignore などで除外したもの) を外す (docs/adr/0038)
+source ${DOTFILES:-$HOME/dotfiles}/zsh/lib/gitignore-completion.zsh
+
 # zinit 経由でロードしたプラグインの補完定義を反映する
 (( ${+functions[zinit]} )) && zinit cdreplay -q

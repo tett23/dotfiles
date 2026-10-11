@@ -73,6 +73,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 履歴は `$XDG_STATE_HOME/zsh/history` に 50 万件まで保存する。先頭が空白のコマンドは残さない (ADR 0023)。
 - 補完は、小文字の入力を大文字にも一致させる (ADR 0034)。`Tab` の補完候補は fzf-tab で絞り込み、`cd` の補完では
   候補のディレクトリの中身をプレビューする (ADR 0037。fzf 本体の `**<Tab>` は使わない)。
+- 補完の候補には `.` で始まるファイル・ディレクトリも出す。`.git` と、git が無視するもの (`.gitignore` などで除外したもの) は
+  候補から外す (ほかに候補が無いときは出る。ADR 0038)。
 - eza と bat の短いエイリアス (ADR 0035): `e` (`eza`)、`el` (`eza -l`)、`ea` (`eza -a`)、`ela` (`eza -la`)、
   `et` (`eza --tree`)、`b` (`bat`)。
 - fzf のファイル検索は fd を使い (ADR 0002)、`Ctrl-P` では bat でファイルの先頭をプレビューする (ADR 0034, 0036)。主なキー割り当て:
@@ -101,6 +103,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
     オペレータ待ちの `r` は離れた場所への操作、`R` は構文の単位での検索。`/` の検索中の `Ctrl-S` でラベルの表示を切り替える。
   - nvim-treesitter-context: 今いる関数・クラスの先頭行を画面上部に固定表示する (最大 3 行)。
   - trouble.nvim: `<Leader>xx` で全体の診断、`<Leader>xX` で今のバッファの診断、`<Leader>xq` で quickfix リストを開閉する。
+- Telescope のファイル検索 (`<Leader><Leader>`・`<Leader>ff`) と文字列の検索 (`<Leader>fg`) は、`.` で始まるファイルも対象にする。
+  `.gitignore` に従い、`.git` の中は除く (zsh の `Ctrl-P` と同じ。ADR 0038)。
 
 ## tmux
 
