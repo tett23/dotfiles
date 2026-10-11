@@ -66,6 +66,7 @@
           "git/ignore".source = link "git/ignore";
           "tmux/tmux.conf".source = link "tmux/tmux.conf";
           "zsh/.zshrc".source = link "zsh/zshrc";
+          "zsh/.zshrc.mine".source = link "zsh/zshrc.mine"; # zshrc と分けておきたい設定 (docs/adr/0043)
           "rubocop/config.yml".source = link "rubocop/config.yml";
           "nvim".source = link "nvim";
           "karabiner".source = link "karabiner";
@@ -76,11 +77,6 @@
           # ファイル単体ではなくディレクトリをリンクする
           "tmux/plugins/tmux-nova".source = "${pkgs.tmuxPlugins.tmux-nova}/share/tmux-plugins/tmux-nova";
         };
-        # nvim のバックアップ先
-        home.activation.createVimBackupDirectory = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          mkdir -p "$HOME/.vimbackup"
-        '';
-
         home.packages = [
           pkgs.claude-code
           pkgs.codex   # codex-cli

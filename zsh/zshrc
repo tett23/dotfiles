@@ -22,8 +22,8 @@ source $DOTFILES/zsh/plugins.sh
 # compinit はプラグインの fpath 追加より後に実行する
 source $DOTFILES/zsh/completions.sh
 
-## load user .zshrc configuration file
-[ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
+# zshrc と分けておきたい設定 (~/.config/zsh/.zshrc.mine → zsh/zshrc.mine。docs/adr/0043)
+[ -f ${ZDOTDIR:-$HOME}/.zshrc.mine ] && source ${ZDOTDIR:-$HOME}/.zshrc.mine
 
 __cached_eval direnv direnv hook zsh
 
