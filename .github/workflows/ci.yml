@@ -36,6 +36,8 @@ jobs:
         run: zsh zsh/tests/git-prompt.test.zsh
       - name: cached-eval
         run: zsh zsh/tests/cached-eval.test.zsh
+      - name: fzf-command-finder
+        run: zsh zsh/tests/fzf-command-finder.test.zsh
 
   adr:
     runs-on: ubuntu-latest
