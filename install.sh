@@ -148,6 +148,13 @@ install_mise_tools() {
     warn "mise install が失敗しました。新しいシェルで 'mise install' を再実行してください"
 }
 
+# 7. git の hook (コミット済みの ADR の変更を adr-guard で拒否する。docs/adr/0032)。
+# core.hooksPath は clone ごとの設定なので、ここで有効にする。adr-guard は mise install で入る
+enable_git_hooks() {
+  log "git の hook (.githooks) を有効にします"
+  git -C "$DOTFILES" config core.hooksPath .githooks
+}
+
 main() {
   log "dotfiles のインストールを開始します (dest: $DOTFILES)"
   ensure_xcode_clt
@@ -156,6 +163,7 @@ main() {
   fetch_submodules
   run_bootstrap_allowing_headless
   install_mise_tools
+  enable_git_hooks
   if [ "$BOOTSTRAP_INCOMPLETE" -eq 1 ]; then
     warn "画面にログインしてから、次を実行して LaunchAgent を登録してください:"
     warn "  sudo darwin-rebuild switch --flake $DOTFILES#dione"

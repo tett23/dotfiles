@@ -9,6 +9,7 @@ ghc = "https://github.com/mise-plugins/mise-ghcup.git"
 # 手で cargo install した同名のコマンドより優先させるため rust より前 (先頭) に書く
 "github:tett23/send-to-kindle" = "latest"
 "github:tett23/shorten-path" = "latest"
+"github:tett23/adr-guard" = "latest" # コミット済みの ADR の変更を防ぐ (docs/adr/0032)
 go = "latest"
 node = "latest"
 python = "latest"

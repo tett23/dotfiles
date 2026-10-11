@@ -1,7 +1,7 @@
 # dotfiles の CI (docs/adr/0014)
 # - shell スクリプトの静的解析 (警告以上)
 # - zsh のテスト
-# - bin の Deno スクリプトのテスト (docs/adr/0021)
+# - コミット済みの ADR が変更されていないことの検査 (adr-guard。docs/adr/0032)
 # - nix-darwin の設定の評価 (ビルドはしない)
 name: CI
 
@@ -24,7 +24,7 @@ jobs:
             bin/docker-sh bin/figrm bin/orch bin/rtouch bin/short-pwd \
             bin/sync-deps bin/update-mise bin/update-nix \
             tmux/segments/lan-ip tmux/segments/time-local tmux/segments/time-utc tmux/scripts/copy-line \
-            install.sh bootstrap.sh
+            .githooks/pre-commit install.sh bootstrap.sh
 
   zsh-tests:
     runs-on: ubuntu-latest
@@ -36,6 +36,18 @@ jobs:
         run: zsh zsh/tests/git-prompt.test.zsh
       - name: cached-eval
         run: zsh zsh/tests/cached-eval.test.zsh
+
+  adr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: tett23/adr-guard@v0.1.0
+        with:
+          base: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          head: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
 
   nix-eval:
     runs-on: macos-latest

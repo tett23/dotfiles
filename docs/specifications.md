@@ -140,6 +140,11 @@ GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
 
 - 実装の前に ADR を書く。ファイル名は `docs/adr/0001-feature-details.md` のように 4 桁の連番を付ける。
 - コミットした ADR はステータスの行を除いて変更しない。仕様を変えるときは新しい ADR を作る。
+- この規則は adr-guard (https://github.com/tett23/adr-guard) で、git の pre-commit hook (`.githooks/pre-commit`)・
+  Claude Code の hook (`.claude/settings.json`。全リポジトリで有効)・CI の `adr` ジョブの 3 か所で強制する (ADR 0032)。
+  - adr-guard が変更を許すのは `ステータス:` で始まる行だけ。ADR 0001〜0025 は `- Status:` の書き方のため、
+    ステータスを更新しない。置き換えた関係は新しい ADR の「文脈」に書く。
+  - `core.hooksPath` は clone ごとの設定で、`install.sh` が設定する。
 
 ### 破棄した ADR
 

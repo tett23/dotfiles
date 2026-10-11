@@ -1,0 +1,4 @@
+#!/bin/sh
+#
+# コミット済みの ADR (docs/adr/) の変更を拒否する (docs/adr/0032)
+exec adr-guard pre-commit

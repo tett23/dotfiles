@@ -19,6 +19,14 @@ clone は SSH 鍵が無くてもできるよう HTTPS で行い、その後 `ori
 (`git@github.com:tett23/dotfiles.git`) に切り替えます。手元で `git pull` / `push` するには SSH 鍵の設定が必要です
 (`install.sh` の再実行は SSH 鍵が無くても動きます)。
 
+### 手で clone した場合
+
+コミット済みの ADR の変更を防ぐ git の hook (adr-guard。`mise install` で入る) を有効にします。
+
+```sh
+git config core.hooksPath .githooks
+```
+
 ## テスト
 
 テストはツールごとに置き場所が違います。CI (`.github/workflows/ci.yml`) では zsh のテストを実行します。
