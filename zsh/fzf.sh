@@ -245,7 +245,7 @@ bindkey "^o" fzf_command_finder
 zle -N fkill
 bindkey "^k" fkill
 zle -N ftmux_window
-bindkey "^e" ftmux_window # tmux のウィンドウの切り替え (docs/adr/0033)
+bindkey "^t" ftmux_window # tmux のウィンドウの切り替え (docs/adr/0033, 0036)。fzf 本体の Ctrl-T (ファイルの選択) は Ctrl-P で使う
 bindkey "^p" fzf-file-widget
 zle -N select_git_status_items
 bindkey "^f" select_git_status_items
@@ -255,5 +255,5 @@ export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
 # ファイル検索は fd (macOS の BSD find は引数なしで失敗する。docs/adr/0002 参照)
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-# Ctrl-T・Ctrl-P (fzf-file-widget) でファイルの先頭をプレビューする。独自のコマンドにはこの変数を渡さない (docs/adr/0034)
+# Ctrl-P (fzf-file-widget。fzf 本体の Ctrl-T の機能) でファイルの先頭をプレビューする。独自のコマンドにはこの変数を渡さない (docs/adr/0034)
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:200 {}'"
