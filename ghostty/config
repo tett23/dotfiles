@@ -10,3 +10,17 @@ keybind = cmd+p=csi:112;9u
 
 # Ctrl+J の改行(LF)送出を無効化 (子プロセスに送らず破棄)
 keybind = ctrl+j=ignore
+
+# 便利な設定 (docs/adr/0044)
+# 左の Option キーを Alt として送る (zsh の Alt-c・Alt-p・Alt-n などを使う)。右の Option では特殊な文字を入力できる
+macos-option-as-alt = left
+# Ghostty は Nix で入れているので、自動更新は止めて bin/update-nix で上げる
+auto-update = off
+# 配色を nvim (monokai-pro の classic) と揃える
+theme = Monokai Classic
+# どのアプリからでも Cmd+\ で、画面の上から端末を出し入れする (macOS のアクセシビリティの許可が要る)
+keybind = global:cmd+backslash=toggle_quick_terminal
+# 終了したときのウィンドウ・タブの配置を、次の起動で戻す
+window-save-state = always
+# ウィンドウの余白を上下左右で均等にする
+window-padding-balance = true

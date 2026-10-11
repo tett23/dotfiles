@@ -111,6 +111,15 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - Telescope のファイル検索 (`<Leader><Leader>`・`<Leader>ff`) と文字列の検索 (`<Leader>fg`) は、`.` で始まるファイルも対象にする。
   `.gitignore` に従い、`.git` の中は除く (zsh の `Ctrl-P` と同じ。ADR 0038)。
 
+## Ghostty
+
+- 終了時の確認を出さず、最後のウィンドウを閉じたら終了する。
+- `Cmd+P` は Kitty のキーの形式 (`CSI 112;9u`) で送り、nvim の `<D-p>` (コマンドパレット) で受ける。`Ctrl+J` は送らない。
+- 左の Option キーを Alt として送る (zsh の `Alt-c`・`Alt-p`・`Alt-n` などを使う)。右の Option では特殊な文字を入力できる (ADR 0044)。
+- 自動更新はしない (Nix で入れていて、`bin/update-nix` で上げる。ADR 0044)。
+- 配色は nvim と揃えて `Monokai Classic`。`Cmd+\` で、どのアプリからでも画面の上から端末 (quick terminal) を出し入れする。
+  終了したときのウィンドウ・タブの配置を、次の起動で戻す。ウィンドウの余白は上下左右で均等にする (ADR 0044)。
+
 ## tmux
 
 - プレフィックスは `Ctrl-Q`。プラグインマネージャー (TPM) は使わない (ADR 0029)。
