@@ -202,7 +202,8 @@ bindkey "^g" repo
 zle -N fbr
 bindkey "^b" fbr
 zle -N fzf_command_finder
-bindkey "^," fzf_command_finder
+# Ctrl-O (旧 "^," は実際には Ctrl-L に割り当たり、画面のクリアを潰していた。docs/adr/0031)
+bindkey "^o" fzf_command_finder
 zle -N fkill
 bindkey "^k" fkill
 bindkey "^p" fzf-file-widget

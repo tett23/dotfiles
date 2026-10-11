@@ -80,6 +80,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `Ctrl-B` | git のブランチを選んで切り替える   |
 | `Ctrl-F` | `git status` の項目を選ぶ          |
 | `Ctrl-K` | プロセスを選んで終了させる         |
+| `Ctrl-O` | よく使う fzf のコマンド (git・docker など) を選んで実行する (ADR 0031) |
 
 ## nvim
 
