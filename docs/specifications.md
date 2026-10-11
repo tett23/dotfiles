@@ -39,29 +39,29 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 
 ### コマンド
 
-| コマンド | 内容 |
-|---|---|
-| `bin/sync-deps` | `dependencies.md` を Claude (`claude -p`) に読ませ、`flake.nix`・`mise/config.toml`・`nix/pkgs/` を更新させる (ADR 0013) |
-| `bin/update-nix` | `flake.lock` と `nix/pkgs/sources.json` を最新にして適用する (ADR 0012) |
-| `bin/update-mise` | mise の言語とツールを最新にする。mise 本体は Nix で更新する (ADR 0012) |
+| コマンド          | 内容                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `bin/sync-deps`   | `dependencies.md` を Claude (`claude -p`) に読ませ、`flake.nix`・`mise/config.toml`・`nix/pkgs/` を更新させる (ADR 0013) |
+| `bin/update-nix`  | `flake.lock` と `nix/pkgs/sources.json` を最新にして適用する (ADR 0012)                                                  |
+| `bin/update-mise` | mise の言語とツールを最新にする。mise 本体は Nix で更新する (ADR 0012)                                                   |
 
 ## 設定ファイルの配置
 
 home-manager が、リポジトリ内のファイルへのシンボリックリンク (`mkOutOfStoreSymlink`) を張る。
 リポジトリを編集すると、`darwin-rebuild` をやり直さなくてもすぐに反映される。
 
-| リンク先 | リンク元 |
-|---|---|
-| `~/.zshenv`、`~/.zshrc` | `zsh/zshenv`、`zsh/zshrc` |
-| `~/.gitconfig`、`~/.gitignore_global` | `git/config`、`git/ignore` |
-| `~/.tmux.conf` | `tmux/tmux.conf` |
-| `~/.rubocop.yml` | `rubocop/config.yml` |
-| `~/.claude/settings.json` | `claude/settings.json` |
-| `~/.claude/CLAUDE.md` | `.claude/CLAUDE.md` |
-| `~/.config/nvim`、`~/.config/karabiner` | `nvim/`、`karabiner/` |
-| `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml` | `bat/config`、`ghostty/config`、`mise/config.toml` |
-| `~/Library/Application Support/Code/User/` の `settings.json`・`keybindings.json`・`snippets` | `vscode/` |
-| `~/Library/Application Support/AquaSKK/keymap.conf` | `skk/keymap.conf` |
+| リンク先                                                                                      | リンク元                                           |
+| --------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `~/.zshenv`、`~/.zshrc`                                                                       | `zsh/zshenv`、`zsh/zshrc`                          |
+| `~/.gitconfig`、`~/.gitignore_global`                                                         | `git/config`、`git/ignore`                         |
+| `~/.tmux.conf`                                                                                | `tmux/tmux.conf`                                   |
+| `~/.rubocop.yml`                                                                              | `rubocop/config.yml`                               |
+| `~/.claude/settings.json`                                                                     | `.claude/settings.json`                            |
+| `~/.claude/CLAUDE.md`                                                                         | `.claude/CLAUDE.md`                                |
+| `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
+| `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
+| `~/Library/Application Support/Code/User/` の `settings.json`・`keybindings.json`・`snippets` | `vscode/`                                          |
+| `~/Library/Application Support/AquaSKK/keymap.conf`                                           | `skk/keymap.conf`                                  |
 
 ## zsh
 
@@ -73,13 +73,13 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 履歴は `$XDG_STATE_HOME/zsh/history` に 50 万件まで保存する。先頭が空白のコマンドは残さない (ADR 0023)。
 - fzf のファイル検索は fd を使う (ADR 0002)。主なキー割り当て:
 
-| キー | 内容 |
-|---|---|
+| キー     | 内容                               |
+| -------- | ---------------------------------- |
 | `Ctrl-P` | ファイルを検索して入力行に挿入する |
-| `Ctrl-G` | リポジトリを選んで移動する |
-| `Ctrl-B` | git のブランチを選んで切り替える |
-| `Ctrl-F` | `git status` の項目を選ぶ |
-| `Ctrl-K` | プロセスを選んで終了させる |
+| `Ctrl-G` | リポジトリを選んで移動する         |
+| `Ctrl-B` | git のブランチを選んで切り替える   |
+| `Ctrl-F` | `git status` の項目を選ぶ          |
+| `Ctrl-K` | プロセスを選んで終了させる         |
 
 ## nvim
 
@@ -102,8 +102,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 ## Claude Code
 
-- 本人の設定は `claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
-- mod `usage-hint` (`claude/mods/usage-hint/`) が、入力欄の下に `5h 23% · 7d 41% · Fable 12% · ctx 37%` の形で
+- 本人の設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
+- mod `usage-hint` (`.claude/mods/usage-hint/`) が、入力欄の下に `5h 23% · 7d 41% · Fable 12% · ctx 37%` の形で
   使用量を表示する (ADR 0004)。
   - 値が無い項目は `--`。75% を超えた項目は黄色にし (ADR 0005)、ラベルは太字にする (ADR 0006)。
   - セッション開始直後は、前回保存したレートリミットの値と、ローカルで推定したコンテキストの使用率を出す (ADR 0008)。
@@ -112,12 +112,12 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 ## その他のコマンド (`bin/`)
 
-| コマンド | 内容 |
-|---|---|
+| コマンド                                        | 内容                                                                                                                                                                                                                                      |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `send-to-kindle [--env-file <パス>] <ファイル>` | ファイルを Kindle のメールアドレスへ送る。設定は `--env-file` で指定したファイル、指定が無ければカレントディレクトリの `.env`、それも無ければ環境変数から読む (ADR 0021, 0022)。1 ファイルで完結し、テストも同じファイルにある (ADR 0025) |
-| `rtouch <パス>` | 親ディレクトリを作ってからファイルを作る |
-| `docker-sh <イメージ> …`、`figrm <サービス> …` | `docker run --rm -it`、`docker compose run --rm` の短縮 |
-| `short-pwd` | カレントディレクトリを短縮して表示する |
+| `rtouch <パス>`                                 | 親ディレクトリを作ってからファイルを作る                                                                                                                                                                                                  |
+| `docker-sh <イメージ> …`、`figrm <サービス> …`  | `docker run --rm -it`、`docker compose run --rm` の短縮                                                                                                                                                                                   |
+| `short-pwd`                                     | カレントディレクトリを短縮して表示する                                                                                                                                                                                                    |
 
 ## CI
 

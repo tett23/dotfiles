@@ -1,6 +1,6 @@
 {
   "env": {
-    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/claude/mods/usage-hint"
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/.claude/mods/usage-hint"
   },
   "statusLine": {
     "type": "command",

@@ -57,12 +57,12 @@
           ".gitignore_global".source = link "git/ignore";
           ".tmux.conf".source = link "tmux/tmux.conf";
           ".rubocop.yml".source = link "rubocop/config.yml";
-          ".claude/settings.json".source = link "claude/settings.json";
+          ".claude/settings.json".source = link ".claude/settings.json";
+          ".claude/CLAUDE.md".source = link ".claude/CLAUDE.md";
           "Library/Application Support/Code/User/settings.json".source = link "vscode/settings.json";
           "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
           "Library/Application Support/Code/User/snippets".source = link "vscode/snippets";
           "Library/Application Support/AquaSKK/keymap.conf".source = link "skk/keymap.conf";
-          ".claude/CLAUDE.md".source = link ".claude/CLAUDE.md";
         };
         xdg.configFile = {
           "nvim".source = link "nvim";
