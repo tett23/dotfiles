@@ -17,7 +17,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 `install.sh` は冪等で、次を順に行う (ADR 0001)。失敗したら同じコマンドを再実行する。
 
 1. Xcode Command Line Tools を入れる。
-2. `~/dotfiles` に HTTPS で clone し、submodule を取得する。その後 `origin` を SSH の URL
+2. `~/dotfiles` に HTTPS で clone する。その後 `origin` を SSH の URL
    (`git@github.com:tett23/dotfiles.git`) に切り替える (ADR 0016)。
 3. `bootstrap.sh` を実行する: Nix (Determinate Systems のインストーラ) を入れ、nix-darwin を適用する
    (初回は `nix run` で flake.lock に固定した nix-darwin を使う。ADR 0017)。

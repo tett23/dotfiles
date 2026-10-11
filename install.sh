@@ -9,9 +9,9 @@
 #   1. Xcode Command Line Tools の確認 / インストール
 #   2. リポジトリを $DOTFILES に HTTPS で clone (既にあれば pull)
 #   3. origin を SSH の URL に切り替える (docs/adr/0016)
-#   4. submodule の取得
-#   5. bootstrap.sh (Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク)
-#   6. mise install (言語 / ツール)
+#   4. bootstrap.sh (Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク)
+#   5. mise install (言語 / ツール)
+#   6. git の hook (.githooks) を有効にする (docs/adr/0032)
 #
 # 環境変数で上書き可能: DOTFILES, DOTFILES_REPO, DOTFILES_BRANCH, DOTFILES_REMOTE
 #
@@ -85,7 +85,7 @@ fetch_repo() {
 }
 
 # 3. origin を SSH の URL に切り替える (push できるようにする。docs/adr/0016)
-# このスクリプトの中の pull / submodule update は git_https で HTTPS に読み替えるので、
+# このスクリプトの中の pull は git_https で HTTPS に読み替えるので、
 # SSH 鍵がまだ無くても再実行できる
 set_origin() {
   current=$(git -C "$DOTFILES" remote get-url origin)
@@ -96,12 +96,6 @@ set_origin() {
   git -C "$DOTFILES" remote set-url origin "$DOTFILES_REMOTE"
 }
 
-# 4. submodule
-fetch_submodules() {
-  log "submodule を取得します"
-  git_https -C "$DOTFILES" submodule update --init --recursive
-}
-
 # 画面にログインしているか (GUI セッションの launchd ドメインがあるか)。
 # ログインしていないと home-manager が LaunchAgent (colima) を登録できず、bootstrap.sh が失敗する (docs/adr/0024)
 has_gui_session() {
@@ -109,7 +103,7 @@ has_gui_session() {
   launchctl print "gui/$(id -u)" >/dev/null 2>&1
 }
 
-# 5. Nix / nix-darwin。対話入力 (sudo 等) のため、可能なら端末を stdin に渡す
+# 4. Nix / nix-darwin。対話入力 (sudo 等) のため、可能なら端末を stdin に渡す
 run_bootstrap() {
   log "bootstrap.sh を実行します"
   if (: </dev/tty) 2>/dev/null; then
@@ -131,7 +125,7 @@ run_bootstrap_allowing_headless() {
   BOOTSTRAP_INCOMPLETE=1
 }
 
-# 6. mise 管理の言語 / ツール
+# 5. mise 管理の言語 / ツール
 # (dotfiles のリンクは bootstrap.sh の darwin-rebuild switch で home-manager が張る。docs/adr/0015)
 install_mise_tools() {
   # nix-darwin / home-manager 適用直後は PATH に入っていないため明示的に追加する
@@ -148,7 +142,7 @@ install_mise_tools() {
     warn "mise install が失敗しました。新しいシェルで 'mise install' を再実行してください"
 }
 
-# 7. git の hook (コミット済みの ADR の変更を adr-guard で拒否する。docs/adr/0032)。
+# 6. git の hook (コミット済みの ADR の変更を adr-guard で拒否する。docs/adr/0032)。
 # core.hooksPath は clone ごとの設定なので、ここで有効にする。adr-guard は mise install で入る
 enable_git_hooks() {
   log "git の hook (.githooks) を有効にします"
@@ -160,7 +154,6 @@ main() {
   ensure_xcode_clt
   fetch_repo
   set_origin
-  fetch_submodules
   run_bootstrap_allowing_headless
   install_mise_tools
   enable_git_hooks

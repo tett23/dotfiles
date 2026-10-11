@@ -9,7 +9,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 これだけで以下が完了します (冪等。失敗したら同じコマンドを再実行)。
 
 1. Xcode Command Line Tools
-2. `~/dotfiles` への clone (HTTPS) と submodule の取得
+2. `~/dotfiles` への clone (HTTPS)
 3. `bootstrap.sh`: Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク (途中で sudo のパスワードを聞かれます)
 4. `mise install`: 言語 / ツール
 
