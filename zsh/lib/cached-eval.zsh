@@ -6,6 +6,9 @@
 # Nix のストアのファイルは更新日時が固定なので、実体のパスの変化で更新を検出する。
 # 出力に呼び出すパスが埋め込まれることがある (mise activate など) ので、呼び出すパスもキーに含める。
 # 出力の中で実行時に評価される部分 (eval "$(...)" など) は、従来どおり毎回評価される。
+#
+# 出力のうち、PATH をその時点の値に固定する行 (行頭の `export PATH=`・`export __MISE_ORIG_PATH=`。mise activate の先頭の 2 行) は
+# キャッシュに残さない。残すと、キャッシュを作った後で zsh の設定に足した PATH が、読み込むたびに古い値で消える (docs/adr/0051)。
 
 zmodload -F zsh/stat b:zstat
 
@@ -17,7 +20,8 @@ __cached_eval() {
 
   local real=${bin:A} mtime
   zstat -A mtime +mtime -- $real 2>/dev/null || return 1
-  local key="# key: $bin $real $mtime ${(j: :)@}"
+  # v2: PATH を固定する行を取り除く形式 (docs/adr/0051)。形式が変わったら版を上げて作り直させる
+  local key="# key: v2 $bin $real $mtime ${(j: :)@}"
 
   local dir=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
   local cache=$dir/$name.zsh
@@ -28,7 +32,11 @@ __cached_eval() {
     mkdir -p $dir
     local out
     out=$("$@") || return 1
-    print -r -- "$key"$'\n'"$out" > $cache.$$ && mv -f $cache.$$ $cache
+    local -a lines=("${(@f)out}")
+    # 引用して空行も残す (複数行の文字列の中の空行が消えると、意味が変わるため)
+    local -a kept=("${(@)lines:#(export PATH=|export __MISE_ORIG_PATH=)*}")
+    local note="# removed: $(( $#lines - $#kept )) lines that pin PATH"
+    print -r -- "$key"$'\n'"$note"$'\n'"${(F)kept}" > $cache.$$ && mv -f $cache.$$ $cache
   fi
   source $cache
 }
