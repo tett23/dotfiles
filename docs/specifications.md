@@ -72,6 +72,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - nix-daemon.sh は読み込まない (tmux の中で `NIX_PROFILES` が上書きされるのを防ぐ。ADR 0020)。
 - 履歴は `$XDG_STATE_HOME/zsh/history` に 50 万件まで保存する。先頭が空白のコマンドは残さない (ADR 0023)。
 - 補完は、小文字の入力を大文字にも一致させる (ADR 0034)。
+- eza と bat の短いエイリアス (ADR 0035): `e` (`eza`)、`el` (`eza -l`)、`ea` (`eza -a`)、`ela` (`eza -la`)、
+  `et` (`eza --tree`)、`b` (`bat`)。
 - fzf のファイル検索は fd を使い (ADR 0002)、`Ctrl-T`・`Ctrl-P` では bat でファイルの先頭をプレビューする (ADR 0034)。主なキー割り当て:
 
 | キー     | 内容                               |
