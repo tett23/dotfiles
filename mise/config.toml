@@ -20,6 +20,8 @@ yarn = "latest"
 pnpm = "latest"
 shfmt = "latest"
 biome = "latest"
+# 既定の取得先 (aqua) は macOS で Intel 版を選ぶので、GitHub のリリースから Apple Silicon 版を取る
+"github:bootandy/dust" = "latest"
 ruby = "latest"
 ghc = "latest"
 cabal = "latest"
