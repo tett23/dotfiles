@@ -4,6 +4,11 @@
 ghc = "https://github.com/mise-plugins/mise-ghcup.git"
 
 [tools]
+# 自作のツール。GitHub のリリースのバイナリを入れる (docs/adr/0031)。
+# rust は ~/.cargo/bin を PATH に足し、mise は [tools] の順に PATH を並べるので、
+# 手で cargo install した同名のコマンドより優先させるため rust より前 (先頭) に書く
+"github:tett23/send-to-kindle" = "latest"
+"github:tett23/shorten-path" = "latest"
 go = "latest"
 node = "latest"
 python = "latest"

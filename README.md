@@ -21,13 +21,12 @@ clone は SSH 鍵が無くてもできるよう HTTPS で行い、その後 `ori
 
 ## テスト
 
-テストはツールごとに置き場所が違います。CI (`.github/workflows/ci.yml`) では zsh と send-to-kindle のテストを実行します。
+テストはツールごとに置き場所が違います。CI (`.github/workflows/ci.yml`) では zsh のテストを実行します。
 
 | 対象                            | 置き場所                         | 実行コマンド                                                              |
 | ------------------------------- | -------------------------------- | ------------------------------------------------------------------------- |
 | zsh                             | `zsh/tests/`                     | `zsh zsh/tests/git-prompt.test.zsh`、`zsh zsh/tests/cached-eval.test.zsh` |
 | usage-hint (Claude Code の mod) | `.claude/mods/usage-hint/tests/` | `claude plugin test .claude/mods/usage-hint`                              |
-| send-to-kindle                  | `bin/send-to-kindle` の末尾      | `deno test -A --ext=ts bin/send-to-kindle`                                |
 
 ## ドキュメント
 

@@ -1,6 +1,6 @@
 # ADR 0022: send-to-kindle で .env のパスをオプションで指定できるようにする
 
-- Status: Accepted
+- Status: Accepted → 0031
 - Date: 2026-10-09
 
 ## Context

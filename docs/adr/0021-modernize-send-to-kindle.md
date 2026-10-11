@@ -1,6 +1,6 @@
 # ADR 0021: bin/send-to-kindle を最新化し、.env が無ければ環境変数を使う
 
-- Status: Accepted
+- Status: Accepted → 0031
 - Date: 2026-10-09
 
 ## Context

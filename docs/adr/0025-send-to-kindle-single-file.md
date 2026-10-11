@@ -1,6 +1,6 @@
 # ADR 0025: send-to-kindle を 1 ファイルにまとめる
 
-- Status: Accepted
+- Status: Accepted → 0031
 - Date: 2026-10-09
 
 ## Context
