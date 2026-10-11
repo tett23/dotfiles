@@ -22,3 +22,6 @@ keybind = global:cmd+backslash=toggle_quick_terminal
 window-save-state = always
 # ウィンドウの余白を上下左右で均等にする
 window-padding-balance = true
+# 日本語の文字 (和文の記号・ひらがな・カタカナ・漢字・全角の英数字) は、等幅のゴシック体の BIZ UDゴシックで表示する。
+# 英数字は Ghostty に組み込みの JetBrains Mono のまま (docs/adr/0048)
+font-codepoint-map = U+3000-U+303F,U+3040-U+309F,U+30A0-U+30FF,U+31F0-U+31FF,U+3400-U+4DBF,U+4E00-U+9FFF,U+F900-U+FAFF,U+FF00-U+FFEF=BIZ UDGothic

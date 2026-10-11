@@ -124,6 +124,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 自動更新はしない (Nix で入れていて、`bin/update-nix` で上げる。ADR 0044)。
 - 配色は nvim と揃えて `Monokai Classic`。`Cmd+\` で、どのアプリからでも画面の上から端末 (quick terminal) を出し入れする。
   終了したときのウィンドウ・タブの配置を、次の起動で戻す。ウィンドウの余白は上下左右で均等にする (ADR 0044)。
+- フォントは指定しない (英数字は Ghostty に組み込みの JetBrains Mono)。日本語の文字 (和文の記号・ひらがな・カタカナ・漢字・
+  全角の英数字) は、等幅のゴシック体の BIZ UDゴシックで表示する (`font-codepoint-map`。ADR 0048)。
 
 ## tmux
 
