@@ -11,10 +11,10 @@ return {
         override = function()
           return {
             Visual = { bg = "#55564e" }, -- 選択範囲 (docs/adr/0026)
-            -- 不可視文字 (listchars と全角スペース)。既定の色は暗すぎて気づけない (docs/adr/0028)
-            Whitespace = { fg = "#a9aa9e" },
-            NonText = { fg = "#a9aa9e" },
-            ZenkakuSpace = { bg = "#a9aa9e" },
+            -- 不可視文字 (listchars と全角スペース)。緑にして、灰色の本文・コメントと色味で区別する (docs/adr/0028)
+            Whitespace = { fg = "#76b98e" },
+            NonText = { fg = "#76b98e" },
+            ZenkakuSpace = { bg = "#76b98e" },
           }
         end,
       })
