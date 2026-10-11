@@ -164,6 +164,8 @@ GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
     ステータスを更新しない。置き換えた関係は新しい ADR の「文脈」に書く。
   - `core.hooksPath` は clone ごとの設定で、`install.sh` が設定する。
 
-### 破棄した ADR
+### 破棄・却下した ADR
 
-なし。
+- ADR 0040 (却下): nvim で保存するときにファイルの末尾に空行を 1 行残す。整形ツール (prettier・gofmt・rubocop など) が
+  末尾の空行を消すため、ほかのリポジトリの CI の検査 (`prettier --check` など) に引っかかり、保存のたびに undo の履歴も
+  増えるため、採らなかった。nvim は既定 (`fixendofline`) どおり、最後の行の後に改行を 1 つ付けて保存する。
