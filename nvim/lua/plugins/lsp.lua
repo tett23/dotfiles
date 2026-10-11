@@ -33,4 +33,15 @@ return {
       ensure_installed = { "stylua", "prettier", "eslint_d", "rubocop" },
     },
   },
+  -- 診断 (エラー・警告) などを一覧で表示して移動する。キーは README の推奨のうち 3 つ (docs/adr/0037)
+  {
+    "folke/trouble.nvim",
+    cmd = "Trouble",
+    opts = {},
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+    },
+  },
 }

@@ -39,4 +39,10 @@ return {
       })
     end,
   },
+  -- 今いる関数・クラスの先頭行を画面上部に固定表示する (最大 3 行。docs/adr/0037)
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = { max_lines = 3 },
+  },
 }
