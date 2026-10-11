@@ -7,6 +7,18 @@ ADRを破棄する場合は、ステータスを破棄にして、理由をdocs/
 変更を不可にする方法は以下にある。リポジトリを初期化するときにはREADMEに従うこと。
 https://github.com/tett23/adr-guard
 
+具体的には、次の 3 つを行う。Claude Code の hook は全体の設定 (`~/.claude/settings.json`) で有効なので不要。
+
+1. `.githooks/pre-commit` を置き、実行権限を付ける。ほかの検査と並べる場合は、`exec` の行を最後に置く。
+
+   ```sh
+   #!/bin/sh
+   exec adr-guard pre-commit
+   ```
+
+2. clone ごとに `git config core.hooksPath .githooks` を実行する (README にも手順を書く)。
+3. CI に adr-guard の `adr` ジョブを足す (adr-guard の README の例のとおり)。
+
 ### ADRの構成
 
 docs/adr/ に配置する。ファイル名には `0001-feature-details.md` のように連番のprefixをつけなくてはいけない。連番以降はkebab-caseで、内容を表すような人間に可読な名前をつける。
