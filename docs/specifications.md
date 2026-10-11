@@ -49,13 +49,14 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 
 home-manager が、リポジトリ内のファイルへのシンボリックリンク (`mkOutOfStoreSymlink`) を張る。
 リポジトリを編集すると、`darwin-rebuild` をやり直さなくてもすぐに反映される。
+設定は XDG の場所 (`~/.config/<ツール>/`) に置き、ホーム直下には `~/.zshenv` だけを置く (ADR 0042)。
 
 | リンク先                                                                                      | リンク元                                           |
 | --------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| `~/.zshenv`、`~/.zshrc`                                                                       | `zsh/zshenv`、`zsh/zshrc`                          |
-| `~/.gitconfig`、`~/.gitignore_global`                                                         | `git/config`、`git/ignore`                         |
-| `~/.tmux.conf`                                                                                | `tmux/tmux.conf`                                   |
-| `~/.rubocop.yml`                                                                              | `rubocop/config.yml`                               |
+| `~/.zshenv`、`~/.config/zsh/.zshrc` | `zsh/zshenv`、`zsh/zshrc` |
+| `~/.config/git/config`、`~/.config/git/ignore` | `git/config`、`git/ignore` |
+| `~/.config/tmux/tmux.conf` | `tmux/tmux.conf` |
+| `~/.config/rubocop/config.yml` | `rubocop/config.yml` |
 | `~/.claude/settings.json`                                                                     | `.claude/settings.json`                            |
 | `~/.claude/CLAUDE.md`                                                                         | `.claude/CLAUDE.md`                                |
 | `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
@@ -67,6 +68,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 - プラグインは Zinit で遅延読み込みする。`eval "$(… init)"` の結果はキャッシュし、git の情報を表示するプロンプトは
   自前の軽量な実装 (`zsh/lib/git-prompt.zsh`) を使う (ADR 0011)。
+- `~/.zshenv` で `ZDOTDIR` を `~/.config/zsh` にし、`.zshrc` はそこから読む (ADR 0042)。インストーラなどの `~/.zshrc` への追記は
+  読まれないので、必要なものは `~/.zshrc.mine` に書く。補完のキャッシュは `~/.cache/zsh/zcompdump` に置く。
 - PATH の優先順位は、mise → `~/.local/bin`・`~/bin` → home-manager → Nix 本体 → システムの順 (ADR 0023)。
   `bin/` は末尾に足す。
 - nix-daemon.sh は読み込まない (tmux の中で `NIX_PROFILES` が上書きされるのを防ぐ。ADR 0020)。

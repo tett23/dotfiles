@@ -51,12 +51,8 @@
 
         # dotfiles のリンク (旧 setup/install.sh。docs/adr/0015)
         home.file = {
+          # zsh は ~/.zshenv で ZDOTDIR (~/.config/zsh) を決めるので、これだけはホーム直下に置く (docs/adr/0042)
           ".zshenv".source = link "zsh/zshenv";
-          ".zshrc".source = link "zsh/zshrc";
-          ".gitconfig".source = link "git/config";
-          ".gitignore_global".source = link "git/ignore";
-          ".tmux.conf".source = link "tmux/tmux.conf";
-          ".rubocop.yml".source = link "rubocop/config.yml";
           ".claude/settings.json".source = link ".claude/settings.json";
           ".claude/CLAUDE.md".source = link ".claude/CLAUDE.md";
           "Library/Application Support/Code/User/settings.json".source = link "vscode/settings.json";
@@ -65,6 +61,12 @@
           "Library/Application Support/AquaSKK/keymap.conf".source = link "skk/keymap.conf";
         };
         xdg.configFile = {
+          # git・tmux・zsh・rubocop は XDG の場所の設定を読む (docs/adr/0042)
+          "git/config".source = link "git/config";
+          "git/ignore".source = link "git/ignore";
+          "tmux/tmux.conf".source = link "tmux/tmux.conf";
+          "zsh/.zshrc".source = link "zsh/zshrc";
+          "rubocop/config.yml".source = link "rubocop/config.yml";
           "nvim".source = link "nvim";
           "karabiner".source = link "karabiner";
           "bat/config".source = link "bat/config";

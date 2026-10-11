@@ -3,3 +3,9 @@
 
 # dotfiles の場所は、このファイル (~/.zshenv からのリンク) の実体から求める
 export DOTFILES="${DOTFILES:-${${(%):-%x}:A:h:h}}"
+
+# .zshrc などは XDG の場所 (~/.config/zsh/) から読む (docs/adr/0042)。
+# リンクを張る前 (darwin-rebuild switch の前や、新しいマシンの初回) は ~/.zshrc を読めるよう、.zshrc があるときだけ設定する
+if [[ -r $HOME/.config/zsh/.zshrc ]]; then
+  export ZDOTDIR=$HOME/.config/zsh
+fi
