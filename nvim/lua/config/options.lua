@@ -18,6 +18,8 @@ opt.listchars = { tab = ">-", trail = "_", nbsp = "+", space = "·", eol = "↲"
 -- ファイル (旧: nobackup / noswapfile)
 opt.backup = false
 opt.swapfile = false
+-- nvim を閉じた後も undo できるようにする (~/.local/state/nvim/undo/ に保存。docs/adr/0034)
+opt.undofile = true
 
 -- インデント
 opt.smartindent = true

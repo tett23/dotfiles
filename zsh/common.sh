@@ -31,6 +31,14 @@ if [[ ! -v VIMRUNTIME ]]; then
   bindkey -v
 fi
 
+# 入力中のコマンドを $EDITOR (nvim) で編集する。ノーマルモードの v (範囲選択は使わない。コピーは tmux で行う) と
+# Ctrl-X Ctrl-E に割り当てる (docs/adr/0034)
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd 'v' edit-command-line
+bindkey -M viins '^X^E' edit-command-line
+bindkey -M vicmd '^X^E' edit-command-line
+
 # historical backward/forward search with linehead string binded to ^P/^N
 #
 autoload -U history-search-end
