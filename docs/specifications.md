@@ -118,7 +118,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 - 終了時の確認を出さず、最後のウィンドウを閉じたら終了する。
 - `Cmd+P` は Kitty のキーの形式 (`CSI 112;9u`) で送り、nvim の `<D-p>` (コマンドパレット) で受ける。`Ctrl+J` は送らない。
-- 左の Option キーを Alt として送る (zsh の `Alt-c`・`Alt-p`・`Alt-n` などを使う)。右の Option では特殊な文字を入力できる (ADR 0044)。
+- Option キーは Alt として送らない (Ghostty の既定。ADR 0047)。左の Option は Karabiner-Elements で Escape に置き換えているので、
+  左の Option (= Escape) に続けて素早くキーを押すと `Alt-c` などと同じ入力になる (zsh は vi モードなので、`KEYTIMEOUT` の 0.4 秒より
+  遅いとノーマルモードに入る)。右の Option では特殊な文字を入力する。
 - 自動更新はしない (Nix で入れていて、`bin/update-nix` で上げる。ADR 0044)。
 - 配色は nvim と揃えて `Monokai Classic`。`Cmd+\` で、どのアプリからでも画面の上から端末 (quick terminal) を出し入れする。
   終了したときのウィンドウ・タブの配置を、次の起動で戻す。ウィンドウの余白は上下左右で均等にする (ADR 0044)。

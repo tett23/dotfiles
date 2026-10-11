@@ -1,6 +1,6 @@
 # ADR 0044: Ghostty に便利な設定を足す
 
-ステータス: 提案
+ステータス: 採択→macos-option-as-alt はADR 0047
 
 ## 文脈
 

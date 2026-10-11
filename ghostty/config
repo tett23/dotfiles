@@ -12,8 +12,6 @@ keybind = cmd+p=csi:112;9u
 keybind = ctrl+j=ignore
 
 # 便利な設定 (docs/adr/0044)
-# 左の Option キーを Alt として送る (zsh の Alt-c・Alt-p・Alt-n などを使う)。右の Option では特殊な文字を入力できる
-macos-option-as-alt = left
 # Ghostty は Nix で入れているので、自動更新は止めて bin/update-nix で上げる
 auto-update = off
 # 配色を nvim (monokai-pro の classic) と揃える
