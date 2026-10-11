@@ -34,7 +34,8 @@ ALLOWED_TOOLS=(
   "Bash(nix flake show:*)"
   "Bash(nix store prefetch-file:*)"
   "Bash(nix-prefetch-url:*)"
-  "Bash(curl -fsSL https://formulae.brew.sh/:*)"
+  # Homebrew の公開 API は、このドメインだけを読める WebFetch で取る (curl の前方一致の許可は広すぎるため。docs/adr/0045)
+  "WebFetch(domain:formulae.brew.sh)"
   "Bash(git diff:*)"
   "Bash(git status:*)"
   "Bash(git add -N:*)"

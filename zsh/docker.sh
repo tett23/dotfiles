@@ -1,5 +1,6 @@
+# figbe <サービス> <コマンド>... - サービスで bundle exec を実行する (docs/adr/0045)
 function figbe() {
-  figrm bundle exec "$@"
+  figrm "$1" bundle exec "${@:2}"
 }
 
 function figsh() {

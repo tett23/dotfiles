@@ -11,7 +11,7 @@ map("", ":", ";")
 map("n", "<Leader>n", "<cmd>enew<CR>", opts) -- 新規バッファ
 map("n", "<Leader>w", "<cmd>BufferClose<CR>", opts) -- バッファを閉じる (barbar)
 map("", "<S-Tab>", "<cmd>tabnext<CR>", opts)
-map("", "<S-t>", "<cmd>tabedit<CR>", opts)
+map("n", "<Leader>t", "<cmd>tabedit<CR>", opts) -- 新規タブ (T は flash.nvim の文字の移動に使う。docs/adr/0045)
 map("", "<C-w>o", "<cmd>tabnew %<CR>", opts)
 
 -- <C-k> でコメントトグル (Neovim 標準の gc。旧 caw.vim の <C-K>)

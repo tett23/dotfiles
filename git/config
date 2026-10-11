@@ -39,7 +39,7 @@
   lop = log -p --ignore-space-change
   delete-merged-branches = !git branch --merged | grep -vE '^\\*|^[[:space:]]*(main|master|develop)$' | xargs -I % git branch -d %
   lsf = ls-files
-  today = log --since=midnight --author='$(git config user.name)' --oneline
+  today = !git log --since=midnight --author=\"$(git config user.name)\" --oneline
   adp = add -p
   cp = cherry-pick
 

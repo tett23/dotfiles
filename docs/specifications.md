@@ -108,6 +108,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   - nvim-treesitter-context: 今いる関数・クラスの先頭行を画面上部に固定表示する (最大 3 行)。
   - trouble.nvim: `<Leader>xx` で全体の診断、`<Leader>xX` で今のバッファの診断、`<Leader>xq` で quickfix リストを開閉する。
 - which-key のキーの一覧のアイコンには mini.icons を使う (ADR 0039)。
+- `<Leader>t` で新しいタブを開く (`T` は flash.nvim の後方への文字の移動。ADR 0045)。
+- LSP は mason で入れたサーバーを有効にする。rubocop・stylua は LSP にせず、診断は nvim-lint、整形は conform で行う
+  (Lua の整形は stylua。ADR 0045)。
 - Telescope のファイル検索 (`<Leader><Leader>`・`<Leader>ff`) と文字列の検索 (`<Leader>fg`) は、`.` で始まるファイルも対象にする。
   `.gitignore` に従い、`.git` の中は除く (zsh の `Ctrl-P` と同じ。ADR 0038)。
 

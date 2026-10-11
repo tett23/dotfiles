@@ -18,7 +18,9 @@ return {
       })
       require("mason-lspconfig").setup({
         ensure_installed = { "lua_ls", "ts_ls", "pyright", "gopls", "rust_analyzer", "ruby_lsp" },
-        -- automatic_enable = true (デフォルト) で installed サーバを vim.lsp.enable
+        -- installed サーバを vim.lsp.enable する。mason-tool-installer で入れた rubocop・stylua は
+        -- LSP にはしない (診断は nvim-lint、整形は conform で行う。docs/adr/0045)
+        automatic_enable = { exclude = { "rubocop", "stylua" } },
       })
     end,
   },

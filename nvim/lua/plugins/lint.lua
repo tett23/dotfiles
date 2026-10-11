@@ -12,6 +12,7 @@ return {
         markdown = { "prettier" },
         ruby = { "rubocop" },
         go = { "gofmt" },
+        lua = { "stylua" }, -- lua_ls ではなく stylua で整形する (docs/adr/0045)
       },
     },
   },

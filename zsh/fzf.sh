@@ -180,7 +180,8 @@ __docker_remove_image() {
 
 # yarn のワークスペースを選び、名前を入力行に足す
 __yarn_workspaces(){
-  yarn workspaces --silent info | jq 'keys | .[]' | fzf
+  # Yarn 4 (Berry) の一覧。v1 の `yarn workspaces info` は無い (docs/adr/0045)
+  yarn workspaces list --json | jq -r .name | fzf
 }
 
 # tmux の全セッションのウィンドウを選んで切り替える。入力行には何も足さない

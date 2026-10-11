@@ -2,7 +2,8 @@
 return {
   {
     "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
+    -- コマンドラインの補完 (cmp.setup.cmdline) も最初から効くよう、: の入力でも読み込む (docs/adr/0045)
+    event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",

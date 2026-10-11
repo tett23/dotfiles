@@ -65,8 +65,7 @@ setopt extended_history # 実行時刻と所要時間も記録する (share_hist
 
 ## Alias configuration
 #
-# expand aliases before completing
+# エイリアスは展開してから補完する (zsh の既定。complete_aliases は付けない。docs/adr/0045)
 #
-setopt complete_aliases # aliased ls needs if file/dir completions work
 
 setopt no_beep
