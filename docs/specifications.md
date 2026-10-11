@@ -22,8 +22,11 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 3. `bootstrap.sh` を実行する: Nix (Determinate Systems のインストーラ) を入れ、nix-darwin を適用する
    (初回は `nix run` で flake.lock に固定した nix-darwin を使う。ADR 0017)。
 4. `mise install` で言語とツールを入れる。
+5. mise で入れた ghcup で、Haskell の ghc・cabal の `latest` を入れて既定にする (ADR 0050)。
+6. git の hook (`.githooks`) を有効にする (ADR 0032)。
 
 - `DOTFILES` / `DOTFILES_REPO` / `DOTFILES_BRANCH` / `DOTFILES_REMOTE` で clone 先などを上書きできる。
+  `DOTFILES_SKIP_HASKELL=1` で、5 (ghc は大きい) を省ける。
 - 画面にログインしていない状態 (SSH 越しなど) では LaunchAgent (colima) を登録できない。この場合は警告を出して
   `mise install` まで進め、ログイン後に `sudo darwin-rebuild switch --flake ~/dotfiles#dione` を実行するよう案内する。
   ログインしている状態で `bootstrap.sh` が失敗したときはそこで止まる (ADR 0024)。
@@ -35,7 +38,8 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
   Homebrew は使わない (ADR 0012)。
   - nixpkgs に無いアプリ (Claude デスクトップ、AquaSKK) は `nix/pkgs/` に自前のパッケージを置く。
   - Docker は colima で動かし、home-manager の LaunchAgent で常駐させる。
-- 言語とツールは mise で管理する (`mise/config.toml`。すべて `latest`)。ghc は ghcup のプラグインで入れる (ADR 0018)。
+- 言語とツールは mise で管理する (`mise/config.toml`。すべて `latest`)。Haskell の ghc・cabal は mise で入れた ghcup で入れ、
+  `install.sh` と `bin/update-mise` が ghcup の `latest` を入れて既定にする (ADR 0050)。
 
 ### コマンド
 
@@ -72,7 +76,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   読まれないので、必要なものは `zsh/zshrc.mine` (`~/.config/zsh/.zshrc.mine` のリンク元。git で管理するので秘密は書かない。
   ADR 0043) に書く。補完のキャッシュは `~/.cache/zsh/zcompdump` に置く。
 - PATH の優先順位は、mise → `~/.local/bin`・`~/bin` → home-manager → Nix 本体 → システムの順 (ADR 0023)。
-  `bin/` は末尾に足す。
+  `bin/` と、ghcup で入れたツールの `~/.ghcup/bin` は末尾に足す (`~/.ghcup/env` は PATH の先頭に入れるので読まない。ADR 0050)。
 - nix-daemon.sh は読み込まない (tmux の中で `NIX_PROFILES` が上書きされるのを防ぐ。ADR 0020)。
 - 履歴は `$XDG_STATE_HOME/zsh/history` に 50 万件まで保存する。先頭が空白のコマンドは残さない (ADR 0023)。
 - 補完は、小文字の入力を大文字にも一致させる (ADR 0034)。`Tab` の補完候補は fzf-tab で絞り込み、`cd` の補完では

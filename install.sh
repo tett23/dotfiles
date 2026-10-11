@@ -11,7 +11,8 @@
 #   3. origin を SSH の URL に切り替える (docs/adr/0016)
 #   4. bootstrap.sh (Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク)
 #   5. mise install (言語 / ツール)
-#   6. git の hook (.githooks) を有効にする (docs/adr/0032)
+#   6. ghcup で Haskell の ghc・cabal (docs/adr/0050。DOTFILES_SKIP_HASKELL=1 で省ける)
+#   7. git の hook (.githooks) を有効にする (docs/adr/0032)
 #
 # 環境変数で上書き可能: DOTFILES, DOTFILES_REPO, DOTFILES_BRANCH, DOTFILES_REMOTE
 #
@@ -142,7 +143,23 @@ install_mise_tools() {
     warn "mise install が失敗しました。新しいシェルで 'mise install' を再実行してください"
 }
 
-# 6. git の hook (コミット済みの ADR の変更を adr-guard で拒否する。docs/adr/0032)。
+# 6. Haskell の ghc・cabal (mise で入れた ghcup で、latest を入れて既定にする。docs/adr/0050)。
+# ghc は大きいので、DOTFILES_SKIP_HASKELL=1 で省ける
+install_haskell() {
+  if [ "${DOTFILES_SKIP_HASKELL:-0}" = 1 ]; then
+    log "DOTFILES_SKIP_HASKELL=1 のため、ghc・cabal は入れません"
+    return 0
+  fi
+  if ! command -v mise >/dev/null 2>&1; then
+    warn "mise が見つからないため、ghc・cabal は入れません"
+    return 0
+  fi
+  log "ghcup で ghc・cabal を入れます (初回は時間がかかります)"
+  { mise exec -- ghcup install ghc latest --set && mise exec -- ghcup install cabal latest --set; } ||
+    warn "ghc・cabal を入れられませんでした。新しいシェルで 'ghcup install ghc latest --set' などを再実行してください"
+}
+
+# 7. git の hook (コミット済みの ADR の変更を adr-guard で拒否する。docs/adr/0032)。
 # core.hooksPath は clone ごとの設定なので、ここで有効にする。adr-guard は mise install で入る
 enable_git_hooks() {
   log "git の hook (.githooks) を有効にします"
@@ -156,6 +173,7 @@ main() {
   set_origin
   run_bootstrap_allowing_headless
   install_mise_tools
+  install_haskell
   enable_git_hooks
   if [ "$BOOTSTRAP_INCOMPLETE" -eq 1 ]; then
     warn "画面にログインしてから、次を実行して LaunchAgent を登録してください:"

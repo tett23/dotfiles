@@ -12,8 +12,11 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 2. `~/dotfiles` への clone (HTTPS)
 3. `bootstrap.sh`: Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク (途中で sudo のパスワードを聞かれます)
 4. `mise install`: 言語 / ツール
+5. ghcup で Haskell の ghc・cabal
+6. git の hook (コミット済みの ADR の変更を防ぐ adr-guard)
 
 `DOTFILES` / `DOTFILES_REPO` / `DOTFILES_BRANCH` / `DOTFILES_REMOTE` 環境変数で clone 先などを上書きできます。
+`DOTFILES_SKIP_HASKELL=1` で、ghcup での ghc・cabal のインストール (大きい) を省けます。
 
 clone は SSH 鍵が無くてもできるよう HTTPS で行い、その後 `origin` を SSH の URL
 (`git@github.com:tett23/dotfiles.git`) に切り替えます。手元で `git pull` / `push` するには SSH 鍵の設定が必要です

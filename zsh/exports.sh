@@ -20,6 +20,8 @@ export MISE_TRUSTED_CONFIG_PATHS="$DOTFILES/mise:$HOME/.config/mise"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$DOTFILES/bin"
+# ghcup で入れた ghc・cabal・HLS など。~/.ghcup/env は PATH の先頭に入れるので読まず、末尾に足す (docs/adr/0050)
+[ -d "$HOME/.ghcup/bin" ] && export PATH="$PATH:$HOME/.ghcup/bin"
 
 # Homebrew は使わない (Nix と mise に統一。docs/adr/0012)
 

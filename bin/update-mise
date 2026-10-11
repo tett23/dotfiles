@@ -29,6 +29,11 @@ main() {
   log "mise 管理の言語とツールを最新化します"
   mise upgrade --yes
 
+  # Haskell の ghc・cabal は mise で入れた ghcup で管理する (docs/adr/0050)
+  log "ghcup で ghc・cabal を最新化します"
+  mise exec -- ghcup install ghc latest --set
+  mise exec -- ghcup install cabal latest --set
+
   if ((prune)); then
     log "使われなくなった古いバージョンを削除します"
     mise prune --yes

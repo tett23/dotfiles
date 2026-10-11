@@ -56,12 +56,10 @@ mise を使って以下の依存を管理してください。ここで指定す
 
 ## Install languages
 
-node python ruby go rust deno bun haskell
+node python ruby go rust deno bun
 
-- haskell は ghc と cabal に分けて入れてください。
-  ghc は mise の既定の取得先では解決できないので、ghcup のプラグイン
-  (https://github.com/mise-plugins/mise-ghcup.git) を ghc という名前で [plugins] に明示してください。
-  このプラグインはプラグイン名を扱うツール名として使うため、名前は ghc でなければなりません。
+- Haskell (ghc・cabal) は mise では入れません。下の Install tools の ghcup で入れます (install.sh と bin/update-mise が
+  ghcup の latest を入れて既定にします)。
 
 ## Install tools
 

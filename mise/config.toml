@@ -1,8 +1,3 @@
-# ghc は ghcup のプラグインで入れる。このプラグインはプラグイン名を扱うツール名として使うので、
-# ghc という名前で明示する (docs/adr/0018)
-[plugins]
-ghc = "https://github.com/mise-plugins/mise-ghcup.git"
-
 [tools]
 # 自作のツール。GitHub のリリースのバイナリを入れる (docs/adr/0031)。
 # rust は ~/.cargo/bin を PATH に足し、mise は [tools] の順に PATH を並べるので、
@@ -22,7 +17,5 @@ shfmt = "latest"
 biome = "latest"
 # 既定の取得先 (aqua) は macOS で Intel 版を選ぶので、GitHub のリリースから Apple Silicon 版を取る
 "github:bootandy/dust" = "latest"
-ghcup = "latest" # ghc・cabal の版の管理 (ghc は [plugins] の ghcup のプラグインで入れる)
+ghcup = "latest" # Haskell の ghc・cabal は ghcup で入れる (install.sh・bin/update-mise。docs/adr/0050)
 ruby = "latest"
-ghc = "latest"
-cabal = "latest"
