@@ -2,3 +2,6 @@
 .DS_Store
 .ruby-lsp/
 .claude/settings.local.json
+# nix build が作るリンク (docs/adr/0046)
+result
+result-*

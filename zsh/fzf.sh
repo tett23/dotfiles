@@ -1,16 +1,44 @@
 # fzf を使うコマンド。__<名前> の関数の直前の 1 行のコメントは、コマンド選択 (Ctrl-O) に出す説明 (docs/adr/0033)
 typeset -g _fzf_commands_file=${(%):-%x}
 
+# fzf を呼ぶ共通の処理。$1 は並べ方などの追加のオプション、残りは fzf にそのまま渡す。
+# 共通の指定 (高さなど) は fzf 本体の __fzf_defaults に任せる (docs/adr/0046)。__ を付けないので Ctrl-O の一覧には出ない
+_fzf_run() {
+  local layout=$1
+  shift
+  FZF_DEFAULT_OPTS="$(__fzf_defaults "$layout" '')" ${=$(__fzfcmd)} "$@"
+}
+
+# 以下は fzf の入出力を解析する純粋な関数 (zsh/tests/fzf-parse.test.zsh でテストする。docs/adr/0046)
+
+# git status --short -z の出力 (NUL 区切り) を、fzf に渡す 1 要素 1 行にする。名前の変更・コピーは変更後のパスだけにする
+fzf_git_status_lines() {
+  local -a entries=(${(0)"$(command cat)"})
+  local -i i=1
+  while (( i <= $#entries )); do
+    print -r -- ${entries[i]}
+    [[ ${entries[i]} == [RC]* ]] && (( i++ ))
+    (( i++ ))
+  done
+}
+
+# 各行の n 列目 (空白区切り) を取り出し、空白でつないで 1 行にする。入力が空なら何も出さない
+fzf_fields() {
+  local -a values=(${(f)"$(awk -v n="$1" '{ print $n }')"})
+  (( $#values )) && print -rn -- "${(j: :)values}"
+}
+
+# git status --short の行から状態の 3 文字を外したパスを、シェルの引用をしてつなぐ。入力が空なら何も出さない
+fzf_status_paths() {
+  local -a lines=(${(f)"$(command cat)"})
+  (( $#lines )) && print -rn -- "${(j: :)${(@q)lines#???}}"
+}
+
 # ghq のリポジトリを選び、パスを入力行に足す
 __repo() {
-  local cmd="ghq list -p"
-  setopt localoptions pipefail 2> /dev/null
-  eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd) -m "$@" | while read item; do
-    echo -n "${(q)item} "
-  done
-  local ret=$?
-  echo
-  return $ret
+  local out
+  out=$(ghq list -p | _fzf_run --reverse -m "$@") || return
+  print -rn -- "${(j: :)${(@qf)out}} "
 }
 
 function repo() {
@@ -23,19 +51,12 @@ function repo() {
 
 # git のブランチ (リモートを含む、更新順) を選び、入力行に足す
 __fbr() {
-  local branches branch
-  local cmd="git branch --all --sort=committerdate --color | grep -v HEAD | sed 's/.* //' | sed 's/remotes\///'"
-
-  setopt localoptions pipefail 2> /dev/null
-  eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd) -m "$@" | while read item; do
-    echo -n "${(q)item} "
-  done
-  local ret=$?
-  echo
-  return $ret
+  local out
+  out=$(git branch --all --sort=committerdate --color | grep -v HEAD | sed 's/.* //' | sed 's/remotes\///' |
+    _fzf_run --reverse -m "$@") || return
+  print -rn -- "${(j: :)${(@qf)out}} "
 }
 
-# fbr - checkout git branch (including remote branches), sorted by most recent commit
 fbr() {
   LBUFFER="${LBUFFER}$(__fbr)"
   local ret=$?
@@ -76,13 +97,11 @@ __find_pid() {
 
 # git status のファイルを選び、入力行に足す
 __select_git_status_items() {
-  local items=$(git status -s | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS" $(__fzfcmd) -m "$@" --preview "git diff --color {2}")
-  for item in $items; do
-    echo -n $(echo $item | awk '{print $2} ')
-  done
-  local ret=$?
-  echo
-  return $ret
+  # -z で空白を含むパスと名前の変更 (R) も 1 要素にする。--short なのでパスはカレントディレクトリからの相対のまま
+  local out
+  out=$(git status --short -z | fzf_git_status_lines |
+    _fzf_run '' -m "$@" --preview 'git diff --color -- "$(print -r -- {} | cut -c4-)"') || return
+  print -r -- "$out" | fzf_status_paths
 }
 
 select_git_status_items() {
@@ -95,56 +114,40 @@ select_git_status_items() {
 
 # コミットを選び、そこまでの git rebase -i のコマンドを入力行に足す
 __git_rebase_interactive() {
-  local number=$(git log --oneline --decorate | nl | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd) "$@" --preview 'git log --numstat --color {2}')
-  if [ "x$number" != "x" ]
-  then
-    echo -n "git rebase -i HEAD~$(echo $number | awk '{print $1} ')"
-  fi
+  local out
+  out=$(git log --oneline --decorate | nl | _fzf_run --reverse "$@" --preview 'git log --numstat --color {2}') || return
+  print -rn -- "git rebase -i HEAD~$(print -r -- "$out" | fzf_fields 1)"
 }
 
 # 廃止された hub の代わりに gh を使う。3 列目がブランチ名の形式は hub 時代と同じ (docs/adr/0010)。
 # (次の行はコマンド選択に出す説明。docs/adr/0033)
 # プルリクエストを選び、ブランチ名を入力行に足す
 __gh_pr_branch() {
-  local branch=$(gh pr list --limit 50 --json number,author,headRefName,state,title \
-    --jq '.[] | "#\(.number) \(.author.login) \(.headRefName) \(.state) \(.title)"' | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd) "$@")
-  if [ "x$branch" != "x" ]
-  then
-    echo -n "$(echo $branch | awk '{print $3} ')"
-  fi
+  local out
+  out=$(gh pr list --limit 50 --json number,author,headRefName,state,title \
+    --jq '.[] | "#\(.number) \(.author.login) \(.headRefName) \(.state) \(.title)"' | _fzf_run --reverse "$@") || return
+  print -r -- "$out" | fzf_fields 3
 }
 
 # コミットを選び、ハッシュを入力行に足す
 __git_log_oneline_commit_hash() {
-  local items=$(git log --oneline --decorate | nl | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd)  -m "$@" --preview 'git log --numstat --color {2}')
-  for item in $items; do
-    echo -n $(echo $item | awk '{print $2} ')
-  done
-  local ret=$?
-  echo
-  return $ret
+  local out
+  out=$(git log --oneline --decorate | nl | _fzf_run --reverse -m "$@" --preview 'git log --numstat --color {2}') || return
+  print -r -- "$out" | fzf_fields 2
 }
 
 # コミットを選び、HEAD からの番号を入力行に足す
 __git_log_oneline_commit_number() {
-  local items=$(git log --oneline --decorate | nl | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd)  -m "$@" --preview 'git log --numstat --color {2}')
-  for item in $items; do
-    echo -n $(echo $item | awk '{print $1} ')
-  done
-  local ret=$?
-  echo
-  return $ret
+  local out
+  out=$(git log --oneline --decorate | nl | _fzf_run --reverse -m "$@" --preview 'git log --numstat --color {2}') || return
+  print -r -- "$out" | fzf_fields 1
 }
 
 # docker のコンテナを選び、ID を入力行に足す
 __docker_container_id() {
-  local items=$(docker ps | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd) -m "$@")
-  for item in $items; do
-    echo -n $(echo $item | awk '{print $1} ')
-  done
-  local ret=$?
-  echo
-  return $ret
+  local out
+  out=$(docker ps | _fzf_run --reverse -m "$@") || return
+  print -r -- "$out" | fzf_fields 1
 }
 
 # docker のコンテナを選んで止める
@@ -159,13 +162,9 @@ __docker_stop_container() {
 
 # docker のイメージを選び、ID を入力行に足す
 __docker_image_id() {
-  local items=$(docker images | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd) -m "$@")
-  for item in $items; do
-    echo -n $(echo $item | awk '{print $3} ')
-  done
-  local ret=$?
-  echo
-  return $ret
+  local out
+  out=$(docker images | _fzf_run --reverse -m "$@") || return
+  print -r -- "$out" | fzf_fields 3
 }
 
 # docker のイメージを選んで削除する
@@ -193,7 +192,7 @@ __ftmux_window() {
     while IFS=$'\t' read -r win rest; do
       print -r -- "$win"$'\t'"${${win:#$current}:+ }${${(M)win:#$current}:+*} $rest"
     done |
-    FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd) +m \
+    _fzf_run --reverse +m \
       --delimiter=$'\t' --preview 'tmux capture-pane -ep -t {1}' | cut -f1)
   [[ -n $target ]] || return 0
   tmux select-window -t "$target" && tmux switch-client -t "${target%:*}"
@@ -226,7 +225,7 @@ fzf_command_names() {
 
 fzf_command_finder() {
   local cmd
-  cmd=$(fzf_command_names | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS" $(__fzfcmd) +m | awk '{print $1}')
+  cmd=$(fzf_command_names | _fzf_run --reverse +m | awk '{print $1}')
   if [ "x$cmd" != "x" ]
   then
     LBUFFER="${LBUFFER}$(__$cmd)"
@@ -252,7 +251,7 @@ zle -N select_git_status_items
 bindkey "^f" select_git_status_items
 
 # fzf
-export FZF_DEFAULT_OPTS="--ansi --extended --cycle"
+export FZF_DEFAULT_OPTS="--ansi --cycle" # --extended は fzf の既定 (docs/adr/0046)
 # ファイル検索は fd (macOS の BSD find は引数なしで失敗する。docs/adr/0002 参照)
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"

@@ -8,7 +8,6 @@
   },
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
     "example-skills@anthropic-agent-skills": true
   },
   "extraKnownMarketplaces": {

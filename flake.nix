@@ -45,8 +45,7 @@
           link = path: config.lib.file.mkOutOfStoreSymlink "${dotfilesDirectory}/${path}";
         in
         {
-        home.username = username;
-        home.homeDirectory = homeDirectory;
+        # home.username・home.homeDirectory は、home-manager の nix-darwin モジュールが users.users から設定する (docs/adr/0046)
         home.stateVersion = "24.05";
 
         # dotfiles のリンク (旧 setup/install.sh。docs/adr/0015)
@@ -114,13 +113,14 @@
       };
     in {
       darwinConfigurations.${hostname} = nix-darwin.lib.darwinSystem {
-        inherit system;
-
+        # system は nixpkgs.pkgs (aarch64-darwin で作った pkgs) から決まるので渡さない (docs/adr/0046)
         modules = [
-          ({ ... }: {
+          ({ lib, ... }: {
             nixpkgs.pkgs = pkgs;
 
             system.stateVersion = 5;
+            # 適用したコミット (darwin-version で見られる。未コミットの変更があれば dirty の印が付く。docs/adr/0046)
+            system.configurationRevision = self.rev or self.dirtyRev or null;
             system.primaryUser = username;
             # Determinate Nix が Nix 本体を管理するため nix-darwin 側の管理は無効化
             # (flakes/experimental-features は Determinate 側で有効化済み)
@@ -136,7 +136,6 @@
 
             # システムユーザー定義 (home-manager が home ディレクトリを参照する)
             users.users.${username} = {
-              name = username;
               home = homeDirectory;
             };
 
@@ -149,7 +148,9 @@
 
             # 入力メソッドは実体のファイルとして /Library/Input Methods に置く必要がある (docs/adr/0012)。
             # 初めて入れたときはログアウトが必要
-            system.activationScripts.postActivation.text = ''
+            # ほかのモジュール (home-manager の適用など) の postActivation と並べて連結する。
+            # 従来どおり先に実行するよう mkBefore にする (docs/adr/0046)
+            system.activationScripts.postActivation.text = lib.mkBefore ''
               echo "installing AquaSKK to /Library/Input Methods..." >&2
               ${pkgs.rsync}/bin/rsync -a --delete --chmod=u+w \
                 "${aquaskk}/Library/Input Methods/AquaSKK.app/" "/Library/Input Methods/AquaSKK.app/"

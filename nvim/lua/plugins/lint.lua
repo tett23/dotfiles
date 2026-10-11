@@ -67,6 +67,7 @@ return {
         markdown = { "textlint" },
       }
       vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+        group = vim.api.nvim_create_augroup("Lint", { clear = true }), -- 読み込み直しても重複しない (docs/adr/0046)
         callback = function()
           require("lint").try_lint()
         end,

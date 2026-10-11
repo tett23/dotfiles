@@ -13,9 +13,15 @@ on:
 permissions:
   contents: read
 
+# 同じブランチ・PR の古い実行は取り消す (docs/adr/0046)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   shellcheck:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
       - name: shellcheck
@@ -28,21 +34,25 @@ jobs:
 
   zsh-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
       - name: install zsh
         run: sudo apt-get update && sudo apt-get install -y zsh
-      - name: git-prompt
-        run: zsh zsh/tests/git-prompt.test.zsh
-      - name: cached-eval
-        run: zsh zsh/tests/cached-eval.test.zsh
-      - name: fzf-command-finder
-        run: zsh zsh/tests/fzf-command-finder.test.zsh
-      - name: gitignore-completion
-        run: zsh zsh/tests/gitignore-completion.test.zsh
+      # zsh/tests/ のテストをすべて実行する (足したテストも漏れない。docs/adr/0046)
+      - name: zsh tests
+        run: |
+          status=0
+          for t in zsh/tests/*.test.zsh; do
+            echo "::group::$t"
+            zsh "$t" || status=1
+            echo "::endgroup::"
+          done
+          exit $status
 
   adr:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
         with:
@@ -55,8 +65,10 @@ jobs:
 
   nix-eval:
     runs-on: macos-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
-      - uses: DeterminateSystems/nix-installer-action@main
+      # Determinate Nix の現行の推奨の action。ブランチではなく版で参照する (docs/adr/0046)
+      - uses: DeterminateSystems/determinate-nix-action@v3
       - name: evaluate nix-darwin configuration
         run: nix eval --raw .#darwinConfigurations.dione.system.drvPath

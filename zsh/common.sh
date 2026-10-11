@@ -39,7 +39,7 @@ bindkey -M vicmd 'v' edit-command-line
 bindkey -M viins '^X^E' edit-command-line
 bindkey -M vicmd '^X^E' edit-command-line
 
-# historical backward/forward search with linehead string binded to ^P/^N
+# 入力中の行の先頭が一致する履歴を前後に検索する (Alt-p / Alt-n。docs/adr/0046)
 #
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end

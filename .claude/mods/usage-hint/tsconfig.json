@@ -1,3 +1,5 @@
 {
+  // .claude-plugin/types/ (git の管理外) は、Claude Code がこの mod を読み込んだときに生成する。
+  // clone した直後は、一度 Claude Code を起動して mod を読み込んでから型検査する (docs/adr/0046)
   "extends": "./.claude-plugin/types/tsconfig.json"
 }

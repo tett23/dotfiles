@@ -9,7 +9,8 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
-      { "L3MON4D3/LuaSnip", dependencies = { "saadparwaiz1/cmp_luasnip" } },
+      -- jsregexp は LSP のスニペットの変換 (Variable/Placeholder-transformations) に要る (docs/adr/0046)
+      { "L3MON4D3/LuaSnip", build = "make install_jsregexp", dependencies = { "saadparwaiz1/cmp_luasnip" } },
     },
     config = function()
       local cmp = require("cmp")

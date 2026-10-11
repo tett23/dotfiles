@@ -1,12 +1,21 @@
-if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+# zinit 本体も、プラグインと同じくコミットに固定する。更新するときは _zinit_rev を書き換える (docs/adr/0046)
+typeset -g _zinit_dir=${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git
+typeset -g _zinit_rev=d05a5301150909d8b386ebb974e1d1634740d65d
+if [[ ! -f $_zinit_dir/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+    command mkdir -p "${_zinit_dir:h}" && command chmod g-rwX "${_zinit_dir:h}"
+    command git clone https://github.com/zdharma-continuum/zinit "$_zinit_dir" && \
         print -P "%F{33} %F{34}Installation successful.%f%b" || \
         print -P "%F{160} The clone has failed.%f%b"
 fi
+# 固定のコミットでなければ切り替える (zinit の self-update などで動いた場合も戻す)
+if [[ -d $_zinit_dir/.git && $(command git -C $_zinit_dir rev-parse HEAD 2>/dev/null) != $_zinit_rev ]]; then
+    command git -C $_zinit_dir fetch -q origin $_zinit_rev 2>/dev/null
+    command git -C $_zinit_dir checkout -q $_zinit_rev 2>/dev/null ||
+        print -P "%F{160} zinit を固定のコミット ($_zinit_rev) に切り替えられませんでした%f"
+fi
 
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+source "$_zinit_dir/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 

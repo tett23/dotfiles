@@ -167,8 +167,12 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
 
 - シェルスクリプトの shellcheck
-- zsh のテスト (`zsh/tests/`)
-- nix-darwin の設定の評価 (`nix eval`)
+- zsh のテスト (`zsh/tests/*.test.zsh` をすべて。ADR 0046)
+- コミット済みの ADR が変更されていないこと (adr-guard。ADR 0032)
+- nix-darwin の設定の評価 (`nix eval`。Nix は `DeterminateSystems/determinate-nix-action@v3` で入れる。ADR 0046)
+
+同じブランチ・PR の古い実行は取り消し、各ジョブには時間の上限を付けている (ADR 0046)。自前のパッケージのビルドと、
+usage-hint の mod のテストは CI では行わない (本人の判断。ADR 0046)。
 
 ## ADR の運用
 

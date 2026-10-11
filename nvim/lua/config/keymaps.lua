@@ -1,5 +1,5 @@
 -- グローバルキーマップ (vim/keymap.vim から移植)
--- リーダーは config/lazy.lua でプラグイン読込前に設定済み
+-- リーダーは init.lua でプラグインの読み込みより前に設定済み
 local map = vim.keymap.set
 local opts = { silent = true }
 

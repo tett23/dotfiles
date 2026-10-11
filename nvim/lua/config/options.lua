@@ -15,8 +15,7 @@ opt.list = true
 -- すべての半角スペースと改行も表示する。全角スペースは autocmds.lua でハイライトする (docs/adr/0028)
 opt.listchars = { tab = ">-", trail = "_", nbsp = "+", space = "·", eol = "↲" }
 
--- ファイル (旧: nobackup / noswapfile)
-opt.backup = false
+-- ファイル (旧: noswapfile。backup は nvim の既定で無効)
 opt.swapfile = false
 -- nvim を閉じた後も undo できるようにする (~/.local/state/nvim/undo/ に保存。docs/adr/0034)
 opt.undofile = true
@@ -31,9 +30,6 @@ opt.expandtab = true
 opt.ignorecase = true
 opt.smartcase = true
 opt.hlsearch = false
-
--- タグ
-opt.tags = "tags"
 
 -- クリップボード共有 / マウス
 opt.clipboard = "unnamed"

@@ -18,7 +18,7 @@ tmux send-keys -X -N 150 cursor-down
 tmux send-keys -X end-of-line
 tmux send-keys -X previous-word
 tmux send-keys -X next-word-end
-tmux send-keys -X copy-pipe-and-cancel pbcopy
+tmux send-keys -X copy-pipe-and-cancel # コピーのコマンドは tmux.conf の copy-command (pbcopy)
 
 # 行末に戻って挿入モードに戻す
 tmux send-keys '$' a

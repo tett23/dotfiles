@@ -3,7 +3,7 @@ return {
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    lazy = false, -- 常に表示するため起動時にロード
+    lazy = false, -- netrw を無効にしているので、`nvim <ディレクトリ>` で開けるよう起動時に読み込む
     keys = {
       { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Explorer (nvim-tree)" },
     },

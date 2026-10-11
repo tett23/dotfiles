@@ -53,7 +53,8 @@ ensure_nix() {
   fi
 
   log "Nix が見つからないためインストールします (Determinate Systems installer)"
-  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix \
+  # インストーラは版を固定する。上げるときはここを書き換える (docs/adr/0046)
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v3.23.1 \
     | sh -s -- install --no-confirm
 
   load_nix_env

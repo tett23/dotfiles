@@ -30,11 +30,6 @@ export const usageSegments = ({ contextPercent, rateLimits }: Snapshot): Segment
   segment('ctx', contextPercent),
 ]
 
-export const formatUsage = (snapshot: Snapshot): string =>
-  usageSegments(snapshot)
-    .map(({ label, value }) => `${label} ${value}`)
-    .join(SEPARATOR)
-
 const isLimit = (value: unknown): value is Limit => {
   if (typeof value !== 'object' || value === null) {
     return false
