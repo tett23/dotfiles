@@ -55,3 +55,8 @@ main/masterに対するrebaseは原則禁止。APIキーが漏れたときなど
 ### TypeScript
 
 クラス使用禁止。
+
+## GitHub actions
+
+Nodeは常に最新LTSを使用する。
+GitHub actionsはNode 24以降で動く最新のメジャー版を使う。
