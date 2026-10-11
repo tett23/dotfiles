@@ -65,7 +65,7 @@ node python ruby go rust deno bun haskell
 
 ## Install tools
 
-yarn pnpm shfmt biome dust
+yarn pnpm shfmt biome dust ghcup
 
 - dust は github バックエンド (github:bootandy/dust) で入れてください。既定の取得先 (aqua) は macOS で Intel 版を選ぶためです。
 

@@ -22,6 +22,7 @@ shfmt = "latest"
 biome = "latest"
 # 既定の取得先 (aqua) は macOS で Intel 版を選ぶので、GitHub のリリースから Apple Silicon 版を取る
 "github:bootandy/dust" = "latest"
+ghcup = "latest" # ghc・cabal の版の管理 (ghc は [plugins] の ghcup のプラグインで入れる)
 ruby = "latest"
 ghc = "latest"
 cabal = "latest"
