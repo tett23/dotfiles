@@ -63,6 +63,7 @@ vim.filetype.add({
     ["Vagrantfile"] = "ruby",
   },
   extension = {
+    gotmpl = "gotmpl", -- Go のテンプレート。gopls の対象のファイルタイプ (docs/adr/0039)
     thor = "ruby",
     cap = "ruby",
     erubis = "html",

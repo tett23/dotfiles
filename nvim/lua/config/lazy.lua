@@ -12,4 +12,6 @@ require("lazy").setup({
   spec = { { import = "plugins" } },
   install = { colorscheme = { "habamax" } },
   checker = { enabled = true, notify = false },
+  -- luarocks を使うプラグインは入れていないので、luarocks 対応を無効にする (:checkhealth のエラーを消す。docs/adr/0039)
+  rocks = { enabled = false },
 })
