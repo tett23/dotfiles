@@ -1,1 +1,12 @@
 --theme="Monokai Extended"
+
+# 拡張子・ファイル名で言語が決まらない設定ファイルに、言語を割り当てる (docs/adr/0059)
+# dotfiles の中の git の設定 (~/.config/git/ の場所では、もとから決まる)
+--map-syntax='**/git/config:Git Config'
+--map-syntax='**/git/ignore:Git Ignore'
+--map-syntax='*.zshrc.mine:Bourne Again Shell (bash)'
+--map-syntax='zshrc.mine:Bourne Again Shell (bash)'
+# Ghostty・tmux は bat に言語が無いので、形式の近いもので代える
+--map-syntax='**/ghostty/config:INI'
+--map-syntax='tmux.conf:Bourne Again Shell (bash)'
+--map-syntax='.tmux.conf:Bourne Again Shell (bash)'

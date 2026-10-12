@@ -11,6 +11,9 @@ opt.title = true
 opt.showmatch = true
 opt.laststatus = 3 -- グローバルステータスライン (lualine)
 opt.cursorline = true
+-- カーソルの上下に常に 8 行を残す。記号の列は常に出し、記号の出入りで本文がずれないようにする (docs/adr/0059)
+opt.scrolloff = 8
+opt.signcolumn = "yes"
 opt.list = true
 -- すべての半角スペースと改行も表示する。全角スペースは autocmds.lua でハイライトする (docs/adr/0028)
 opt.listchars = { tab = ">-", trail = "_", nbsp = "+", space = "·", eol = "↲" }
@@ -32,6 +35,8 @@ opt.expandtab = true
 opt.ignorecase = true
 opt.smartcase = true
 opt.hlsearch = false
+-- :s の置き換えの結果を、画面外の行も含めて下の分割に出す (docs/adr/0059)
+opt.inccommand = "split"
 
 -- クリップボード共有 / マウス
 opt.clipboard = "unnamed"

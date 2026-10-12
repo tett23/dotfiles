@@ -91,6 +91,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   `ea` (`e -a`)、`ela` (`e -la --git`)、`et` (`e --tree --git-ignore`)、`b` (`bat`)。アイコンは端末に出すときだけ付き、詳細表示には git の状態の列が出る。
   ファイル名は端末のリンクになり、Ghostty では `Cmd` を押しながらクリックすると開ける。ツリーには `.gitignore` で除外したものを出さない。
 - bat-extras の `batgrep` (ripgrep の結果を bat で出す) と `batdiff` (git の差分を bat で出す) を入れる ([ADR 0057](adr/0057-remaining-improvements-2.md))。
+- bat は、拡張子・ファイル名で言語が決まらない設定ファイルにも色を付ける (`bat/config` の `--map-syntax`。[ADR 0059](adr/0059-bat-map-syntax-and-nvim-options.md))。
+  dotfiles の中の `git/config`・`git/ignore` は git の設定、`.zshrc.mine` は bash。bat に言語が無い Ghostty の設定は INI、`tmux.conf` は bash で代える。
 - `man` のページは bat で色付きで表示する (`MANPAGER`。[ADR 0053](adr/0053-bat-manpager-and-eza-options.md))。
 - fzf のファイル検索は fd を使い ([ADR 0002](adr/0002-fzf-file-search-with-fd.md))、`Ctrl-P` では bat でファイルの先頭をプレビューする ([ADR 0034](adr/0034-small-conveniences-zsh-fzf-nvim.md), [0036](adr/0036-tmux-window-switcher-on-ctrl-t.md))。主なキー割り当て:
 
@@ -112,6 +114,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 不可視文字を表示する ([ADR 0028](adr/0028-nvim-show-invisible-characters.md))。タブ (`>-`)、行末の空白 (`_`)、ノーブレークスペース (`+`)、すべての半角スペース (`·`)、
   改行 (`↲`) は記号で、全角スペースは背景色で示す。色は緑 `#76b98e` (灰色の本文・コメントと色味で区別でき、文字列の黄緑より暗い。[ADR 0028](adr/0028-nvim-show-invisible-characters.md) の色の値の調整)。
 - 選択範囲 (`Visual`) の背景色は、テーマの既定 (約 `#3e3f38`) では見分けにくいため `#55564e` に上書きしている ([ADR 0026](adr/0026-nvim-visual-selection-color.md))。
+- カーソルの上下に常に 8 行を残す (`scrolloff`)。記号の列は常に出し、記号の出入りで本文がずれないようにする (`signcolumn = "yes"`)。
+  `:s` の置き換えの結果は、画面外の行も含めて下の分割に出す (`inccommand = "split"`。[ADR 0059](adr/0059-bat-map-syntax-and-nvim-options.md))。
 - nvim を閉じた後も undo できる (`undofile`)。ヤンクした範囲を一瞬光らせ、ファイルは前回のカーソル位置から開く
   (git のコミットメッセージなどを除く。[ADR 0034](adr/0034-small-conveniences-zsh-fzf-nvim.md))。
 - 移動・表示の補助 ([ADR 0037](adr/0037-fzf-tab-flash-treesitter-context-trouble.md)):
