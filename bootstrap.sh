@@ -36,10 +36,10 @@ ensure_xcode_clt() {
   log "Xcode Command Line Tools が見つからないためインストールします"
   xcode-select --install || true
 
-  # GUI インストーラの完了を待つ
+  # GUI インストーラの完了を待つ。install.sh と同じく、Enter を待たずに 5 秒ごとに確かめる (docs/adr/0055)
+  log "Xcode Command Line Tools のインストール完了を待機中..."
   until xcode-select -p >/dev/null 2>&1; do
-    log "Xcode Command Line Tools のインストール完了を待機中... (完了したら Enter)"
-    read -r _
+    sleep 5
   done
   log "Xcode Command Line Tools をインストールしました"
 }

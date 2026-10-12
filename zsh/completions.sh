@@ -23,6 +23,10 @@ if (( ${+functions[zinit]} )); then
   zinit ice ver"24105b15714bfec37989ed5c5b6e60f572253019"
   zinit light Aloxaf/fzf-tab
 fi
+# zsh の補完の一覧での選択は使わず fzf-tab に任せる。グループの見出しは fzf-tab のグループの切り替えに使う
+# (fzf-tab の README の推奨。docs/adr/0055)
+zstyle ':completion:*' menu no
+zstyle ':completion:*:descriptions' format '[%d]'
 # cd の補完では、候補のディレクトリの中身をプレビューする
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 

@@ -24,8 +24,9 @@ map("n", "<Leader>g", vim.lsp.buf.hover, opts)       -- Hover
 map("n", "<Leader>df", vim.lsp.buf.definition, opts) -- Definition
 map("n", "<Leader>rf", vim.lsp.buf.references, opts) -- References
 map("n", "<Leader>rn", vim.lsp.buf.rename, opts)     -- Rename
+-- 保存時と同じ conform で整形する。conform に整形の道具が無ければ LSP で整形する (docs/adr/0055)
 map("n", "<Leader>fmt", function()
-  vim.lsp.buf.format({ async = true })
+  require("conform").format({ async = true, lsp_format = "fallback" })
 end, opts) -- Format
 
 -- Telescope (旧 fzf.vim / CocList を置換)

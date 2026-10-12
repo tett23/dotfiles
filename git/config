@@ -45,6 +45,15 @@
 
 [log]
   date = local
+[commit]
+  # コミットのメッセージを書く画面に差分を出す (docs/adr/0055)
+  verbose = true
+[branch]
+  # 最近更新したブランチを先に並べる (docs/adr/0055)
+  sort = -committerdate
+[column]
+  # git branch などの一覧を、端末の幅に合わせて複数列で出す (docs/adr/0055)
+  ui = auto
 [merge]
   tool = nvimdiff
   conflictstyle = zdiff3
@@ -62,10 +71,14 @@
   lineNumbers = true
 [push]
   autoSetupRemote = true
+  # push するコミットに付いた注釈付きのタグも送る (docs/adr/0055)
+  followTags = true
 [pull]
   rebase = true
 [rebase]
   autoStash = true
+  # fixup!・squash! のコミットを rebase -i で自動で並べる (docs/adr/0055)
+  autoSquash = true
 [fetch]
   prune = true
 
