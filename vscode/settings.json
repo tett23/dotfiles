@@ -152,11 +152,7 @@
     },
     {
       "before": ["<leader>", "c", "i", "g"],
-      "commands": ["github.copilot.interactiveEditor.generate"]
-    },
-    {
-      "before": ["<leader>", "c", "g"],
-      "commands": ["github.copilot.generate"]
+      "commands": ["inlineChat.start"]
     },
     {
       "before": ["<leader>", "n"],
@@ -279,7 +275,7 @@
     "editor.insertSpaces": false
   },
   "[toml]": {
-    "editor.defaultFormatter": "bodil.prettier-toml"
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -320,10 +316,8 @@
     "yaml": false,
     "plaintext": true,
     "markdown": false,
-    "mdx": false,
-    "md": false
+    "mdx": false
   },
-  "github.copilot.editor.enableAutoCompletions": true,
 
   "tailwindCSS.files.exclude": [
     "**/lib",

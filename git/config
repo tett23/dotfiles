@@ -69,6 +69,9 @@
   prompt = false
 [grep]
   lineNumbers = true
+[transfer]
+  # fetch・clone・push で受け取るオブジェクトを検査する (docs/adr/0058)
+  fsckObjects = true
 [push]
   autoSetupRemote = true
   # push するコミットに付いた注釈付きのタグも送る (docs/adr/0055)

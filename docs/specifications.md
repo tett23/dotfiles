@@ -165,6 +165,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 主な設定 (`git/config`): コミットのメッセージを書く画面に差分を出す (`commit.verbose`)。`git branch` は最近更新した順に並べ (`branch.sort`)、
   一覧は端末の幅に合わせて複数列で出す (`column.ui`)。`rebase -i` で `fixup!`・`squash!` のコミットを自動で並べる (`rebase.autoSquash`)。
   `git push` で注釈付きのタグも送る (`push.followTags`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
+- fetch・clone・push で受け取るオブジェクトを検査する (`transfer.fsckObjects`。[ADR 0058](adr/0058-git-fsck-and-vscode-cleanup.md))。
 - `git mergetool` はファイルごとの確認を出さない (`difftool` と同じ)。同じ働きのエイリアスは 1 つにまとめた (`lg`・`cia` を残す。[ADR 0057](adr/0057-remaining-improvements-2.md))。
 
 ## Claude Code
