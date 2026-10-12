@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-10-05
-- Supersedes: ADR 0004 の「terminal は `PromptHint` の `tail` で追記する」部分
+- Supersedes: [ADR 0004](0004-usage-hint-mod.md) の「terminal は `PromptHint` の `tail` で追記する」部分
 
 ## Context
 

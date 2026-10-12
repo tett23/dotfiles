@@ -11,7 +11,7 @@
 - nix-darwin が生成する `/etc/zshrc`: 約 70 ms。フルの `compinit`、`bashcompinit`、
   プロンプトテーマの読み込み (`promptinit` / `prompt suse`) を毎回実行しているが、
   いずれも自分の `.zshrc` が後から同等の処理をしている (`brew shellenv` も実行しているが、
-  Homebrew 自体の廃止を ADR 0012 で扱う)。
+  Homebrew 自体の廃止を [ADR 0012](0012-remove-homebrew.md) で扱う)。
 - 自分の `.zshrc`: 約 170 ms。zinit のプラグイン読み込み (約 50 ms)、mise の初回フック、`compinit` など。
 - 最初のプロンプト直前のフック (`precmd`): git リポジトリ内で約 140 ms。うち `vcs_info` が 64〜110 ms
   (変更の有無の確認を含む)、stash 数の取得が 8 ms。リポジトリ外でも `vcs_info` が 9〜17 ms かかる。

@@ -1,10 +1,10 @@
 # ADR 0036: tmux のウィンドウの切り替えを Ctrl-T に移す
 
-ステータス: 採択→Ctrl-T の受け取り先 (zsh から tmux へ) はADR 0052
+ステータス: 採択→Ctrl-T の受け取り先 (zsh から tmux へ) は[ADR 0052](0052-tmux-window-switcher-in-tmux.md)
 
 ## 文脈
 
-ADR 0033 で、fzf で tmux のウィンドウを選んで切り替えるウィジェット (`ftmux_window`) を `Ctrl-E` に割り当てた。
+[ADR 0033](0033-fzf-tmux-window-switcher.md) で、fzf で tmux のウィンドウを選んで切り替えるウィジェット (`ftmux_window`) を `Ctrl-E` に割り当てた。
 これを `Ctrl-T` に移したい。
 
 - `Ctrl-T` には、fzf 本体 (`fzf --zsh`) がファイルを選んで入力行に足すウィジェット (`fzf-file-widget`) を割り当てている。
@@ -17,13 +17,13 @@ ADR 0033 で、fzf で tmux のウィンドウを選んで切り替えるウィ�
 - `zsh/fzf.sh` の `bindkey "^e" ftmux_window` を `bindkey "^t" ftmux_window` にする。
   - `Ctrl-T` の `fzf-file-widget` の割り当ては、上書きされて無くなる。ファイルの選択は `Ctrl-P` を使う。
   - `Ctrl-E` は割り当てが無くなり、zsh の vi 挿入モードの既定 (`self-insert`) に戻る。
-- ファイルの選択のプレビュー (`FZF_CTRL_T_OPTS`。ADR 0034) は、`Ctrl-P` の `fzf-file-widget` が引き続き使う。
+- ファイルの選択のプレビュー (`FZF_CTRL_T_OPTS`。[ADR 0034](0034-small-conveniences-zsh-fzf-nvim.md)) は、`Ctrl-P` の `fzf-file-widget` が引き続き使う。
   変数の名前は fzf 本体が決めているので変えない。
 - コマンド選択 (`Ctrl-O`) の一覧の `ftmux_window` のキーの表示は、`bindkey` から引いているので自動で `^T` になる。
 - `zsh/tests/fzf-command-finder.test.zsh` の、`ftmux_window` のキーを確かめるテストの期待値を `^T` にする。
 - `docs/specifications.md` のキーの表の `Ctrl-E` を `Ctrl-T` にし、fzf のプレビューの説明から `Ctrl-T` を外す。
-- ADR 0033 のステータスを「採択→キーの割り当て (Ctrl-E) はADR 0036」、ADR 0034 のステータスを
-  「採択→Ctrl-T のプレビューはADR 0036 (Ctrl-P だけになる)」にする。
+- [ADR 0033](0033-fzf-tmux-window-switcher.md) のステータスを「採択→キーの割り当て (Ctrl-E) は[ADR 0036](0036-tmux-window-switcher-on-ctrl-t.md)」、[ADR 0034](0034-small-conveniences-zsh-fzf-nvim.md) のステータスを
+  「採択→Ctrl-T のプレビューは[ADR 0036](0036-tmux-window-switcher-on-ctrl-t.md) (Ctrl-P だけになる)」にする。
 
 ## 実装しないこと
 

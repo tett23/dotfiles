@@ -10,7 +10,7 @@
   `~/.vimbackup` を作る。nvim は `backup` と `swapfile` を無効にしていて `backupdir` も設定していないので、使われていない
   (中身は空)。旧 vim の設定の名残。
 - **L18** `zsh/zshrc` は、dotfiles の外の本人用の設定として `~/.zshrc.mine` を読む (今はファイルが無い)。
-  ADR 0042 で、インストーラなどの `~/.zshrc` への追記の代わりに、ここに書くことにした。ホーム直下にあり、XDG に沿っていない。
+  [ADR 0042](0042-xdg-config-locations.md) で、インストーラなどの `~/.zshrc` への追記の代わりに、ここに書くことにした。ホーム直下にあり、XDG に沿っていない。
   - `.zshrc.mine` は、`zsh/zshrc` とは分けておきたい設定 (インストーラの追記など) を書く場所。
 
 ## 実装すること
@@ -25,7 +25,7 @@
 - dotfiles に `zsh/zshrc.mine` を作って git で管理し、`~/.config/zsh/.zshrc.mine` にリンクする (`flake.nix` の `xdg.configFile`)。
   - 中身は、ファイルの役割を説明するコメントだけにする。dotfiles は公開リポジトリなので、トークンなどの秘密は書かないことも
     コメントに書く。
-- `zsh/zshrc` は `${ZDOTDIR:-$HOME}/.zshrc.mine` を読む (`ZDOTDIR` は `~/.config/zsh`。ADR 0042)。従来どおり、ファイルが
+- `zsh/zshrc` は `${ZDOTDIR:-$HOME}/.zshrc.mine` を読む (`ZDOTDIR` は `~/.config/zsh`。[ADR 0042](0042-xdg-config-locations.md))。従来どおり、ファイルが
   あるときだけ読む。
 - `docs/specifications.md` の zsh の節と、配置の表に書く。
 

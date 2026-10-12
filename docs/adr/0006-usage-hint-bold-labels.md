@@ -11,7 +11,7 @@ usage-hint の表示 (`5h 23% · 7d 41% · Fable -- · ctx 37%`) は全体が di
 ## Decision
 
 - 各項目を `<Text>` で包み、その中のラベル (`5h`, `7d`, `Fable`, `ctx`) だけを
-  入れ子の `<Text bold>` にする。色 (dim / 75% 超の黄色, ADR 0005) は外側の
+  入れ子の `<Text bold>` にする。色 (dim / 75% 超の黄色, [ADR 0005](0005-usage-hint-warning-color.md)) は外側の
   `<Text>` に付け、ラベルにも同じ色が掛かる。
 - そのために `Segment` を `{ label, value, isWarning }` に分ける。
   `formatUsage` の文字列表現は変えない。

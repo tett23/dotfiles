@@ -5,7 +5,7 @@
 
 ## Context
 
-ADR 0021 で、send-to-kindle はカレントディレクトリの `.env`、無ければ環境変数から設定を読むようにした。
+[ADR 0021](0021-modernize-send-to-kindle.md) で、send-to-kindle はカレントディレクトリの `.env`、無ければ環境変数から設定を読むようにした。
 `.env` を別の場所 (例: `~/.config/send-to-kindle/.env`) に置いて、どのディレクトリからでも使いたい。
 
 ## Decision

@@ -4,13 +4,13 @@
 
 ## 文脈
 
-bat と eza は Nix で入れていて、bat はテーマの指定 (`bat/config`)、eza は短いエイリアス (`e`・`el`・`ea`・`ela`・`et`。ADR 0035) だけを
+bat と eza は Nix で入れていて、bat はテーマの指定 (`bat/config`)、eza は短いエイリアス (`e`・`el`・`ea`・`ela`・`et`。[ADR 0035](0035-eza-and-bat-aliases.md)) だけを
 設定している。次を足す。
 
 - `man` のページを bat で色付きにする (`MANPAGER`)。今は `PAGER=less -R` で、`man` は色の無い表示になる。
   - bat の README の推奨は `MANPAGER="sh -c 'col -bx | bat -l man -p'"`。`col -bx` で、man の太字・下線の制御文字を取り除いてから
     bat に渡す (`col` は macOS に入っている)。
-- eza のエイリアスに、次のオプションを付ける。ADR 0035 では「表示のオプションを全エイリアスに付けること」を対象外にしていたが、
+- eza のエイリアスに、次のオプションを付ける。[ADR 0035](0035-eza-and-bat-aliases.md) では「表示のオプションを全エイリアスに付けること」を対象外にしていたが、
   本人の判断で付ける。
   - `--icons=auto`: ファイルの種類のアイコン。Ghostty には Nerd Font のアイコンが組み込まれているので、フォントの設定は要らない。
     `auto` は端末に出すときだけ付け、パイプに渡すときは付けない。
@@ -39,7 +39,7 @@ bat と eza は Nix で入れていて、bat はテーマの指定 (`bat/config`
 ### ドキュメント
 
 - `docs/specifications.md` の zsh の節 (エイリアス・man) を直す。
-- ADR 0035 のステータスを「採択→eza の表示のオプションはADR 0053」にする。
+- [ADR 0035](0035-eza-and-bat-aliases.md) のステータスを「採択→eza の表示のオプションは[ADR 0053](0053-bat-manpager-and-eza-options.md)」にする。
 
 ## 実装しないこと
 

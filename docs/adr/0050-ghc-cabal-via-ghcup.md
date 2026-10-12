@@ -5,7 +5,7 @@
 ## 文脈
 
 Haskell の ghc と cabal は mise で入れている (`mise/config.toml`。ghc は ghcup のプラグイン `mise-ghcup` を ghc という名前で
-`[plugins]` に明示する。ADR 0018)。ghcup 自体も mise で入れた (`dependencies.md`)。
+`[plugins]` に明示する。[ADR 0018](0018-ghc-via-ghcup-plugin.md))。ghcup 自体も mise で入れた (`dependencies.md`)。
 
 ghc・cabal の版の管理を ghcup に一本化する。mise での ghc・cabal の管理はやめる。
 
@@ -14,10 +14,10 @@ ghc・cabal の版の管理を ghcup に一本化する。mise での ghc・caba
 - ghcup で入れたツール (ghc・cabal の各版、HLS など) は `~/.ghcup/bin` に置かれるが、PATH に入っていない。
 - ghcup が用意する `~/.ghcup/env` は、`~/.ghcup/bin` を PATH の先頭に入れる。
 - PATH の優先順位は「mise → `~/.local/bin`・`~/bin` → home-manager → Nix 本体 → システム」で、`$DOTFILES/bin` などは末尾に足している
-  (ADR 0023。`zsh/exports.sh`)。
+  ([ADR 0023](0023-fix-remaining-audit-items-2.md)。`zsh/exports.sh`)。
 - `install.sh` は `mise install` で ghc・cabal も入れていた。`bin/update-mise` は mise の言語・ツールを最新化する。
 - VSCode の Haskell の拡張は、すでに ghcup を使う設定 (`haskell.manageHLS = GHCup`、`~/.ghcup/bin` を PATH に足す)。
-- ADR 0018 は古い書き方の ADR (`- Status:`) のため、ステータスを更新しない (ADR 0032)。ADR 0018 の決定 (mise の ghcup のプラグイン) は、
+- [ADR 0018](0018-ghc-via-ghcup-plugin.md) は古い書き方の ADR (`- Status:`) のため、ステータスを更新しない ([ADR 0032](0032-adr-guard.md))。[ADR 0018](0018-ghc-via-ghcup-plugin.md) の決定 (mise の ghcup のプラグイン) は、
   この ADR で置き換える。
 
 ## 実装すること

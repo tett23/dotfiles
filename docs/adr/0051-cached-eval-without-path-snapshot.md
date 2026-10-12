@@ -5,10 +5,10 @@
 ## 文脈
 
 zsh の起動を速くするため、`mise activate zsh` などシェル統合のスクリプトを出力するコマンドの結果をキャッシュして読み込んでいる
-(`zsh/lib/cached-eval.zsh` の `__cached_eval`。ADR 0011)。キャッシュは、呼び出すパス・実体のパス・実体の更新日時・引数をキーにし、
+(`zsh/lib/cached-eval.zsh` の `__cached_eval`。[ADR 0011](0011-speed-up-zsh-startup.md))。キャッシュは、呼び出すパス・実体のパス・実体の更新日時・引数をキーにし、
 変わったら作り直す。
 
-ADR 0050 で `~/.ghcup/bin` を PATH に足したところ、新しいシェルで PATH に入らなかった。原因は次のとおり。
+[ADR 0050](0050-ghc-cabal-via-ghcup.md) で `~/.ghcup/bin` を PATH に足したところ、新しいシェルで PATH に入らなかった。原因は次のとおり。
 
 - `mise activate zsh` の出力の先頭には、出力した時点の PATH をそのまま書き込んだ行がある。
 
@@ -23,7 +23,7 @@ ADR 0050 で `~/.ghcup/bin` を PATH に足したところ、新しいシェル�
 - 出力の後のほうには、`__MISE_ORIG_PATH` が無いときに今の PATH から設定する行 (`if [ -z "${__MISE_ORIG_PATH:-}" ]; then
   export __MISE_ORIG_PATH="$PATH"; fi`) があり、先頭の 2 行を除けば、読み込んだ時点の PATH で正しく動く。
 - `mise activate zsh` をキャッシュせずに毎回実行すると、起動が 10ms ほど遅くなる。
-- 古いキャッシュとして、Homebrew をやめた (ADR 0012) 後の `brew-shellenv.zsh` も `~/.cache/zsh/` に残っている (使われていない)。
+- 古いキャッシュとして、Homebrew をやめた ([ADR 0012](0012-remove-homebrew.md)) 後の `brew-shellenv.zsh` も `~/.cache/zsh/` に残っている (使われていない)。
 
 ## 実装すること
 

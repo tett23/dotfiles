@@ -2,11 +2,11 @@
 
 - Status: Accepted
 - Date: 2026-10-07
-- Supersedes: ADR 0001 のうち「clone 後の origin は HTTPS のままになる」部分
+- Supersedes: [ADR 0001](0001-curl-sh-install.md) のうち「clone 後の origin は HTTPS のままになる」部分
 
 ## Context
 
-ADR 0001 では、SSH 鍵の無い新規マシンでも clone できるよう HTTPS で clone し、`origin` も HTTPS のままにした。
+[ADR 0001](0001-curl-sh-install.md) では、SSH 鍵の無い新規マシンでも clone できるよう HTTPS で clone し、`origin` も HTTPS のままにした。
 そのため push するには、手で `git remote set-url origin git@github.com:...` を実行する必要があった。
 
 ## Decision

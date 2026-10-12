@@ -17,8 +17,8 @@
 
 - zsh の `Tab` には、fzf 本体 (`fzf --zsh`) の `fzf-completion` を割り当てている。これは通常の補完に、`**<Tab>` で fzf を開く機能を足したもの。
 - fzf-tab は `compinit` の後、かつ zsh-autosuggestions・fast-syntax-highlighting (ウィジェットを包むプラグイン) より前に
-  読み込む必要がある。この 2 つは最初のプロンプトの後に遅延読み込みしている (ADR 0011) ので、`compinit` の直後に
-  同期で読み込めば条件を満たす。zsh のプラグインはコミットに固定している (ADR 0010)。
+  読み込む必要がある。この 2 つは最初のプロンプトの後に遅延読み込みしている ([ADR 0011](0011-speed-up-zsh-startup.md)) ので、`compinit` の直後に
+  同期で読み込めば条件を満たす。zsh のプラグインはコミットに固定している ([ADR 0010](0010-fix-zsh-fzf-audit.md))。
 - nvim の `s`・`S` は既定の 1 文字・1 行の置き換え (`cl`・`cc` と同じ) で、独自の割り当ては無い。`<Leader>x` も空いている。
 - nvim のプラグインは lazy.nvim で入れ、版は `nvim/lazy-lock.json` に固定される。
 

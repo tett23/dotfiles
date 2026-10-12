@@ -27,7 +27,7 @@
 
   - `git mv` で移し、`flake.nix` のリンク元のパスと `docs/specifications.md` の配置の表を直す。
 - **L9** README に「テスト」の節を足し、テストの置き場所と実行コマンドをまとめる。置き場所は統一しない
-  (send-to-kindle は 1 ファイルである必要がある。ADR 0025)。
+  (send-to-kindle は 1 ファイルである必要がある。[ADR 0025](0025-send-to-kindle-single-file.md))。
 - **L12** リポジトリ直下に `.gitignore` を置き、このリポジトリで出るもの (`.DS_Store`、`.ruby-lsp/`、
   `.claude/settings.local.json`) を書く。
 

@@ -13,9 +13,9 @@ zsh の `cd` の補完 (`Tab`) で見つけたい。ただし `.gitignore` で�
   `.gitignore` には従うが、`.` で始まるものは対象にしない。設定 (`opts`) は空のまま。
 - Telescope の `live_grep` (`<Leader>fg`) は、既定で ripgrep を使う。`.gitignore` には従うが、`.` で始まるものは検索しない。
 - zsh の `Ctrl-P` (fzf のファイルの選択) は、すでに `fd --type f --hidden --follow --exclude .git` で、`.` で始まるものを
-  含め、`.gitignore` に従っている (ADR 0002)。
+  含め、`.gitignore` に従っている ([ADR 0002](0002-fzf-file-search-with-fd.md))。
 - zsh の補完は、`.` を打たないと `.` で始まるファイルを候補に出さない。`Tab` の補完は fzf-tab で絞り込んでいる
-  (ADR 0037) が、候補は zsh の補完が作る。
+  ([ADR 0037](0037-fzf-tab-flash-treesitter-context-trouble.md)) が、候補は zsh の補完が作る。
   - `setopt glob_dots` でも候補に出るが、これは `rm *` などのグロブ全般にも `.` で始まるものを含めてしまう。
     補完だけに効かせるには、`compinit` が用意する補完用のオプションの一覧 `_comp_options` に `globdots` を足す。
 - zsh の補完は `.gitignore` を知らない。ただし `zstyle -e` で書いたスタイルは補完のたびにコードを実行して値を決めるので、

@@ -1,6 +1,6 @@
 # ADR 0029: tmux の TPM をやめ、tmux-nova を Nix で入れ、sensible と yank を tmux.conf に置き換える
 
-ステータス: 採択→install.sh の submodule の取得処理はADR 0041
+ステータス: 採択→install.sh の submodule の取得処理は[ADR 0041](0041-file-layout-cleanup-2.md)
 
 ## 文脈
 

@@ -9,7 +9,7 @@
 これまでは対話セッションで sync-deps スキルを使って同期していたため、次の問題があった。
 
 - 同期の手段が対話セッションに限られ、コマンド 1 つで実行できない。
-- 実装側 (ADR 0011・0012 の GUI アプリ、自前パッケージ、colima、/etc/zshrc の設定など) にだけ書かれ、
+- 実装側 ([ADR 0011](0011-speed-up-zsh-startup.md)・0012 の GUI アプリ、自前パッケージ、colima、/etc/zshrc の設定など) にだけ書かれ、
   `dependencies.md` に書かれていない要件があった。
 
 ## Decision

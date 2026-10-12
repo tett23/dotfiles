@@ -4,7 +4,7 @@
 
 ## 文脈
 
-ADR 0044 で、zsh の `Alt-c`・`Alt-p`・`Alt-n` を使うために、Ghostty に `macos-option-as-alt = left` (左の Option キーを Alt として送る)
+[ADR 0044](0044-ghostty-conveniences.md) で、zsh の `Alt-c`・`Alt-p`・`Alt-n` を使うために、Ghostty に `macos-option-as-alt = left` (左の Option キーを Alt として送る)
 を入れた。しかし、Karabiner-Elements の選択中のプロファイル (`Default profile`) が左の Option キーを Escape に置き換えている
 (`left_option → escape`) ため、Ghostty には Option キーとして届かず、この設定は効いていない。
 
@@ -13,7 +13,7 @@ ADR 0044 で、zsh の `Alt-c`・`Alt-p`・`Alt-n` を使うために、Ghostty 
 - 左の Option (= Escape) を押してから続けてキーを押すと、端末には `Esc` に続けてそのキーが送られ、Alt を押しながらと同じ入力になる。
   zsh は vi モードのため、`KEYTIMEOUT` (既定 0.4 秒) より遅く押すと、ノーマルモードに入ってからキーとして扱われる。
 - `docs/specifications.md` の Ghostty の節は「左の Option キーを Alt として送る」としていて、事実と違う。
-- ADR 0044 は採択して実装したが、コミットした ADR 0044 のステータスの行が「提案」のままになっている。
+- [ADR 0044](0044-ghostty-conveniences.md) は採択して実装したが、コミットした [ADR 0044](0044-ghostty-conveniences.md) のステータスの行が「提案」のままになっている。
 
 ## 実装すること
 
@@ -22,7 +22,7 @@ ADR 0044 で、zsh の `Alt-c`・`Alt-p`・`Alt-n` を使うために、Ghostty 
   - Option キーは Alt として送らない (Ghostty の既定)。左の Option は Karabiner-Elements で Escape に置き換えている
     (Karabiner-Elements は dotfiles で管理しないもの。`dependencies.md`)。
   - 左の Option (= Escape) を押してから素早く続けてキーを押すと、`Alt-c` などと同じ入力になる。
-- ADR 0044 のステータスを「採択→macos-option-as-alt はADR 0047」にする。
+- [ADR 0044](0044-ghostty-conveniences.md) のステータスを「採択→macos-option-as-alt は[ADR 0047](0047-ghostty-option-as-alt-removed.md)」にする。
 
 ## 実装しないこと
 
@@ -35,7 +35,7 @@ ADR 0044 で、zsh の `Alt-c`・`Alt-p`・`Alt-n` を使うために、Ghostty 
 - 設定ファイルとドキュメントの変更のため、自動テストは書かない。
 - `ghostty +validate-config --config-file=ghostty/config` で、設定にエラーが無いこと。
 - `ghostty +show-config` で、`macos-option-as-alt` が既定 (空) になっていること。
-- adr-guard の pre-commit hook で、ADR 0044 のステータスの行だけの変更が通ること。
+- adr-guard の pre-commit hook で、[ADR 0044](0044-ghostty-conveniences.md) のステータスの行だけの変更が通ること。
 
 ## トレードオフ
 

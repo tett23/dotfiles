@@ -1,6 +1,6 @@
 # ADR 0033: fzf で tmux のウィンドウを検索して切り替える (Ctrl-E)。コマンド選択 (Ctrl-O) には全コマンドを出す
 
-ステータス: 採択→キーの割り当て (Ctrl-E) はADR 0036
+ステータス: 採択→キーの割り当て (Ctrl-E) は[ADR 0036](0036-tmux-window-switcher-on-ctrl-t.md)
 
 ## 文脈
 
@@ -10,7 +10,7 @@ fzf でウィンドウの一覧をインクリメンタルに絞り込み、選�
 - zsh は vi モード (`bindkey -v`) で、挿入モードの `Ctrl-E` には割り当てが無い (`self-insert`)。
 - `zsh/fzf.sh` には、fzf を使う zsh のウィジェット (`repo`・`fbr`・`fkill` など) を `bindkey` で割り当てる仕組みがある。
 
-あわせて、コマンド選択 (`fzf_command_finder`、`Ctrl-O`。ADR 0031) の一覧を見直す。
+あわせて、コマンド選択 (`fzf_command_finder`、`Ctrl-O`。[ADR 0031](0031-command-finder-key-and-rust-tools-via-mise.md)) の一覧を見直す。
 
 - コマンド選択は、選んだ名前 `<名前>` に対して関数 `__<名前>` を実行し、その出力を入力行に足す。
 - 一覧は関数の中に手で書いた 15 個の名前で、`zsh/fzf.sh` に `__` 付きの関数を足しても一覧には出ない。
@@ -26,7 +26,7 @@ fzf でウィンドウの一覧をインクリメンタルに絞り込み、選�
   ```
 
   - ディレクトリ名は、そのウィンドウで選択中のペインのカレントディレクトリの末尾 (`#{b:pane_current_path}`)。
-    ステータスラインのウィンドウの表示 (ADR 0007) と揃える。
+    ステータスラインのウィンドウの表示 ([ADR 0007](0007-tmux-status-directory-name.md)) と揃える。
   - 今いるウィンドウには印 (`*`) を付ける。
 - fzf のプレビューに、そのウィンドウで選択中のペインの画面 (`tmux capture-pane -ep`) を出す。
 - 選んだら `tmux switch-client -t <セッション>:<ウィンドウ番号>` で切り替える (別のセッションのウィンドウにも移れる)。

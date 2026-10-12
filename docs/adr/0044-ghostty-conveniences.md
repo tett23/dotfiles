@@ -1,6 +1,6 @@
 # ADR 0044: Ghostty に便利な設定を足す
 
-ステータス: 採択→macos-option-as-alt はADR 0047
+ステータス: 採択→macos-option-as-alt は[ADR 0047](0047-ghostty-option-as-alt-removed.md)
 
 ## 文脈
 
@@ -10,7 +10,7 @@ Ghostty で使える設定のうち、次のものを入れる。
 - zsh には `Alt-c` (fzf でディレクトリに移動)・`Alt-p` / `Alt-n` (履歴の検索) の割り当てがあるが、macOS の Ghostty は既定では
   Option キーを Alt として送らない (`macos-option-as-alt` が未設定) ため、Option を押すと特殊な文字が入り、どれも効いていない。
 - Ghostty は Nix で入れていて、更新は `bin/update-nix` で行う。Ghostty 自身の自動更新 (`auto-update`) は未設定。
-- nvim の配色は monokai-pro の classic (ADR 0009)。Ghostty には同系統の組み込みのテーマ `Monokai Classic` がある。
+- nvim の配色は monokai-pro の classic ([ADR 0009](0009-fix-git-tmux-nvim-audit.md))。Ghostty には同系統の組み込みのテーマ `Monokai Classic` がある。
 
 マウスのカーソルを入力中に隠す設定 (`mouse-hide-while-typing`) とフォントの指定は入れない (本人の判断)。
 

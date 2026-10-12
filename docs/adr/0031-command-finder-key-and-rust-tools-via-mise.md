@@ -12,7 +12,7 @@
 
 ### send-to-kindle と shorten-path (監査の B5)
 
-- `bin/send-to-kindle` (Deno、ADR 0021, 0022, 0025) は、独立したリポジトリ
+- `bin/send-to-kindle` (Deno、[ADR 0021](0021-modernize-send-to-kindle.md), [0022](0022-send-to-kindle-env-file-option.md), [0025](0025-send-to-kindle-single-file.md)) は、独立したリポジトリ
   (https://github.com/tett23/send-to-kindle) に Rust で再実装した。macOS (aarch64・x86_64) と Linux 向けの
   ビルド済みのバイナリを GitHub のリリースで配布している。これにより、Deno 版の権限 (`-A`) の問題 (B5) も無くなる。
 - `bin/short-pwd` が使う `shorten-path` は、https://github.com/tett23/shorten-path (Rust) のもの。
@@ -30,7 +30,7 @@
 
 ### send-to-kindle と shorten-path を mise で入れる
 
-- `dependencies.md` の mise の節に、2 つのツールと入れ方を書く (`dependencies.md` が一次ソース。ADR 0013)。
+- `dependencies.md` の mise の節に、2 つのツールと入れ方を書く (`dependencies.md` が一次ソース。[ADR 0013](0013-generate-config-from-dependencies-with-claude.md))。
 - `mise/config.toml` の `[tools]` に足す。
 
   ```toml
@@ -50,7 +50,7 @@
 - CI (`.github/workflows/ci.yml`) の `deno-tests` ジョブを削除する (他に Deno のテストは無い)。
 - README のテストの表から send-to-kindle の行を消し、CI で実行するテストの説明を直す。
 - `docs/specifications.md` の `bin/` の表から send-to-kindle を外し、mise で入れる自作のツールとして書く。CI の節も直す。
-- ADR 0021, 0022, 0025 のステータスを「採択→0031」にする。
+- [ADR 0021](0021-modernize-send-to-kindle.md), [0022](0022-send-to-kindle-env-file-option.md), [0025](0025-send-to-kindle-single-file.md) のステータスを「採択→0031」にする。
 
 ## 実装しないこと
 

@@ -6,7 +6,7 @@
 
 Ghostty で `<-`・`->`・`!=`・`==` などの記号の並びが、1 つの記号 (合字・リガチャ) にまとめて表示され、見づらい。
 
-- Ghostty の英数字のフォントは、Ghostty に組み込みの JetBrains Mono (フォントは指定していない。ADR 0048)。
+- Ghostty の英数字のフォントは、Ghostty に組み込みの JetBrains Mono (フォントは指定していない。[ADR 0048](0048-ghostty-japanese-font.md))。
   JetBrains Mono は、OpenType の機能 `calt` (文脈に応じた字形の置き換え) で記号の並びを合字にする。
 - Ghostty の `font-feature` で、フォントの OpenType の機能を有効・無効にできる (`-<機能>` で無効)。
   Ghostty の説明では、合字を無効にするには `calt`・`liga`・`dlig` を無効にする。
@@ -32,7 +32,7 @@ Ghostty で `<-`・`->`・`!=`・`==` などの記号の並びが、1 つの記�
 ## 実装しないこと
 
 - フォントの変更 (合字の無い別のフォントへの切り替え)。
-- 日本語の文字のフォント (BIZ UDゴシック。ADR 0048) の機能の個別の指定 (同じ `font-feature` が効く)。
+- 日本語の文字のフォント (BIZ UDゴシック。[ADR 0048](0048-ghostty-japanese-font.md)) の機能の個別の指定 (同じ `font-feature` が効く)。
 
 ## テスト設計
 

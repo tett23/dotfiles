@@ -6,7 +6,7 @@
 
 ベストプラクティスの監査 (`docs/audit/2026-10-11-best-practices.md`) のうち、直しても使い勝手が変わらないものを直す。
 重要度の高い Z5 (zinit の本体の固定)・N1 (CI の Nix の action)・T2 (tmux の色の変数の漏れ) もここに含める。
-挙動が変わるものは ADR 0045 で扱う。
+挙動が変わるものは [ADR 0045](0045-fix-audit-failures-and-risks.md) で扱う。
 
 ## 実装すること
 
@@ -66,7 +66,7 @@
 
 ## 実装しないこと
 
-- 挙動が変わるもの (ADR 0045 と、監査の Z12・V12・G3・G4・O4)。
+- 挙動が変わるもの ([ADR 0045](0045-fix-audit-failures-and-risks.md) と、監査の Z12・V12・G3・G4・O4)。
 - 自前のパッケージ (AquaSKK・Claude デスクトップ) の CI でのビルド (監査の N2。本人の判断で CI では検査しない)。
 - usage-hint のテストの CI への追加 (本人の判断で CI では検査しない)。
 - Command Line Tools の更新 (N10。本人が行う)。

@@ -9,7 +9,7 @@ Claude Code の設定は、リポジトリ内の 2 か所に分かれていた (
 | リポジトリ内 | 内容 | リンク先 |
 |---|---|---|
 | `claude/settings.json` | 本人の設定 (ステータスライン、プラグイン、テーマ、auto mode、`CLAUDE_CODE_PLUGIN_DIRS`) | `~/.claude/settings.json` |
-| `claude/mods/usage-hint/` | 使用量を表示する mod (ADR 0004) | (リンクせず、`CLAUDE_CODE_PLUGIN_DIRS` で読み込む) |
+| `claude/mods/usage-hint/` | 使用量を表示する mod ([ADR 0004](0004-usage-hint-mod.md)) | (リンクせず、`CLAUDE_CODE_PLUGIN_DIRS` で読み込む) |
 | `.claude/CLAUDE.md` | 全リポジトリ共通の指示 | `~/.claude/CLAUDE.md` |
 | `.claude/skills/sync-deps/` | dotfiles 用のスキル | (このリポジトリのプロジェクト設定) |
 

@@ -25,11 +25,11 @@ nvim は `list` を有効にし、`listchars` でタブ (`>-`)・行末の空白
 
 - 全角スペースは、ハイライトグループ `ZenkakuSpace` を作り、各ウィンドウに `matchadd` で `\%u3000` を登録する
   (`VimEnter` と `WinNew` の autocmd。`options.lua` の隣の `nvim/lua/config/autocmds.lua` に置く)。
-- 色は monokai-pro.nvim の `override` (ADR 0026 で `Visual` を上書きしている所) にまとめる。
+- 色は monokai-pro.nvim の `override` ([ADR 0026](0026-nvim-visual-selection-color.md) で `Visual` を上書きしている所) にまとめる。
   - `Whitespace` と `NonText` の文字色を `#919288` にする (テーマの classic パレットの `dimmed2`)。
     コメント (`#727072`) より明るく、本文 (`#fdfff1`) よりは暗い。改行の記号もこの色で見えるようになる。
   - `ZenkakuSpace` は背景色 `#919288` で塗る (全角スペースは記号を出せないため、文字幅いっぱいの背景で示す)。
-  - 色の値は試用のうえで本人が変えることがある。値を変えるだけなら新しい ADR は作らない (ADR 0026 と同じ扱い)。
+  - 色の値は試用のうえで本人が変えることがある。値を変えるだけなら新しい ADR は作らない ([ADR 0026](0026-nvim-visual-selection-color.md) と同じ扱い)。
 - `docs/specifications.md` の nvim の節に、表示する不可視文字を書く。
 
 ## 実装しないこと

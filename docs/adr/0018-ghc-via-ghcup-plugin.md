@@ -5,7 +5,7 @@
 
 ## Context
 
-macOS の仮想マシンで `curl | sh` を素の状態から検証したところ (ADR 0017)、mise で ghc を入れられなかった。
+macOS の仮想マシンで `curl | sh` を素の状態から検証したところ ([ADR 0017](0017-fix-bootstrap-first-darwin-rebuild.md))、mise で ghc を入れられなかった。
 
 - `mise/config.toml` の `ghc = "latest"` は、mise の既定の取得先 (`conda:ghc`、`asdf:mise-plugins/mise-ghcup`) から
   バージョンを取れず、新しいマシンでは解決できない。

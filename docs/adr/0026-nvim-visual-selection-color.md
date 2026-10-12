@@ -4,7 +4,7 @@
 
 ## 文脈
 
-nvim のカラースキームは monokai-pro.nvim の `classic` フィルタを使っている (ADR 0009)。
+nvim のカラースキームは monokai-pro.nvim の `classic` フィルタを使っている ([ADR 0009](0009-fix-git-tmux-nvim-audit.md))。
 このテーマは選択範囲 (`Visual`) の背景を、文字色 `#c0c1b5` を背景色 `#272822` に 15% 混ぜた色 (約 `#3e3f38`) にしている。
 背景との差が小さく、選択範囲が見分けにくい。
 
