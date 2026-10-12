@@ -20,7 +20,6 @@ setopt noautoremoveslash
 
 # no beep sound when complete list displayed
 #
-setopt nolistbeep
 
 ## Keybind configuration
 #

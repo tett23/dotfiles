@@ -36,7 +36,7 @@ git config core.hooksPath .githooks
 
 | 対象                            | 置き場所                         | 実行コマンド                                                              |
 | ------------------------------- | -------------------------------- | ------------------------------------------------------------------------- |
-| zsh                             | `zsh/tests/`                     | `zsh zsh/tests/git-prompt.test.zsh`、`zsh zsh/tests/cached-eval.test.zsh`、`zsh zsh/tests/fzf-command-finder.test.zsh`、`zsh zsh/tests/gitignore-completion.test.zsh` |
+| zsh                             | `zsh/tests/`                     | `for t in zsh/tests/*.test.zsh; do zsh $t \|\| echo "FAIL $t"; done` (1 つだけなら `zsh zsh/tests/<名前>.test.zsh`) |
 | usage-hint (Claude Code の mod) | `.claude/mods/usage-hint/tests/` | `claude plugin test .claude/mods/usage-hint`                              |
 
 ## ドキュメント

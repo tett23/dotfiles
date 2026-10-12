@@ -4,7 +4,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "input=$(cat); model=$(echo \"$input\" | jq -r '.model.display_name // \"unknown\"'); dir=$(echo \"$input\" | jq -r '.workspace.current_dir // .cwd // \".\"' | xargs basename); cost=$(echo \"$input\" | jq -r 'if .cost.total_cost_usd then \"$\" + (.cost.total_cost_usd | tostring) else \"\" end'); ctx=$(echo \"$input\" | jq -r 'if .context_window.used_percentage then (.context_window.used_percentage | floor | tostring) + \"% ctx\" elif .context_window.remaining_percentage then (.context_window.remaining_percentage | floor | tostring) + \"% left\" else \"\" end'); parts=\"$model $dir\"; [ -n \"$cost\" ] && parts=\"$parts $cost\"; [ -n \"$ctx\" ] && parts=\"$parts $ctx\"; echo \"$parts\""
+    "command": "jq -r '[.model.display_name // \"unknown\", ((.workspace.current_dir // .cwd // \".\") | sub(\"/+$\"; \"\") | split(\"/\") | last // \"/\"), (if .cost.total_cost_usd then \"$\" + (.cost.total_cost_usd | tostring) else empty end)] | join(\" \")'"
   },
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true,

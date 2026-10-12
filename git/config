@@ -18,6 +18,7 @@
   tr = log --graph --pretty='format:%C(yellow)%h%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset'
   co = checkout
   ci = commit
+  # commit.verbose で差分が出るので、cl (commit -av) は消して cia にまとめた (docs/adr/0057)
   cia = commit -a
   df = diff --ignore-space-change
   dfc = diff --cached --ignore-space-change
@@ -25,8 +26,6 @@
   st = status --short
   wd = diff --word-diff
   ld = log --stat -p
-  cl = commit -av
-  lgraph = log --oneline --graph --decorate --all
   lg = log --oneline --graph --decorate --all
   oneline = log --pretty=oneline
   logg = log --stat --pretty=format:'%Cblue%h %Cgreen%ar %Cred%an %Creset%s %Cred%d'
@@ -66,7 +65,8 @@
   algorithm = histogram
   colorMoved = default
 [mergetool]
-  prompt = true
+  # difftool と揃え、ファイルごとの確認を出さない (docs/adr/0057)
+  prompt = false
 [grep]
   lineNumbers = true
 [push]

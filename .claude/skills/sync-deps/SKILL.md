@@ -19,6 +19,7 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 | dependencies.md | 実装 |
 |---|---|
 | `rg` | `pkgs.ripgrep` |
+| `batgrep` / `batdiff` | `pkgs.bat-extras.batgrep` / `pkgs.bat-extras.batdiff` |
 | `nvim` | `pkgs.neovim` |
 | `awscli` | `pkgs.awscli2` |
 | `sed` / `awk` / `make` | `pkgs.gnused` / `pkgs.gawk` / `pkgs.gnumake`(GNU 版指定のため) |

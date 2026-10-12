@@ -87,8 +87,10 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   zsh の補完の一覧での選択は使わず (`menu no`)、候補はグループの見出し (`[%d]`) 付きで fzf-tab に渡す ([ADR 0055](adr/0055-improvements-2026-10-13.md))。
 - 補完の候補には `.` で始まるファイル・ディレクトリも出す。`.git` と、git が無視するもの (`.gitignore` などで除外したもの) は
   候補から外す (ほかに候補が無いときは出る。[ADR 0038](adr/0038-search-hidden-files.md))。
-- eza と bat の短いエイリアス ([ADR 0035](adr/0035-eza-and-bat-aliases.md), [0053](adr/0053-bat-manpager-and-eza-options.md)): `e` (`eza --icons=auto --group-directories-first`)、`el` (`e -l --git`)、
-  `ea` (`e -a`)、`ela` (`e -la --git`)、`et` (`e --tree`)、`b` (`bat`)。アイコンは端末に出すときだけ付き、詳細表示には git の状態の列が出る。
+- eza と bat の短いエイリアス ([ADR 0035](adr/0035-eza-and-bat-aliases.md), [0053](adr/0053-bat-manpager-and-eza-options.md), [0057](adr/0057-remaining-improvements-2.md)): `e` (`eza --icons=auto --group-directories-first --hyperlink`)、`el` (`e -l --git`)、
+  `ea` (`e -a`)、`ela` (`e -la --git`)、`et` (`e --tree --git-ignore`)、`b` (`bat`)。アイコンは端末に出すときだけ付き、詳細表示には git の状態の列が出る。
+  ファイル名は端末のリンクになり、Ghostty では `Cmd` を押しながらクリックすると開ける。ツリーには `.gitignore` で除外したものを出さない。
+- bat-extras の `batgrep` (ripgrep の結果を bat で出す) と `batdiff` (git の差分を bat で出す) を入れる ([ADR 0057](adr/0057-remaining-improvements-2.md))。
 - `man` のページは bat で色付きで表示する (`MANPAGER`。[ADR 0053](adr/0053-bat-manpager-and-eza-options.md))。
 - fzf のファイル検索は fd を使い ([ADR 0002](adr/0002-fzf-file-search-with-fd.md))、`Ctrl-P` では bat でファイルの先頭をプレビューする ([ADR 0034](adr/0034-small-conveniences-zsh-fzf-nvim.md), [0036](adr/0036-tmux-window-switcher-on-ctrl-t.md))。主なキー割り当て:
 
@@ -99,6 +101,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `Ctrl-B` | git のブランチを選んで切り替える   |
 | `Ctrl-F` | `git status` の項目を選ぶ          |
 | `Ctrl-K` | プロセスを選んで終了させる         |
+| `Ctrl-R` | 履歴を検索する (fzf 本体)。選んでいるコマンドの全体を下に bat で色付きで出し、`Ctrl-O` で表示を切り替える ([ADR 0057](adr/0057-remaining-improvements-2.md)) |
 | `Ctrl-O` | `zsh/fzf.sh` の fzf のコマンド (`__` 付きの関数) を、キーと説明つきの一覧から選んで実行する ([ADR 0031](adr/0031-command-finder-key-and-rust-tools-via-mise.md), [0033](adr/0033-fzf-tmux-window-switcher.md)) |
 | `Ctrl-T` | tmux の全セッションのウィンドウを選んで切り替える (tmux の割り当て。下の tmux の節。[ADR 0033](adr/0033-fzf-tmux-window-switcher.md), [0036](adr/0036-tmux-window-switcher-on-ctrl-t.md), [0052](adr/0052-tmux-window-switcher-in-tmux.md))。fzf 本体の `Ctrl-T` (ファイルの選択) は `Ctrl-P` で使う |
 | `v` (ノーマルモード)・`Ctrl-X Ctrl-E` | 入力中のコマンドを nvim で編集する ([ADR 0034](adr/0034-small-conveniences-zsh-fzf-nvim.md)) |
@@ -150,6 +153,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   (`prefix + y` は zsh の vi モードが前提)。
 - スクロールバックは 200 万行。
 - 表示中のペインのプログラムが送る端末への制御 (画像の表示など) は、tmux を通さずに Ghostty に通す (`allow-passthrough on`。[ADR 0054](adr/0054-tmux-allow-passthrough.md))。
+- ペインのプログラムが出す端末のリンク (OSC 8) を Ghostty に渡す (`terminal-features` の `hyperlinks`。[ADR 0057](adr/0057-remaining-improvements-2.md))。
 - `Shift+Enter` などの修飾キーの組み合わせを、ペインのプログラムに渡す (`extended-keys on`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
 - `Ctrl-T` (prefix 無し) で、ポップアップの中で全セッションのウィンドウを fzf で選んで切り替える (`tmux/scripts/window-switcher`)。
   一覧には今いるウィンドウに `*` を付け、プレビューにそのウィンドウの画面を出す。tmux が先に受け取るので、zsh・nvim のどちらでも効く
@@ -161,10 +165,12 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 主な設定 (`git/config`): コミットのメッセージを書く画面に差分を出す (`commit.verbose`)。`git branch` は最近更新した順に並べ (`branch.sort`)、
   一覧は端末の幅に合わせて複数列で出す (`column.ui`)。`rebase -i` で `fixup!`・`squash!` のコミットを自動で並べる (`rebase.autoSquash`)。
   `git push` で注釈付きのタグも送る (`push.followTags`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
+- `git mergetool` はファイルごとの確認を出さない (`difftool` と同じ)。同じ働きのエイリアスは 1 つにまとめた (`lg`・`cia` を残す。[ADR 0057](adr/0057-remaining-improvements-2.md))。
 
 ## Claude Code
 
 - 本人の設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
+- ステータスラインには、モデル名・ディレクトリ名・費用を出す (jq を 1 回だけ起動する)。コンテキストの使用率は usage-hint が出すので出さない ([ADR 0057](adr/0057-remaining-improvements-2.md))。
 - mod `usage-hint` (`.claude/mods/usage-hint/`) が、入力欄の下に `5h 23% · 7d 41% · Fable 12% · ctx 37%` の形で
   使用量を表示する ([ADR 0004](adr/0004-usage-hint-mod.md))。
   - 値が無い項目は `--`。75% を超えた項目は黄色にし ([ADR 0005](adr/0005-usage-hint-warning-color.md))、ラベルは太字にする ([ADR 0006](adr/0006-usage-hint-bold-labels.md))。

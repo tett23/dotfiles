@@ -249,3 +249,6 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # Ctrl-P (fzf-file-widget。fzf 本体の Ctrl-T の機能) でファイルの先頭をプレビューする。独自のコマンドにはこの変数を渡さない (docs/adr/0034)
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:200 {}'"
+# Ctrl-R (履歴の検索) で、選んでいるコマンドの全体を下に出す。候補は「番号 タブ コマンド」で、複数行のコマンドの続きの行は
+# 「タブ 続き」なので、cut -f2- で元の形に戻す。Ctrl-O で表示を切り替える (Ctrl-/ は Ghostty が使う。docs/adr/0057)
+export FZF_CTRL_R_OPTS="--preview 'printf \"%s\\n\" {} | cut -f2- | bat --color=always --plain --language=zsh' --preview-window 'down,40%,wrap' --bind 'ctrl-o:toggle-preview'"

@@ -89,6 +89,9 @@
           pkgs.jq
           pkgs.eza
           pkgs.bat
+          # bat-extras のうち、ripgrep・git の差分を bat で出すものだけ (docs/adr/0057)
+          pkgs.bat-extras.batgrep
+          pkgs.bat-extras.batdiff
           pkgs.fd
           pkgs.ripgrep  # rg
           pkgs.mise

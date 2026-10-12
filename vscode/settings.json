@@ -135,10 +135,6 @@
       "commands": ["editor.action.showHover"]
     },
     {
-      "before": ["<leader>", "q"],
-      "commands": ["editor.action.quickFix"]
-    },
-    {
       "before": ["<leader>", "r"],
       "commands": ["editor.action.rename"]
     },
