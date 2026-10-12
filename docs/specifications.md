@@ -83,8 +83,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   候補のディレクトリの中身をプレビューする (ADR 0037。fzf 本体の `**<Tab>` は使わない)。
 - 補完の候補には `.` で始まるファイル・ディレクトリも出す。`.git` と、git が無視するもの (`.gitignore` などで除外したもの) は
   候補から外す (ほかに候補が無いときは出る。ADR 0038)。
-- eza と bat の短いエイリアス (ADR 0035): `e` (`eza`)、`el` (`eza -l`)、`ea` (`eza -a`)、`ela` (`eza -la`)、
-  `et` (`eza --tree`)、`b` (`bat`)。
+- eza と bat の短いエイリアス (ADR 0035, 0053): `e` (`eza --icons=auto --group-directories-first`)、`el` (`e -l --git`)、
+  `ea` (`e -a`)、`ela` (`e -la --git`)、`et` (`e --tree`)、`b` (`bat`)。アイコンは端末に出すときだけ付き、詳細表示には git の状態の列が出る。
+- `man` のページは bat で色付きで表示する (`MANPAGER`。ADR 0053)。
 - fzf のファイル検索は fd を使い (ADR 0002)、`Ctrl-P` では bat でファイルの先頭をプレビューする (ADR 0034, 0036)。主なキー割り当て:
 
 | キー     | 内容                               |

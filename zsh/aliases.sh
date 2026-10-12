@@ -24,12 +24,13 @@ if (( $+commands[nvim] )); then
 fi
 
 # eza (ls の代わり) と bat (cat の代わり) の短いエイリアス (docs/adr/0035)
+# 共通のオプション (アイコン・ディレクトリを先に) は e に持たせ、ほかは e から組み立てる。git の状態は詳細表示だけ (docs/adr/0053)
 if (( $+commands[eza] )); then
-  alias e="eza"
-  alias el="eza -l"
-  alias ea="eza -a"
-  alias ela="eza -la"
-  alias et="eza --tree"
+  alias e="eza --icons=auto --group-directories-first"
+  alias el="e -l --git"
+  alias ea="e -a"
+  alias ela="e -la --git"
+  alias et="e --tree"
 fi
 if (( $+commands[bat] )); then
   alias b="bat"

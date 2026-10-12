@@ -1,5 +1,7 @@
 export LANG=ja_JP.UTF-8
 export EDITOR=nvim
+# man のページを bat で色付きにする (col -bx で man の太字・下線の制御文字を外してから渡す。docs/adr/0053)
+(( $+commands[bat] )) && export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
