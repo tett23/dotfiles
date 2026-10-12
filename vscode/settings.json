@@ -299,9 +299,12 @@
   "haskell.formattingProvider": "ormolu",
   "haskell.serverEnvironment": { "PATH": "${HOME}/.ghcup/bin:${PATH}" },
   "haskell.manageHLS": "GHCup",
+  // ghcup は mise で入れたものを使い、更新も mise で行う。stack は入れない (docs/adr/0056)
+  "haskell.ghcupExecutablePath": "${HOME}/.local/share/mise/installs/ghcup/latest/ghcup",
+  "haskell.upgradeGHCup": false,
   "haskell.toolchain": {
     "ghcup": "recommend",
-    "stack": "recommend",
+    "stack": null,
     "ghc": "recommend",
     "hls": "recommend"
   },

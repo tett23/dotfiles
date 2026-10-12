@@ -4,6 +4,19 @@
 # dotfiles の場所は、このファイル (~/.zshenv からのリンク) の実体から求める
 export DOTFILES="${DOTFILES:-${${(%):-%x}:A:h:h}}"
 
+# PATH 以外の環境変数。zshrc で設定すると zsh -c などの非対話のシェルに届かないので、ここで設定する (docs/adr/0055)
+export LANG=ja_JP.UTF-8
+export EDITOR=nvim
+
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_RUNTIME_DIR=$HOME/.local/run
+export XDG_STATE_HOME=$HOME/.local/state
+
+# mise: dotfiles 実体へ symlink した設定を無条件に信頼する (別マシンでの `mise trust` を不要にする)
+export MISE_TRUSTED_CONFIG_PATHS="$DOTFILES/mise:$HOME/.config/mise"
+
 # .zshrc などは XDG の場所 (~/.config/zsh/) から読む (docs/adr/0042)。
 # リンクを張る前 (darwin-rebuild switch の前や、新しいマシンの初回) は ~/.zshrc を読めるよう、.zshrc があるときだけ設定する
 if [[ -r $HOME/.config/zsh/.zshrc ]]; then

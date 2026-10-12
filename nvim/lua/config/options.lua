@@ -14,6 +14,8 @@ opt.cursorline = true
 opt.list = true
 -- すべての半角スペースと改行も表示する。全角スペースは autocmds.lua でハイライトする (docs/adr/0028)
 opt.listchars = { tab = ">-", trail = "_", nbsp = "+", space = "·", eol = "↲" }
+-- 診断のメッセージを行の右に出し (nvim 0.11 から既定で無効)、重いものを優先して並べる (docs/adr/0055)
+vim.diagnostic.config({ virtual_text = true, severity_sort = true })
 
 -- ファイル (旧: noswapfile。backup は nvim の既定で無効)
 opt.swapfile = false

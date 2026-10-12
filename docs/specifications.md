@@ -40,6 +40,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
   - Docker は colima で動かし、home-manager の LaunchAgent で常駐させる。
 - 言語とツールは mise で管理する (`mise/config.toml`。すべて `latest`)。Haskell の ghc・cabal は mise で入れた ghcup で入れ、
   `install.sh` と `bin/update-mise` が ghcup の `latest` を入れて既定にする ([ADR 0050](adr/0050-ghc-cabal-via-ghcup.md))。
+  VSCode の Haskell 拡張も mise の ghcup を使い、ghcup の自動の更新はしない。stack は入れない ([ADR 0056](adr/0056-remove-old-ghcup-and-stack.md))。
 
 ### コマンド
 
@@ -75,12 +76,15 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - `~/.zshenv` で `ZDOTDIR` を `~/.config/zsh` にし、`.zshrc` はそこから読む ([ADR 0042](adr/0042-xdg-config-locations.md))。インストーラなどの `~/.zshrc` への追記は
   読まれないので、必要なものは `zsh/zshrc.mine` (`~/.config/zsh/.zshrc.mine` のリンク元。git で管理するので秘密は書かない。
   [ADR 0043](adr/0043-remove-vimbackup-and-zshrc-mine.md)) に書く。補完のキャッシュは `~/.cache/zsh/zcompdump` に置く。
+- PATH 以外の環境変数 (`LANG`・`EDITOR`・`XDG_*`・`MISE_TRUSTED_CONFIG_PATHS`) は `~/.zshenv` で設定し、`zsh -c` などの非対話のシェルにも届ける。
+  PATH は `~/.zshenv` では変えず、`zsh/exports.sh` (`.zshrc` から読む) で設定する ([ADR 0055](adr/0055-improvements-2026-10-13.md)。理由は [ADR 0010](adr/0010-fix-zsh-fzf-audit.md))。
 - PATH の優先順位は、mise → `~/.local/bin`・`~/bin` → home-manager → Nix 本体 → システムの順 ([ADR 0023](adr/0023-fix-remaining-audit-items-2.md))。
   `bin/` と、ghcup で入れたツールの `~/.ghcup/bin` は末尾に足す (`~/.ghcup/env` は PATH の先頭に入れるので読まない。[ADR 0050](adr/0050-ghc-cabal-via-ghcup.md))。
 - nix-daemon.sh は読み込まない (tmux の中で `NIX_PROFILES` が上書きされるのを防ぐ。[ADR 0020](adr/0020-stop-sourcing-nix-daemon-sh.md))。
 - 履歴は `$XDG_STATE_HOME/zsh/history` に 50 万件まで保存する。先頭が空白のコマンドは残さない ([ADR 0023](adr/0023-fix-remaining-audit-items-2.md))。
 - 補完は、小文字の入力を大文字にも一致させる ([ADR 0034](adr/0034-small-conveniences-zsh-fzf-nvim.md))。`Tab` の補完候補は fzf-tab で絞り込み、`cd` の補完では
   候補のディレクトリの中身をプレビューする ([ADR 0037](adr/0037-fzf-tab-flash-treesitter-context-trouble.md)。fzf 本体の `**<Tab>` は使わない)。
+  zsh の補完の一覧での選択は使わず (`menu no`)、候補はグループの見出し (`[%d]`) 付きで fzf-tab に渡す ([ADR 0055](adr/0055-improvements-2026-10-13.md))。
 - 補完の候補には `.` で始まるファイル・ディレクトリも出す。`.git` と、git が無視するもの (`.gitignore` などで除外したもの) は
   候補から外す (ほかに候補が無いときは出る。[ADR 0038](adr/0038-search-hidden-files.md))。
 - eza と bat の短いエイリアス ([ADR 0035](adr/0035-eza-and-bat-aliases.md), [0053](adr/0053-bat-manpager-and-eza-options.md)): `e` (`eza --icons=auto --group-directories-first`)、`el` (`e -l --git`)、
@@ -115,7 +119,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - which-key のキーの一覧のアイコンには mini.icons を使う ([ADR 0039](adr/0039-fix-nvim-checkhealth.md))。
 - `<Leader>t` で新しいタブを開く (`T` は flash.nvim の後方への文字の移動。[ADR 0045](adr/0045-fix-audit-failures-and-risks.md))。
 - LSP は mason で入れたサーバーを有効にする。rubocop・stylua は LSP にせず、診断は nvim-lint、整形は conform で行う
-  (Lua の整形は stylua。[ADR 0045](adr/0045-fix-audit-failures-and-risks.md))。
+  (Lua の整形は stylua。[ADR 0045](adr/0045-fix-audit-failures-and-risks.md))。`<Leader>fmt` も保存時と同じく conform で整形する
+  (conform に整形の道具が無ければ LSP で整形する。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
+- 診断のメッセージは行の右に出し、重いものを優先して並べる (`virtual_text`・`severity_sort`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
 - Telescope のファイル検索 (`<Leader><Leader>`・`<Leader>ff`) と文字列の検索 (`<Leader>fg`) は、`.` で始まるファイルも対象にする。
   `.gitignore` に従い、`.git` の中は除く (zsh の `Ctrl-P` と同じ。[ADR 0038](adr/0038-search-hidden-files.md))。
 
@@ -135,7 +141,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 ## tmux
 
-- プレフィックスは `Ctrl-Q`。プラグインマネージャー (TPM) は使わない ([ADR 0029](adr/0029-tmux-without-tpm.md))。
+- プレフィックスは `Ctrl-Q` (既定の `Ctrl-B` の割り当ては外す。[ADR 0055](adr/0055-improvements-2026-10-13.md))。プラグインマネージャー (TPM) は使わない ([ADR 0029](adr/0029-tmux-without-tpm.md))。
   - ステータスラインは tmux-nova で組み立てる。Nix (`pkgs.tmuxPlugins.tmux-nova`) で入れ、
     `~/.config/tmux/plugins/tmux-nova` にリンクして `tmux.conf` から読み込む。バージョンは `flake.lock` で固定される。
   - tmux-sensible・tmux-yank は使わず、必要な設定と割り当てを `tmux.conf` に書いている。
@@ -144,10 +150,17 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   (`prefix + y` は zsh の vi モードが前提)。
 - スクロールバックは 200 万行。
 - 表示中のペインのプログラムが送る端末への制御 (画像の表示など) は、tmux を通さずに Ghostty に通す (`allow-passthrough on`。[ADR 0054](adr/0054-tmux-allow-passthrough.md))。
+- `Shift+Enter` などの修飾キーの組み合わせを、ペインのプログラムに渡す (`extended-keys on`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
 - `Ctrl-T` (prefix 無し) で、ポップアップの中で全セッションのウィンドウを fzf で選んで切り替える (`tmux/scripts/window-switcher`)。
   一覧には今いるウィンドウに `*` を付け、プレビューにそのウィンドウの画面を出す。tmux が先に受け取るので、zsh・nvim のどちらでも効く
   (nvim の `Ctrl-T` は使えない。[ADR 0052](adr/0052-tmux-window-switcher-in-tmux.md))。
 - ステータスラインのウィンドウ名には、実行中のプロセス名ではなくディレクトリ名を出す ([ADR 0007](adr/0007-tmux-status-directory-name.md))。
+
+## git
+
+- 主な設定 (`git/config`): コミットのメッセージを書く画面に差分を出す (`commit.verbose`)。`git branch` は最近更新した順に並べ (`branch.sort`)、
+  一覧は端末の幅に合わせて複数列で出す (`column.ui`)。`rebase -i` で `fixup!`・`squash!` のコミットを自動で並べる (`rebase.autoSquash`)。
+  `git push` で注釈付きのタグも送る (`push.followTags`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
 
 ## Claude Code
 
