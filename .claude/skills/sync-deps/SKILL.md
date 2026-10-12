@@ -19,6 +19,7 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 | dependencies.md | 実装 |
 |---|---|
 | `rg` | `pkgs.ripgrep` |
+| `typescript`(mise) | `"npm:typescript"`(登録簿に無いため npm バックエンド) |
 | `batgrep` / `batdiff` | `pkgs.bat-extras.batgrep` / `pkgs.bat-extras.batdiff` |
 | `nvim` | `pkgs.neovim` |
 | `awscli` | `pkgs.awscli2` |

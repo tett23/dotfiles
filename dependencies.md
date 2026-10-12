@@ -64,8 +64,9 @@ node python ruby go rust deno bun lua
 
 ## Install tools
 
-yarn pnpm shfmt biome dust ghcup
+yarn pnpm shfmt biome dust ghcup typescript
 
+- typescript は mise の登録簿に無いので、npm バックエンド (npm:typescript) で入れてください。
 - dust は github バックエンド (github:bootandy/dust) で入れてください。既定の取得先 (aqua) は macOS で Intel 版を選ぶためです。
 
 ## 自作のツール
