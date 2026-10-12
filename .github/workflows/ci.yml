@@ -29,7 +29,7 @@ jobs:
           shellcheck --severity=warning \
             bin/docker-sh bin/figrm bin/orch bin/rtouch bin/short-pwd \
             bin/sync-deps bin/update-mise bin/update-nix \
-            tmux/scripts/lan-ip tmux/scripts/time-local tmux/scripts/time-utc tmux/scripts/copy-line \
+            tmux/scripts/lan-ip tmux/scripts/time-local tmux/scripts/time-utc tmux/scripts/copy-line tmux/scripts/window-switcher \
             .githooks/pre-commit install.sh bootstrap.sh
 
   zsh-tests:

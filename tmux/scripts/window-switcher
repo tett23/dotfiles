@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# window-switcher [<今いるウィンドウ (セッション:番号)>]
+# tmux の全セッションのウィンドウを fzf で選んで切り替える (docs/adr/0033, 0052)。
+# tmux の Ctrl-T (ポップアップ) と、zsh のコマンド選択 (Ctrl-O) から呼ぶ。一覧は
+#   <セッション>:<番号><TAB><* か空白> <ディレクトリ名>  <実行中のコマンド>
+# の形で、今いるウィンドウに * を付ける。プレビューにはそのウィンドウの画面を出す。
+
+current=${1:-}
+tab=$(printf '\t')
+
+target=$(
+  tmux list-windows -a -F "#{session_name}:#{window_index}${tab}#{b:pane_current_path}  #{pane_current_command}" |
+    awk -F "$tab" -v current="$current" '{ mark = ($1 == current) ? "*" : " "; print $1 "\t" mark " " $2 }' |
+    fzf --reverse +m --delimiter="$tab" --preview 'tmux capture-pane -ep -t {1}' |
+    cut -f1
+)
+[ -n "$target" ] || exit 0
+tmux select-window -t "$target" && tmux switch-client -t "${target%:*}"

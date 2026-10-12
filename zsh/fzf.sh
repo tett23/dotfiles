@@ -186,16 +186,8 @@ __yarn_workspaces(){
 # tmux の全セッションのウィンドウを選んで切り替える。入力行には何も足さない
 __ftmux_window() {
   [[ -n ${TMUX-} ]] || return 0
-  local current target
-  current=$(tmux display-message -p -t "${TMUX_PANE-}" '#{session_name}:#{window_index}')
-  target=$(tmux list-windows -a -F $'#{session_name}:#{window_index}\t#{b:pane_current_path}  #{pane_current_command}' |
-    while IFS=$'\t' read -r win rest; do
-      print -r -- "$win"$'\t'"${${win:#$current}:+ }${${(M)win:#$current}:+*} $rest"
-    done |
-    _fzf_run --reverse +m \
-      --delimiter=$'\t' --preview 'tmux capture-pane -ep -t {1}' | cut -f1)
-  [[ -n $target ]] || return 0
-  tmux select-window -t "$target" && tmux switch-client -t "${target%:*}"
+  # 処理は tmux の Ctrl-T (ポップアップ) と同じスクリプト (docs/adr/0052)
+  $DOTFILES/tmux/scripts/window-switcher "$(tmux display-message -p -t "${TMUX_PANE-}" '#{session_name}:#{window_index}')"
 }
 
 ftmux_window() {
