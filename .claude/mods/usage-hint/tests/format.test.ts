@@ -24,7 +24,7 @@ describe('fableLimit', () => {
 })
 
 describe('usageSegments', () => {
-  test('75% を超えた項目だけ警告にする', () => {
+  test('75% を超えた項目を warning にする (判定は四捨五入の前の値)', () => {
     const segments = usageSegments({
       contextPercent: 75,
       rateLimits: [
@@ -34,10 +34,28 @@ describe('usageSegments', () => {
     })
 
     expect(segments).toEqual([
-      { label: '5h', value: '75%', isWarning: true },
-      { label: '7d', value: '76%', isWarning: true },
-      { label: 'Fable', value: '--', isWarning: false },
-      { label: 'ctx', value: '75%', isWarning: false },
+      { label: '5h', value: '75%', level: 'warning' },
+      { label: '7d', value: '76%', level: 'warning' },
+      { label: 'Fable', value: '--', level: 'normal' },
+      { label: 'ctx', value: '75%', level: 'normal' },
+    ])
+  })
+
+  test('90% を超えた項目を danger にする。90% ちょうどは warning (docs/adr/0060)', () => {
+    const segments = usageSegments({
+      contextPercent: 90,
+      rateLimits: [
+        { kind: 'five_hour', percentUsed: 90.2 },
+        { kind: 'seven_day', percentUsed: 100 },
+        { kind: 'seven_day_overage_included', percentUsed: 89.9 },
+      ],
+    })
+
+    expect(segments).toEqual([
+      { label: '5h', value: '90%', level: 'danger' },
+      { label: '7d', value: '100%', level: 'danger' },
+      { label: 'Fable', value: '90%', level: 'warning' },
+      { label: 'ctx', value: '90%', level: 'warning' },
     ])
   })
 })

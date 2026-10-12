@@ -8,7 +8,7 @@ import type {
 } from 'claude-code'
 
 import type { Limit, Snapshot } from '../types'
-import type { Segment } from './format'
+import type { Level, Segment } from './format'
 import {
   SEPARATOR,
   estimatePercent,
@@ -48,11 +48,17 @@ const initialSnapshot = async ($: Engine): Promise<Snapshot> => {
   return { contextPercent, rateLimits: limits }
 }
 
-// 75% を超えた項目は黄色、それ以外は dim (docs/adr/0005)。ラベルは太字 (docs/adr/0006)
+// warning は暗めの黄色、danger は暗めの赤、それ以外は dim (docs/adr/0005, 0060)。ラベルは太字 (docs/adr/0006)
+const LEVEL_PROPS: Record<Level, TextProps> = {
+  normal: { dimColor: true },
+  warning: { color: '#b39020' },
+  danger: { color: '#b5403a' },
+}
+
 const toText =
   (Text: (props: TextProps & { children?: unknown }) => RenderElement) =>
-  ({ label, value, isWarning }: Segment): RenderElement => (
-    <Text {...(isWarning ? { color: 'yellow' } : { dimColor: true })}>
+  ({ label, value, level }: Segment): RenderElement => (
+    <Text {...LEVEL_PROPS[level]}>
       <Text bold>{label}</Text>
       {` ${value}`}
     </Text>

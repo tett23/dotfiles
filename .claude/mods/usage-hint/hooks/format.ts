@@ -2,9 +2,16 @@ import type { Limit, Snapshot } from '../types'
 
 export const SEPARATOR = ' · '
 
+// 75% を超えると warning、90% を超えると danger (docs/adr/0005, 0060)
 const WARNING_PERCENT = 75
+const DANGER_PERCENT = 90
 
-export type Segment = { label: string; value: string; isWarning: boolean }
+export type Level = 'normal' | 'warning' | 'danger'
+
+export type Segment = { label: string; value: string; level: Level }
+
+const levelOf = (value: number): Level =>
+  value > DANGER_PERCENT ? 'danger' : value > WARNING_PERCENT ? 'warning' : 'normal'
 
 const byKind =
   (kind: string) =>
@@ -20,8 +27,8 @@ export const fableLimit = (limits: readonly Limit[]): Limit | undefined =>
 
 const segment = (label: string, value: number | null | undefined): Segment =>
   value === null || value === undefined
-    ? { label, value: '--', isWarning: false }
-    : { label, value: `${Math.round(value)}%`, isWarning: value > WARNING_PERCENT }
+    ? { label, value: '--', level: 'normal' }
+    : { label, value: `${Math.round(value)}%`, level: levelOf(value) }
 
 export const usageSegments = ({ contextPercent, rateLimits }: Snapshot): Segment[] => [
   segment('5h', byKind('five_hour')(rateLimits)?.percentUsed),

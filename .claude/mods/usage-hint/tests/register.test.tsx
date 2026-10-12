@@ -57,12 +57,26 @@ test('terminal: 入力欄の下のヒント行に、既存のヒントに続け�
   expect((await ui.find({ type: 'Box' }))?.text).toBe(`? for shortcuts · ${TEXT}`)
 })
 
-test('terminal: 75% を超えた項目だけ黄色にする', async ($, on) => {
+// 75% を超えると暗めの黄色、90% を超えると暗めの赤 (docs/adr/0060)
+const WARNING_COLOR = '#b39020'
+const DANGER_COLOR = '#b5403a'
+
+test('terminal: 75% を超えた項目を暗めの黄色にする', async ($, on) => {
   engineHint(on)
   await measure($, on, 80)
   const ui = await mountHint($)
 
-  expect((await ui.find({ type: 'Text', text: '5h 80%' }))?.props.color).toBe('yellow')
+  expect((await ui.find({ type: 'Text', text: '5h 80%' }))?.props.color).toBe(WARNING_COLOR)
+  expect((await ui.find({ type: 'Text', text: '7d 41%' }))?.props.color).toBeUndefined()
+  expect((await ui.find({ type: 'Text', text: '7d 41%' }))?.props.dimColor).toBe(true)
+})
+
+test('terminal: 90% を超えた項目を暗めの赤にする', async ($, on) => {
+  engineHint(on)
+  await measure($, on, 95)
+  const ui = await mountHint($)
+
+  expect((await ui.find({ type: 'Text', text: '5h 95%' }))?.props.color).toBe(DANGER_COLOR)
   expect((await ui.find({ type: 'Text', text: '7d 41%' }))?.props.color).toBeUndefined()
 })
 
@@ -92,19 +106,24 @@ test('desktop: PromptHint を描かないので入力欄のすぐ上の帯に出
   expect((await ui.find({ type: 'Box' }))?.text).toBe(TEXT)
 })
 
-test('desktop: 75% を超えた項目だけ黄色にする', async ($, on) => {
-  engineBand(on)
-  await measure($, on, 80)
-  const ui = await $.ui.mount({
-    plugin: 'usage-hint',
-    surface: 'desktop',
-    component: 'AbovePrompt',
-    props: BAND_PROPS,
-  })
+for (const [percent, color] of [
+  [80, WARNING_COLOR],
+  [95, DANGER_COLOR],
+] as const) {
+  test(`desktop: ${percent}% の項目を ${color} にする`, async ($, on) => {
+    engineBand(on)
+    await measure($, on, percent)
+    const ui = await $.ui.mount({
+      plugin: 'usage-hint',
+      surface: 'desktop',
+      component: 'AbovePrompt',
+      props: BAND_PROPS,
+    })
 
-  expect((await ui.find({ type: 'Text', text: '5h 80%' }))?.props.color).toBe('yellow')
-  expect((await ui.find({ type: 'Text', text: 'ctx 37%' }))?.props.color).toBeUndefined()
-})
+    expect((await ui.find({ type: 'Text', text: `5h ${percent}%` }))?.props.color).toBe(color)
+    expect((await ui.find({ type: 'Text', text: 'ctx 37%' }))?.props.color).toBeUndefined()
+  })
+}
 
 for (const surface of ['terminal', 'desktop'] as const) {
   test(`${surface}: 項目のラベルを太字にする`, async ($, on) => {
