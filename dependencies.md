@@ -56,7 +56,7 @@ mise を使って以下の依存を管理してください。ここで指定す
 
 ## Install languages
 
-node python ruby go rust deno bun
+node python ruby go rust deno bun lua
 
 - Haskell (ghc・cabal) は mise では入れません。下の Install tools の ghcup で入れます (install.sh と bin/update-mise が
   ghcup の latest を入れて既定にします)。
