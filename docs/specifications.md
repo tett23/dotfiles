@@ -180,6 +180,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   使用量を表示する ([ADR 0004](adr/0004-usage-hint-mod.md))。
   - 値が無い項目は `--`。75% を超えた項目は黄色にし ([ADR 0005](adr/0005-usage-hint-warning-color.md))、ラベルは太字にする ([ADR 0006](adr/0006-usage-hint-bold-labels.md))。
   - セッション開始直後は、前回保存したレートリミットの値と、ローカルで推定したコンテキストの使用率を出す ([ADR 0008](adr/0008-usage-hint-initial-values.md))。
+  - 型検査は、mod のディレクトリで `npx -y -p typescript@5 tsc --noEmit -p .` を実行する。型定義 (`.claude-plugin/types/`) は
+    Claude Code が mod を読み込んだときに生成し、TypeScript 5 でないと読めない ([ADR 0061](adr/0061-usage-hint-type-check.md))。
 - `bin/orch` は、Claude から `codex exec` / `claude -p` へ作業を委譲する道具。モデルは別名で指定する
   (`opus`、`sonnet`、`haiku`、`fable`、`sol`。既定値は環境変数 `ORCH_MODEL_<別名>` で上書きできる。[ADR 0024](adr/0024-orch-models-and-headless-install.md))。
 

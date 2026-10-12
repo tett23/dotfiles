@@ -39,6 +39,8 @@ const BAND_PROPS = {
   isWorking: false,
   maxRows: 10,
   bodyColumns: 80,
+  scroll: { offset: 0, bodyRows: 10 },
+  view: {},
 } as const
 
 const mountHint = ($: Engine) =>

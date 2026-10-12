@@ -9,6 +9,8 @@ const BAND_PROPS = {
   isWorking: false,
   maxRows: 10,
   bodyColumns: 80,
+  scroll: { offset: 0, bodyRows: 10 },
+  view: {},
 } as const
 
 // エンジン側: 最初の API 応答前の session.usage と、描画の土台

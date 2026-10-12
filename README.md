@@ -39,6 +39,9 @@ git config core.hooksPath .githooks
 | zsh                             | `zsh/tests/`                     | `for t in zsh/tests/*.test.zsh; do zsh $t \|\| echo "FAIL $t"; done` (1 つだけなら `zsh zsh/tests/<名前>.test.zsh`) |
 | usage-hint (Claude Code の mod) | `.claude/mods/usage-hint/tests/` | `claude plugin test .claude/mods/usage-hint`                              |
 
+usage-hint の型検査は、`.claude/mods/usage-hint` で `npx -y -p typescript@5 tsc --noEmit -p .` を実行します (TypeScript 5 が必要。
+型定義は Claude Code が mod を読み込んだときに生成します)。
+
 ## ドキュメント
 
 現在の仕様は [docs/specifications.md](docs/specifications.md)、依存の一覧は [dependencies.md](dependencies.md)、
