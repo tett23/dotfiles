@@ -1,6 +1,7 @@
 import { atom, read, update } from 'claude-code'
 import type {
-  Engine,
+  ElementConstructor,
+  EngineInterface,
   Register,
   RenderElement,
   SessionRateLimit,
@@ -28,7 +29,7 @@ const toLimits = (rateLimits: readonly SessionRateLimit[]): Limit[] =>
 
 // 最初の API 応答の前は、窓を前回保存した値から、コンテキストをローカルの推定から作る
 // (docs/adr/0008)
-const initialSnapshot = async ($: Engine): Promise<Snapshot> => {
+const initialSnapshot = async ($: EngineInterface): Promise<Snapshot> => {
   const { context, rateLimits } = await $.session.usage()
   const contextPercent =
     context.percent ??
@@ -56,7 +57,7 @@ const LEVEL_PROPS: Record<Level, TextProps> = {
 }
 
 const toText =
-  (Text: (props: TextProps & { children?: unknown }) => RenderElement) =>
+  (Text: ElementConstructor<TextProps>) =>
   ({ label, value, level }: Segment): RenderElement => (
     <Text {...LEVEL_PROPS[level]}>
       <Text bold>{label}</Text>
