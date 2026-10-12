@@ -143,6 +143,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   `prefix + y` はシェルの入力行を、`prefix + Y` はペインのカレントディレクトリのパスをクリップボードへコピーする
   (`prefix + y` は zsh の vi モードが前提)。
 - スクロールバックは 200 万行。
+- 表示中のペインのプログラムが送る端末への制御 (画像の表示など) は、tmux を通さずに Ghostty に通す (`allow-passthrough on`。ADR 0054)。
 - `Ctrl-T` (prefix 無し) で、ポップアップの中で全セッションのウィンドウを fzf で選んで切り替える (`tmux/scripts/window-switcher`)。
   一覧には今いるウィンドウに `*` を付け、プレビューにそのウィンドウの画面を出す。tmux が先に受け取るので、zsh・nvim のどちらでも効く
   (nvim の `Ctrl-T` は使えない。ADR 0052)。
