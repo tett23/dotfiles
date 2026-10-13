@@ -1,6 +1,6 @@
 # ADR 0032: adr-guard でコミット済みの ADR の変更を防ぐ
 
-ステータス: 採択
+ステータス: 採択→hook のオプションは[ADR 0064](0064-adr-guard-allow-options.md)
 
 ## 文脈
 

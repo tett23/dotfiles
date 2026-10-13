@@ -225,7 +225,10 @@ usage-hint の mod のテストは CI では行わない (本人の判断。[ADR
 - コミットした ADR はステータスの行を除いて変更しない。仕様を変えるときは新しい ADR を作る。
 - この規則は adr-guard (https://github.com/tett23/adr-guard) で、git の pre-commit hook (`.githooks/pre-commit`)・
   Claude Code の hook (`.claude/settings.json`。全リポジトリで有効)・CI の `adr` ジョブの 3 か所で強制する ([ADR 0032](adr/0032-adr-guard.md))。
-  - adr-guard が変更を許すのは `ステータス:` で始まる行だけ。[ADR 0001](adr/0001-curl-sh-install.md)〜[0025](adr/0025-send-to-kindle-single-file.md) は `- Status:` の書き方のため、
+  - adr-guard が変更を許すのは、`ステータス:` で始まる行 (`--allow-status`) と、ADR の参照のリンクだけの変更 (`--allow-links`)。
+    pre-commit hook は `adr-guard pre-commit --allow-status --allow-links`、Claude Code の hook は `adr-guard claude-hook --allow-status` で検査する ([ADR 0064](adr/0064-adr-guard-allow-options.md))。
+  - 文書 (`.md`) の中の ADR の参照 (`ADR 0001` の形) には、ADR のファイルへのリンクが要る。pre-commit hook がリンクの無い参照を拒否する。`adr-guard links --fix` で直せる ([ADR 0064](adr/0064-adr-guard-allow-options.md))。
+  - [ADR 0001](adr/0001-curl-sh-install.md)〜[0025](adr/0025-send-to-kindle-single-file.md) は `- Status:` の書き方のため、
     ステータスを更新しない。置き換えた関係は新しい ADR の「文脈」に書く。
   - `core.hooksPath` は clone ごとの設定で、`install.sh` が設定する。
 
