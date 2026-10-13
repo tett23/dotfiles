@@ -1,6 +1,6 @@
 # dotfiles ファイル配置の監査 (2026-10-11 再実行)
 
-[2026-10-11 のファイル配置の監査](2026-10-11-file-layout.md) の後の作業 (ADR 0041, 0042) を反映し、配置を調べ直したもの。
+[2026-10-11 のファイル配置の監査](2026-10-11-file-layout.md) の後の作業 ([ADR 0041](../adr/0041-file-layout-cleanup-2.md), [0042](../adr/0042-xdg-config-locations.md)) を反映し、配置を調べ直したもの。
 基準は [2026-10-09 の監査](2026-10-09-file-layout.md) と同じ (XDG Base Directory・リポジトリ内の対称性・役割の分離)。
 今回は、dotfiles が作る・設定するもの (ホーム直下のディレクトリを含む) も調べた。
 
@@ -16,10 +16,10 @@
 
 ## 前回からの変化
 
-- **L3・L4・L5・L6** ✅ git・tmux・zsh・rubocop の設定を XDG の場所 (`~/.config/<ツール>/`) に移した (ADR 0042)。
+- **L3・L4・L5・L6** ✅ git・tmux・zsh・rubocop の設定を XDG の場所 (`~/.config/<ツール>/`) に移した ([ADR 0042](../adr/0042-xdg-config-locations.md))。
   ホーム直下に置く設定は `~/.zshenv` だけになった。zsh の補完のキャッシュも `~/.cache/zsh/zcompdump` に移した。
 - **L13〜L16** ✅ `.vscode/settings.json` (Deno の設定) と空の `~/.tmux/` を削除し、`install.sh` の submodule の処理を消し、
-  tmux のスクリプトを `tmux/scripts/` にまとめた (ADR 0041)。
+  tmux のスクリプトを `tmux/scripts/` にまとめた ([ADR 0041](../adr/0041-file-layout-cleanup-2.md))。
 - **L1・L8** ― 本人の判断で、以降は問題として扱わない。
   - L1: `.claude/CLAUDE.md`・`.claude/settings.json` が、全リポジトリ共通の設定とこのリポジトリの設定を兼ねていること。
   - L8: `bin/` を zsh の PATH の末尾に足していて、zsh 以外からは見えないこと。
@@ -43,7 +43,7 @@
 ### L18 [XDG] `~/.zshrc.mine`
 
 - `zsh/zshrc` が、dotfiles の外の本人用の設定として `~/.zshrc.mine` を読む (今はファイルが無い)。
-  ADR 0042 で、インストーラなどの `~/.zshrc` への追記の代わりに、ここに書くことにした。
+  [ADR 0042](../adr/0042-xdg-config-locations.md) で、インストーラなどの `~/.zshrc` への追記の代わりに、ここに書くことにした。
 - 案: `$ZDOTDIR` の中 (`~/.config/zsh/.zshrc.mine` など) に移す。ファイルが無いので、今は実害が無い。
 
 ### L19 [XDG] ツールのデータの置き場所
@@ -60,12 +60,12 @@ dotfiles が入れるツールのうち、次のものはデータをホーム�
 | `~/.docker`・`~/.colima` | Docker (Nix・colima) | `DOCKER_CONFIG`・`COLIMA_HOME` |
 | `~/.lesshst` | less | `LESSHISTFILE` |
 
-- 案: 移すかどうかをツールごとに決める。`~/.cargo` は、mise の rust が PATH に足す場所でもある (ADR 0031)。
+- 案: 移すかどうかをツールごとに決める。`~/.cargo` は、mise の rust が PATH に足す場所でもある ([ADR 0031](../adr/0031-command-finder-key-and-rust-tools-via-mise.md))。
   `~/.docker`・`~/.colima` は、colima の常駐 (LaunchAgent) や GUI のアプリからも使うので、移すと影響が大きい。
 
 ## 問題が無かったもの
 
-- ホーム直下の dotfiles のリンクは `~/.zshenv` だけ (ADR 0042)。ほかの設定は `~/.config/` の下か、macOS の決まった場所
+- ホーム直下の dotfiles のリンクは `~/.zshenv` だけ ([ADR 0042](../adr/0042-xdg-config-locations.md))。ほかの設定は `~/.config/` の下か、macOS の決まった場所
   (`~/Library/Application Support/…`) にある。
 - リポジトリ内は、ツール名・用途ごとのディレクトリに揃っている。
 - `GOPATH` を `~/repositories` (ghq のルートと共有) にしているのは意図した設定 (`zsh/langs/go.sh`)。

@@ -1,13 +1,13 @@
 # 監査の未対応項目のうち、直すと挙動が変わるもの (2026-10-07)
 
 docs/audit/2026-10-07-best-practices.md の未対応項目のうち、直すと何かが壊れる・変わるものをまとめる。
-挙動を変えずに直せるものは ADR 0014 で対応済み。ここに挙げたもののうち、直したものは各項目の「状況」に書いた。
+挙動を変えずに直せるものは [ADR 0014](../adr/0014-fix-remaining-audit-items.md) で対応済み。ここに挙げたもののうち、直したものは各項目の「状況」に書いた。
 
 各項目は「何が壊れる・変わるか」「直し方」「判断のポイント」の順に書く。数値は 2026-10-07 時点の実測。
 
 ## Z5: 旧ツールのディレクトリ (volta / rbenv / pyenv / bun / deno / pnpm)
 
-- **状況**: ✅ 対応済み — 旧ツールのディレクトリを日付付きでゴミ箱に移し、nvim の rubocop を mason 版に切り替えた (ADR 0015)。
+- **状況**: ✅ 対応済み — 旧ツールのディレクトリを日付付きでゴミ箱に移し、nvim の rubocop を mason 版に切り替えた ([ADR 0015](../adr/0015-fix-breaking-audit-items.md))。
 
 - **何が壊れる・変わるか**
   - 削除すると、そこに入っているグローバルなコマンドが使えなくなる。
@@ -47,7 +47,7 @@ docs/audit/2026-10-07-best-practices.md の未対応項目のうち、直すと�
 
 ## I4: dotfiles とパッケージの二重管理
 
-- **状況**: ✅ 対応済み — リンクを home-manager (mkOutOfStoreSymlink) に移し、setup/install.sh と単体の home-manager を廃止した (ADR 0015)。反映には `sudo darwin-rebuild switch` が必要。
+- **状況**: ✅ 対応済み — リンクを home-manager (mkOutOfStoreSymlink) に移し、setup/install.sh と単体の home-manager を廃止した ([ADR 0015](../adr/0015-fix-breaking-audit-items.md))。反映には `sudo darwin-rebuild switch` が必要。
 
 - **何が壊れる・変わるか**
   - dotfiles のリンクを `setup/install.sh` から home-manager (`home.file`) に移すと、既存のリンクやファイルがある場所で
@@ -91,7 +91,7 @@ docs/audit/2026-10-07-best-practices.md の未対応項目のうち、直すと�
 
 ## O1: rubocop.yml の TargetRubyVersion 2.5
 
-- **状況**: ✅ 対応済み — TargetRubyVersion の指定を削除した (ADR 0015)。
+- **状況**: ✅ 対応済み — TargetRubyVersion の指定を削除した ([ADR 0015](../adr/0015-fix-breaking-audit-items.md))。
 
 - **何が壊れる・変わるか**: `~/.rubocop.yml` は、自前の設定を持たないプロジェクトで使われる。
   対象バージョンを上げると、新しい構文を前提にした指摘が増え、既存のコードに警告が出る。
@@ -120,7 +120,7 @@ docs/audit/2026-10-07-best-practices.md の未対応項目のうち、直すと�
 
 ## M2: 手動で入れた VSCode
 
-- **状況**: ✅ 対応済み — 手動版をゴミ箱に移し、/usr/local/bin/code を削除した (ADR 0015)。
+- **状況**: ✅ 対応済み — 手動版をゴミ箱に移し、/usr/local/bin/code を削除した ([ADR 0015](../adr/0015-fix-breaking-audit-items.md))。
 
 - **何が壊れる・変わるか**: `/Applications/Visual Studio Code.app` (1.138) を削除すると、
   それを指している `/usr/local/bin/code` がリンク切れになる。`code` コマンドは Nix 版

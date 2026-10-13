@@ -1,6 +1,6 @@
 # dotfiles ベストプラクティス監査 (2026-10-11)
 
-[2026-10-07 の監査](2026-10-07-best-practices.md)・[2026-10-09 の更新](2026-10-09-best-practices.md) の後の作業 (ADR 0024〜0043) を
+[2026-10-07 の監査](2026-10-07-best-practices.md)・[2026-10-09 の更新](2026-10-09-best-practices.md) の後の作業 ([ADR 0024](../adr/0024-orch-models-and-headless-install.md)〜0043) を
 反映し、zsh・fzf・nvim・Nix とインストール・CI・git・tmux・そのほかを調べ直したもの。
 分野ごとに調べ、指摘のうち重要なもの (故障・主なリスク) は実際にコマンドを実行して当てはまることを確かめた。
 
@@ -31,7 +31,7 @@
 | Z1 | `zsh/docker.sh:2` | `figbe` が `figrm bundle exec "$@"` で、サービス名の前に `bundle` を渡している。`figbe web rails c` が `docker compose run --rm bundle exec web …` になる | `figrm "$1" bundle exec "${@:2}"` | あり |
 | Z2 | `zsh/fzf.sh` (`__yarn_workspaces`) | Yarn v1 専用の `yarn workspaces info` を使っているが、入っているのは Yarn 4.18.1 | `yarn workspaces list --json \| jq -r .name` | あり |
 | Z3 | `zsh/langs/go.sh:2` | `command -v go` が `mise activate` より前に評価されるため、新しいログインシェル (`env -i` で確認) では `GOPATH` が空で、`~/repositories/bin` も PATH に入らない (tmux の中では親の環境を引き継ぐので動いて見える) | 条件を外して `GOPATH` を設定する | あり |
-| V1 | `nvim/lua/config/keymaps.lua:14` | `<S-t>` (= `T`) に `:tabedit` を割り当てているが、ADR 0037 の flash.nvim が `f`・`F`・`t`・`T` を上書きするため、ノーマルモードで `T` を押してもタブが開かない (確認済み)。もともと標準の `T` (後方への文字移動) も潰していた | タブを開くキーを別のキー (`<Leader>t` など) に移す | あり |
+| V1 | `nvim/lua/config/keymaps.lua:14` | `<S-t>` (= `T`) に `:tabedit` を割り当てているが、[ADR 0037](../adr/0037-fzf-tab-flash-treesitter-context-trouble.md) の flash.nvim が `f`・`F`・`t`・`T` を上書きするため、ノーマルモードで `T` を押してもタブが開かない (確認済み)。もともと標準の `T` (後方への文字移動) も潰していた | タブを開くキーを別のキー (`<Leader>t` など) に移す | あり |
 | V2 | `nvim/lua/plugins/completion.lua:5` | nvim-cmp が `InsertEnter` でだけ読み込まれるため、`:` のコマンドライン補完は一度挿入モードに入るまで効かない | `event = { "InsertEnter", "CmdlineEnter" }` | あり |
 | G1 | `git/config:42` | エイリアス `today` は `!` が無いのでシェルを通らず、`$(git config user.name)` がそのまま文字列になる。今日のコミットがあっても 0 件になる (確認済み) | `!git log --since=midnight --author="$(git config user.name)" --oneline` | あり |
 | T1 | `tmux/statuses.conf:30` | `@nova-pane` の `${pane_mode}` が、設定を読む時点で (空の) 環境変数として展開され、コピーモード中のモード名が出ない (確認済み) | `#{pane_mode}` にする | あり |
@@ -42,7 +42,7 @@
 | ID | 場所 | 内容 | 直し方 | 挙動 |
 |---|---|---|---|---|
 | Z4 | `zsh/common.sh:70` | `setopt complete_aliases` で、補完の前にエイリアスが展開されないため、`g`・`fig`・`be`・`e` などに git などの補完が効かない。コメント (「aliased ls needs…」) も効果と逆 | オプションを外す (エイリアスを展開して補完する既定に戻す) | あり |
-| Z5 | `zsh/plugins.sh:1-9` | プラグインはコミットに固定する方針 (ADR 0010) だが、zinit 本体は先頭のコミットを clone していて固定されていない | zinit を Nix で入れる、または clone 後に固定のコミットに切り替える | なし |
+| Z5 | `zsh/plugins.sh:1-9` | プラグインはコミットに固定する方針 ([ADR 0010](../adr/0010-fix-zsh-fzf-audit.md)) だが、zinit 本体は先頭のコミットを clone していて固定されていない | zinit を Nix で入れる、または clone 後に固定のコミットに切り替える | なし |
 | Z6 | `zsh/exports.sh` | `EDITOR`・`LANG`・`XDG_*` が zshrc からしか読まれず、`zsh -c` などの非対話シェル (エディタや git の hook から呼ばれるもの) に届かない (PATH ではないので Z2 の path_helper の件とは別) | PATH 以外の export を zshenv に移す | 非対話シェルのみ |
 | Z7 | `zsh/fzf.sh` (`__select_git_status_items` など) | zsh は変数を単語分割しないので、ループが 1 回しか回らず awk の行ごとの処理で偶然動いている。空白を含むパスや名前の変更 (`R a -> b`) で壊れる。fzf を取り消しても終了コードが 0 になる | `${(f)…}` で行ごとに回し、`git status --porcelain -z` を使う | ほぼなし |
 | Z8 | `zsh/fzf.sh` (`__fkill`) | 既定のシグナルが SIGKILL (`-9`)。fzf を直接呼んでいて、ほかのコマンドと違い全画面になる | 既定を `-TERM` にし、呼び方をほかと揃える | あり |

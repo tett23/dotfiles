@@ -68,8 +68,8 @@
 
 - `~/.zshenv` と `~/.zshrc` にリンクしている。`~/.zshenv` で `ZDOTDIR=~/.config/zsh` を設定すれば、
   ホーム直下は `~/.zshenv` だけになる。
-- 履歴 (`$XDG_STATE_HOME/zsh/history`) は ADR 0023 で移動済み。補完のキャッシュ (`.zcompdump`) の置き場所も合わせて確認が要る。
-- ログインシェルの読み込み順に関わるため、ADR 0010 (Z2 の見送り) と合わせて検討する。
+- 履歴 (`$XDG_STATE_HOME/zsh/history`) は [ADR 0023](../adr/0023-fix-remaining-audit-items-2.md) で移動済み。補完のキャッシュ (`.zcompdump`) の置き場所も合わせて確認が要る。
+- ログインシェルの読み込み順に関わるため、[ADR 0010](../adr/0010-fix-zsh-fzf-audit.md) (Z2 の見送り) と合わせて検討する。
 
 ### L6 [XDG] rubocop の設定
 
@@ -90,7 +90,7 @@
 
 ### L9 [対称] テストの置き場所
 
-- zsh は `zsh/tests/`、usage-hint mod は `claude/mods/usage-hint/tests/`、send-to-kindle は本体の中 (ADR 0025)。
+- zsh は `zsh/tests/`、usage-hint mod は `claude/mods/usage-hint/tests/`、send-to-kindle は本体の中 ([ADR 0025](../adr/0025-send-to-kindle-single-file.md))。
 - それぞれ理由がある (send-to-kindle は 1 ファイルにする必要がある) ため、統一するより、
   テストの実行方法を README か CI の定義にまとめておく程度でよい。
 
@@ -121,7 +121,7 @@
 
 - `nvim/`、`karabiner/`、`ghostty/`、`mise/` は `~/.config/<ツール>` にリンクしており、XDG に沿っている。
 - VSCode と AquaSKK は macOS の決まった場所 (`~/Library/Application Support/…`) にリンクしている。
-- zsh の履歴は `$XDG_STATE_HOME` にある (ADR 0023)。
+- zsh の履歴は `$XDG_STATE_HOME` にある ([ADR 0023](../adr/0023-fix-remaining-audit-items-2.md))。
 - `karabiner/` は Karabiner-Elements が書き込む `automatic_backups` を `karabiner/.gitignore` で除外している。
 
 ## リポジトリ外 (参考)
