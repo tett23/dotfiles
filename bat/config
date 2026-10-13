@@ -1,5 +1,9 @@
 --theme="Monokai Extended"
 
+# ページャーの下に、表示している行の範囲と全体の何 % かを出す。bat はパイプで渡すので、
+# --file-size で最初に全体の大きさを確かめさせる (docs/adr/0067)
+--pager="less -R --file-size -M"
+
 # 拡張子・ファイル名で言語が決まらない設定ファイルに、言語を割り当てる (docs/adr/0059)
 # dotfiles の中の git の設定 (~/.config/git/ の場所では、もとから決まる)
 --map-syntax='**/git/config:Git Config'
