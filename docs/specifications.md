@@ -214,7 +214,8 @@ GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
 
 - シェルスクリプトの shellcheck
 - zsh のテスト (`zsh/tests/*.test.zsh` をすべて。[ADR 0046](adr/0046-fix-audit-non-breaking.md))
-- コミット済みの ADR が変更されていないこと (adr-guard。[ADR 0032](adr/0032-adr-guard.md))
+- コミット済みの ADR・記録が変更されていないこと、文書の ADR の参照にリンクがあること、各 ADR にステータスの行がちょうど 1 つあること
+  (adr-guard の action。ステータスの行とリンクだけの変更は許可する。[ADR 0032](adr/0032-adr-guard.md), [0066](adr/0066-adr-guard-0-8-in-ci.md))
 - nix-darwin の設定の評価 (`nix eval`。Nix は `DeterminateSystems/determinate-nix-action@v3` で入れる。[ADR 0046](adr/0046-fix-audit-non-breaking.md))
 
 同じブランチ・PR の古い実行は取り消し、各ジョブには時間の上限を付けている ([ADR 0046](adr/0046-fix-audit-non-breaking.md))。自前のパッケージのビルドと、
@@ -224,13 +225,17 @@ usage-hint の mod のテストは CI では行わない (本人の判断。[ADR
 
 - 実装の前に ADR を書く。ファイル名は `docs/adr/0001-feature-details.md` のように 4 桁の連番を付ける。
 - コミットした ADR はステータスの行を除いて変更しない。仕様を変えるときは新しい ADR を作る。
+- 監査や計測の記録 (`docs/audit/`・`docs/benchmarks/`) も、コミットした後は変更しない ([ADR 0066](adr/0066-adr-guard-0-8-in-ci.md))。
 - この規則は adr-guard (https://github.com/tett23/adr-guard) で、git の pre-commit hook (`.githooks/pre-commit`)・
   Claude Code の hook (`.claude/settings.json`。全リポジトリで有効)・CI の `adr` ジョブの 3 か所で強制する ([ADR 0032](adr/0032-adr-guard.md))。
-  - adr-guard が変更を許すのは、`ステータス:` で始まる行 (`--allow-status`) と、ADR の参照のリンクだけの変更 (`--allow-links`)。
+  - adr-guard が変更を許すのは、ステータスの行 (`ステータス:` か `Status:` で始まる行。各 ADR にちょうど 1 つ。`--allow-status`) と、
+    ADR の参照のリンクだけの変更 (`--allow-links`)。記録にはどちらも効かない。
     pre-commit hook は `adr-guard pre-commit --allow-status --allow-links`、Claude Code の hook は `adr-guard claude-hook --allow-status` で検査する ([ADR 0064](adr/0064-adr-guard-allow-options.md))。
   - 文書 (`.md`) の中の ADR の参照 (`ADR 0001` の形) には、ADR のファイルへのリンクが要る。pre-commit hook がリンクの無い参照を拒否する。`adr-guard links --fix` で直せる ([ADR 0064](adr/0064-adr-guard-allow-options.md))。
-  - [ADR 0001](adr/0001-curl-sh-install.md)〜[0025](adr/0025-send-to-kindle-single-file.md) は `- Status:` の書き方のため、
-    ステータスを更新しない。置き換えた関係は新しい ADR の「文脈」に書く。
+  - 意図して ADR や記録を書き換えるときは、その書き換えだけの 1 つのコミットにし、pre-commit hook は環境変数 `ADR_GUARD_ALLOW=<理由>`、
+    CI はコミットのメッセージのトレーラー `ADR-Guard-Allow: <理由>` で許可する ([ADR 0066](adr/0066-adr-guard-0-8-in-ci.md))。
+  - [ADR 0001](adr/0001-curl-sh-install.md)〜[0025](adr/0025-send-to-kindle-single-file.md) のステータスの行は、もとは `- Status:` で書いていたが、
+    adr-guard 0.8.0 が認める `Status:` に書き換えた (値は `Accepted` などのまま。[ADR 0066](adr/0066-adr-guard-0-8-in-ci.md))。
   - `core.hooksPath` は clone ごとの設定で、`install.sh` が設定する。
 
 ### 破棄・却下した ADR
