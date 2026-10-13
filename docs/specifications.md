@@ -73,6 +73,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 - プラグインは Zinit で遅延読み込みする。`eval "$(… init)"` の結果はキャッシュし、git の情報を表示するプロンプトは
   自前の軽量な実装 (`zsh/lib/git-prompt.zsh`) を使う ([ADR 0011](adr/0011-speed-up-zsh-startup.md))。
+- プロンプトの git の表示は `[ブランチ] ++!!` (`++` はステージした変更、`!!` はステージしていない変更)。メインでない worktree の中では
+  `[ブランチ / worktree の名前] ++!!` にする。名前は worktree の最上位のディレクトリの名前 ([ADR 0069](adr/0069-git-prompt-worktree-name.md))。
 - `~/.zshenv` で `ZDOTDIR` を `~/.config/zsh` にし、`.zshrc` はそこから読む ([ADR 0042](adr/0042-xdg-config-locations.md))。インストーラなどの `~/.zshrc` への追記は
   読まれないので、必要なものは `zsh/zshrc.mine` (`~/.config/zsh/.zshrc.mine` のリンク元。git で管理するので秘密は書かない。
   [ADR 0043](adr/0043-remove-vimbackup-and-zshrc-mine.md)) に書く。補完のキャッシュは `~/.cache/zsh/zcompdump` に置く。
