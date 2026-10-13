@@ -124,8 +124,11 @@ export const register: Register = on => {
     return result
   })
 
+  // /clear は会話が終わるだけで、同じプロセスで次の会話が続き session.start は来ないので止めない (docs/adr/0065)
   on('session.end', async ($, e, next) => {
-    stopRefresh()
+    if (e.reason !== 'clear') {
+      stopRefresh()
+    }
 
     return next(e)
   })

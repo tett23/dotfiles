@@ -183,7 +183,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   - セッション開始直後は、前回保存したレートリミットの値と、ローカルで推定したコンテキストの使用率を出す ([ADR 0008](adr/0008-usage-hint-initial-values.md))。
   - セッションを開いたときと、その後 1 分ごとに、`$.session.usage()` から表示の値を更新する ([ADR 0063](adr/0063-usage-hint-periodic-refresh.md))。
     窓が空なら直前の窓を残し、リセット時刻を過ぎた窓は 0% にする。どの画面も表示していない (`$.session.surfaces()` が空の) 間は更新しない。
-    セッションを閉じると止める。保存は API の応答のときだけ行う。
+    セッションを閉じると止めるが、`/clear` の後は同じプロセスで会話が続くので止めない ([ADR 0065](adr/0065-usage-hint-keep-refresh-after-clear.md))。
+    保存は API の応答のときだけ行う。
   - 型検査は、mod のディレクトリで `tsc --noEmit -p .` を実行する。型定義 (`.claude-plugin/types/`) は
     Claude Code が mod を読み込んだときに生成する ([ADR 0061](adr/0061-usage-hint-type-check.md))。`tsc` は mise で入れた TypeScript 7
     (`npm:typescript`。[ADR 0062](adr/0062-typescript-7-via-mise.md))。

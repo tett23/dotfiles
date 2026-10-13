@@ -170,3 +170,18 @@ test('session.end の後は更新しない', async ($, on) => {
   await world.clock.advance(5 * MINUTE)
   expect(world.usageCalls).toBe(afterEnd)
 })
+
+// /clear では session.end が来るが、同じプロセスで次の会話が続き session.start は来ない (docs/adr/0065)
+test('/clear の後も 1 分ごとの更新を続ける', async ($, on) => {
+  const world = engine(on, usageWith([{ kind: 'five_hour', percentUsed: 10 }], 20))
+  await start($)
+  await $.session.end({
+    reason: 'clear',
+    sessionId: 'session',
+    resume: { id: 'session' },
+  })
+
+  world.usage = usageWith([{ kind: 'five_hour', percentUsed: 30 }], 5)
+  await world.clock.advance(MINUTE)
+  expect(await band($)).toBe('5h 30% · 7d -- · Fable -- · ctx 5%')
+})
