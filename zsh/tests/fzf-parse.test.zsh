@@ -28,6 +28,17 @@ check "fzf_status_paths: 状態の 3 文字を外し、引用してつなぐ" \
   'a.txt dir\ with\ space/b\ c.txt'
 check "fzf_status_paths: 空の入力では何も出さない" "$(print -rn -- '' | fzf_status_paths)" ""
 
+# git worktree list --porcelain の出力を、「印 タブ 名前 タブ ブランチ タブ パス」の行にする。今の worktree に * を付け、bare は出さない (docs/adr/0070)
+local porcelain=$'worktree /repo\nHEAD 1111111111111111111111111111111111111111\nbranch refs/heads/main\n\nworktree /repo/.claude/worktrees/w x\nHEAD 2222222abcdef0000000000000000000000000000\ndetached\n\nworktree /bare.git\nbare\n\nworktree /wt/feature\nHEAD 3333333333333333333333333333333333333333\nbranch refs/heads/feature/x\n'
+check "fzf_worktree_lines: ブランチ・detached を出し、bare を除き、今の worktree に * を付ける" \
+  "$(print -rn -- $porcelain | fzf_worktree_lines /wt/feature)" \
+  $' \trepo\tmain\t/repo\n \tw x\t(detached 2222222)\t/repo/.claude/worktrees/w x\n*\tfeature\tfeature/x\t/wt/feature'
+check "fzf_worktree_lines: 空の入力では何も出さない" "$(print -rn -- '' | fzf_worktree_lines /repo)" ""
+
+check "fzf_worktree_path: 選んだ行からパスを取り出す (空白を含む)" \
+  "$(print -r -- $' \tw x\t(detached 2222222)\t/repo/.claude/worktrees/w x' | fzf_worktree_path)" "/repo/.claude/worktrees/w x"
+check "fzf_worktree_path: 空の入力では何も出さない" "$(print -rn -- '' | fzf_worktree_path)" ""
+
 print
 (( failures > 0 )) && { print "$failures failed"; exit 1 }
 print "all passed"

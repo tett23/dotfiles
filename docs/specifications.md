@@ -107,6 +107,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `Ctrl-B` | git のブランチを選んで切り替える   |
 | `Ctrl-F` | `git status` の項目を選ぶ          |
 | `Ctrl-K` | プロセスを選んで終了させる         |
+| `Ctrl-E` | 今のリポジトリの git の worktree を選んで移動する。`Ctrl-O` から選ぶと入力行に `cd` を足す ([ADR 0070](adr/0070-fzf-worktree-switcher.md)) |
 | `Ctrl-R` | 履歴を検索する (fzf 本体)。選んでいるコマンドの全体を下に bat で色付きで出し、`Ctrl-O` で表示を切り替える ([ADR 0057](adr/0057-remaining-improvements-2.md)) |
 | `Ctrl-O` | `zsh/fzf.sh` の fzf のコマンド (`__` 付きの関数) を、キーと説明つきの一覧から選んで実行する ([ADR 0031](adr/0031-command-finder-key-and-rust-tools-via-mise.md), [0033](adr/0033-fzf-tmux-window-switcher.md)) |
 | `Ctrl-T` | tmux の全セッションのウィンドウを選んで切り替える (tmux の割り当て。下の tmux の節。[ADR 0033](adr/0033-fzf-tmux-window-switcher.md), [0036](adr/0036-tmux-window-switcher-on-ctrl-t.md), [0052](adr/0052-tmux-window-switcher-in-tmux.md))。fzf 本体の `Ctrl-T` (ファイルの選択) は `Ctrl-P` で使う |

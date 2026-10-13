@@ -36,6 +36,7 @@ check "ウィンドウの切り替えが出る" "${+key[ftmux_window]}" "1"
 
 check "割り当てたキーを出す (repo)" "${key[repo]-}" "^G"
 check "割り当てたキーを出す (ftmux_window)" "${key[ftmux_window]-}" "^T"
+check "割り当てたキーを出す (fworktree。docs/adr/0070)" "${key[fworktree]-}" "^E"
 check "割り当てが無ければ空欄 (docker_stop_container)" "${key[docker_stop_container]-x}" ""
 
 check "関数の直前のコメントを説明として出す (repo)" "${desc[repo]-}" "ghq のリポジトリを選び、パスを入力行に足す"

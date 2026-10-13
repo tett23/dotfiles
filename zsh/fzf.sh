@@ -34,6 +34,37 @@ fzf_status_paths() {
   (( $#lines )) && print -rn -- "${(j: :)${(@q)lines#???}}"
 }
 
+# git worktree list --porcelain の出力を、worktree ごとに「印 タブ 名前 タブ ブランチ タブ パス」の 1 行にする。名前はパスの最後の部分。
+# 印は今の worktree ($1) が *、ほかは空白。detached は (detached <ハッシュの先頭 7 文字>)。bare は出さない (docs/adr/0070)
+fzf_worktree_lines() {
+  local current=$1 line wt= head= branch= bare=0
+  local -a out
+  for line in "${(@f)$(command cat)}" ''; do
+    case $line in
+    'worktree '*) wt=${line#worktree } ;;
+    'HEAD '*) head=${line#HEAD } ;;
+    'branch '*) branch=${line#branch refs/heads/} ;;
+    detached) branch="(detached ${head[1,7]})" ;;
+    bare) bare=1 ;;
+    '')
+      if [[ -n $wt ]] && (( ! bare )); then
+        out+=("${${${wt:#$current}:+ }:-*}"$'\t'"${wt:t}"$'\t'"$branch"$'\t'"$wt")
+      fi
+      wt= head= branch= bare=0
+      ;;
+    esac
+  done
+  (( $#out )) && print -r -- "${(F)out}"
+}
+
+# fzf_worktree_lines の行 (選んだもの) からパスを取り出す。入力が空なら何も出さない
+fzf_worktree_path() {
+  local line
+  IFS= read -r line || [[ -n $line ]] || return 0
+  local -a fields=("${(@ps:\t:)line}")
+  print -rn -- "${fields[4]-}"
+}
+
 # ghq のリポジトリを選び、パスを入力行に足す
 __repo() {
   local out
@@ -196,6 +227,36 @@ ftmux_window() {
   typeset -f zle-line-init >/dev/null && zle zle-line-init
 }
 
+# 今のリポジトリの worktree を fzf で選び、そのパスを出す。リポジトリの外では何もしない (docs/adr/0070)
+_fworktree_select() {
+  local current out
+  current=$(git rev-parse --show-toplevel 2>/dev/null) || return 0
+  out=$(git worktree list --porcelain | fzf_worktree_lines "$current" |
+    _fzf_run --reverse +m --delimiter=$'\t' --nth=2,3 --preview 'git -C {4} status --short --branch' --preview-window=down,40% "$@") || return
+  print -r -- "$out" | fzf_worktree_path
+}
+
+# git の worktree を選び、移動する cd のコマンドを入力行に足す
+__fworktree() {
+  local dir
+  dir=$(_fworktree_select "$@")
+  [[ -n $dir ]] || return 0
+  print -rn -- "cd -- ${(q)dir}"
+}
+
+# キーで呼んだときは、その場で移動し、プロンプトの git の表示を作り直す
+fworktree() {
+  local dir f
+  dir=$(_fworktree_select)
+  if [[ -n $dir ]] && cd -- "$dir"; then
+    for f in $precmd_functions; do
+      $f
+    done
+  fi
+  zle reset-prompt
+  typeset -f zle-line-init >/dev/null && zle zle-line-init
+}
+
 # コマンド選択の一覧。このファイルで定義した __<名前> の関数を「名前・キー・説明」の 1 行ずつで出す。
 # キーは同名のウィジェットの割り当て (現在のキーマップ)、説明は関数の直前の 1 行のコメント (docs/adr/0033)
 fzf_command_names() {
@@ -241,6 +302,8 @@ bindkey "^t" ftmux_window # tmux のウィンドウの切り替え (docs/adr/003
 bindkey "^p" fzf-file-widget
 zle -N select_git_status_items
 bindkey "^f" select_git_status_items
+zle -N fworktree
+bindkey "^e" fworktree # git の worktree へ移動する (docs/adr/0070)
 
 # fzf
 export FZF_DEFAULT_OPTS="--ansi --cycle" # --extended は fzf の既定 (docs/adr/0046)
