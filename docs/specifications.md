@@ -94,6 +94,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - bat は、拡張子・ファイル名で言語が決まらない設定ファイルにも色を付ける (`bat/config` の `--map-syntax`。[ADR 0059](adr/0059-bat-map-syntax-and-nvim-options.md))。
   dotfiles の中の `git/config`・`git/ignore` は git の設定、`.zshrc.mine` は bash。bat に言語が無い Ghostty の設定は INI、`tmux.conf` は bash で代える。
 - bat のページャーは `less -R --file-size -M` で、下に表示している行の範囲と全体の何 % かを出す ([ADR 0067](adr/0067-bat-pager-position-percent.md))。
+  下の行は灰の背景、検索で一致した所は黄の背景、エラーは桃の背景で、端末のテーマの 16 色で描く (`--use-color -DPwK -DSky -DEkr`。[ADR 0068](adr/0068-bat-pager-colors.md))。
 - `man` のページは bat で色付きで表示する (`MANPAGER`。[ADR 0053](adr/0053-bat-manpager-and-eza-options.md))。
 - fzf のファイル検索は fd を使い ([ADR 0002](adr/0002-fzf-file-search-with-fd.md))、`Ctrl-P` では bat でファイルの先頭をプレビューする ([ADR 0034](adr/0034-small-conveniences-zsh-fzf-nvim.md), [0036](adr/0036-tmux-window-switcher-on-ctrl-t.md))。主なキー割り当て:
 
