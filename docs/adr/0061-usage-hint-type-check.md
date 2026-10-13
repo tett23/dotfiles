@@ -39,7 +39,7 @@ mod `usage-hint` (`.claude/mods/usage-hint/`) の型定義 (`.claude-plugin/type
 
 ## 実装しないこと
 
-- 型検査を CI に入れること。型定義が git の管理外で、CI では生成できない (ADR 0046 で mod のテストを CI に入れないのと同じ理由)。
+- 型検査を CI に入れること。型定義が git の管理外で、CI では生成できない ([ADR 0046](0046-fix-audit-non-breaking.md) で mod のテストを CI に入れないのと同じ理由)。
 - TypeScript 5 を `dependencies.md` (Nix・mise) に入れること。型検査は型定義が変わったときにだけ行うので、`npx -y -p typescript@5` で足りる。
 - テストを増やすこと。型だけの変更で、振る舞いは変わらない。
 - 型定義に合わせるための `as` や `any` による抑え込み。
@@ -52,7 +52,7 @@ mod `usage-hint` (`.claude/mods/usage-hint/`) の型定義 (`.claude-plugin/type
 - 実装の後: 同じコマンドがエラーを出さずに終わる (終了コード 0)。
 - 実装の後: `claude plugin test .claude/mods/usage-hint` がすべて通る (件数は実装の前と同じ)。
 
-(提案の時点で、上の変更を試しに当てて、tsc がエラー 0、テストが ADR 0060 を含まない状態で 19 件すべて通ることを確かめ、元に戻した。)
+(提案の時点で、上の変更を試しに当てて、tsc がエラー 0、テストが [ADR 0060](0060-usage-hint-danger-color.md) を含まない状態で 19 件すべて通ることを確かめ、元に戻した。)
 
 ## トレードオフ
 
@@ -60,4 +60,4 @@ mod `usage-hint` (`.claude/mods/usage-hint/`) の型定義 (`.claude-plugin/type
   Claude Code は必ず渡すので、テストの props が実物に近くなる利点もある。
 - 型定義は Claude Code の更新でまた変わりうる。型検査を CI に入れない以上、壊れたことには手で tsc を実行するまで気づかない。
   仕様と README にコマンドを書いておくことで、気づいたときに直せるようにする。
-- ADR 0060 (未コミット) も `hooks/register.tsx`・`tests/register.test.tsx` を変えるので、先に入ったほうに合わせてもう一方を直す必要がある。
+- [ADR 0060](0060-usage-hint-danger-color.md) (未コミット) も `hooks/register.tsx`・`tests/register.test.tsx` を変えるので、先に入ったほうに合わせてもう一方を直す必要がある。

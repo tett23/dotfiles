@@ -7,13 +7,13 @@
 [dotfiles の改善案 (2026-10-13)](../audit/2026-10-13-improvements.md) のうち、[ADR 0055](0055-improvements-2026-10-13.md)・[0056](0056-remove-old-ghcup-and-stack.md)
 の後に残った項目から、本人が G3・G4・C1・C2・O4・Z12 を直すこと、「提案したが入れていない便利な設定」から fzf の履歴検索の
 プレビュー・bat-extras・eza のオプションを入れることを決めた。O3 (Ghostty の `Cmd+P` が tmux の中の nvim に届くか) は、
-ADR 0055 の `extended-keys` の後に本人が届くことを確かめた。I10 (adr-guard) は本人が adr-guard のリポジトリで扱う。
+[ADR 0055](0055-improvements-2026-10-13.md) の `extended-keys` の後に本人が届くことを確かめた。I10 (adr-guard) は本人が adr-guard のリポジトリで扱う。
 fzf の `Alt-C` は使っていないので扱わない。
 
 調べた結果は次のとおり。
 
 - **G3** `git/config` に同じ働きのエイリアスがある。`lg` と `lgraph` は同じ定義。`cl` (`commit -av`) と `cia` (`commit -a`) は、
-  ADR 0055 で `commit.verbose` を有効にしたので同じ働きになった。本人は `cia` を残すことにした。
+  [ADR 0055](0055-improvements-2026-10-13.md) で `commit.verbose` を有効にしたので同じ働きになった。本人は `cia` を残すことにした。
 - **G4** `difftool.prompt` は `false`、`mergetool.prompt` は `true` で揃っていない。
 - **C1** Claude Code のステータスライン (`.claude/settings.json` の `statusLine`) は、ディレクトリ名を `xargs basename` で取るので、
   空白や引用符を含むディレクトリ名で壊れる。jq も 4 回起動している。
