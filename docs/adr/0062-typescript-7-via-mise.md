@@ -29,7 +29,7 @@ mod `usage-hint` の型検査は、[ADR 0061](0061-usage-hint-type-check.md) で
 
 ## 実装しないこと
 
-- 型検査を CI に入れること (型定義が git の管理外で、CI では生成できない。ADR 0061 と同じ)。
+- 型検査を CI に入れること (型定義が git の管理外で、CI では生成できない。[ADR 0061](0061-usage-hint-type-check.md) と同じ)。
 - `tsconfig.json` を厳しくすること (今の設定で `strict` と `noUncheckedIndexedAccess` が有効)。
 - `/usr/local/lib/node_modules` の古い全体のインストール (typescript・expo-cli など) の片付け (本人がこの ADR のレビューのときに消した)。
 - mod ごとに `package.json` を置いて TypeScript を固定すること。
