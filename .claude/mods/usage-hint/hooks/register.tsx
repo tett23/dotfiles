@@ -6,6 +6,7 @@ import type {
   RenderElement,
   SessionRateLimit,
   TextProps,
+  Timer,
 } from 'claude-code'
 
 import type { Limit, Snapshot } from '../types'
@@ -49,6 +50,40 @@ const initialSnapshot = async ($: EngineInterface): Promise<Snapshot> => {
   return { contextPercent, rateLimits: limits }
 }
 
+// 表示の値を session.usage() から作りなおす。窓が空なら直前の窓を使い、どちらもリセット時刻を
+// 過ぎた窓は 0% にする。読み取りに失敗したときは直前の表示を残す。保存はしない (docs/adr/0063)
+const refresh = async ($: EngineInterface): Promise<void> => {
+  const usage = await $.session.usage().catch(() => undefined)
+  if (!usage) {
+    return
+  }
+  const now = await $.clock.now()
+  await update($, snapshot, previous => ({
+    contextPercent: usage.context.percent ?? previous.contextPercent,
+    rateLimits: restoreLimits(
+      usage.rateLimits.length > 0 ? toLimits(usage.rateLimits) : previous.rateLimits,
+      now,
+    ),
+  }))
+}
+
+const REFRESH_INTERVAL_MS = 60_000
+
+// 1 分ごとの更新。どの画面も表示していない間は更新しない (docs/adr/0063)
+const refreshIfShown = async ($: EngineInterface): Promise<void> => {
+  const surfaces = await $.session.surfaces().catch(() => [])
+  if (surfaces.length > 0) {
+    await refresh($)
+  }
+}
+
+let refreshTimer: Timer | undefined
+
+const stopRefresh = () => {
+  refreshTimer?.cancel()
+  refreshTimer = undefined
+}
+
 // warning は暗めの黄色、danger は暗めの赤、それ以外は dim (docs/adr/0005, 0060)。ラベルは太字 (docs/adr/0006)
 const LEVEL_PROPS: Record<Level, TextProps> = {
   normal: { dimColor: true },
@@ -80,8 +115,22 @@ export const register: Register = on => {
     if (initial) {
       await update($, snapshot, () => initial)
     }
+    await refresh($)
+    stopRefresh()
+    refreshTimer = $.clock.every(REFRESH_INTERVAL_MS, () => {
+      void refreshIfShown($)
+    })
 
     return result
+  })
+
+  // /clear は会話が終わるだけで、同じプロセスで次の会話が続き session.start は来ないので止めない (docs/adr/0065)
+  on('session.end', async ($, e, next) => {
+    if (e.reason !== 'clear') {
+      stopRefresh()
+    }
+
+    return next(e)
   })
 
   on('session.measure', async ($, e, next) => {

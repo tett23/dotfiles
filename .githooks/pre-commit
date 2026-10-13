@@ -1,8 +1,9 @@
 #!/bin/sh
 #
 # コミット済みの ADR (docs/adr/) の変更を拒否する (docs/adr/0032)
+# ステータスの行と ADR の参照のリンクだけの変更は許可する (docs/adr/0064)
 if ! command -v adr-guard >/dev/null 2>&1; then
   echo "pre-commit: adr-guard が見つかりません。mise install を実行してください (docs/adr/0046)" >&2
   exit 1
 fi
-exec adr-guard pre-commit
+exec adr-guard pre-commit --allow-status --allow-links

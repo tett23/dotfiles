@@ -18,7 +18,7 @@ https://github.com/tett23/adr-guard
 
    ```sh
    #!/bin/sh
-   exec adr-guard pre-commit
+   exec adr-guard pre-commit --allow-status --allow-links
    ```
 
 2. clone ごとに `git config core.hooksPath .githooks` を実行する (README にも手順を書く)。
@@ -48,6 +48,8 @@ ADRは以下のような内容を記載する。ステータスはこのADRが�
 ## トレードオフ
 ```
 
+ADR作成後とドキュメント更新後は `adr-guard links --fix` でADRのリンクをチェックし、修正する。
+
 ## docs/specifications.mdとREADME.md
 
 ADRにより仕様が変更されたら、仕様とREADMEも同時に編集する。このふたつのドキュメントはmain/masterにおいて常に最新でなくてはならない。
@@ -69,6 +71,8 @@ main/masterに対するrebaseは原則禁止。APIキーが漏れたときなど
 リリースノートはGitHubのReleasesに書く。
 
 ## 実装方針
+
+UNIX哲学にもとづき、GUIや重量級アプリケーションを除けば、小さなツール群でプロダクトを構築する。
 
 ADR のテスト設計に書いたテストを先に書いて失敗させてから実装する。自動テストを書けない変更（設定の値など）は、ADR のテスト設計に確かめ方を書き、実装の後に実際に動かして確かめる。
 
