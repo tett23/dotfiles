@@ -1,6 +1,6 @@
 # ADR 0023: 監査の残りのうち C1・Z6・Z7・N5・O2 と CI の Node.js を是正する
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-09
 - 関連: docs/audit/2026-10-07-best-practices.md
 

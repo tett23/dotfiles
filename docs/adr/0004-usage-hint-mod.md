@@ -1,6 +1,6 @@
 # ADR 0004: 入力欄の下に使用量を表示する Claude Code mod (usage-hint)
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-05
 
 ## Context

@@ -1,6 +1,6 @@
 # ADR 0020: zsh で nix-daemon.sh を読み込まない
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-08
 
 ## Context

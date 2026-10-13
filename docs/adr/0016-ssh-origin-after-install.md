@@ -1,6 +1,6 @@
 # ADR 0016: curl | sh でのインストール後、origin を SSH の URL にする
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-07
 - Supersedes: [ADR 0001](0001-curl-sh-install.md) のうち「clone 後の origin は HTTPS のままになる」部分
 

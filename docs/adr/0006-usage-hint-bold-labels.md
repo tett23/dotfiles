@@ -1,6 +1,6 @@
 # ADR 0006: usage-hint の項目ラベルを太字にする
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-05
 
 ## Context

@@ -1,6 +1,6 @@
 # ADR 0015: 監査の項目のうち、挙動が変わるもの (Z5, I4, O1, M2) を是正する
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-07
 - 関連: docs/audit/2026-10-07-breaking-changes.md
 

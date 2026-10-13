@@ -1,6 +1,6 @@
 # ADR 0010: 監査 (2026-10-07) の zsh / fzf 項目を、動作を壊さない範囲で是正する
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-07
 - 関連: docs/audit/2026-10-07-best-practices.md の Z1〜Z13
 

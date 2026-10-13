@@ -1,6 +1,6 @@
 # ADR 0018: mise の ghc を ghcup のプラグインで入れる
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-08
 
 ## Context

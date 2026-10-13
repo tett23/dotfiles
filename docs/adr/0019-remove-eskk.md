@@ -1,6 +1,6 @@
 # ADR 0019: eskk.vim と関連する設定・ファイルを削除する
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-08
 
 ## Context

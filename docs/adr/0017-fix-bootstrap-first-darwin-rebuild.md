@@ -1,6 +1,6 @@
 # ADR 0017: 新規マシンでの nix-darwin の初回適用が失敗する不具合を直す
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-08
 
 ## Context

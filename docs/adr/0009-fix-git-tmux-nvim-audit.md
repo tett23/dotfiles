@@ -1,6 +1,6 @@
 # ADR 0009: 監査 (2026-10-07) の git / tmux / nvim 項目を是正する
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-07
 - 関連: docs/audit/2026-10-07-best-practices.md の G1〜G5, T1, B4, V1〜V6
 

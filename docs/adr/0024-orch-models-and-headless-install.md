@@ -1,6 +1,6 @@
 # ADR 0024: bin/orch のモデル ID を更新し、画面にログインしていない状態のインストールを最後まで進める
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-09
 - 関連: docs/audit/2026-10-09-best-practices.md の B6、P1
 

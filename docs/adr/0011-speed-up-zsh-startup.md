@@ -1,6 +1,6 @@
 # ADR 0011: zsh の起動と最初のプロンプト表示を速くする
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-07
 
 ## Context

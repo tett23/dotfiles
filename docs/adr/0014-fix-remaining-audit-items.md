@@ -1,6 +1,6 @@
 # ADR 0014: 監査の未対応項目のうち、挙動を変えないものを是正する
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-10-07
 - 関連: docs/audit/2026-10-07-best-practices.md の未対応 (⬜) 項目
 

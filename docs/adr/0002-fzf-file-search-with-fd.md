@@ -1,6 +1,6 @@
 # ADR 0002: fzf のファイル検索を fd に切り替え、fzf 同梱のキーバインドを使う
 
-- Status: Accepted
+Status: Accepted
 - Date: 2026-09-23
 
 ## Context
