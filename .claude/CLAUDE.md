@@ -77,6 +77,8 @@ main/masterに対するrebaseは原則禁止。APIキーが漏れたときなど
 ## 実装方針
 
 UNIX哲学にもとづき、GUIや重量級アプリケーションを除けば、小さなツール群でプロダクトを構築する。
+また、常にeasy (手近で慣れたもの) よりsimple (要素が絡み合わないもの) な設計と実装を選択する。
+参考: Rich Hickey「Simple Made Easy」(Strange Loop 2011) https://www.infoq.com/presentations/Simple-Made-Easy/
 
 ADR のテスト設計に書いたテストを先に書いて失敗させてから実装する。自動テストを書けない変更（設定の値など）は、ADR のテスト設計に確かめ方を書き、実装の後に実際に動かして確かめる。
 
