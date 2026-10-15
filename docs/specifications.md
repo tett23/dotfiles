@@ -82,6 +82,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   PATH は `~/.zshenv` では変えず、`zsh/exports.sh` (`.zshrc` から読む) で設定する ([ADR 0055](adr/0055-improvements-2026-10-13.md)。理由は [ADR 0010](adr/0010-fix-zsh-fzf-audit.md))。
 - PATH の優先順位は、mise → `~/.local/bin`・`~/bin` → home-manager → Nix 本体 → システムの順 ([ADR 0023](adr/0023-fix-remaining-audit-items-2.md))。
   `bin/` と、ghcup で入れたツールの `~/.ghcup/bin` は末尾に足す (`~/.ghcup/env` は PATH の先頭に入れるので読まない。[ADR 0050](adr/0050-ghc-cabal-via-ghcup.md))。
+  bun でグローバルに入れたコマンドの置き場所 (`~/.cache/.bun/bin`。`bun pm bin -g`) も、あれば末尾に足す ([ADR 0071](adr/0071-bun-global-bin-path.md))。
 - nix-daemon.sh は読み込まない (tmux の中で `NIX_PROFILES` が上書きされるのを防ぐ。[ADR 0020](adr/0020-stop-sourcing-nix-daemon-sh.md))。
 - 履歴は `$XDG_STATE_HOME/zsh/history` に 50 万件まで保存する。先頭が空白のコマンドは残さない ([ADR 0023](adr/0023-fix-remaining-audit-items-2.md))。
 - 補完は、小文字の入力を大文字にも一致させる ([ADR 0034](adr/0034-small-conveniences-zsh-fzf-nvim.md))。`Tab` の補完候補は fzf-tab で絞り込み、`cd` の補完では

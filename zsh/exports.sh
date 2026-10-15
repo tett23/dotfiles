@@ -14,6 +14,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:$DOTFILES/bin"
 # ghcup で入れた ghc・cabal・HLS など。~/.ghcup/env は PATH の先頭に入れるので読まず、末尾に足す (docs/adr/0050)
 [ -d "$HOME/.ghcup/bin" ] && export PATH="$PATH:$HOME/.ghcup/bin"
+# bun でグローバルに入れたコマンド (bun pm bin -g)。XDG_CACHE_HOME があると bun はその下の .bun を使う (docs/adr/0071)
+[ -d "${XDG_CACHE_HOME:-$HOME/.cache}/.bun/bin" ] && export PATH="$PATH:${XDG_CACHE_HOME:-$HOME/.cache}/.bun/bin"
 
 # Homebrew は使わない (Nix と mise に統一。docs/adr/0012)
 
