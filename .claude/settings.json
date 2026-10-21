@@ -2,6 +2,19 @@
   "env": {
     "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/.claude/mods/usage-hint"
   },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "adr-guard claude-hook --allow-status"
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "jq -r '[.model.display_name // \"unknown\", ((.workspace.current_dir // .cwd // \".\") | sub(\"/+$\"; \"\") | split(\"/\") | last // \"/\"), (if .cost.total_cost_usd then \"$\" + (.cost.total_cost_usd | tostring) else empty end)] | join(\" \")'"
@@ -46,17 +59,6 @@
       "- **Org-specific CLIs**: None configured — codex and claude appear in this project's transcripts but are general-purpose AI coding CLIs, not org-specific tools"
     ]
   },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "adr-guard claude-hook --allow-status"
-          }
-        ]
-      }
-    ]
-  }
+  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true
 }
