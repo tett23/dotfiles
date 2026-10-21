@@ -10,7 +10,7 @@ Homebrew は使いません。パッケージ管理は Nix と mise だけで行
 以下のコマンドをインストールしてください。
 sed, awk, make は GNU のものを利用してください。
 
-claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat batgrep batdiff fd rg mise awscli sed awk make sqlite gh textlint delta wget tree-sitter docker docker-compose colima
+claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat batgrep batdiff fd rg mise awscli sed awk make sqlite gh textlint delta wget tree-sitter docker docker-compose colima smartmontools
 
 - batgrep・batdiff は bat-extras のものを入れます (ほかの bat-extras は入れません)。
 - tree-sitter は nvim-treesitter (main ブランチ) がパーサーのビルドに使います。

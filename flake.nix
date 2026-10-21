@@ -107,6 +107,7 @@
           pkgs.tree-sitter  # nvim-treesitter (main) のパーサービルドに必要
           pkgs.docker          # docker CLI (エンジンは colima)
           pkgs.docker-compose  # docker compose
+          pkgs.smartmontools # ストレージの SMART の情報を読む smartctl (docs/adr/0075)
         ];
 
         # Docker のエンジンは colima を常駐させて使う (Docker Desktop から移行。docs/adr/0012)
