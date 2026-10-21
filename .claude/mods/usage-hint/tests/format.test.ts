@@ -2,7 +2,9 @@ import { describe, expect, test } from 'claude-code/testing'
 
 import {
   estimatePercent,
+  fableFromUsage,
   fableLimit,
+  keepFable,
   parseLimits,
   restoreLimits,
   usageSegments,
@@ -106,5 +108,83 @@ describe('estimatePercent', () => {
 
   test('窓が 0 なら null', () => {
     expect(estimatePercent(100, 0)).toBeNull()
+  })
+})
+
+// 使用量の API (/api/oauth/usage) の応答から Fable の週のウィンドウを取り出す (docs/adr/0074)
+describe('fableFromUsage', () => {
+  const fable = (displayName: string, percent: unknown, resetsAt?: unknown) => ({
+    scope: { model: { display_name: displayName } },
+    percent,
+    ...(resetsAt === undefined ? {} : { resets_at: resetsAt }),
+  })
+
+  test('limits[] のモデル名が Fable のものを、seven_day_overage_included として返す', () => {
+    expect(
+      fableFromUsage({
+        limits: [fable('Opus', 10), fable('Fable', 42.5, '2026-10-25T00:00:00Z')],
+        seven_day_overage_included: { utilization: 1, resets_at: null },
+      }),
+    ).toEqual({
+      kind: 'seven_day_overage_included',
+      percentUsed: 42.5,
+      resetsAt: '2026-10-25T00:00:00Z',
+    })
+  })
+
+  test('モデル名の大文字・小文字は区別しない', () => {
+    expect(fableFromUsage({ limits: [fable('fable', 7)] })?.percentUsed).toBe(7)
+  })
+
+  test('limits[] に無ければ seven_day_overage_included を使う', () => {
+    expect(
+      fableFromUsage({
+        seven_day_overage_included: { utilization: 30, resets_at: '2026-10-25T00:00:00Z' },
+      }),
+    ).toEqual({
+      kind: 'seven_day_overage_included',
+      percentUsed: 30,
+      resetsAt: '2026-10-25T00:00:00Z',
+    })
+  })
+
+  test('リセット時刻が無い・null なら resetsAt を付けない', () => {
+    expect(
+      fableFromUsage({ seven_day_overage_included: { utilization: 30, resets_at: null } }),
+    ).toEqual({ kind: 'seven_day_overage_included', percentUsed: 30 })
+  })
+
+  test('どちらも無い・形が違うときは無し', () => {
+    expect(fableFromUsage({})).toBeUndefined()
+    expect(fableFromUsage(null)).toBeUndefined()
+    expect(fableFromUsage('text')).toBeUndefined()
+    expect(fableFromUsage({ limits: 'x', seven_day_overage_included: null })).toBeUndefined()
+    expect(fableFromUsage({ limits: [fable('Fable', '42')] })).toBeUndefined()
+    expect(
+      fableFromUsage({ seven_day_overage_included: { utilization: null, resets_at: null } }),
+    ).toBeUndefined()
+  })
+})
+
+// 新しいウィンドウに Fable が無ければ、直前の Fable を残す (docs/adr/0074)
+describe('keepFable', () => {
+  const FABLE = { kind: 'seven_day_overage_included', percentUsed: 42 }
+
+  test('新しいウィンドウに Fable が無ければ、直前の Fable を足す', () => {
+    expect(keepFable([{ kind: 'five_hour', percentUsed: 10 }], [FABLE])).toEqual([
+      { kind: 'five_hour', percentUsed: 10 },
+      FABLE,
+    ])
+  })
+
+  test('新しいウィンドウに Fable があれば、それを使う', () => {
+    const next = { kind: 'seven_day_overage_included', percentUsed: 50 }
+    expect(keepFable([next], [FABLE])).toEqual([next])
+  })
+
+  test('直前に Fable が無ければ、新しいウィンドウのまま', () => {
+    expect(keepFable([{ kind: 'five_hour', percentUsed: 10 }], [])).toEqual([
+      { kind: 'five_hour', percentUsed: 10 },
+    ])
   })
 })

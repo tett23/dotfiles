@@ -30,7 +30,59 @@ const segment = (label: string, value: number | null | undefined): Segment =>
     ? { label, value: '--', level: 'normal' }
     : { label, value: `${Math.round(value)}%`, level: levelOf(value) }
 
-export const usageSegments = ({ contextPercent, rateLimits }: Snapshot): Segment[] => [
+// Fable の週のウィンドウの kind。Claude Code 本体もこの kind を「Fable limit」と表示する (docs/adr/0074)
+export const FABLE_KIND = 'seven_day_overage_included'
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null
+
+const toFable = (percent: unknown, resetsAt: unknown): Limit | undefined =>
+  typeof percent !== 'number'
+    ? undefined
+    : {
+        kind: FABLE_KIND,
+        percentUsed: percent,
+        ...(typeof resetsAt === 'string' ? { resetsAt } : {}),
+      }
+
+const isFableScope = (entry: Record<string, unknown>): boolean => {
+  const scope = isRecord(entry.scope) ? entry.scope : {}
+  const model = isRecord(scope.model) ? scope.model : {}
+
+  return typeof model.display_name === 'string' && model.display_name.toLowerCase() === 'fable'
+}
+
+// 使用量の API (/api/oauth/usage) の応答から Fable の週のウィンドウを取り出す。limits[] のモデル名が Fable のものを優先し、
+// 無ければ seven_day_overage_included を使う。応答の形は公開されていないので、形が違えば無しにする (docs/adr/0074)
+export const fableFromUsage = (body: unknown): Limit | undefined => {
+  if (!isRecord(body)) {
+    return undefined
+  }
+  const entry = (Array.isArray(body.limits) ? body.limits : [])
+    .filter(isRecord)
+    .find(isFableScope)
+  const overage = isRecord(body[FABLE_KIND]) ? body[FABLE_KIND] : undefined
+
+  return (
+    (entry && toFable(entry.percent, entry.resets_at)) ??
+    (overage && toFable(overage.utilization, overage.resets_at))
+  )
+}
+
+// 新しいウィンドウに Fable が無ければ、直前の Fable を残す。Fable は API の応答に入らないことが多い (docs/adr/0074)
+export const keepFable = (next: readonly Limit[], previous: readonly Limit[]): Limit[] => {
+  const kept = byKind(FABLE_KIND)(previous)
+
+  return kept && !byKind(FABLE_KIND)(next) ? [...next, kept] : [...next]
+}
+
+// limits の同じ kind のウィンドウを limit で置き換える (無ければ足す)
+export const withLimit = (limits: readonly Limit[], limit: Limit): Limit[] => [
+  ...limits.filter(({ kind }) => kind !== limit.kind),
+  limit,
+]
+
+export const usageSegments =({ contextPercent, rateLimits }: Snapshot): Segment[] => [
   segment('5h', byKind('five_hour')(rateLimits)?.percentUsed),
   segment('7d', byKind('seven_day')(rateLimits)?.percentUsed),
   segment('Fable', fableLimit(rateLimits)?.percentUsed),

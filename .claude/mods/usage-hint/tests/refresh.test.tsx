@@ -1,6 +1,6 @@
 import { expect, mock, test } from 'claude-code/testing'
 import type { MockClock } from 'claude-code/testing'
-import type { On, RenderSurface, SessionUsage } from 'claude-code'
+import type { On, RenderSurface, SessionAuthorization, SessionUsage } from 'claude-code'
 import type { Engine } from 'claude-code/testing'
 
 // 表示中のセッションで、1 分ごとに表示の値を更新する (docs/adr/0063)
@@ -22,6 +22,10 @@ type World = {
   usage: SessionUsage
   surfaces: readonly RenderSurface[]
   usageCalls: number
+  // 使用量の API (docs/adr/0074): 認証の handle、応答の本文 (undefined なら失敗)、受けたリクエスト
+  authorization: SessionAuthorization
+  usageBody: unknown
+  fetches: { url: string; auth?: string }[]
 }
 
 const usageWith = (rateLimits: SessionUsage['rateLimits'], percent?: number): SessionUsage => ({
@@ -37,6 +41,9 @@ const engine = (on: On, usage: SessionUsage): World => {
     usage,
     surfaces: ['desktop'],
     usageCalls: 0,
+    authorization: null,
+    usageBody: undefined,
+    fetches: [],
   }
   mock.store(on)
   on('command.register', ($, e) => ({ value: { command: e.name } }))
@@ -48,6 +55,15 @@ const engine = (on: On, usage: SessionUsage): World => {
     return { value: world.usage }
   })
   on('session.surfaces', () => ({ value: world.surfaces }))
+  on('session.authorize', () => ({ value: world.authorization }))
+  on('http.fetch', ($, e) => {
+    world.fetches.push({ url: e.url, auth: e.init?.auth })
+    if (world.usageBody === undefined) {
+      return { value: { status: 500, ok: false, headers: {}, text: '' } }
+    }
+
+    return { value: { status: 200, ok: true, headers: {}, text: JSON.stringify(world.usageBody) } }
+  })
   on('session.measure', ($, e) => ({ changed: e.changed }))
   on('ui.render', { component: 'AbovePrompt' }, ($, e) => {
     const { Box } = $.ui.resolve(e)
@@ -184,4 +200,74 @@ test('/clear の後も 1 分ごとの更新を続ける', async ($, on) => {
   world.usage = usageWith([{ kind: 'five_hour', percentUsed: 30 }], 5)
   await world.clock.advance(MINUTE)
   expect(await band($)).toBe('5h 30% · 7d -- · Fable -- · ctx 5%')
+})
+
+// 使用量の API から Fable の週のウィンドウを取る (docs/adr/0074)
+const USAGE_URL = 'https://api.anthropic.com/api/oauth/usage'
+const fableBody = (percent: number) => ({
+  limits: [{ scope: { model: { display_name: 'Fable' } }, percent, resets_at: '2026-10-10T00:00:00.000Z' }],
+})
+
+test('開始時に、使用量の API から Fable の値を出す。リクエストには認証の handle を付ける', async ($, on) => {
+  const world = engine(on, usageWith([{ kind: 'five_hour', percentUsed: 10 }], 20))
+  world.authorization = { handle: 'h1', kind: 'bearer' }
+  world.usageBody = fableBody(42)
+  await start($)
+
+  expect(await band($)).toBe('5h 10% · 7d -- · Fable 42% · ctx 20%')
+  expect(world.fetches).toEqual([{ url: USAGE_URL, auth: 'h1' }])
+})
+
+test('Fable の値は 5 分ごとに問い合わせる (1 分ごとの更新では問い合わせない)', async ($, on) => {
+  const world = engine(on, usageWith([{ kind: 'five_hour', percentUsed: 10 }], 20))
+  world.authorization = { handle: 'h1', kind: 'bearer' }
+  world.usageBody = fableBody(42)
+  await start($)
+
+  world.usageBody = fableBody(55)
+  await world.clock.advance(4 * MINUTE)
+  expect(world.fetches.length).toBe(1)
+  expect(await band($)).toBe('5h 10% · 7d -- · Fable 42% · ctx 20%')
+
+  await world.clock.advance(MINUTE)
+  expect(world.fetches.length).toBe(2)
+  expect(await band($)).toBe('5h 10% · 7d -- · Fable 55% · ctx 20%')
+})
+
+test('認証の handle が無ければ問い合わせず、Fable は -- のまま', async ($, on) => {
+  const world = engine(on, usageWith([{ kind: 'five_hour', percentUsed: 10 }], 20))
+  world.usageBody = fableBody(42)
+  await start($)
+
+  expect(world.fetches).toEqual([])
+  expect(await band($)).toBe('5h 10% · 7d -- · Fable -- · ctx 20%')
+})
+
+test('問い合わせに失敗したときは、直前の Fable の値を残す', async ($, on) => {
+  const world = engine(on, usageWith([{ kind: 'five_hour', percentUsed: 10 }], 20))
+  world.authorization = { handle: 'h1', kind: 'bearer' }
+  world.usageBody = fableBody(42)
+  await start($)
+
+  world.usageBody = undefined
+  await world.clock.advance(5 * MINUTE)
+  expect(world.fetches.length).toBe(2)
+  expect(await band($)).toBe('5h 10% · 7d -- · Fable 42% · ctx 20%')
+})
+
+test('API の応答 (measure) や 1 分ごとの更新に Fable が無くても、Fable の値を残す', async ($, on) => {
+  const world = engine(on, usageWith([{ kind: 'five_hour', percentUsed: 10 }], 20))
+  world.authorization = { handle: 'h1', kind: 'bearer' }
+  world.usageBody = fableBody(42)
+  await start($)
+
+  await $.session.measure({
+    context: { window: 200_000, tokens: 60_000, percent: 30 },
+    rateLimits: [{ kind: 'five_hour', percentUsed: 12 }],
+    changed: ['context', 'rateLimits'],
+  })
+  expect(await band($)).toBe('5h 12% · 7d -- · Fable 42% · ctx 30%')
+
+  await world.clock.advance(MINUTE)
+  expect(await band($)).toMatch(/ · Fable 42% · /)
 })

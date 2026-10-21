@@ -14,9 +14,12 @@ import type { Level, Segment } from './format'
 import {
   SEPARATOR,
   estimatePercent,
+  fableFromUsage,
+  keepFable,
   parseLimits,
   restoreLimits,
   usageSegments,
+  withLimit,
 } from './format'
 
 const EMPTY: Snapshot = { contextPercent: null, rateLimits: [] }
@@ -61,23 +64,64 @@ const refresh = async ($: EngineInterface): Promise<void> => {
   await update($, snapshot, previous => ({
     contextPercent: usage.context.percent ?? previous.contextPercent,
     rateLimits: restoreLimits(
-      usage.rateLimits.length > 0 ? toLimits(usage.rateLimits) : previous.rateLimits,
+      usage.rateLimits.length > 0
+        ? keepFable(toLimits(usage.rateLimits), previous.rateLimits)
+        : previous.rateLimits,
       now,
     ),
   }))
 }
 
+// Claude Code の /usage と同じ使用量の API。Fable の週のウィンドウは、API の応答 (session.measure) には
+// Fable にリクエストしたときしか入らないので、ここから取る (docs/adr/0074)
+const USAGE_URL = 'https://api.anthropic.com/api/oauth/usage'
+
+const parseJson = (text: string): unknown => {
+  try {
+    return JSON.parse(text)
+  } catch {
+    return undefined
+  }
+}
+
+// 使用量の API から Fable のウィンドウを取り、表示と保存に反映する。認証の handle が無い・失敗・形が違うときは何もしない
+const refreshFable = async ($: EngineInterface): Promise<void> => {
+  const authorization = await $.session.authorize().catch(() => null)
+  if (!authorization) {
+    return
+  }
+  const response = await $.http
+    .fetch(USAGE_URL, { auth: authorization.handle })
+    .catch(() => undefined)
+  const fable = response?.ok ? fableFromUsage(parseJson(response.text)) : undefined
+  if (!fable) {
+    return
+  }
+  const now = await $.clock.now()
+  await update($, snapshot, previous => ({
+    ...previous,
+    rateLimits: restoreLimits(withLimit(previous.rateLimits, fable), now),
+  }))
+  await $.store.set(STORE_KEY, (await read($, snapshot)).rateLimits)
+}
+
 const REFRESH_INTERVAL_MS = 60_000
+// 使用量の API は、1 分ごとの更新の 5 回に 1 回 (5 分ごと) だけ問い合わせる (docs/adr/0074)
+const FABLE_EVERY = 5
 
 // 1 分ごとの更新。どの画面も表示していない間は更新しない (docs/adr/0063)
-const refreshIfShown = async ($: EngineInterface): Promise<void> => {
+const refreshIfShown = async ($: EngineInterface, withFable: boolean): Promise<void> => {
   const surfaces = await $.session.surfaces().catch(() => [])
   if (surfaces.length > 0) {
     await refresh($)
+    if (withFable) {
+      await refreshFable($)
+    }
   }
 }
 
 let refreshTimer: Timer | undefined
+let refreshTicks = 0
 
 const stopRefresh = () => {
   refreshTimer?.cancel()
@@ -116,9 +160,12 @@ export const register: Register = on => {
       await update($, snapshot, () => initial)
     }
     await refresh($)
+    await refreshFable($)
     stopRefresh()
+    refreshTicks = 0
     refreshTimer = $.clock.every(REFRESH_INTERVAL_MS, () => {
-      void refreshIfShown($)
+      refreshTicks += 1
+      void refreshIfShown($, refreshTicks % FABLE_EVERY === 0)
     })
 
     return result
@@ -134,13 +181,18 @@ export const register: Register = on => {
   })
 
   on('session.measure', async ($, e, next) => {
+    // 窓が空の報告では直前の窓を残す (docs/adr/0008)。Fable が無ければ直前の Fable を残す (docs/adr/0074)
+    const previous = await read($, snapshot)
+    const rateLimits =
+      e.rateLimits.length > 0
+        ? keepFable(toLimits(e.rateLimits), previous.rateLimits)
+        : previous.rateLimits
     if (e.rateLimits.length > 0) {
-      await $.store.set(STORE_KEY, toLimits(e.rateLimits))
+      await $.store.set(STORE_KEY, rateLimits)
     }
-    // 窓が空の報告では直前の窓を残す (docs/adr/0008)
-    await update($, snapshot, previous => ({
+    await update($, snapshot, () => ({
       contextPercent: e.context.percent ?? null,
-      rateLimits: e.rateLimits.length > 0 ? toLimits(e.rateLimits) : previous.rateLimits,
+      rateLimits,
     }))
 
     return next(e)
