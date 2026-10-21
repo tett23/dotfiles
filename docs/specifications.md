@@ -257,3 +257,6 @@ usage-hint の mod のテストは CI では行わない (本人の判断。[ADR
 - [ADR 0040](adr/0040-trailing-blank-line.md) (却下): nvim で保存するときにファイルの末尾に空行を 1 行残す。整形ツール (prettier・gofmt・rubocop など) が
   末尾の空行を消すため、ほかのリポジトリの CI の検査 (`prettier --check` など) に引っかかり、保存のたびに undo の履歴も
   増えるため、採らなかった。nvim は既定 (`fixendofline`) どおり、最後の行の後に改行を 1 つ付けて保存する。
+- [ADR 0077](adr/0077-mygo-cli.md) (破棄): MyGo の CLI (`mygo`) を mise の npm バックエンドで入れる。依存の一覧で管理するほど使わず、
+  0.x で破壊的な変更に追従し続けるのも負担で、いずれ使わなくなる見込みのため、取りやめた。使うときは、README のとおりプロジェクトごとに
+  `bunx mygo-cli` や `go tool mygo` で呼ぶ。
