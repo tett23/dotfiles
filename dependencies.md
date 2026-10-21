@@ -22,7 +22,7 @@ claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat batgrep batdi
 以下のアプリケーションを nix-darwin の environment.systemPackages でインストールしてください。
 /Applications/Nix Apps に置かれます。
 
-aquaskk ghostty claude vscode
+aquaskk ghostty claude vscode inkscape
 
 - ghostty は darwin 向けの ghostty-bin を使ってください。
 - aquaskk (AquaSKK) と claude (Claude デスクトップ) は nixpkgs に無いので、下記「自前パッケージ」に従って作ってください。
@@ -64,9 +64,9 @@ node python ruby go rust deno bun lua
 
 ## Install tools
 
-yarn pnpm shfmt biome dust ghcup typescript
+yarn pnpm shfmt biome dust ghcup typescript prh
 
-- typescript は mise の登録簿に無いので、npm バックエンド (npm:typescript) で入れてください。
+- typescript と prh は mise の登録簿に無いので、npm バックエンド (npm:typescript・npm:prh) で入れてください。
 - dust は github バックエンド (github:bootandy/dust) で入れてください。既定の取得先 (aqua) は macOS で Intel 版を選ぶためです。
 
 ## 自作のツール

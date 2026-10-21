@@ -17,6 +17,8 @@ shfmt = "latest"
 biome = "latest"
 # mise の登録簿に無いので npm から入れる。usage-hint の型検査に使う (docs/adr/0062)
 "npm:typescript" = "latest"
+# 日本語の表記の揺れを辞書で検査・置換する。登録簿に無いので npm から入れる (docs/adr/0072)
+"npm:prh" = "latest"
 # 既定の取得先 (aqua) は macOS で Intel 版を選ぶので、GitHub のリリースから Apple Silicon 版を取る
 "github:bootandy/dust" = "latest"
 ghcup = "latest" # Haskell の ghc・cabal は ghcup で入れる (install.sh・bin/update-mise。docs/adr/0050)

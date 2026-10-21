@@ -148,6 +148,7 @@
               pkgs.vscode
               claude-desktop
             ];
+              pkgs.inkscape # nixpkgs にビルド済みの Inkscape.app がある (docs/adr/0072)
 
             # 入力メソッドは実体のファイルとして /Library/Input Methods に置く必要がある (docs/adr/0012)。
             # 初めて入れたときはログアウトが必要

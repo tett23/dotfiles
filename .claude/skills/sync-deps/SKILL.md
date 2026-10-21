@@ -20,6 +20,8 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 |---|---|
 | `rg` | `pkgs.ripgrep` |
 | `typescript`(mise) | `"npm:typescript"`(登録簿に無いため npm バックエンド) |
+| `prh`(mise) | `"npm:prh"`(登録簿に無いため npm バックエンド) |
+| `inkscape`(GUI) | `pkgs.inkscape`(nixpkgs に Inkscape.app がある) |
 | `batgrep` / `batdiff` | `pkgs.bat-extras.batgrep` / `pkgs.bat-extras.batdiff` |
 | `nvim` | `pkgs.neovim` |
 | `awscli` | `pkgs.awscli2` |
