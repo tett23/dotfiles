@@ -165,6 +165,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   (`prefix + y` は zsh の vi モードが前提)。
 - スクロールバックは 200 万行。
 - 表示中のペインのプログラムが送る端末への制御 (画像の表示など) は、tmux を通さずに Ghostty に通す (`allow-passthrough on`。[ADR 0054](adr/0054-tmux-allow-passthrough.md))。
+- tmux のソケットは `/tmp` ではなく `~/.local/run/tmux-<uid>/` に置く (`zsh/zshenv` の `TMUX_TMPDIR`)。`/tmp` のソケットが消えて別のサーバーが同じ場所に
+  起動し、今のサーバーの中の `tmux` がそちらにつながるのを防ぐ。`Ctrl-T` のウィンドウの切り替えは、`TMUX` のサーバーと違うサーバーにつながったら、
+  一覧を出さずに知らせる ([ADR 0076](adr/0076-tmux-socket-outside-tmp.md))。
 - ペインのプログラムが出す端末のリンク (OSC 8) を Ghostty に渡す (`terminal-features` の `hyperlinks`。[ADR 0057](adr/0057-remaining-improvements-2.md))。
 - `Shift+Enter` などの修飾キーの組み合わせを、ペインのプログラムに渡す (`extended-keys on`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
 - `Ctrl-T` (prefix 無し) で、ポップアップの中で全セッションのウィンドウを fzf で選んで切り替える (`tmux/scripts/window-switcher`)。

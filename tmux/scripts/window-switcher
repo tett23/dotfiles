@@ -9,6 +9,20 @@
 current=${1:-}
 tab=$(printf '\t')
 
+# TMUX (<ソケット>,<サーバーの pid>,<セッション>) のソケットが別のサーバーに置き換わっていると、ほかのサーバーの一覧が出るので、
+# pid を比べて、違えば一覧を出さずに知らせる (docs/adr/0076)
+expected_pid=$(printf '%s' "${TMUX:-}" | cut -d, -f2)
+if [ -n "$expected_pid" ] && [ "$(tmux display-message -p '#{pid}' 2>/dev/null)" != "$expected_pid" ]; then
+  echo "window-switcher: tmux のソケット (${TMUX%%,*}) が別のサーバーに置き換わっています。" >&2
+  echo "このサーバー (pid $expected_pid) は kill -USR1 $expected_pid でソケットを作り直せます (docs/adr/0076)。" >&2
+  # ポップアップ (display-popup -E) は終わるとすぐ閉じるので、端末から呼ばれたときは Enter を待つ
+  if [ -t 0 ]; then
+    printf "(Enter で閉じる)" >&2
+    read -r _
+  fi
+  exit 1
+fi
+
 target=$(
   tmux list-windows -a -F "#{session_name}:#{window_index}${tab}#{b:pane_current_path}  #{pane_current_command}" |
     awk -F "$tab" -v current="$current" '{ mark = ($1 == current) ? "*" : " "; print $1 "\t" mark " " $2 }' |

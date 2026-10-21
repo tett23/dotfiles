@@ -14,6 +14,11 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_RUNTIME_DIR=$HOME/.local/run
 export XDG_STATE_HOME=$HOME/.local/state
 
+# tmux のソケットを /tmp の外 (~/.local/run/tmux-<uid>/) に置く。/tmp のソケットが消えると、別のサーバーが同じ場所に
+# 起動し、今のサーバーの中から tmux を呼ぶとそちらにつながる (docs/adr/0076)
+export TMUX_TMPDIR=$XDG_RUNTIME_DIR
+[[ -d $TMUX_TMPDIR ]] || mkdir -p -m 700 $TMUX_TMPDIR
+
 # mise: dotfiles 実体へ symlink した設定を無条件に信頼する (別マシンでの `mise trust` を不要にする)
 export MISE_TRUSTED_CONFIG_PATHS="$DOTFILES/mise:$HOME/.config/mise"
 

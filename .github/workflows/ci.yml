@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: install zsh
-        run: sudo apt-get update && sudo apt-get install -y zsh
+        run: sudo apt-get update && sudo apt-get install -y zsh tmux # tmux は window-switcher のテストで使う (docs/adr/0076)
       # zsh/tests/ のテストをすべて実行する (足したテストも漏れない。docs/adr/0046)
       - name: zsh tests
         run: |
