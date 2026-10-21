@@ -135,6 +135,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   (Lua の整形は stylua。[ADR 0045](adr/0045-fix-audit-failures-and-risks.md))。`<Leader>fmt` も保存時と同じく conform で整形する
   (conform に整形の道具が無ければ LSP で整形する。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
 - 診断のメッセージは行の右に出し、重いものを優先して並べる (`virtual_text`・`severity_sort`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
+- ターミナル (toggleterm・`:terminal`) のバッファでは、ノーマルモード (スクロールした後など) でも `Ctrl-E` をシェルに渡す
+  (入力モードに戻ってから送る。全体の `<C-e>` は winresizer。[ADR 0073](adr/0073-nvim-terminal-ctrl-e.md))。
 - Telescope のファイル検索 (`<Leader><Leader>`・`<Leader>ff`) と文字列の検索 (`<Leader>fg`) は、`.` で始まるファイルも対象にする。
   `.gitignore` に従い、`.git` の中は除く (zsh の `Ctrl-P` と同じ。[ADR 0038](adr/0038-search-hidden-files.md))。
 

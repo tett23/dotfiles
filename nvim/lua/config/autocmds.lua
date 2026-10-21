@@ -70,3 +70,12 @@ vim.filetype.add({
     as = "actionscript",
   },
 })
+
+-- ターミナルのバッファでは、ノーマルモード (スクロールした後など) でも Ctrl-E をシェルに渡す。
+-- 全体の <C-e> は winresizer が使うので、バッファごとに入力モードへ戻ってから送る (docs/adr/0073)
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = vim.api.nvim_create_augroup("TerminalCtrlE", { clear = true }),
+  callback = function(args)
+    vim.keymap.set("n", "<C-e>", "i<C-e>", { buffer = args.buf, noremap = true, desc = "Ctrl-E をシェルに渡す" })
+  end,
+})
