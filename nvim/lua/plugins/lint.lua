@@ -4,10 +4,19 @@ return {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
     opts = {
-      format_on_save = { timeout_ms = 2000, lsp_format = "fallback" }, -- 旧 ale_fix_on_save
+      -- 旧 ale_fix_on_save。Markdown は自動保存のたびに prettier が表全体をそろえるので、保存では整形せず、
+      -- <Leader>fmt でだけ整形する (docs/adr/0082)
+      format_on_save = function(bufnr)
+        if vim.bo[bufnr].filetype == "markdown" then
+          return nil
+        end
+        return { timeout_ms = 2000, lsp_format = "fallback" }
+      end,
       formatters_by_ft = {
         javascript = { "prettier" },
+        javascriptreact = { "prettier" }, -- JSX・TSX (docs/adr/0082)
         typescript = { "prettier" },
+        typescriptreact = { "prettier" },
         json = { "prettier" },
         markdown = { "prettier" },
         ruby = { "rubocop" },
@@ -62,7 +71,9 @@ return {
 
       lint.linters_by_ft = {
         javascript = { "eslint_d" },
+        javascriptreact = { "eslint_d" }, -- JSX・TSX (docs/adr/0082)
         typescript = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
         ruby = { "rubocop" },
         markdown = { "textlint" },
       }
