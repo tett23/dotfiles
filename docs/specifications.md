@@ -136,6 +136,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   - nvim-treesitter-context: 今いる関数・クラスの先頭行を画面上部に固定表示する (最大 3 行)。
   - trouble.nvim: `<Leader>xx` で全体の診断、`<Leader>xX` で今のバッファの診断、`<Leader>xq` で quickfix リストを開閉する。
 - which-key のキーの一覧のアイコンには mini.icons を使う ([ADR 0039](adr/0039-fix-nvim-checkhealth.md))。
+- 括弧は、深さごとに色を変える (rainbow-delimiters.nvim。色は monokai-pro のもの)。カーソルのある範囲のインデントの線は、
+  その範囲を囲む括弧と同じ色で描く (indent-blankline.nvim。[ADR 0087](adr/0087-nvim-rainbow-colors-and-indent-scope.md))。
 - `<Leader>t` で新しいタブを開く (`T` は flash.nvim の後方への文字の移動。[ADR 0045](adr/0045-fix-audit-failures-and-risks.md))。
 - LSP は mason で入れたサーバーを有効にする。rubocop・stylua は LSP にせず、診断は nvim-lint、整形は conform で行う
   (Lua の整形は stylua。[ADR 0045](adr/0045-fix-audit-failures-and-risks.md))。`<Leader>fmt` も保存時と同じく conform で整形する
