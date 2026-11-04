@@ -32,6 +32,10 @@ if (( $+commands[eza] )); then
   alias ela="e -la --git"
   alias et="e --tree --git-ignore"
 fi
+# fd の結果のパスも端末のリンクにする (色を付けるとき、つまり端末に出すときだけ。docs/adr/0085)
+if (( $+commands[fd] )); then
+  alias fd="fd --hyperlink=auto"
+fi
 if (( $+commands[bat] )); then
   alias b="bat"
 fi

@@ -167,6 +167,10 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - フォントは指定しない (英数字は Ghostty に組み込みの JetBrains Mono)。日本語の文字 (和文の記号・ひらがな・カタカナ・漢字・
   全角の英数字) は、等幅のゴシック体の BIZ UDゴシックで表示する (`font-codepoint-map`。[ADR 0048](adr/0048-ghostty-japanese-font.md))。
 - 合字 (リガチャ) は使わず、`<-`・`->`・`!=` などを 1 文字ずつ表示する (`font-feature` で `calt`・`liga`・`dlig` を無効。[ADR 0049](adr/0049-ghostty-disable-ligatures.md))。
+- ファイルのパス (`./foo`・`docs/adr/….md` などの相対パスを含む) を Cmd+クリックで開く。相対パスは、シェルが OSC 7 で知らせた今のディレクトリを元に開く。
+  tmux の中では、zsh がプロンプトの前と `cd` の後に、今のディレクトリを tmux の passthrough で包んで Ghostty に送る (`zsh/lib/tmux-osc7.zsh`)。
+  `rg`・`fd` (エイリアス)・`e` (eza) は、パスを絶対パスの端末のリンク (OSC 8) で出す (`ripgrep/config`。端末に出すときだけ)。
+  行番号の付いたパス (`foo.md:12`) は開けない ([ADR 0085](adr/0085-open-relative-paths-in-ghostty-through-tmux.md))。
 
 ## tmux
 
