@@ -20,6 +20,7 @@ __cached_eval mise mise activate zsh
 source $DOTFILES/zsh/plugins.sh
 # compinit はプラグインの fpath 追加より後に実行する
 source $DOTFILES/zsh/completions.sh
+source $DOTFILES/zsh/lib/command-time.zsh # 3 秒以上かかったコマンドの所要時間を出す (docs/adr/0083)
 
 # zshrc と分けておきたい設定 (~/.config/zsh/.zshrc.mine → zsh/zshrc.mine。docs/adr/0043)
 [ -f ${ZDOTDIR:-$HOME}/.zshrc.mine ] && source ${ZDOTDIR:-$HOME}/.zshrc.mine

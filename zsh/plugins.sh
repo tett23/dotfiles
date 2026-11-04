@@ -1,6 +1,6 @@
 # zinit 本体も、プラグインと同じくコミットに固定する。更新するときは _zinit_rev を書き換える (docs/adr/0046)
 typeset -g _zinit_dir=${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git
-typeset -g _zinit_rev=d05a5301150909d8b386ebb974e1d1634740d65d
+typeset -g _zinit_rev=cb4968123979cf073384e93aa8066d8fd450580f
 if [[ ! -f $_zinit_dir/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "${_zinit_dir:h}" && command chmod g-rwX "${_zinit_dir:h}"
@@ -21,7 +21,7 @@ autoload -Uz _zinit
 
 # プラグインは現在のコミットに固定する。更新するときは ver を書き換える (docs/adr/0010)
 # 補完定義を足すだけの zsh-completions は compinit より前に必要なので、すぐに読み込む
-zinit ice ver"7a884c75b4f3ce2d8d24df8e55dcc359a020be3f"
+zinit ice ver"989b23277ab33e8d5e82df6aed936e846db9d8b8"
 zinit light zsh-users/zsh-completions
 
 # 以下は最初のプロンプトの直後に、書いた順に読み込む (turbo モード。docs/adr/0011)
@@ -30,9 +30,7 @@ zinit light zsh-users/zsh-completions
 #   → 候補表示を開始する (従来は最初のプロンプトで開始していた)
 # 遅延読み込みは compinit (zshrc) の後に走るので、fast-syntax-highlighting の
 # 「compinit の後に読み込む」という条件 (docs/adr/0010) も満たす
-zinit ice wait lucid ver"c3d4e576c9c86eac62884bd47c01f6faed043fc5"
+zinit ice wait lucid ver"85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5"
 zinit light zsh-users/zsh-autosuggestions
-zinit ice wait lucid ver"cf318e06a9b7c9f2219d78f41b46fa6e06011fd9" atload"_zsh_autosuggest_start"
+zinit ice wait lucid ver"4672ad5dd9ad68a7effc1476d65afb7c584ce2b3" atload"_zsh_autosuggest_start"
 zinit light zdharma-continuum/fast-syntax-highlighting
-zinit ice wait lucid ver"803d26eef526bff1494d1a584e46a6e08d25d918"
-zinit light popstas/zsh-command-time
