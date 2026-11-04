@@ -58,6 +58,11 @@
           "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
           "Library/Application Support/Code/User/snippets".source = link "vscode/snippets";
           "Library/Application Support/AquaSKK/keymap.conf".source = link "skk/keymap.conf";
+          # NablaSKK の設定。設定アプリで保存するとリンクが普通のファイルに置き換わる (docs/adr/0081)
+          "Library/Application Support/NablaSKK/keymap.conf".source = link "nablaskk/keymap.conf";
+          "Library/Application Support/NablaSKK/kana-rule.conf".source = link "nablaskk/kana-rule.conf";
+          "Library/Application Support/NablaSKK/settings.conf".source = link "nablaskk/settings.conf";
+          "Library/Application Support/NablaSKK/dictionaries.conf".source = link "nablaskk/dictionaries.conf";
         };
         xdg.configFile = {
           # git・tmux・zsh・rubocop は XDG の場所の設定を読む (docs/adr/0042)

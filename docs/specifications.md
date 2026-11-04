@@ -68,6 +68,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
 | `~/Library/Application Support/Code/User/` の `settings.json`・`keybindings.json`・`snippets` | `vscode/`                                          |
 | `~/Library/Application Support/AquaSKK/keymap.conf`                                           | `skk/keymap.conf`                                  |
+| `~/Library/Application Support/NablaSKK/` の `keymap.conf`・`kana-rule.conf`・`settings.conf`・`dictionaries.conf` | `nablaskk/` (ユーザーの辞書 `skk-jisyo` は管理しない。NablaSKK の設定アプリで保存すると、リンクが普通のファイルに置き換わり、次の `darwin-rebuild` で dotfiles の内容に戻る。[ADR 0081](adr/0081-nablaskk-config-in-dotfiles.md)) |
 
 ## zsh
 
