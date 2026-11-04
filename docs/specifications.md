@@ -139,6 +139,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 括弧は、深さごとに色を変える (rainbow-delimiters.nvim。色は monokai-pro のもの)。カーソルのある範囲のインデントの線は、
   その範囲を囲む括弧と同じ色で描く (indent-blankline.nvim。[ADR 0087](adr/0087-nvim-rainbow-colors-and-indent-scope.md))。
 - `<Leader>t` で新しいタブを開く (`T` は flash.nvim の後方への文字の移動。[ADR 0045](adr/0045-fix-audit-failures-and-risks.md))。
+- `;`・`:` は nvim の既定のまま (`:` でコマンドライン、`;`・`,` で `f`・`t` の繰り返し) で、入れ替えない ([ADR 0089](adr/0089-nvim-restore-semicolon-and-colon.md))。
 - LSP は mason で入れたサーバーを有効にする。rubocop・stylua は LSP にせず、診断は nvim-lint、整形は conform で行う
   (Lua の整形は stylua。[ADR 0045](adr/0045-fix-audit-failures-and-risks.md))。`<Leader>fmt` も保存時と同じく conform で整形する
   (conform に整形の道具が無ければ LSP で整形する。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
