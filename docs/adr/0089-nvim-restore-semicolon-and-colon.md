@@ -1,6 +1,6 @@
 # ADR 0089: nvim の `;` と `:` の入れ替えをやめ、既定の動きに戻す
 
-ステータス: 採択
+ステータス: 採択→[ADR 0090](0090-nvim-swap-semicolon-and-colon-again.md)
 
 ## 文脈
 

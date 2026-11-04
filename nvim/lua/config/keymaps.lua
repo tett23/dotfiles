@@ -3,6 +3,10 @@
 local map = vim.keymap.set
 local opts = { silent = true }
 
+-- ; と : を入れ替える。Shift 無しの ; でコマンドラインに入る (docs/adr/0090)
+map("", ";", ":")
+map("", ":", ";")
+
 -- バッファ / タブ
 map("n", "<Leader>n", "<cmd>enew<CR>", opts) -- 新規バッファ
 map("n", "<Leader>w", "<cmd>BufferClose<CR>", opts) -- バッファを閉じる (barbar)
