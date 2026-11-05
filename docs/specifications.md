@@ -159,8 +159,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - Option キーは Alt として送らない (Ghostty の既定。[ADR 0047](adr/0047-ghostty-option-as-alt-removed.md))。左の Option は Karabiner-Elements で Escape に置き換えているので、
   左の Option (= Escape) に続けて素早くキーを押すと `Alt-c` などと同じ入力になる (zsh は vi モードなので、`KEYTIMEOUT` の 0.4 秒より
   遅いとノーマルモードに入る)。右の Option では特殊な文字を入力する。
-- Ghostty の中で Esc を押すと (Esc キー・`Ctrl-[`・左の Option・右の Command)、Karabiner-Elements が Esc に続けて英数キーを送り、IME を英数モードにする。
-  NablaSKK は、英数キーで英数モードになるよう、キーマップ (`nablaskk/keymap.conf`) に `SwitchToAscii l||keycode::0x66` を足している ([ADR 0080](adr/0080-escape-to-eisu-in-ghostty.md))。
+- Ghostty の中で Esc を押すと (Esc キー・`Ctrl-[`・左の Option・右の Command)、Karabiner-Elements が Esc に続けて F19 を送り、NablaSKK を英数モードにする。
+  NablaSKK は、F19 で英数モードになるよう、キーマップ (`nablaskk/keymap.conf`) に `SwitchToAscii l||keycode::0x50` を足している ([ADR 0080](adr/0080-escape-to-eisu-in-ghostty.md)、[ADR 0093](adr/0093-escape-sends-f19-for-nablaskk-ascii.md))。
+  英数キーは macOS が入力ソースの切り替え (ことえり の英字) に使い、NablaSKK に届かないので使わない。NablaSKK が英数モードのときは、F19 はアプリに届く。
 - 自動更新はしない (Nix で入れていて、`bin/update-nix` で上げる。[ADR 0044](adr/0044-ghostty-conveniences.md))。
 - 配色は nvim と揃えて `Monokai Classic`。`Cmd+\` で、どのアプリからでも画面の上から端末 (quick terminal) を出し入れする。
   終了したときのウィンドウ・タブの配置を、次の起動で戻す。ウィンドウの余白は上下左右で均等にする ([ADR 0044](adr/0044-ghostty-conveniences.md))。
