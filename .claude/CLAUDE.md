@@ -96,6 +96,13 @@ dotfiles のスクリプトは自分の手元でだけ動くので、コミッ�
 fd, rgが入っているのでローカルの調査ではこちらを優先する。
 コミットするスクリプトではfindとgrepを優先する。
 
+### ai-chat-log
+
+ai-chat-logsリポジトリ (https://github.com/tett23/ai-chat-logs) で過去のチャットログを全て保存している。
+`chat-log` コマンドで過去のコンテキストを復元できるので、必要であればコンテキストを復元する。
+まず `chat-log context` でいまのプロジェクトの最近のセッションを知り、`chat-log search <語> --cwd .` で決定や議論を探し、
+`chat-log show <ID> --around <番号>` で前後の会話を読む。詳しくは `chat-log --help`。
+
 ## 実装方針
 
 UNIX哲学にもとづき、GUIや重量級アプリケーションを除けば、小さなツール群でプロダクトを構築する。
