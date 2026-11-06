@@ -147,6 +147,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - LSP は mason で入れたサーバーを有効にする。rubocop・stylua は LSP にせず、診断は nvim-lint、整形は conform で行う
   (Lua の整形は stylua。[ADR 0045](adr/0045-fix-audit-failures-and-risks.md))。`<Leader>fmt` も保存時と同じく conform で整形する
   (conform に整形の道具が無ければ LSP で整形する。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
+- Golem の LSP (`golem lsp`、`~/.local/bin/golem`) は mason の外で有効にする。`.gm` をファイルタイプ `golem` とし、`.gm` と、
+  `manifest.toml` のあるフォルダの TOML (`style.toml`・`preflight.toml`) で起動する ([ADR 0092](adr/0092-nvim-golem-lsp.md))。
 - Markdown は、保存のとき (自動保存を含む) には整形せず、`<Leader>fmt` でだけ prettier で整形する (prettier が表全体の列をそろえ、
   関係の無い行が差分に入るため)。TSX・JSX も、TypeScript・JavaScript と同じく prettier で整形し、eslint_d で検査する
   ([ADR 0082](adr/0082-nvim-markdown-autosave-format-and-tsx.md))。

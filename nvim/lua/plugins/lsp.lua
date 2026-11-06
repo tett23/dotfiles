@@ -16,6 +16,15 @@ return {
       vim.lsp.config("*", {
         capabilities = require("cmp_nvim_lsp").default_capabilities(),
       })
+      -- Golem の LSP は mason の外 (~/.local/bin/golem)。style.toml と preflight.toml の補完のために
+      -- toml も対象にし、manifest.toml の無いフォルダの TOML では起動しない (docs/adr/0092)
+      vim.lsp.config("golem", {
+        cmd = { "golem", "lsp" },
+        filetypes = { "golem", "toml" },
+        root_markers = { "manifest.toml" },
+        workspace_required = true,
+      })
+      vim.lsp.enable("golem")
       require("mason-lspconfig").setup({
         ensure_installed = { "lua_ls", "ts_ls", "pyright", "gopls", "rust_analyzer", "ruby_lsp" },
         -- installed サーバを vim.lsp.enable する。mason-tool-installer で入れた rubocop・stylua は
