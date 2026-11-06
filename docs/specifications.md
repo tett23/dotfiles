@@ -233,6 +233,12 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   - 型検査は、mod のディレクトリで `tsc --noEmit -p .` を実行する。型定義 (`.claude-plugin/types/`) は
     Claude Code が mod を読み込んだときに生成する ([ADR 0061](adr/0061-usage-hint-type-check.md))。`tsc` は mise で入れた TypeScript 7
     (`npm:typescript`。[ADR 0062](adr/0062-typescript-7-via-mise.md))。
+- mod `task-marks` (`.claude/mods/task-marks/`) が、デスクトップアプリで、タスクの一覧を横のペイン「タスク」に出す
+  ([ADR 0091](adr/0091-task-marks-mod.md))。
+  - TaskCreate・TaskUpdate・TaskList・TodoWrite の呼び出しの結果から、mod が一覧を組み立てる。標準のタスクリストは変えられないので、そのまま残る。
+  - 完了は `[完了] 件名` を緑の太字で、作業中は `[作業中] 件名`、未着手は `[未着手] 件名` を dim で出す。
+    入りきらないときは古い完了の項目から省き、省いた数を出す。
+  - ペインは、セッションで最初のタスクが作られたときに開く。`/task-marks` でも開ける。CLI だけのセッションでは開かず、描かない。
 - `bin/orch` は、Claude から `codex exec` / `claude -p` へ作業を委譲する道具。モデルは別名で指定する
   (`opus`、`sonnet`、`haiku`、`fable`、`sol`。既定値は環境変数 `ORCH_MODEL_<別名>` で上書きできる。[ADR 0024](adr/0024-orch-models-and-headless-install.md))。
 
@@ -264,7 +270,7 @@ GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
 - nix-darwin の設定の評価 (`nix eval`。Nix は `DeterminateSystems/determinate-nix-action@v3` で入れる。[ADR 0046](adr/0046-fix-audit-non-breaking.md))
 
 同じブランチ・PR の古い実行は取り消し、各ジョブには時間の上限を付けている ([ADR 0046](adr/0046-fix-audit-non-breaking.md))。自前のパッケージのビルドと、
-
+usage-hint と task-marks の mod のテストは CI では行わない (本人の判断。[ADR 0046](adr/0046-fix-audit-non-breaking.md))。
 
 ## ADR の運用
 

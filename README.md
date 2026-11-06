@@ -38,8 +38,9 @@ git config core.hooksPath .githooks
 | ------------------------------- | -------------------------------- | ------------------------------------------------------------------------- |
 | zsh                             | `zsh/tests/`                     | `for t in zsh/tests/*.test.zsh; do zsh $t \|\| echo "FAIL $t"; done` (1 つだけなら `zsh zsh/tests/<名前>.test.zsh`) |
 | usage-hint (Claude Code の mod) | `.claude/mods/usage-hint/tests/` | `claude plugin test .claude/mods/usage-hint`                              |
+| task-marks (Claude Code の mod) | `.claude/mods/task-marks/tests/` | `claude plugin test .claude/mods/task-marks`                              |
 
-usage-hint の型検査は、`.claude/mods/usage-hint` で `tsc --noEmit -p .` を実行します (`tsc` は mise で入れる TypeScript 7。
+mod の型検査は、`.claude/mods/usage-hint` と `.claude/mods/task-marks` で `tsc --noEmit -p .` を実行します (`tsc` は mise で入れる TypeScript 7。
 型定義は Claude Code が mod を読み込んだときに生成します)。
 
 ## ドキュメント

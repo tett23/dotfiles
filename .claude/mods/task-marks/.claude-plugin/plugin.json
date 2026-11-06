@@ -1,0 +1,9 @@
+{
+  "name": "task-marks",
+  "version": "0.1.0",
+  "description": "タスクの一覧をペインに出し、完了した項目に [完了] と付けて目立たせる (デスクトップアプリ専用)",
+  "types": "./types/index.d.ts",
+  "author": {
+    "name": "tett23"
+  }
+}
