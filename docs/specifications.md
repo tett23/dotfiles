@@ -299,3 +299,6 @@ usage-hint と task-marks の mod のテストは CI では行わない (本人�
 - [ADR 0077](adr/0077-mygo-cli.md) (破棄): MyGo の CLI (`mygo`) を mise の npm バックエンドで入れる。依存の一覧で管理するほど使わず、
   0.x で破壊的な変更に追従し続けるのも負担で、いずれ使わなくなる見込みのため、取りやめた。使うときは、README のとおりプロジェクトごとに
   `bunx mygo-cli` や `go tool mygo` で呼ぶ。
+- [ADR 0094](adr/0094-nvim-golem-lsp-without-semantic-tokens.md) (破棄): nvim で Golem の LSP の semantic tokens を止め、`.gm` で日本語を打つと
+  1 文字に平均 791.6ms かかる遅さを直す。採択の前に `~/.local/bin/golem` が新しくなり、同じ測り方で平均 2.1ms になって遅さが再現しなくなったため、取りやめた。
+  Golem は今も semantic tokens を知らせながら要求を処理できず、変更のたびにエラー (`window/showMessage`) を送るが、これは Golem の側で直す。
