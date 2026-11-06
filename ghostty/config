@@ -8,6 +8,9 @@ quit-after-last-window-closed = true
 # nvim 側の <D-p> マッピング (Telescope commands = コマンドパレット) で拾う。
 keybind = cmd+p=csi:112;9u
 
+# Cmd+Q を誤って押しても終了しないよう、Cmd+Q を 2 回続けて押したときだけ終了する (docs/adr/0095)
+keybind = super+q>super+q=quit
+
 # Ctrl+J の改行(LF)送出を無効化 (子プロセスに送らず破棄)
 keybind = ctrl+j=ignore
 

@@ -161,6 +161,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 ## Ghostty
 
 - 終了時の確認を出さず、最後のウィンドウを閉じたら終了する。
+- `Cmd+Q` は、2 回続けて押したときだけ終了する (`keybind = super+q>super+q=quit`)。1 回目の後にほかのキーを押すと取り消され、そのキーは入力される
+  ([ADR 0095](adr/0095-ghostty-quit-with-double-cmd-q.md))。
 - `Cmd+P` は Kitty のキーの形式 (`CSI 112;9u`) で送り、nvim の `<D-p>` (コマンドパレット) で受ける。`Ctrl+J` は送らない。
 - Option キーは Alt として送らない (Ghostty の既定。[ADR 0047](adr/0047-ghostty-option-as-alt-removed.md))。左の Option は Karabiner-Elements で Escape に置き換えているので、
   左の Option (= Escape) に続けて素早くキーを押すと `Alt-c` などと同じ入力になる (zsh は vi モードなので、`KEYTIMEOUT` の 0.4 秒より
