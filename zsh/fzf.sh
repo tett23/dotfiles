@@ -80,11 +80,17 @@ function repo() {
   return $ret
 }
 
+# fbr の一覧: ローカルとリモートのブランチを古い順に出し、<リモート>/HEAD だけを除く (docs/adr/0079)。
+# git branch の表示用の出力は加工せず、for-each-ref を使う
+fzf_branch_names() {
+  git for-each-ref --sort=committerdate --format='%(refname:short)%09%(refname)' refs/heads refs/remotes |
+    awk -F '\t' '$2 !~ /^refs\/remotes\/[^\/]+\/HEAD$/ { print $1 }'
+}
+
 # git のブランチ (リモートを含む、更新順) を選び、入力行に足す
 __fbr() {
   local out
-  out=$(git branch --all --sort=committerdate --color | grep -v HEAD | sed 's/.* //' | sed 's/remotes\///' |
-    _fzf_run --reverse -m "$@") || return
+  out=$(fzf_branch_names | _fzf_run --reverse -m "$@") || return
   print -rn -- "${(j: :)${(@qf)out}} "
 }
 
@@ -96,14 +102,13 @@ fbr() {
   return $ret
 }
 
-# プロセスを選んで終了させる (既定は kill -9)
+# プロセスを選んで終了させる (既定は kill -9。1 つ目の引数でシグナルを変え、残りは fzf に渡す)
 __fkill() {
-  local pid
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-
-  if [ "x$pid" != "x" ]
-  then
-    echo $pid | xargs kill -${1:-9}
+  local sig=${1:-9} pid
+  (( $# )) && shift
+  pid=$(__find_pid "$@")
+  if [[ -n $pid ]]; then
+    kill -$sig ${=pid}
   fi
 }
 
@@ -117,13 +122,14 @@ fkill() {
 
 # node_modules のパッケージを選び、パスを入力行に足す
 __find_node_modules(){
-  find_node_packages $(pwd)| jq -r '.[] | [.name + "@" + .version + " " + .path] | .[]' | fzf | awk '{print $2}'
+  find_node_packages $(pwd)| jq -r '.[] | [.name + "@" + .version + " " + .path] | .[]' | _fzf_run "$@" | awk '{print $2}'
 }
 
 # プロセスを選び、PID を入力行に足す
 __find_pid() {
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-  echo $pid
+  local out
+  out=$(ps -ef | sed 1d | _fzf_run -m "$@") || return
+  print -r -- "$out" | fzf_fields 2
 }
 
 # git status のファイルを選び、入力行に足す
@@ -177,7 +183,8 @@ __git_log_oneline_commit_number() {
 # docker のコンテナを選び、ID を入力行に足す
 __docker_container_id() {
   local out
-  out=$(docker ps | _fzf_run --reverse -m "$@") || return
+  # 1 列目を ID にする書式で出す (Docker の版で既定の列が変わっても ID を取れる。docs/adr/0079)
+  out=$(docker ps --format '{{.ID}}\t{{.Image}}\t{{.Status}}\t{{.Names}}' | _fzf_run --reverse -m "$@") || return
   print -r -- "$out" | fzf_fields 1
 }
 
@@ -185,33 +192,32 @@ __docker_container_id() {
 __docker_stop_container() {
   local cid=$(__docker_container_id)
 
-  if [ "x$cid" != "x" ]
-  then
-    docker stop $cid
+  if [[ -n $cid ]]; then
+    docker stop ${=cid}
   fi
 }
 
 # docker のイメージを選び、ID を入力行に足す
 __docker_image_id() {
   local out
-  out=$(docker images | _fzf_run --reverse -m "$@") || return
-  print -r -- "$out" | fzf_fields 3
+  # Docker 29 で docker images の既定の列が変わり、3 列目が ID でなくなった。1 列目を ID にする書式で出す (docs/adr/0079)
+  out=$(docker image ls --format '{{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}' | _fzf_run --reverse -m "$@") || return
+  print -r -- "$out" | fzf_fields 1
 }
 
 # docker のイメージを選んで削除する
 __docker_remove_image() {
   local image_id=$(__docker_image_id)
 
-  if [ "x$image_id" != "x" ]
-  then
-    docker rmi --force $image_id
+  if [[ -n $image_id ]]; then
+    docker rmi --force ${=image_id}
   fi
 }
 
 # yarn のワークスペースを選び、名前を入力行に足す
 __yarn_workspaces(){
   # Yarn 4 (Berry) の一覧。v1 の `yarn workspaces info` は無い (docs/adr/0045)
-  yarn workspaces list --json | jq -r .name | fzf
+  yarn workspaces list --json | jq -r .name | _fzf_run "$@"
 }
 
 # tmux の全セッションのウィンドウを選んで切り替える。入力行には何も足さない
@@ -279,8 +285,7 @@ fzf_command_names() {
 fzf_command_finder() {
   local cmd
   cmd=$(fzf_command_names | _fzf_run --reverse +m | awk '{print $1}')
-  if [ "x$cmd" != "x" ]
-  then
+  if [[ -n $cmd ]]; then
     LBUFFER="${LBUFFER}$(__$cmd)"
   fi
 

@@ -16,7 +16,7 @@
   defaultBranch = main
 [alias]
   tr = log --graph --pretty='format:%C(yellow)%h%Creset %s %Cgreen(%an)%Creset %Cred%d%Creset'
-  co = checkout
+  co = switch
   ci = commit
   # commit.verbose で差分が出るので、cl (commit -av) は消して cia にまとめた (docs/adr/0057)
   cia = commit -a
@@ -34,9 +34,11 @@
   br = branch
   bra = branch -a
   brm = branch -m
-  cob = checkout -b
+  cob = switch -c
   lop = log -p --ignore-space-change
-  delete-merged-branches = !git branch --merged | grep -vE '^\\*|^[[:space:]]*(main|master|develop)$' | xargs -I % git branch -d %
+  # マージ済みのブランチを消す。今のブランチ・ほかの worktree で使っているブランチ・main・master・develop は残す。
+  # git branch の表示用の出力は加工せず、--format で取る (docs/adr/0079)
+  delete-merged-branches = "!f() { b=$(git branch --format='%(HEAD)%09%(worktreepath)%09%(refname:short)' --merged | awk -F '\\t' '$1 != \"*\" && $2 == \"\" && $3 !~ /^(main|master|develop)$/ { print $3 }'); if [ -n \"$b\" ]; then git branch -d $b; fi; }; f"
   lsf = ls-files
   today = !git log --since=midnight --author=\"$(git config user.name)\" --oneline
   adp = add -p

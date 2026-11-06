@@ -1,7 +1,3 @@
-if (( $+commands[colordiff] )); then
-  alias diff='colordiff -u'
-fi
-
 alias j="jobs -l"
 alias g="git"
 alias gi="git"
@@ -38,14 +34,6 @@ if (( $+commands[fd] )); then
 fi
 if (( $+commands[bat] )); then
   alias b="bat"
-fi
-
-if (( $+commands[python3] )); then
-  alias python="python3"
-fi
-
-if (( $+commands[gsed] )); then
-  alias sed="gsed"
 fi
 
 if (( $+commands[gawk] )); then

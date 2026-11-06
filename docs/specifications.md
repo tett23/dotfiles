@@ -120,6 +120,10 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `Ctrl-T` | tmux の全セッションのウィンドウを選んで切り替える (tmux の割り当て。下の tmux の節。[ADR 0033](adr/0033-fzf-tmux-window-switcher.md), [0036](adr/0036-tmux-window-switcher-on-ctrl-t.md), [0052](adr/0052-tmux-window-switcher-in-tmux.md))。fzf 本体の `Ctrl-T` (ファイルの選択) は `Ctrl-P` で使う |
 | `v` (ノーマルモード)・`Ctrl-X Ctrl-E` | 入力中のコマンドを nvim で編集する ([ADR 0034](adr/0034-small-conveniences-zsh-fzf-nvim.md)) |
 
+- fzf のコマンドは、`git branch`・`docker images` などの表示用の出力を加工せず、`git for-each-ref`・`docker image ls --format` など
+  形の決まった出力から一覧を作る。ブランチの一覧からは `<リモート>/HEAD` だけを除く。fzf は共通の処理 (`_fzf_run`) から呼ぶ
+  ([ADR 0079](adr/0079-fix-command-audit-2026-11-04.md))。
+
 ## nvim
 
 - カラースキームは monokai-pro.nvim の `classic` フィルタ ([ADR 0009](adr/0009-fix-git-tmux-nvim-audit.md))。
@@ -203,6 +207,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   `git push` で注釈付きのタグも送る (`push.followTags`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
 - fetch・clone・push で受け取るオブジェクトを検査する (`transfer.fsckObjects`。[ADR 0058](adr/0058-git-fsck-and-vscode-cleanup.md))。
 - `git mergetool` はファイルごとの確認を出さない (`difftool` と同じ)。同じ働きのエイリアスは 1 つにまとめた (`lg`・`cia` を残す。[ADR 0057](adr/0057-remaining-improvements-2.md))。
+- エイリアスの `co`・`cob` は `git switch`・`git switch -c`。`delete-merged-branches` は、マージ済みのブランチのうち、今のブランチ・
+  ほかの worktree で使っているブランチ・`main`・`master`・`develop` を除いて消す (`git branch --format` で取る。[ADR 0079](adr/0079-fix-command-audit-2026-11-04.md))。
 
 ## Claude Code
 
@@ -258,7 +264,7 @@ GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
 - nix-darwin の設定の評価 (`nix eval`。Nix は `DeterminateSystems/determinate-nix-action@v3` で入れる。[ADR 0046](adr/0046-fix-audit-non-breaking.md))
 
 同じブランチ・PR の古い実行は取り消し、各ジョブには時間の上限を付けている ([ADR 0046](adr/0046-fix-audit-non-breaking.md))。自前のパッケージのビルドと、
-usage-hint の mod のテストは CI では行わない (本人の判断。[ADR 0046](adr/0046-fix-audit-non-breaking.md))。
+  (adr-guard の action。ステータスの行とリンクだけの変更は許可する。[ADR 0032](adr/0032-adr-guard.md), [0066](adr/0066-adr-guard-0-8-in-ci.md))
 
 ## ADR の運用
 

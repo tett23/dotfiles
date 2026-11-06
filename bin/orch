@@ -164,11 +164,12 @@ cmd_spawn() {
     printf 'WORKTREE=%s\n' "$([ "$use_worktree" = 1 ] && printf '%s' "$ORCH_DIR/worktrees/$role" || printf none)"
   } > "$rdir/meta"
 
+  # ウィンドウの ID を覚え、cleanup でほかのセッションの同じ名前のウィンドウを閉じないようにする (docs/adr/0079)
   if [ -n "${TMUX:-}" ]; then
-    tmux new-window -d -n "$role" "bash $(printf '%q' "$root/$rdir/run.sh")"
+    tmux new-window -d -P -F '#{window_id}' -n "$role" "bash $(printf '%q' "$root/$rdir/run.sh")" > "$rdir/window"
   else
     tmux new-session -d -s "orch-$SID" 2>/dev/null || true
-    tmux new-window -d -t "orch-$SID" -n "$role" "bash $(printf '%q' "$root/$rdir/run.sh")"
+    tmux new-window -d -P -F '#{window_id}' -t "orch-$SID:" -n "$role" "bash $(printf '%q' "$root/$rdir/run.sh")" > "$rdir/window"
   fi
   printf 'orch: spawned %s (%s%s)%s\n' "$role" "$KIND" "${MODEL:+ $MODEL}" \
     "$([ "$use_worktree" = 1 ] && printf ' [worktree orch/%s]' "$role")"
@@ -281,10 +282,14 @@ cleanup_role() {
   local role="$1" rdir
   rdir=$(role_dir "$role")
   [ -d "$rdir" ] || die "cleanup: role '$role' がありません"
-  tmux kill-window -t "$role" 2>/dev/null || true
+  # spawn で覚えたウィンドウの ID で閉じる (名前で探すと、ほかのセッションの同じ名前のウィンドウを閉じうる。docs/adr/0079)
+  if [ -s "$rdir/window" ]; then
+    tmux kill-window -t "$(cat "$rdir/window")" 2>/dev/null || true
+  fi
   if [ -d "$ORCH_DIR/worktrees/$role" ]; then
+    # remove に失敗して消したときは、git に残る worktree の記録も消す
     git worktree remove --force "$ORCH_DIR/worktrees/$role" 2>/dev/null \
-      || rm -rf "$ORCH_DIR/worktrees/$role"
+      || { rm -rf "$ORCH_DIR/worktrees/$role"; git worktree prune; }
     printf 'orch: worktree を削除しました。ブランチ orch/%s は残っています (不要なら git branch -D orch/%s)\n' "$role" "$role"
   fi
   rm -rf "$rdir"
