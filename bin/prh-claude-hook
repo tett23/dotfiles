@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# prh-claude-hook - Claude Code の PostToolUse の hook。書いた Markdown を prh の辞書で検査し、
+# 直す表記があれば標準エラーに出して終了コード 2 で終わる (Claude に知らせる。docs/adr/0078)
+#
+#   標準入力: hook の JSON (tool_input.file_path)
+#   辞書:     $PRH_CLAUDE_RULES (無ければ ${DOTFILES:-~/dotfiles}/prh/prh.yml)
+#
+# コードブロック (``` と ~~~ で囲んだ行) とインラインのコード (` で囲んだ部分) は、同じ文字数の空白に
+# 置き換えた写しを prh に渡す (行と列はそのまま)。prh・jq・gawk が無ければ何もしない。
+set -u
+
+rules=${PRH_CLAUDE_RULES:-${DOTFILES:-$HOME/dotfiles}/prh/prh.yml}
+
+command -v jq >/dev/null 2>&1 || exit 0
+command -v gawk >/dev/null 2>&1 || exit 0
+if command -v prh >/dev/null 2>&1; then
+  prh=prh
+elif [ -x "$HOME/.local/share/mise/shims/prh" ]; then
+  prh=$HOME/.local/share/mise/shims/prh
+else
+  exit 0
+fi
+
+file=$(jq -r '.tool_input.file_path // empty')
+case $file in
+*.md) ;;
+*) exit 0 ;;
+esac
+[ -f "$file" ] || exit 0
+
+tmp=$(mktemp -d "${TMPDIR:-/tmp}/prh-claude-hook.XXXXXX") || exit 0
+trap 'rm -rf "$tmp"' EXIT
+masked=$tmp/masked.md
+
+# コードの部分を、同じ文字数の空白にする (gawk は文字単位で数える)
+LC_ALL=${LC_ALL:-ja_JP.UTF-8} gawk '
+  function blank(n,   s) { s = sprintf("%" n "s", ""); return s }
+  /^[ ]{0,3}(```|~~~)/ { fence = !fence; print blank(length($0)); next }
+  fence { print blank(length($0)); next }
+  {
+    line = $0; out = ""
+    while (match(line, /`[^`]+`/)) {
+      out = out substr(line, 1, RSTART - 1) blank(RLENGTH)
+      line = substr(line, RSTART + RLENGTH)
+    }
+    print out line
+  }
+' "$file" >"$masked" || exit 0
+
+found=$("$prh" --rules "$rules" "$masked" 2>/dev/null) || exit 0
+[ -n "$found" ] || exit 0
+
+# 写しの名前を、元のファイルの名前に直して出す
+{
+  printf '%s\n' "prh の辞書で、直す表記が見つかりました (辞書: $rules):"
+  printf '%s\n' "$found" | gawk -v from="$masked" -v to="$file" '
+    index($0, from) == 1 { $0 = to substr($0, length(from) + 1) } { print }
+  '
+} >&2
+exit 2

@@ -207,6 +207,10 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 ## Claude Code
 
 - 本人の設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
+- Claude Code が Markdown のファイルを書くと (Write・Edit・MultiEdit)、hook `bin/prh-claude-hook` (`PostToolUse`) が、prh の辞書 `prh/prh.yml` で
+  過剰な日本語訳 (「ウィンドウ」を `窓` と書くなど) を検査する。直す表記があれば、表記の一覧と辞書の場所を Claude に知らせる (書き込みは取り消さない)。
+  コードブロックとインラインのコードは検査しない。辞書の規則は、実際に取り違えたものから足す。手で検査するときは
+  `prh --rules ~/dotfiles/prh/prh.yml <ファイル>` ([ADR 0078](adr/0078-prh-dictionary-and-claude-hook.md))。
 - ステータスラインには、モデル名・ディレクトリ名・費用を出す (jq を 1 回だけ起動する)。コンテキストの使用率は usage-hint が出すので出さない ([ADR 0057](adr/0057-remaining-improvements-2.md))。
 - mod `usage-hint` (`.claude/mods/usage-hint/`) が、入力欄の下に `5h 23% · 7d 41% · Fable 12% · ctx 37%` の形で
   使用量を表示する ([ADR 0004](adr/0004-usage-hint-mod.md))。
@@ -214,7 +218,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
     ([ADR 0005](adr/0005-usage-hint-warning-color.md), [0060](adr/0060-usage-hint-danger-color.md))、ラベルは太字にする ([ADR 0006](adr/0006-usage-hint-bold-labels.md))。
   - セッション開始直後は、前回保存したレートリミットの値と、ローカルで推定したコンテキストの使用率を出す ([ADR 0008](adr/0008-usage-hint-initial-values.md))。
   - セッションを開いたときと、その後 1 分ごとに、`$.session.usage()` から表示の値を更新する ([ADR 0063](adr/0063-usage-hint-periodic-refresh.md))。
-    窓が空なら直前の窓を残し、リセット時刻を過ぎた窓は 0% にする。どの画面も表示していない (`$.session.surfaces()` が空の) 間は更新しない。
+    ウィンドウが空なら直前のウィンドウを残し、リセット時刻を過ぎたウィンドウは 0% にする。どの画面も表示していない (`$.session.surfaces()` が空の) 間は更新しない。
     セッションを閉じると止めるが、`/clear` の後は同じプロセスで会話が続くので止めない ([ADR 0065](adr/0065-usage-hint-keep-refresh-after-clear.md))。
     保存は API の応答と、使用量の API から Fable の値を取ったときに行う。
   - Fable の週の使用率は、API の応答には Fable にリクエストしたときしか入らないので、Claude Code の `/usage` と同じ使用量の API

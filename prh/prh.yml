@@ -1,0 +1,7 @@
+# 過剰な日本語訳を見つける辞書 (docs/adr/0078)。Claude Code の hook (bin/prh-claude-hook) が、書いた Markdown を検査する。
+# 規則は、実際に取り違えたものから、除外の条件と一緒に足す。手で検査するとき: prh --rules ~/dotfiles/prh/prh.yml <ファイル>
+version: 1
+rules:
+  # 「ウィンドウ」を「窓」と書いた (docs/adr/0074)。「窓口」は除く
+  - expected: ウィンドウ
+    pattern: /窓(?!口)/
