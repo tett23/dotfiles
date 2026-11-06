@@ -19,6 +19,9 @@ opt.list = true
 opt.listchars = { tab = ">-", trail = "_", nbsp = "+", space = "·", eol = "↲" }
 -- 診断のメッセージを行の右に出し (nvim 0.11 から既定で無効)、重いものを優先して並べる (docs/adr/0055)
 vim.diagnostic.config({ virtual_text = true, severity_sort = true })
+-- カーソルを 1 秒止めると CursorHold を起こす (行の診断を出すため。autocmds.lua)。
+-- updatetime はスワップファイルを書く間隔も兼ねるが、スワップファイルは使っていない (docs/adr/0098)
+opt.updatetime = 1000
 
 -- ファイル (旧: noswapfile。backup は nvim の既定で無効)
 opt.swapfile = false

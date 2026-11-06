@@ -24,6 +24,18 @@ vim.api.nvim_create_autocmd({ "VimEnter", "WinNew" }, {
   end,
 })
 
+-- ノーマルモードでカーソルを止めると、その行の診断を lspsaga の浮動ウィンドウで出す。
+-- ++unfocus でカーソルを移さず、カーソルを動かすと閉じる。診断が無ければ何も出ない (docs/adr/0098)
+vim.api.nvim_create_autocmd("CursorHold", {
+  group = vim.api.nvim_create_augroup("LineDiagnosticsOnHold", { clear = true }),
+  desc = "Show line diagnostics with lspsaga (docs/adr/0098)",
+  callback = function()
+    if vim.bo.buftype == "" then
+      vim.cmd("Lspsaga show_line_diagnostics ++unfocus")
+    end
+  end,
+})
+
 -- ヤンクした範囲を一瞬光らせる (docs/adr/0034)
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("HighlightYank", { clear = true }),

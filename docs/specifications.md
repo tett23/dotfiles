@@ -157,6 +157,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   キーは `<Leader>g` (hover)・`<Leader>df` (定義のプレビュー。`<C-o>` で開く)・`<Leader>rf` (参照と実装の一覧)・`<Leader>rn` (名前の変更)・
   `<Leader>ca` (コードアクション)・`[d`・`]d` (前・次の診断へ移って内容を出す)。winbar に今いる関数などの位置を、
   コードアクションがある行に 💡 を出す ([ADR 0097](adr/0097-nvim-lspsaga-instead-of-adr-0096.md)。[ADR 0096](adr/0096-nvim-lsp-display-borders-lines-fidget.md) の枠・診断の行・fidget.nvim は置き換えた)。
+  ノーマルモードでカーソルを 1 秒止めると (`updatetime = 1000`)、その行の診断を lspsaga の浮動ウィンドウで出す
+  (`Lspsaga show_line_diagnostics ++unfocus`。カーソルは移らず、動かすと閉じる。ファイルのバッファだけ)。LSP の付いていないバッファでも出せるよう、
+  lspsaga は `:Lspsaga` を使ったときにも読み込む ([ADR 0098](adr/0098-nvim-show-line-diagnostics-on-cursorhold.md))。
 - ターミナル (toggleterm・`:terminal`) のバッファでは、ノーマルモード (スクロールした後など) でも `Ctrl-E` をシェルに渡す
   (入力モードに戻ってから送る。全体の `<C-e>` は winresizer。[ADR 0073](adr/0073-nvim-terminal-ctrl-e.md))。
 - Telescope のファイル検索 (`<Leader><Leader>`・`<Leader>ff`) と文字列の検索 (`<Leader>fg`) は、`.` で始まるファイルも対象にする。

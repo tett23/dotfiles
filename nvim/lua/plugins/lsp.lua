@@ -49,6 +49,8 @@ return {
   {
     "nvimdev/lspsaga.nvim",
     event = "LspAttach",
+    -- LSP の付いていないバッファ (nvim-lint の診断だけ) でも、:Lspsaga で読み込む (docs/adr/0098)
+    cmd = "Lspsaga",
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     opts = {},
   },
