@@ -1,6 +1,6 @@
 # ADR 0082: nvim で Markdown を保存のたびに整形しない。TSX・JSX も prettier と eslint_d の対象にする
 
-ステータス: 採択
+ステータス: 採択→参考文献と、prettier の表の整形についての記述は [ADR 0084](0084-fix-adr-0082-references.md)
 
 ## 文脈
 
