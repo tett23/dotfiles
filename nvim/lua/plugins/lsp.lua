@@ -17,10 +17,11 @@ return {
         capabilities = require("cmp_nvim_lsp").default_capabilities(),
       })
       -- Golem の LSP は mason の外 (~/.local/bin/golem)。style.toml と preflight.toml の補完のために
-      -- toml も対象にし、manifest.toml の無いフォルダの TOML では起動しない (docs/adr/0092)
+      -- toml も対象にし、manifest.toml の無いフォルダの TOML では起動しない (docs/adr/0092)。
+      -- 関数を書く言語 Emet (.emet) も扱う (docs/adr/0100)
       vim.lsp.config("golem", {
         cmd = { "golem", "lsp" },
-        filetypes = { "golem", "toml" },
+        filetypes = { "golem", "emet", "toml" },
         root_markers = { "manifest.toml" },
         workspace_required = true,
       })
