@@ -19,11 +19,15 @@ map("", "<C-w>o", "<cmd>tabnew %<CR>", opts)
 map("n", "<C-k>", "gcc", { remap = true, silent = true })
 map("x", "<C-k>", "gc", { remap = true, silent = true })
 
--- LSP (旧 coc.nvim マッピングを native LSP へ置換)
-map("n", "<Leader>g", vim.lsp.buf.hover, opts)       -- Hover
-map("n", "<Leader>df", vim.lsp.buf.definition, opts) -- Definition
-map("n", "<Leader>rf", vim.lsp.buf.references, opts) -- References
-map("n", "<Leader>rn", vim.lsp.buf.rename, opts)     -- Rename
+-- LSP は lspsaga.nvim のコマンドで扱う (docs/adr/0097)
+map("n", "<Leader>g", "<cmd>Lspsaga hover_doc<CR>", opts) -- Hover
+map("n", "<Leader>df", "<cmd>Lspsaga peek_definition<CR>", opts) -- 定義のプレビュー (<C-o> で開く)
+map("n", "<Leader>rf", "<cmd>Lspsaga finder<CR>", opts) -- 参照と実装の一覧
+map("n", "<Leader>rn", "<cmd>Lspsaga rename<CR>", opts) -- Rename
+map("n", "<Leader>ca", "<cmd>Lspsaga code_action<CR>", opts) -- コードアクション
+-- 前・次の診断へ移り、内容を浮動ウィンドウで出す (nvim の既定の [d・]d を置き換える)
+map("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
+map("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 -- 保存時と同じ conform で整形する。conform に整形の道具が無ければ LSP で整形する (docs/adr/0055)
 map("n", "<Leader>fmt", function()
   require("conform").format({ async = true, lsp_format = "fallback" })

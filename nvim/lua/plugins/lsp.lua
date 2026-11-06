@@ -44,6 +44,14 @@ return {
       ensure_installed = { "stylua", "prettier", "eslint_d", "rubocop" },
     },
   },
+  -- LSP の hover・定義のプレビュー・参照の一覧・コードアクションなどを、枠付きの浮動ウィンドウで出す。
+  -- winbar に今いる関数などの位置を、コードアクションがある行に 💡 を出す (既定のまま。docs/adr/0097)
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    opts = {},
+  },
   -- 診断 (エラー・警告) などを一覧で表示して移動する。キーは README の推奨のうち 3 つ (docs/adr/0037)
   {
     "folke/trouble.nvim",

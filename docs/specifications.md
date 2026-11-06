@@ -153,6 +153,10 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   関係の無い行が差分に入るため)。TSX・JSX も、TypeScript・JavaScript と同じく prettier で整形し、eslint_d で検査する
   ([ADR 0082](adr/0082-nvim-markdown-autosave-format-and-tsx.md))。
 - 診断のメッセージは行の右に出し、重いものを優先して並べる (`virtual_text`・`severity_sort`。[ADR 0055](adr/0055-improvements-2026-10-13.md))。
+- LSP の hover・定義・参照・名前の変更・コードアクション・診断への移動は、lspsaga.nvim (設定は既定のまま) の枠付きの浮動ウィンドウで行う。
+  キーは `<Leader>g` (hover)・`<Leader>df` (定義のプレビュー。`<C-o>` で開く)・`<Leader>rf` (参照と実装の一覧)・`<Leader>rn` (名前の変更)・
+  `<Leader>ca` (コードアクション)・`[d`・`]d` (前・次の診断へ移って内容を出す)。winbar に今いる関数などの位置を、
+  コードアクションがある行に 💡 を出す ([ADR 0097](adr/0097-nvim-lspsaga-instead-of-adr-0096.md)。[ADR 0096](adr/0096-nvim-lsp-display-borders-lines-fidget.md) の枠・診断の行・fidget.nvim は置き換えた)。
 - ターミナル (toggleterm・`:terminal`) のバッファでは、ノーマルモード (スクロールした後など) でも `Ctrl-E` をシェルに渡す
   (入力モードに戻ってから送る。全体の `<C-e>` は winresizer。[ADR 0073](adr/0073-nvim-terminal-ctrl-e.md))。
 - Telescope のファイル検索 (`<Leader><Leader>`・`<Leader>ff`) と文字列の検索 (`<Leader>fg`) は、`.` で始まるファイルも対象にする。
