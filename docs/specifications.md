@@ -214,6 +214,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - `Ctrl-T` (prefix 無し) で、ポップアップの中で全セッションのウィンドウを fzf で選んで切り替える (`tmux/scripts/window-switcher`)。
   一覧には今いるウィンドウに `*` を付け、プレビューにそのウィンドウの画面を出す。tmux が先に受け取るので、zsh・nvim のどちらでも効く
   (nvim の `Ctrl-T` は使えない。[ADR 0052](adr/0052-tmux-window-switcher-in-tmux.md))。
+- tmux 3.8 の組み込みの色のテーマは使わず (`theme terminal`)、ポップアップ・メニュー・モードの色を端末の色にする。端末が明るいテーマと知らせても、
+  ポップアップの背景が灰色にならない ([ADR 0101](adr/0101-tmux-theme-terminal.md))。
 - ステータスラインのウィンドウ名には、実行中のプロセス名ではなくディレクトリ名を出す ([ADR 0007](adr/0007-tmux-status-directory-name.md))。
 - Ghostty のタイトルは tmux が設定し、選んでいるペインのディレクトリ名とコマンド名を `dotfiles: nvim` の形で出す
   (`set-titles on`・`set-titles-string`。プロセスの実行中もディレクトリ名を出す。[ADR 0088](adr/0088-tmux-sets-ghostty-title.md))。
