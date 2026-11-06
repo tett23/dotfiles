@@ -68,7 +68,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
 | `~/Library/Application Support/Code/User/` の `settings.json`・`keybindings.json`・`snippets` | `vscode/`                                          |
 | `~/Library/Application Support/AquaSKK/keymap.conf`                                           | `skk/keymap.conf`                                  |
-| `~/Library/Application Support/NablaSKK/` の `keymap.conf`・`kana-rule.conf`・`settings.conf`・`dictionaries.conf` | `nablaskk/` (ユーザーの辞書 `skk-jisyo` は管理しない。NablaSKK の設定アプリで保存すると、リンクが普通のファイルに置き換わり、次の `darwin-rebuild` で dotfiles の内容に戻る。[ADR 0081](adr/0081-nablaskk-config-in-dotfiles.md)) |
+| `~/Library/Application Support/NablaSKK/` の `keymap.conf`・`kana-rule.conf`・`settings.conf`・`dictionaries.conf` | `nablaskk/` (ユーザーの辞書 `skk-jisyo` は管理しない。[ADR 0081](adr/0081-nablaskk-config-in-dotfiles.md)。NablaSKK の設定アプリで保存すると、リンクの先 (dotfiles の `nablaskk/`) のファイルが書き換わる。リンクのまま保つのは、NablaSKK の `docs/adr/0021-keep-symlinked-config-files.md` を入れた版から。[ADR 0086](adr/0086-nablaskk-keeps-config-links.md)) |
 
 ## zsh
 
@@ -264,7 +264,7 @@ GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
 - nix-darwin の設定の評価 (`nix eval`。Nix は `DeterminateSystems/determinate-nix-action@v3` で入れる。[ADR 0046](adr/0046-fix-audit-non-breaking.md))
 
 同じブランチ・PR の古い実行は取り消し、各ジョブには時間の上限を付けている ([ADR 0046](adr/0046-fix-audit-non-breaking.md))。自前のパッケージのビルドと、
-  (adr-guard の action。ステータスの行とリンクだけの変更は許可する。[ADR 0032](adr/0032-adr-guard.md), [0066](adr/0066-adr-guard-0-8-in-ci.md))
+
 
 ## ADR の運用
 
