@@ -77,4 +77,7 @@ yarn pnpm shfmt biome dust ghcup typescript prh
   send-to-kindle と同じく、github バックエンドで latest を入れてください。
 - adr-guard (https://github.com/tett23/adr-guard):
   コミット済みの ADR の変更を防ぐツール。send-to-kindle と同じく、github バックエンドで latest を入れてください。
-- この 3 つは rust より前 ([tools] の先頭) に書いてください。rust が PATH に足す ~/.cargo/bin より優先させるためです。
+- peg-hs (https://github.com/tett23/peg-hs):
+  Haskell の PEG パーサーの生成器。nvim で LSP サーバー (`peg-hs lsp`) を使います。send-to-kindle と同じく、github バックエンドで latest を入れてください。
+  リリースが pre-release だけなので、`prerelease = true` を付けてください。
+- この 4 つは rust より前 ([tools] の先頭) に書いてください。rust が PATH に足す ~/.cargo/bin より優先させるためです。

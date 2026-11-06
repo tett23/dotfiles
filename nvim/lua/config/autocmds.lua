@@ -77,6 +77,7 @@ vim.filetype.add({
   extension = {
     gotmpl = "gotmpl", -- Go のテンプレート。gopls の対象のファイルタイプ (docs/adr/0039)
     gm = "golem", -- Golem の原稿。golem lsp の対象のファイルタイプ (docs/adr/0092)
+    hpeg = "hpeg", -- peg-hs の文法ファイル。peg-hs lsp の対象のファイルタイプ (docs/adr/0099)
     thor = "ruby",
     cap = "ruby",
     erubis = "html",

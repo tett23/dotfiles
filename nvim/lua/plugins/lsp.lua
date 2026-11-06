@@ -25,6 +25,14 @@ return {
         workspace_required = true,
       })
       vim.lsp.enable("golem")
+      -- peg-hs の LSP サーバーも mason の外 (mise で入れる)。.git の無いフォルダでもファイル単位で起動する。
+      -- フォーマットは conform の lsp_format = "fallback" で、保存のときにこのサーバーが行う (docs/adr/0099)
+      vim.lsp.config("peg_hs", {
+        cmd = { "peg-hs", "lsp" },
+        filetypes = { "hpeg" },
+        root_markers = { ".git" },
+      })
+      vim.lsp.enable("peg_hs")
       require("mason-lspconfig").setup({
         ensure_installed = { "lua_ls", "ts_ls", "pyright", "gopls", "rust_analyzer", "ruby_lsp" },
         -- installed サーバを vim.lsp.enable する。mason-tool-installer で入れた rubocop・stylua は

@@ -5,6 +5,9 @@
 "github:tett23/send-to-kindle" = "latest"
 "github:tett23/shorten-path" = "latest"
 "github:tett23/adr-guard" = "latest" # コミット済みの ADR の変更を防ぐ (docs/adr/0032)
+# 文法ファイル (.hpeg) の LSP サーバー (peg-hs lsp) を nvim で使う。リリースが pre-release だけなので、
+# prerelease = true が要る (docs/adr/0099)
+"github:tett23/peg-hs" = { version = "latest", prerelease = true }
 go = "latest"
 node = "latest"
 python = "latest"
