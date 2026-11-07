@@ -163,6 +163,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   ([ADR 0100](adr/0100-nvim-hpeg-golem-emet-highlight-and-emet-lsp.md))。
 - `.als` は、`vincentlu/tree-sitter-alloy` の文法 `alloy` で色付けする。自分のリポジトリでない文法なので、`revision` でコミットを固定して入れる
   (上げるときは差分を読んで書きかえる。[ADR 0106](adr/0106-nvim-alloy-highlight.md))。
+  文法に `indents.scm` が無いので、`nvim/queries/alloy/indents.scm` を書き、`{ ... }` の中を 1 段下げ、`}` の行を戻す ([ADR 0107](adr/0107-nvim-alloy-indent.md))。
 - Markdown は、保存のとき (自動保存を含む) には整形せず、`<Leader>fmt` でだけ prettier で整形する (prettier が表全体の列をそろえ、
   関係の無い行が差分に入るため)。TSX・JSX も、TypeScript・JavaScript と同じく prettier で整形し、eslint_d で検査する
   ([ADR 0082](adr/0082-nvim-markdown-autosave-format-and-tsx.md))。
