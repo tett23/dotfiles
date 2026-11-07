@@ -20,15 +20,22 @@ local parsers = {
   "hpeg",
   "golem",
   "emet",
+  "alloy",
 }
 
 -- nvim-treesitter の一覧に無い文法を、GitHub のリポジトリのサブディレクトリから入れる。
 -- revision を書かず main の先頭を入れるので、:TSUpdate のたびに入れ直す。
--- queries は location からではなく、リポジトリのルートからのパスで書く (docs/adr/0100)
+-- queries は location からではなく、リポジトリのルートからのパスで書く (docs/adr/0100)。
+-- 自分のリポジトリでない文法は、手元でビルドする C のコードを固定するため revision を書く。
+-- location が無ければリポジトリのルートの文法を入れる (docs/adr/0106)
 local custom_parsers = {
   hpeg = { url = "https://github.com/tett23/peg-hs", location = "editors/tree-sitter-hpeg" },
   golem = { url = "https://github.com/tett23/golem", location = "tools/editors/tree-sitter-golem" },
   emet = { url = "https://github.com/tett23/golem", location = "tools/editors/tree-sitter-emet" },
+  alloy = {
+    url = "https://github.com/vincentlu/tree-sitter-alloy",
+    revision = "7bcc865b0d12ff4f20876efd072fd1bc11faff48",
+  },
 }
 
 return {
@@ -45,7 +52,12 @@ return {
           local registry = require("nvim-treesitter.parsers")
           for lang, info in pairs(custom_parsers) do
             registry[lang] = {
-              install_info = { url = info.url, location = info.location, queries = info.location .. "/queries" },
+              install_info = {
+                url = info.url,
+                revision = info.revision,
+                location = info.location,
+                queries = info.location and (info.location .. "/queries") or "queries",
+              },
             }
           end
         end,
