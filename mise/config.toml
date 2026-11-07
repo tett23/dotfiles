@@ -27,3 +27,4 @@ biome = "latest"
 ghcup = "latest" # Haskell の ghc・cabal は ghcup で入れる (install.sh・bin/update-mise。docs/adr/0050)
 ruby = "latest"
 lua = "latest"
+java = "latest" # docs/adr/0103

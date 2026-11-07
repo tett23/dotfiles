@@ -10,9 +10,10 @@ Homebrew は使いません。パッケージ管理は Nix と mise だけで行
 以下のコマンドをインストールしてください。
 sed, awk, make は GNU のものを利用してください。
 
-claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat batgrep batdiff fd rg mise awscli sed awk make sqlite gh textlint delta wget tree-sitter docker docker-compose colima smartmontools
+claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat batgrep batdiff fd rg mise awscli sed awk make sqlite gh textlint delta wget tree-sitter docker docker-compose colima smartmontools alloy
 
 - batgrep・batdiff は bat-extras のものを入れます (ほかの bat-extras は入れません)。
+- alloy は nixpkgs の alloy6 (Alloy 6。コマンドは alloy6) を入れます。nixpkgs の alloy は 5 系です。
 - tree-sitter は nvim-treesitter (main ブランチ) がパーサーのビルドに使います。
 - docker のエンジンは colima を home-manager のサービス (services.colima) として常駐させてください。
   docker と docker-compose は CLI として入れます。
@@ -57,7 +58,7 @@ mise を使って以下の依存を管理してください。ここで指定す
 
 ## Install languages
 
-node python ruby go rust deno bun lua
+node python ruby go rust deno bun lua java
 
 - Haskell (ghc・cabal) は mise では入れません。下の Install tools の ghcup で入れます (install.sh と bin/update-mise が
   ghcup の latest を入れて既定にします)。
