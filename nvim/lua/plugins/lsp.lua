@@ -34,6 +34,10 @@ return {
         root_markers = { ".git" },
       })
       vim.lsp.enable("peg_hs")
+      -- Alloy の LSP サーバーも mason の外 (Nix の alloy6)。nvim-lspconfig の alloy_ls はコマンドが alloy なので、
+      -- alloy6 に変える。diagnostics は保存したときに出る (docs/adr/0104)
+      vim.lsp.config("alloy_ls", { cmd = { "alloy6", "lsp" } })
+      vim.lsp.enable("alloy_ls")
       require("mason-lspconfig").setup({
         ensure_installed = { "lua_ls", "ts_ls", "pyright", "gopls", "rust_analyzer", "ruby_lsp" },
         -- installed サーバを vim.lsp.enable する。mason-tool-installer で入れた rubocop・stylua は

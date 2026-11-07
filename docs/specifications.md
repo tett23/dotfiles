@@ -154,6 +154,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   Golem の関数を書く言語 Emet の `.emet` もファイルタイプ `emet` とし、同じ LSP で扱う ([ADR 0100](adr/0100-nvim-hpeg-golem-emet-highlight-and-emet-lsp.md))。
 - peg-hs の LSP サーバー (`peg-hs lsp`。mise で入れる) も mason の外で有効にする。`.hpeg` をファイルタイプ `hpeg` とし、`.hpeg` で起動する。
   `.hpeg` のフォーマットは、保存のときと `<Leader>fmt` で、この LSP サーバーが行う ([ADR 0099](adr/0099-nvim-peg-hs-lsp.md))。
+- Alloy の LSP サーバー (`alloy6 lsp`。Nix で入れる) も mason の外で有効にする。`.als` をファイルタイプ `alloy` とし、nvim-lspconfig の `alloy_ls` の
+  コマンドを `alloy6` に変える。diagnostics は保存したときに出る。色付けはしない ([ADR 0104](adr/0104-nvim-alloy-lsp.md))。
 - `.hpeg`・`.gm`・`.emet` は、tree-sitter の文法 `hpeg` (peg-hs の `editors/tree-sitter-hpeg`)・`golem`・`emet` (Golem の `tools/editors/` の下) で色付けする。
   nvim-treesitter の一覧に無いので、`User TSUpdate` で GitHub のリポジトリのサブディレクトリを登録し、`main` の先頭を入れる (`:TSUpdate` のたびに入れ直す)。
   `.hpeg` の中の Haskell の断片は、`haskell` の文法で色付けする。LSP が付いた後は、LSP の semantic tokens の色が上に重なる

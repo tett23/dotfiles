@@ -79,6 +79,7 @@ vim.filetype.add({
     gm = "golem", -- Golem の原稿。golem lsp の対象のファイルタイプ (docs/adr/0092)
     emet = "emet", -- Golem の関数を書く言語 Emet。golem lsp と tree-sitter の対象 (docs/adr/0100)
     hpeg = "hpeg", -- peg-hs の文法ファイル。peg-hs lsp の対象のファイルタイプ (docs/adr/0099)
+    als = "alloy", -- Alloy のモデル。nvim は .als を知らない。alloy6 lsp の対象 (docs/adr/0104)
     thor = "ruby",
     cap = "ruby",
     erubis = "html",
