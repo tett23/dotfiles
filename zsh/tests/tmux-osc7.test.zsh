@@ -26,11 +26,22 @@ check "ホストとパスの制御文字を取り除く" \
   "$(tmux_osc7_sequence $'dio\ene4' $'/Users/a\a/b\e')" \
   $'\ePtmux;\e\e]7;kitty-shell-cwd://dione4/Users/a/b\a\e\\'
 
+# tmux 自身に今のディレクトリを知らせる、包まない OSC 7 (docs/adr/0110)
+check "tmux に送る OSC 7 は包まない" \
+  "$(tmux_osc7_plain_sequence dione4.local /Users/a/b)" \
+  $'\e]7;file://dione4.local/Users/a/b\a'
+check "包まない OSC 7 も空白と日本語はそのまま入る" \
+  "$(tmux_osc7_plain_sequence dione4.local '/Users/a/日本 語')" \
+  $'\e]7;file://dione4.local/Users/a/日本 語\a'
+check "包まない OSC 7 もホストとパスの制御文字を取り除く" \
+  "$(tmux_osc7_plain_sequence $'dio\ene4' $'/Users/a\a/b\e')" \
+  $'\e]7;file://dione4/Users/a/b\a'
+
 # 書き込み先を作業用のファイルに差し替える
 _tmux_osc7_out=$work/out
 TMUX=/tmp/tmux-501/default,1,0
 : > $work/out; _tmux_osc7_report
-check "tmux の中では今のディレクトリを書く" "$(<$work/out)" "$(tmux_osc7_sequence $HOST $PWD)"
+check "tmux の中では今のディレクトリを Ghostty と tmux に書く" "$(<$work/out)" "$(tmux_osc7_sequence $HOST $PWD)$(tmux_osc7_plain_sequence $HOST $PWD)"
 TMUX=
 : > $work/out; _tmux_osc7_report
 check "tmux の外では何も書かない" "$(<$work/out)" ""

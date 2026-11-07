@@ -24,7 +24,7 @@ if [ -n "$expected_pid" ] && [ "$(tmux display-message -p '#{pid}' 2>/dev/null)"
 fi
 
 target=$(
-  tmux list-windows -a -F "#{session_name}:#{window_index}${tab}#{b:pane_current_path}  #{pane_current_command}" |
+  tmux list-windows -a -F "#{session_name}:#{window_index}${tab}#{E:@cwd-name}  #{pane_current_command}" |
     awk -F "$tab" -v current="$current" '{ mark = ($1 == current) ? "*" : " "; print $1 "\t" mark " " $2 }' |
     fzf --reverse +m --delimiter="$tab" --preview 'tmux capture-pane -ep -t {1}' |
     cut -f1

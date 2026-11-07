@@ -231,6 +231,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - ステータスラインのウィンドウ名には、実行中のプロセス名ではなくディレクトリ名を出す ([ADR 0007](adr/0007-tmux-status-directory-name.md))。
 - Ghostty のタイトルは tmux が設定し、選んでいるペインのディレクトリ名とコマンド名を `dotfiles: nvim` の形で出す
   (`set-titles on`・`set-titles-string`。プロセスの実行中もディレクトリ名を出す。[ADR 0088](adr/0088-tmux-sets-ghostty-title.md))。
+- ウィンドウ名・Ghostty のタイトル・`Ctrl-T` の一覧・新しいウィンドウとペインのディレクトリ・`prefix Y` は、`@cwd`・`@cwd-name` (`#{E:@cwd}`) でペインのディレクトリを読む。
+  パイプラインの実行中は、先頭のコマンドが終わると `#{pane_current_path}` が空になるので、zsh が tmux に OSC 7 で知らせたディレクトリ (`#{pane_path}`) を使う。
+  そのときのコマンド名は `zsh` になる ([ADR 0110](adr/0110-tmux-directory-name-while-pipeline-runs.md))。
 
 ## git
 
