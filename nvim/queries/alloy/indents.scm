@@ -30,3 +30,41 @@
   (quantified_expression)
   (let_expression)
 ] @indent.begin
+
+; and・or・=>・<=>・until などで終わる行の次を 1 段下げる。else の行は => の行に戻し、else の後の { ... } は 1 段だけにする。
+; 打っている途中 (演算子の右がまだ無い) は、演算子だけの ERROR の節になるので、indent.immediate で次の行を下げる (docs/adr/0109)
+[
+  (and_expression)
+  (or_expression)
+  (implies_expression)
+  (iff_expression)
+  (temporal_binary_expression)
+] @indent.begin
+
+(implies_expression
+  "else" @indent.branch)
+
+((ERROR
+  .
+  [
+    "and"
+    "&&"
+    "or"
+    "||"
+    "implies"
+    "=>"
+    "iff"
+    "<=>"
+    "until"
+    "since"
+    "releases"
+    "triggered"
+    "else"
+  ]
+  .) @indent.begin
+  (#set! indent.immediate 1))
+
+(implies_expression
+  "else"
+  .
+  (block_expression) @indent.dedent)
