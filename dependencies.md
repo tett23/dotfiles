@@ -10,7 +10,7 @@ Homebrew は使いません。パッケージ管理は Nix と mise だけで行
 以下のコマンドをインストールしてください。
 sed, awk, make は GNU のものを利用してください。
 
-claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat batgrep batdiff fd rg mise awscli sed awk make sqlite gh textlint delta wget tree-sitter docker docker-compose colima smartmontools alloy
+claude-code codex-cli git curl fzf ghq tmux nvim direnv jq eza bat batgrep batdiff fd rg mise awscli sed awk make sqlite gh textlint delta wget tree-sitter docker docker-compose colima smartmontools alloy z3
 
 - batgrep・batdiff は bat-extras のものを入れます (ほかの bat-extras は入れません)。
 - alloy は nixpkgs の alloy6 (Alloy 6。コマンドは alloy6) を入れます。nixpkgs の alloy は 5 系です。

@@ -39,6 +39,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
   - nixpkgs に無いアプリ (Claude デスクトップ、AquaSKK) は `nix/pkgs/` に自前のパッケージを置く。
   - Docker は colima で動かし、home-manager の LaunchAgent で常駐させる。
   - Alloy は nixpkgs の `alloy6` (コマンドは `alloy6`。nixpkgs の `jre` で動く) を入れる ([ADR 0103](adr/0103-java-and-alloy.md))。
+  - SMT ソルバーの Z3 は nixpkgs の `z3` を入れる ([ADR 0105](adr/0105-z3.md))。
 - 言語とツールは mise で管理する (`mise/config.toml`。すべて `latest`)。Haskell の ghc・cabal は mise で入れた ghcup で入れ、
   `install.sh` と `bin/update-mise` が ghcup の `latest` を入れて既定にする ([ADR 0050](adr/0050-ghc-cabal-via-ghcup.md))。
   VSCode の Haskell 拡張も mise の ghcup を使い、ghcup の自動の更新はしない。stack は入れない ([ADR 0056](adr/0056-remove-old-ghcup-and-stack.md))。
