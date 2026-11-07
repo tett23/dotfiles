@@ -20,3 +20,13 @@
   "}" @indent.branch @indent.end)
 
 (block_comment) @indent.auto
+
+; シグネチャの制約 (sig A { ... } { ... } の後ろの { ... }) は、sig_decl と合わせて 2 段にならないよう 1 段戻す。
+; 行の終わりの | の次の行 (all x: A | や let y = A | の本体) を 1 段下げる (docs/adr/0108)
+(sig_decl
+  (block_expression) @indent.dedent)
+
+[
+  (quantified_expression)
+  (let_expression)
+] @indent.begin
