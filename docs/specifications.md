@@ -255,6 +255,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   `reader` (Sonnet。外部のリポジトリや長いログを読む、確かめのスクリプト、機械的な実装)・`runner` (Haiku。テストや確かめを動かして数える、検索、CI の確認)。
   既定のモデルは Opus で、使い分けは `.claude/CLAUDE.md` の「モデルの使い分け」に書く ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md))。
 - 本人の設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
+  有効にするプラグインは `lua-lsp` だけにする。`example-skills` は使わないスキルが多いので外した ([ADR 0116](adr/0116-remove-example-skills-plugin.md))。
 - Codex の全リポジトリ共通の指示は `codex/AGENTS.md`。`.claude/CLAUDE.md` と同じ内容で、Claude Code に特有のところ (出力の言語の主語、adr-guard の hook、`/goal`、「モデルの使い分け」) だけを
   Codex 向けに変え、`~/.codex/AGENTS.md` の Python の決まりを足した。2 つのファイルは手で合わせる ([ADR 0114](adr/0114-codex-agents-md.md))。
 - Claude Code が Markdown のファイルを書くと (Write・Edit・MultiEdit)、hook `bin/prh-claude-hook` (`PostToolUse`) が、prh の辞書 `prh/prh.yml` で

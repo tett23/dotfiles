@@ -31,16 +31,7 @@
     "command": "jq -r '[.model.display_name // \"unknown\", ((.workspace.current_dir // .cwd // \".\") | sub(\"/+$\"; \"\") | split(\"/\") | last // \"/\"), (if .cost.total_cost_usd then \"$\" + (.cost.total_cost_usd | tostring) else empty end)] | join(\" \")'"
   },
   "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true,
-    "example-skills@anthropic-agent-skills": true
-  },
-  "extraKnownMarketplaces": {
-    "anthropic-agent-skills": {
-      "source": {
-        "source": "github",
-        "repo": "anthropics/skills"
-      }
-    }
+    "lua-lsp@claude-plugins-official": true
   },
   "theme": "auto",
   "autoMode": {
