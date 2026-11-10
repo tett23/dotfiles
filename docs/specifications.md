@@ -70,6 +70,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.claude/agents`                                                                            | `.claude/agents/` ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md)) |
 | `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
 | `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
+| `~/.config/gh/config.yml` | `gh/config.yml` (認証情報を持つ `hosts.yml` は管理しない。[ADR 0112](adr/0112-gh-config-in-dotfiles.md)) |
 | `~/Library/Application Support/Code/User/` の `settings.json`・`keybindings.json`・`snippets` | `vscode/`                                          |
 | `~/Library/Application Support/AquaSKK/keymap.conf`                                           | `skk/keymap.conf`                                  |
 | `~/Library/Application Support/NablaSKK/` の `keymap.conf`・`kana-rule.conf`・`settings.conf`・`dictionaries.conf` | `nablaskk/` (ユーザーの辞書 `skk-jisyo` は管理しない。[ADR 0081](adr/0081-nablaskk-config-in-dotfiles.md)。NablaSKK の設定アプリで保存すると、リンクの先 (dotfiles の `nablaskk/`) のファイルが書き換わる。リンクのまま保つのは、NablaSKK の `docs/adr/0021-keep-symlinked-config-files.md` を入れた版から。[ADR 0086](adr/0086-nablaskk-keeps-config-links.md)) |

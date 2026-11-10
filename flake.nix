@@ -78,6 +78,8 @@
           "karabiner".source = link "karabiner";
           "bat/config".source = link "bat/config";
           "ghostty/config".source = link "ghostty/config";
+          # gh の設定。hosts.yml は認証情報を持つので管理しない (docs/adr/0112)
+          "gh/config.yml".source = link "gh/config.yml";
           "mise/config.toml".source = link "mise/config.toml";
           # tmux-nova は Nix で入れる (docs/adr/0029)。nova.tmux は自分の置き場所から scripts/ を読むため、
           # ファイル単体ではなくディレクトリをリンクする
