@@ -71,6 +71,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.claude/agents`                                                                            | `.claude/agents/` ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md)) |
 | `~/.codex/AGENTS.md` | `codex/AGENTS.md` (`.claude/CLAUDE.md` から Codex 向けに作る。[ADR 0114](adr/0114-codex-agents-md.md)) |
 | `~/.codex/hooks.json` | `codex/hooks.json` ([ADR 0115](adr/0115-codex-adr-guard-hook.md)) |
+| `~/.codex/agents` | `codex/agents/` ([ADR 0117](adr/0117-codex-model-roles.md)) |
 | `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
 | `~/.config/gh/config.yml` | `gh/config.yml` (認証情報を持つ `hosts.yml` は管理しない。[ADR 0112](adr/0112-gh-config-in-dotfiles.md)) |
 | `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
@@ -257,10 +258,12 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   既定のモデルは Opus で、使い分けは `.claude/CLAUDE.md` の「モデルの使い分け」に書く ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md))。
 - 本人の設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
   有効にするプラグインは `lua-lsp` だけにする。`example-skills` は使わないスキルが多いので外した ([ADR 0116](adr/0116-remove-example-skills-plugin.md))。
-- Codex の全リポジトリ共通の指示は `codex/AGENTS.md`。`.claude/CLAUDE.md` と同じ内容で、Claude Code に特有のところ (出力の言語の主語、adr-guard の hook、`/goal`、「モデルの使い分け」) だけを
+- Codex の全リポジトリ共通の指示は `codex/AGENTS.md`。`.claude/CLAUDE.md` と同じ内容で、Claude Code に特有のところ (出力の言語の主語、hook の設定の場所、`/goal`、「モデルの使い分け」のモデルと役割の名前) だけを
   Codex 向けに変え、`~/.codex/AGENTS.md` の Python の決まりを足した。2 つのファイルは手で合わせる ([ADR 0114](adr/0114-codex-agents-md.md))。
 - Codex でも、PreToolUse の hook (`codex/hooks.json`) で `adr-guard codex-hook --allow-status` を動かし、`apply_patch` と `Bash` によるコミット済みの ADR の変更を止める。
   hook は、本人が Codex の `/hooks` で信頼するまで動かない。`codex-hook` は adr-guard 0.11.0 から ([ADR 0115](adr/0115-codex-adr-guard-hook.md))。
+- Codex の既定のモデルは `gpt-6-astra` (`~/.codex/config.toml`。dotfiles では管理しない)。サブエージェントの役割は `codex/agents/` に置き、Claude Code のエージェントに対応させる: `auditor` (`gpt-6-astra`、推論 `xhigh`)・`reader` (`gpt-6-sol`)・`runner` (`gpt-6-luna`)。
+  使い分けは `codex/AGENTS.md` の「モデルの使い分け」に書く ([ADR 0117](adr/0117-codex-model-roles.md))。
 - Claude Code が Markdown のファイルを書くと (Write・Edit・MultiEdit)、hook `bin/prh-claude-hook` (`PostToolUse`) が、prh の辞書 `prh/prh.yml` で
   過剰な日本語訳 (「ウィンドウ」を `窓` と書くなど) を検査する。直す表記があれば、表記の一覧と辞書の場所を Claude に知らせる (書き込みは取り消さない)。
   コードブロックとインラインのコードは検査しない。辞書の規則は、実際に取り違えたものから足す。手で検査するときは

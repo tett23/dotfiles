@@ -60,6 +60,8 @@
           ".codex/AGENTS.md".source = link "codex/AGENTS.md";
           # Codex の hook。adr-guard でコミット済みの ADR の変更を止める (docs/adr/0115)
           ".codex/hooks.json".source = link "codex/hooks.json";
+          # Codex のサブエージェントの役割。モデルを固定する (docs/adr/0117)
+          ".codex/agents".source = link "codex/agents";
           "Library/Application Support/Code/User/settings.json".source = link "vscode/settings.json";
           "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
           "Library/Application Support/Code/User/snippets".source = link "vscode/snippets";
