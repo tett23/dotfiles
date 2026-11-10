@@ -47,3 +47,5 @@ node_modules/
 # tmux のデバッグログ
 tmux-client-*.log
 tmux-server-*.log
+
+**/.claude/.cc-writes/
