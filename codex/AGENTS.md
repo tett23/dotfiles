@@ -15,7 +15,7 @@ ADRを破棄する場合は、ステータスを破棄にして、理由をdocs/
 変更を不可にする方法は以下にある。リポジトリを初期化するときにはREADMEに従うこと。
 https://github.com/tett23/adr-guard
 
-具体的には、次の 3 つを行う。Codex には adr-guard の hook が無い。コミットした ADR の本文 (ステータスの行を除く) を書きかえないことは、pre-commit hook と CI の `adr` ジョブが止める。
+具体的には、次の 3 つを行う。Codex の hook は全体の設定 (`~/.codex/hooks.json`) で有効なので不要。
 
 1. `.githooks/pre-commit` を置き、実行権限を付ける。ほかの検査と並べる場合は、`exec` の行を最後に置く。
 

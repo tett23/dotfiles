@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^(apply_patch|Bash)$",
+        "hooks": [{ "type": "command", "command": "adr-guard codex-hook --allow-status" }]
+      }
+    ]
+  }
+}
