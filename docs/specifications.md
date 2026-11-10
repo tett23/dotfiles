@@ -37,7 +37,8 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 - CLI・GUI アプリ・macOS の設定は Nix (nix-darwin と、そのモジュールとしての home-manager) で管理する。
   Homebrew は使わない ([ADR 0012](adr/0012-remove-homebrew.md))。
   - nixpkgs に無いアプリ (Claude デスクトップ、AquaSKK) は `nix/pkgs/` に自前のパッケージを置く。
-  - Docker は colima で動かし、home-manager の LaunchAgent で常駐させる。
+  - Docker は colima で動かし、home-manager の LaunchAgent で常駐させる。既定のプロファイルの VM の設定 (CPU 2、メモリ 2GiB、ディスク 100GiB など) は
+    `flake.nix` の `services.colima.profiles.default.settings` に書き、`~/.colima/default/colima.yaml` は読み取り専用になる。ほかのプロファイルは管理しない ([ADR 0113](adr/0113-colima-settings-in-flake.md))。
   - Alloy は nixpkgs の `alloy6` (コマンドは `alloy6`。nixpkgs の `jre` で動く) を入れる ([ADR 0103](adr/0103-java-and-alloy.md))。
   - SMT ソルバーの Z3 は nixpkgs の `z3` を入れる ([ADR 0105](adr/0105-z3.md))。
 - 言語とツールは mise で管理する (`mise/config.toml`。すべて `latest`)。Haskell の ghc・cabal は mise で入れた ghcup で入れ、
@@ -69,8 +70,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.claude/CLAUDE.md`                                                                         | `.claude/CLAUDE.md`                                |
 | `~/.claude/agents`                                                                            | `.claude/agents/` ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md)) |
 | `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
-| `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
 | `~/.config/gh/config.yml` | `gh/config.yml` (認証情報を持つ `hosts.yml` は管理しない。[ADR 0112](adr/0112-gh-config-in-dotfiles.md)) |
+| `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
 | `~/Library/Application Support/Code/User/` の `settings.json`・`keybindings.json`・`snippets` | `vscode/`                                          |
 | `~/Library/Application Support/AquaSKK/keymap.conf`                                           | `skk/keymap.conf`                                  |
 | `~/Library/Application Support/NablaSKK/` の `keymap.conf`・`kana-rule.conf`・`settings.conf`・`dictionaries.conf` | `nablaskk/` (ユーザーの辞書 `skk-jisyo` は管理しない。[ADR 0081](adr/0081-nablaskk-config-in-dotfiles.md)。NablaSKK の設定アプリで保存すると、リンクの先 (dotfiles の `nablaskk/`) のファイルが書き換わる。リンクのまま保つのは、NablaSKK の `docs/adr/0021-keep-symlinked-config-files.md` を入れた版から。[ADR 0086](adr/0086-nablaskk-keeps-config-links.md)) |

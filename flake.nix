@@ -122,7 +122,22 @@
         ];
 
         # Docker のエンジンは colima を常駐させて使う (Docker Desktop から移行。docs/adr/0012)
-        services.colima.enable = true;
+        services.colima = {
+          enable = true;
+          # profiles を書くと既定の値が置き換わるので、isActive と isService も書く (docs/adr/0113)
+          profiles.default = {
+            isActive = true;
+            isService = true;
+            settings = {
+              cpu = 2;
+              memory = 2;
+              disk = 100;
+              runtime = "docker";
+              vmType = "vz";
+              mountType = "virtiofs";
+            };
+          };
+        };
 
         programs.home-manager.enable = true;
       };
