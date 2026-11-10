@@ -54,6 +54,8 @@
           ".zshenv".source = link "zsh/zshenv";
           ".claude/settings.json".source = link ".claude/settings.json";
           ".claude/CLAUDE.md".source = link ".claude/CLAUDE.md";
+          # モデルを固定したサブエージェントの定義 (docs/adr/0111)
+          ".claude/agents".source = link ".claude/agents";
           "Library/Application Support/Code/User/settings.json".source = link "vscode/settings.json";
           "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
           "Library/Application Support/Code/User/snippets".source = link "vscode/snippets";

@@ -67,6 +67,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.config/rubocop/config.yml` | `rubocop/config.yml` |
 | `~/.claude/settings.json`                                                                     | `.claude/settings.json`                            |
 | `~/.claude/CLAUDE.md`                                                                         | `.claude/CLAUDE.md`                                |
+| `~/.claude/agents`                                                                            | `.claude/agents/` ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md)) |
 | `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
 | `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
 | `~/Library/Application Support/Code/User/` の `settings.json`・`keybindings.json`・`snippets` | `vscode/`                                          |
@@ -247,6 +248,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 ## Claude Code
 
+- 全リポジトリ共通のサブエージェントは `.claude/agents/` に置き、モデルを固定する: `auditor` (Fable。ADR と実装・テストの乖離の調査、セキュリティ監査、本人が Fable を明示して頼んだ作業)・
+  `reader` (Sonnet。外部のリポジトリや長いログを読む、確かめのスクリプト、機械的な実装)・`runner` (Haiku。テストや確かめを動かして数える、検索、CI の確認)。
+  既定のモデルは Opus で、使い分けは `.claude/CLAUDE.md` の「モデルの使い分け」に書く ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md))。
 - 本人の設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
 - Claude Code が Markdown のファイルを書くと (Write・Edit・MultiEdit)、hook `bin/prh-claude-hook` (`PostToolUse`) が、prh の辞書 `prh/prh.yml` で
   過剰な日本語訳 (「ウィンドウ」を `窓` と書くなど) を検査する。直す表記があれば、表記の一覧と辞書の場所を Claude に知らせる (書き込みは取り消さない)。
