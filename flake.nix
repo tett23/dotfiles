@@ -56,6 +56,8 @@
           ".claude/CLAUDE.md".source = link ".claude/CLAUDE.md";
           # モデルを固定したサブエージェントの定義 (docs/adr/0111)
           ".claude/agents".source = link ".claude/agents";
+          # Codex の全体の指示。.claude/CLAUDE.md から Codex 向けに作り、手で合わせる (docs/adr/0114)
+          ".codex/AGENTS.md".source = link "codex/AGENTS.md";
           "Library/Application Support/Code/User/settings.json".source = link "vscode/settings.json";
           "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
           "Library/Application Support/Code/User/snippets".source = link "vscode/snippets";

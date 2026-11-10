@@ -1,3 +1,5 @@
+<!-- codex/AGENTS.md はこのファイルから Codex 向けに作った。変えるときは両方を同じく変える (docs/adr/0114)。 -->
+
 ## 原則
 
 Claude Codeの出力は日本語で書く。
