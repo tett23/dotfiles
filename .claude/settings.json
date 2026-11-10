@@ -71,5 +71,8 @@
     ]
   },
   "agentPushNotifEnabled": true,
-  "inputNeededNotifEnabled": true
+  "inputNeededNotifEnabled": true,
+  "sandbox": {
+    "enabled": true
+  }
 }
