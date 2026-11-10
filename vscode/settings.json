@@ -1,353 +1,353 @@
 {
-  "editor.wordWrap": "on",
-  "editor.minimap.enabled": false,
-  "editor.tabSize": 2,
-  "editor.renderLineHighlight": "all",
-  "editor.autoClosingBrackets": "always",
-  "editor.autoIndent": "advanced",
-  "editor.renderWhitespace": "all",
-  // 既定は biome。biome が整形しない言語は言語ごとの設定を使う (docs/adr/0023)
-  "editor.defaultFormatter": "biomejs.biome",
-  "editor.formatOnSave": true,
-  "editor.formatOnType": false,
-  "editor.unicodeHighlight.ambiguousCharacters": false,
-  "editor.unicodeHighlight.invisibleCharacters": true,
-  "editor.inlineSuggest.enabled": true,
-  "editor.inlineSuggest.showToolbar": "always",
-  "editor.suggest.showReferences": true,
+	"editor.wordWrap": "on",
+	"editor.minimap.enabled": false,
+	"editor.tabSize": 2,
+	"editor.renderLineHighlight": "all",
+	"editor.autoClosingBrackets": "always",
+	"editor.autoIndent": "advanced",
+	"editor.renderWhitespace": "all",
+	// 既定は biome。biome が整形しない言語は言語ごとの設定を使う (docs/adr/0023)
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.formatOnSave": true,
+	"editor.formatOnType": false,
+	"editor.unicodeHighlight.ambiguousCharacters": false,
+	"editor.unicodeHighlight.invisibleCharacters": true,
+	"editor.inlineSuggest.enabled": true,
+	"editor.inlineSuggest.showToolbar": "always",
+	"editor.suggest.showReferences": true,
 
-  "workbench.colorTheme": "ktrz-monokai",
-  "workbench.editor.showTabs": "multiple",
-  "workbench.editor.tabSizing": "fit",
-  "workbench.editor.enablePreview": false,
-  "workbench.editor.enablePreviewFromQuickOpen": false,
-  "workbench.startupEditor": "none",
-  "workbench.colorCustomizations": {
-    "editorGutter.addedBackground": "#28a745", // Color for added lines (green)
-    "editorGutter.modifiedBackground": "#2188ff", // Color for modified lines (blue)
-    "editorGutter.deletedBackground": "#cb2431", // Color for removed lines (red)
-    "diffEditor.insertedTextBackground": "#28a74533", // Background color for added text (green with transparency)
-    "diffEditor.removedTextBackground": "#cb243133" // Background color for removed text (red with transparency)
-  },
-  "git.decorations.enabled": true,
-  "scm.diffDecorations": "all",
+	"workbench.colorTheme": "ktrz-monokai",
+	"workbench.editor.showTabs": "multiple",
+	"workbench.editor.tabSizing": "fit",
+	"workbench.editor.enablePreview": false,
+	"workbench.editor.enablePreviewFromQuickOpen": false,
+	"workbench.startupEditor": "none",
+	"workbench.colorCustomizations": {
+		"editorGutter.addedBackground": "#28a745", // Color for added lines (green)
+		"editorGutter.modifiedBackground": "#2188ff", // Color for modified lines (blue)
+		"editorGutter.deletedBackground": "#cb2431", // Color for removed lines (red)
+		"diffEditor.insertedTextBackground": "#28a74533", // Background color for added text (green with transparency)
+		"diffEditor.removedTextBackground": "#cb243133" // Background color for removed text (red with transparency)
+	},
+	"git.decorations.enabled": true,
+	"scm.diffDecorations": "all",
 
-  "terminal.integrated.macOptionClickForcesSelection": true,
-  "terminal.integrated.showExitAlert": false,
-  "terminal.integrated.defaultProfile.osx": "tmux",
-  "terminal.integrated.profiles.osx": {
-    "tmux": {
-      "overrideName": true,
-      "path": "zsh",
-      "args": ["-c", "tmux new-session -A -s \"$(basename `short-pwd`)#$\""]
-    }
-  },
-  "terminal.integrated.copyOnSelection": true,
+	"terminal.integrated.macOptionClickForcesSelection": true,
+	"terminal.integrated.showExitAlert": false,
+	"terminal.integrated.defaultProfile.osx": "tmux",
+	"terminal.integrated.profiles.osx": {
+		"tmux": {
+			"overrideName": true,
+			"path": "zsh",
+			"args": ["-c", "tmux new-session -A -s \"$(basename `short-pwd`)#$\""]
+		}
+	},
+	"terminal.integrated.copyOnSelection": true,
 
-  "diffEditor.renderSideBySide": false,
-  "diffEditor.ignoreTrimWhitespace": true,
+	"diffEditor.renderSideBySide": false,
+	"diffEditor.ignoreTrimWhitespace": true,
 
-  "files.autoSave": "onFocusChange",
-  "files.insertFinalNewline": true,
-  "files.trimTrailingWhitespace": true,
-  "files.eol": "\n",
-  "files.watcherExclude": {
-    "**/.git/objects/**": true,
-    "**/.git/subtree-cache/**": true,
-    "**/node_modules/*/**": true,
-    "**/.hg/store/**": true,
-    "**/dist/**": true,
-    "**/lib/**": true,
-    "**/.bloop": true,
-    "**/.metals": true,
-    "**/.ammonite": true
-  },
+	"files.autoSave": "onFocusChange",
+	"files.insertFinalNewline": true,
+	"files.trimTrailingWhitespace": true,
+	"files.eol": "\n",
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/node_modules/*/**": true,
+		"**/.hg/store/**": true,
+		"**/dist/**": true,
+		"**/lib/**": true,
+		"**/.bloop": true,
+		"**/.metals": true,
+		"**/.ammonite": true
+	},
 
-  "search.useIgnoreFiles": true,
-  "search.useGlobalIgnoreFiles": true,
-  "search.followSymlinks": false,
-  "search.exclude": {
-    // haskellのビルドしたファイルを非表示にする
-    "**/*.hi": { "when": "$(basename).hs" },
-    "**/*.o": { "when": "$(basename).hs" }
-  },
-  "files.exclude": {
-    // haskellのビルドしたファイルを非表示にする
-    "**/*.hi": { "when": "$(basename).hs" },
-    "**/*.o": { "when": "$(basename).hs" }
-  },
+	"search.useIgnoreFiles": true,
+	"search.useGlobalIgnoreFiles": true,
+	"search.followSymlinks": false,
+	"search.exclude": {
+		// haskellのビルドしたファイルを非表示にする
+		"**/*.hi": { "when": "$(basename).hs" },
+		"**/*.o": { "when": "$(basename).hs" }
+	},
+	"files.exclude": {
+		// haskellのビルドしたファイルを非表示にする
+		"**/*.hi": { "when": "$(basename).hs" },
+		"**/*.o": { "when": "$(basename).hs" }
+	},
 
-  "prettier.trailingComma": "all",
-  "prettier.singleQuote": true,
-  "prettier.arrowParens": "always",
+	"prettier.trailingComma": "all",
+	"prettier.singleQuote": true,
+	"prettier.arrowParens": "always",
 
-  "vim.useSystemClipboard": true,
-  "vim.surround": true,
-  "vim.easymotion": true,
-  "vim.leader": "<space>",
-  "vim.normalModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<leader>", "p"],
-      "after": ["\"1p"]
-    },
-    {
-      "before": ["<leader>", "h"],
-      "after": ["0"]
-    },
-    {
-      "before": ["<leader>", "l"],
-      "after": ["$"]
-    },
-    {
-      "before": ["<leader>", "q"],
-      "commands": [":q"]
-    },
-    {
-      "before": ["<leader>", "w"],
-      "commands": [":w"]
-    },
-    {
-      "before": ["<leader>", "w", "q"],
-      "commands": [":wq"]
-    },
-    {
-      "before": ["<leader>", "w", "a"],
-      "commands": ["workbench.action.closeEditorsAndGroup"]
-    },
-    {
-      "before": ["<leader>", "u"],
-      "commands": [":vs"]
-    },
-    {
-      "before": ["<leader>", "m"],
-      "commands": ["workbench.action.minimizeOtherEditors"]
-    },
-    {
-      "before": ["<leader>", "d"],
-      "commands": ["editor.action.revealDefinitionAside"]
-    },
-    {
-      "before": ["<leader>", "f"],
-      "commands": ["editor.action.revealDefinition"]
-    },
-    {
-      "before": ["<leader>", "g"],
-      "commands": ["editor.action.showHover"]
-    },
-    {
-      "before": ["<leader>", "r"],
-      "commands": ["editor.action.rename"]
-    },
-    {
-      "before": ["<leader>", "a"],
-      "commands": ["editor.action.findReferences"]
-    },
-    {
-      "before": ["<leader>", "c"],
-      "commands": ["editor.action.inlineSuggest.trigger"]
-    },
-    {
-      "before": ["<leader>", "c", "i"],
-      "commands": ["editor.action.inlineSuggest.trigger"]
-    },
-    {
-      "before": ["<leader>", "c", "i", "g"],
-      "commands": ["inlineChat.start"]
-    },
-    {
-      "before": ["<leader>", "n"],
-      "commands": ["editor.action.marker.next"]
-    },
-    {
-      "before": ["<leader>", "<C-f>"],
-      "commands": ["actions.find"]
-    },
-    {
-      "before": ["<leader>", "<C-r>"],
-      "commands": ["editor.action.startFindReplaceAction"]
-    },
-    {
-      "before": ["<C-k>"],
-      "commands": ["editor.action.commentLine"]
-    }
-  ],
-  "vim.visualModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<leader>", "q"],
-      "commands": ["editor.action.quickFix"]
-    },
-    {
-      "before": ["<leader>", "c"],
-      "commands": ["editor.action.inlineSuggest.trigger"]
-    },
-    {
-      "before": ["<C-k>"],
-      "commands": ["editor.action.commentLine"]
-    }
-  ],
-  "vim.operatorPendingModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<leader>", "q"],
-      "commands": ["editor.action.quickFix"]
-    },
-    {
-      "before": ["<leader>", "c"],
-      "commands": ["editor.action.inlineSuggest.trigger"]
-    },
-    {
-      "before": ["<C-k>"],
-      "commands": ["editor.action.commentLine"]
-    }
-  ],
-  "vim.insertModeKeyBindingsNonRecursive": [],
+	"vim.useSystemClipboard": true,
+	"vim.surround": true,
+	"vim.easymotion": true,
+	"vim.leader": "<space>",
+	"vim.normalModeKeyBindingsNonRecursive": [
+		{
+			"before": ["<leader>", "p"],
+			"after": ["\"1p"]
+		},
+		{
+			"before": ["<leader>", "h"],
+			"after": ["0"]
+		},
+		{
+			"before": ["<leader>", "l"],
+			"after": ["$"]
+		},
+		{
+			"before": ["<leader>", "q"],
+			"commands": [":q"]
+		},
+		{
+			"before": ["<leader>", "w"],
+			"commands": [":w"]
+		},
+		{
+			"before": ["<leader>", "w", "q"],
+			"commands": [":wq"]
+		},
+		{
+			"before": ["<leader>", "w", "a"],
+			"commands": ["workbench.action.closeEditorsAndGroup"]
+		},
+		{
+			"before": ["<leader>", "u"],
+			"commands": [":vs"]
+		},
+		{
+			"before": ["<leader>", "m"],
+			"commands": ["workbench.action.minimizeOtherEditors"]
+		},
+		{
+			"before": ["<leader>", "d"],
+			"commands": ["editor.action.revealDefinitionAside"]
+		},
+		{
+			"before": ["<leader>", "f"],
+			"commands": ["editor.action.revealDefinition"]
+		},
+		{
+			"before": ["<leader>", "g"],
+			"commands": ["editor.action.showHover"]
+		},
+		{
+			"before": ["<leader>", "r"],
+			"commands": ["editor.action.rename"]
+		},
+		{
+			"before": ["<leader>", "a"],
+			"commands": ["editor.action.findReferences"]
+		},
+		{
+			"before": ["<leader>", "c"],
+			"commands": ["editor.action.inlineSuggest.trigger"]
+		},
+		{
+			"before": ["<leader>", "c", "i"],
+			"commands": ["editor.action.inlineSuggest.trigger"]
+		},
+		{
+			"before": ["<leader>", "c", "i", "g"],
+			"commands": ["inlineChat.start"]
+		},
+		{
+			"before": ["<leader>", "n"],
+			"commands": ["editor.action.marker.next"]
+		},
+		{
+			"before": ["<leader>", "<C-f>"],
+			"commands": ["actions.find"]
+		},
+		{
+			"before": ["<leader>", "<C-r>"],
+			"commands": ["editor.action.startFindReplaceAction"]
+		},
+		{
+			"before": ["<C-k>"],
+			"commands": ["editor.action.commentLine"]
+		}
+	],
+	"vim.visualModeKeyBindingsNonRecursive": [
+		{
+			"before": ["<leader>", "q"],
+			"commands": ["editor.action.quickFix"]
+		},
+		{
+			"before": ["<leader>", "c"],
+			"commands": ["editor.action.inlineSuggest.trigger"]
+		},
+		{
+			"before": ["<C-k>"],
+			"commands": ["editor.action.commentLine"]
+		}
+	],
+	"vim.operatorPendingModeKeyBindingsNonRecursive": [
+		{
+			"before": ["<leader>", "q"],
+			"commands": ["editor.action.quickFix"]
+		},
+		{
+			"before": ["<leader>", "c"],
+			"commands": ["editor.action.inlineSuggest.trigger"]
+		},
+		{
+			"before": ["<C-k>"],
+			"commands": ["editor.action.commentLine"]
+		}
+	],
+	"vim.insertModeKeyBindingsNonRecursive": [],
 
-  "explorer.autoReveal": false,
-  "explorer.excludeGitIgnore": true,
+	"explorer.autoReveal": false,
+	"explorer.excludeGitIgnore": true,
 
-  "[go]": {
-    "editor.snippetSuggestions": "none",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
-    }
-  },
-  "go.useLanguageServer": true,
-  "go.testFlags": ["-v"],
-  "go.testEnvVars": {
-    "GO_ENV": "test"
-  },
-  "go.toolsManagement.autoUpdate": true,
+	"[go]": {
+		"editor.snippetSuggestions": "none",
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": "explicit"
+		}
+	},
+	"go.useLanguageServer": true,
+	"go.testFlags": ["-v"],
+	"go.testEnvVars": {
+		"GO_ENV": "test"
+	},
+	"go.toolsManagement.autoUpdate": true,
 
-  "[rust]": {
-    "editor.formatOnSave": true,
-    "editor.tabSize": 4,
-    "editor.defaultFormatter": "rust-lang.rust-analyzer"
-  },
-  "rust-analyzer.cargo.autoreload": true,
-  "rust-analyzer.procMacro.enable": true,
-  "rust-analyzer.cargo.buildScripts.enable": true,
-  "rust-analyzer.cargo.features": "all",
-  "rust-analyzer.check.command": "clippy",
-  "pestIdeTools.alwaysUsedRuleNames": ["ws", "br"],
+	"[rust]": {
+		"editor.formatOnSave": true,
+		"editor.tabSize": 4,
+		"editor.defaultFormatter": "rust-lang.rust-analyzer"
+	},
+	"rust-analyzer.cargo.autoreload": true,
+	"rust-analyzer.procMacro.enable": true,
+	"rust-analyzer.cargo.buildScripts.enable": true,
+	"rust-analyzer.cargo.features": "all",
+	"rust-analyzer.check.command": "clippy",
+	"pestIdeTools.alwaysUsedRuleNames": ["ws", "br"],
 
-  "[javascript]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.formatOnSave": true,
-    "editor.formatOnType": false
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.formatOnSave": true,
-    "editor.formatOnType": false
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome",
-    "editor.formatOnSave": true,
-    "editor.formatOnType": false
-  },
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "eslint.run": "onSave",
-  "emmet.showExpandedAbbreviation": "never",
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"editor.formatOnSave": true,
+		"editor.formatOnType": false
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"editor.formatOnSave": true,
+		"editor.formatOnType": false
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"editor.formatOnSave": true,
+		"editor.formatOnType": false
+	},
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"eslint.run": "onSave",
+	"emmet.showExpandedAbbreviation": "never",
 
-  "[ruby]": {
-    "editor.formatOnSave": true,
-    "editor.formatOnType": false,
-    "editor.defaultFormatter": "Shopify.ruby-lsp"
-  },
+	"[ruby]": {
+		"editor.formatOnSave": true,
+		"editor.formatOnType": false,
+		"editor.defaultFormatter": "Shopify.ruby-lsp"
+	},
 
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[terraform]": {
-    "editor.defaultFormatter": "hashicorp.terraform"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[makefile]": {
-    "editor.insertSpaces": false
-  },
-  "[toml]": {
-    "editor.defaultFormatter": "tamasfe.even-better-toml"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml"
-  },
-  "[mustache]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[markdown]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[terraform]": {
+		"editor.defaultFormatter": "hashicorp.terraform"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[makefile]": {
+		"editor.insertSpaces": false
+	},
+	"[toml]": {
+		"editor.defaultFormatter": "tamasfe.even-better-toml"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[xml]": {
+		"editor.defaultFormatter": "redhat.vscode-xml"
+	},
+	"[mustache]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
 
-  // haskell
-  "haskell.formattingProvider": "ormolu",
-  "haskell.serverEnvironment": { "PATH": "${HOME}/.ghcup/bin:${PATH}" },
-  "haskell.manageHLS": "GHCup",
-  // ghcup は mise で入れたものを使い、更新も mise で行う。stack は入れない (docs/adr/0056)
-  "haskell.ghcupExecutablePath": "${HOME}/.local/share/mise/installs/ghcup/latest/ghcup",
-  "haskell.upgradeGHCup": false,
-  "haskell.toolchain": {
-    "ghcup": "recommend",
-    "stack": null,
-    "ghc": "recommend",
-    "hls": "recommend"
-  },
-  "[haskell]": {
-    "editor.defaultFormatter": "sjurmillidahl.ormolu-vscode",
-    "editor.formatOnSave": true
-  },
-  "[elm]": {
-    "editor.formatOnSave": true
-  },
+	// haskell
+	"haskell.formattingProvider": "ormolu",
+	"haskell.serverEnvironment": { "PATH": "${HOME}/.ghcup/bin:${PATH}" },
+	"haskell.manageHLS": "GHCup",
+	// ghcup は mise で入れたものを使い、更新も mise で行う。stack は入れない (docs/adr/0056)
+	"haskell.ghcupExecutablePath": "${HOME}/.local/share/mise/installs/ghcup/latest/ghcup",
+	"haskell.upgradeGHCup": false,
+	"haskell.toolchain": {
+		"ghcup": "recommend",
+		"stack": null,
+		"ghc": "recommend",
+		"hls": "recommend"
+	},
+	"[haskell]": {
+		"editor.defaultFormatter": "sjurmillidahl.ormolu-vscode",
+		"editor.formatOnSave": true
+	},
+	"[elm]": {
+		"editor.formatOnSave": true
+	},
 
-  // drawio
-  "hediet.vscode-drawio.local-storage": "eyIuZHJhd2lvLWNvbmZpZyI6IntcImxhbmd1YWdlXCI6XCJcIixcImN1c3RvbUZvbnRzXCI6W10sXCJsaWJyYXJpZXNcIjpcImdlbmVyYWxcIixcImN1c3RvbUxpYnJhcmllc1wiOltcIkwuc2NyYXRjaHBhZFwiXSxcInBsdWdpbnNcIjpbXSxcInJlY2VudENvbG9yc1wiOltdLFwiZm9ybWF0V2lkdGhcIjpcIjI0MFwiLFwiY3JlYXRlVGFyZ2V0XCI6ZmFsc2UsXCJwYWdlRm9ybWF0XCI6e1wieFwiOjAsXCJ5XCI6MCxcIndpZHRoXCI6ODI3LFwiaGVpZ2h0XCI6MTE2OX0sXCJzZWFyY2hcIjp0cnVlLFwic2hvd1N0YXJ0U2NyZWVuXCI6dHJ1ZSxcImdyaWRDb2xvclwiOlwiI2QwZDBkMFwiLFwiZGFya0dyaWRDb2xvclwiOlwiIzZlNmU2ZVwiLFwiYXV0b3NhdmVcIjp0cnVlLFwicmVzaXplSW1hZ2VzXCI6bnVsbCxcIm9wZW5Db3VudGVyXCI6MCxcInZlcnNpb25cIjoxOCxcInVuaXRcIjoxLFwiaXNSdWxlck9uXCI6ZmFsc2UsXCJ1aVwiOlwiXCJ9In0=",
-  "git.openRepositoryInParentFolders": "never",
-  "github.copilot.enable": {
-    "*": true,
-    "yaml": false,
-    "plaintext": true,
-    "markdown": false,
-    "mdx": false
-  },
+	// drawio
+	"hediet.vscode-drawio.local-storage": "eyIuZHJhd2lvLWNvbmZpZyI6IntcImxhbmd1YWdlXCI6XCJcIixcImN1c3RvbUZvbnRzXCI6W10sXCJsaWJyYXJpZXNcIjpcImdlbmVyYWxcIixcImN1c3RvbUxpYnJhcmllc1wiOltcIkwuc2NyYXRjaHBhZFwiXSxcInBsdWdpbnNcIjpbXSxcInJlY2VudENvbG9yc1wiOltdLFwiZm9ybWF0V2lkdGhcIjpcIjI0MFwiLFwiY3JlYXRlVGFyZ2V0XCI6ZmFsc2UsXCJwYWdlRm9ybWF0XCI6e1wieFwiOjAsXCJ5XCI6MCxcIndpZHRoXCI6ODI3LFwiaGVpZ2h0XCI6MTE2OX0sXCJzZWFyY2hcIjp0cnVlLFwic2hvd1N0YXJ0U2NyZWVuXCI6dHJ1ZSxcImdyaWRDb2xvclwiOlwiI2QwZDBkMFwiLFwiZGFya0dyaWRDb2xvclwiOlwiIzZlNmU2ZVwiLFwiYXV0b3NhdmVcIjp0cnVlLFwicmVzaXplSW1hZ2VzXCI6bnVsbCxcIm9wZW5Db3VudGVyXCI6MCxcInZlcnNpb25cIjoxOCxcInVuaXRcIjoxLFwiaXNSdWxlck9uXCI6ZmFsc2UsXCJ1aVwiOlwiXCJ9In0=",
+	"git.openRepositoryInParentFolders": "never",
+	"github.copilot.enable": {
+		"*": true,
+		"yaml": false,
+		"plaintext": true,
+		"markdown": false,
+		"mdx": false
+	},
 
-  "tailwindCSS.files.exclude": [
-    "**/lib",
-    "**/dist",
-    "**/.git/**",
-    "**/node_modules/**",
-    "**/.hg/**",
-    "**/.svn/**"
-  ],
+	"tailwindCSS.files.exclude": [
+		"**/lib",
+		"**/dist",
+		"**/.git/**",
+		"**/node_modules/**",
+		"**/.hg/**",
+		"**/.svn/**"
+	],
 
-  "redhat.telemetry.enabled": false,
-  "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
-  },
-  "[scala]": {
-    "editor.defaultFormatter": "scalameta.metals"
-  },
+	"redhat.telemetry.enabled": false,
+	"extensions.experimental.affinity": {
+		"asvetliakov.vscode-neovim": 1
+	},
+	"[scala]": {
+		"editor.defaultFormatter": "scalameta.metals"
+	},
 
-  "[python]": {
-    "editor.wrappingIndent": "deepIndent"
-  },
-  "json.schemaDownload.trustedDomains": {
-    "https://schemastore.azurewebsites.net/": true,
-    "https://raw.githubusercontent.com/microsoft/vscode/": true,
-    "https://raw.githubusercontent.com/devcontainers/spec/": true,
-    "https://www.schemastore.org/": true,
-    "https://json.schemastore.org/": true,
-    "https://spec.openapis.org/": true,
-    "https://json-schema.org/": true,
-    "https://developer.microsoft.com/json-schemas/": true,
-    "https://biomejs.dev": true
-  }
+	"[python]": {
+		"editor.wrappingIndent": "deepIndent"
+	},
+	"json.schemaDownload.trustedDomains": {
+		"https://schemastore.azurewebsites.net/": true,
+		"https://raw.githubusercontent.com/microsoft/vscode/": true,
+		"https://raw.githubusercontent.com/devcontainers/spec/": true,
+		"https://www.schemastore.org/": true,
+		"https://json.schemastore.org/": true,
+		"https://spec.openapis.org/": true,
+		"https://json-schema.org/": true,
+		"https://developer.microsoft.com/json-schemas/": true,
+		"https://biomejs.dev": true
+	}
 }
