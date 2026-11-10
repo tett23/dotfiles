@@ -72,6 +72,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.codex/AGENTS.md` | `codex/AGENTS.md` (`.claude/CLAUDE.md` から Codex 向けに作る。[ADR 0114](adr/0114-codex-agents-md.md)) |
 | `~/.codex/hooks.json` | `codex/hooks.json` ([ADR 0115](adr/0115-codex-adr-guard-hook.md)) |
 | `~/.codex/agents` | `codex/agents/` ([ADR 0117](adr/0117-codex-model-roles.md)) |
+| `~/.claude/skills/<名前>`、`~/.agents/skills/<名前>` (`doc-writing`・`release`・`close-reading`) | `agents/skills/<名前>/` (Claude Code と Codex で共有する。ほかのスキルは管理しない。[ADR 0118](adr/0118-split-instructions-into-skills.md)) |
 | `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
 | `~/.config/gh/config.yml` | `gh/config.yml` (認証情報を持つ `hosts.yml` は管理しない。[ADR 0112](adr/0112-gh-config-in-dotfiles.md)) |
 | `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
@@ -258,6 +259,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   既定のモデルは Opus で、使い分けは `.claude/CLAUDE.md` の「モデルの使い分け」に書く ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md))。
 - 本人の設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
   有効にするプラグインは `lua-lsp` だけにする。`example-skills` は使わないスキルが多いので外した ([ADR 0116](adr/0116-remove-example-skills-plugin.md))。
+- 文書の書き方 (`doc-writing`)、タグとリリース (`release`)、精読 (`close-reading`) は、全リポジトリ共通の指示から分けたスキルで、`agents/skills/` に置き、Claude Code と Codex で共有する。
+  共通の指示 (`.claude/CLAUDE.md`・`codex/AGENTS.md`) には、使う前にスキルを読むことだけを書く。ADR の決まりは共通の指示に残す ([ADR 0118](adr/0118-split-instructions-into-skills.md))。
 - Codex の全リポジトリ共通の指示は `codex/AGENTS.md`。`.claude/CLAUDE.md` と同じ内容で、Claude Code に特有のところ (出力の言語の主語、hook の設定の場所、`/goal`、「モデルの使い分け」のモデルと役割の名前) だけを
   Codex 向けに変え、`~/.codex/AGENTS.md` の Python の決まりを足した。2 つのファイルは手で合わせる ([ADR 0114](adr/0114-codex-agents-md.md))。
 - Codex でも、PreToolUse の hook (`codex/hooks.json`) で `adr-guard codex-hook --allow-status` を動かし、`apply_patch` と `Bash` によるコミット済みの ADR の変更を止める。

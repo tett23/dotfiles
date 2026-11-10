@@ -62,6 +62,13 @@
           ".codex/hooks.json".source = link "codex/hooks.json";
           # Codex のサブエージェントの役割。モデルを固定する (docs/adr/0117)
           ".codex/agents".source = link "codex/agents";
+          # Claude Code と Codex で共有するスキル。管理していないスキルがあるので、スキルごとにリンクする (docs/adr/0118)
+          ".claude/skills/doc-writing".source = link "agents/skills/doc-writing";
+          ".claude/skills/release".source = link "agents/skills/release";
+          ".claude/skills/close-reading".source = link "agents/skills/close-reading";
+          ".agents/skills/doc-writing".source = link "agents/skills/doc-writing";
+          ".agents/skills/release".source = link "agents/skills/release";
+          ".agents/skills/close-reading".source = link "agents/skills/close-reading";
           "Library/Application Support/Code/User/settings.json".source = link "vscode/settings.json";
           "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
           "Library/Application Support/Code/User/snippets".source = link "vscode/snippets";
