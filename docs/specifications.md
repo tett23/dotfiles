@@ -259,6 +259,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   既定のモデルは Opus で、使い分けは `.claude/CLAUDE.md` の「モデルの使い分け」に書く ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md))。
 - 本人の設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
   有効にするプラグインは `lua-lsp` だけにする。`example-skills` は使わないスキルが多いので外した ([ADR 0116](adr/0116-remove-example-skills-plugin.md))。
+- 成功した Bash のコマンドの出力は、10000 文字まで文脈に受け取る (`.claude/settings.json` の `bashOutputMaxChars`)。超えた出力はファイルに保存され、先頭の 2000 文字までのプレビューとパスを受け取る。
+  読み戻しの窓も 10000 文字になる ([ADR 0119](adr/0119-claude-bash-output-limit.md))。
 - 文書の書き方 (`doc-writing`)、タグとリリース (`release`)、精読 (`close-reading`) は、全リポジトリ共通の指示から分けたスキルで、`agents/skills/` に置き、Claude Code と Codex で共有する。
   共通の指示 (`.claude/CLAUDE.md`・`codex/AGENTS.md`) には、使う前にスキルを読むことだけを書く。ADR の決まりは共通の指示に残す ([ADR 0118](adr/0118-split-instructions-into-skills.md))。
 - Codex の全リポジトリ共通の指示は `codex/AGENTS.md`。`.claude/CLAUDE.md` と同じ内容で、Claude Code に特有のところ (出力の言語の主語、hook の設定の場所、`/goal`、「モデルの使い分け」のモデルと役割の名前) だけを
