@@ -41,6 +41,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
     `flake.nix` の `services.colima.profiles.default.settings` に書き、`~/.colima/default/colima.yaml` は読み取り専用になる。ほかのプロファイルは管理しない ([ADR 0113](adr/0113-colima-settings-in-flake.md))。
   - Alloy は nixpkgs の `alloy6` (コマンドは `alloy6`。nixpkgs の `jre` で動く) を入れる ([ADR 0103](adr/0103-java-and-alloy.md))。
   - SMT ソルバーの Z3 は nixpkgs の `z3` を入れる ([ADR 0105](adr/0105-z3.md))。
+  - Lean のツールチェーンを管理する elan は nixpkgs の `elan` を入れる ([ADR 0120](adr/0120-elan.md))。
 - 言語とツールは mise で管理する (`mise/config.toml`。すべて `latest`)。Haskell の ghc・cabal は mise で入れた ghcup で入れ、
   `install.sh` と `bin/update-mise` が ghcup の `latest` を入れて既定にする ([ADR 0050](adr/0050-ghc-cabal-via-ghcup.md))。
   VSCode の Haskell 拡張も mise の ghcup を使い、ghcup の自動の更新はしない。stack は入れない ([ADR 0056](adr/0056-remove-old-ghcup-and-stack.md))。

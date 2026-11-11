@@ -132,6 +132,7 @@
           pkgs.smartmontools # ストレージの SMART の情報を読む smartctl (docs/adr/0075)
           pkgs.alloy6 # Alloy 6 (コマンドは alloy6)。nixpkgs の alloy は 5 系 (docs/adr/0103)
           pkgs.z3 # SMT ソルバー (docs/adr/0105)
+          pkgs.elan
         ];
 
         # Docker のエンジンは colima を常駐させて使う (Docker Desktop から移行。docs/adr/0012)
