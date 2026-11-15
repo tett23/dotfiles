@@ -10,6 +10,52 @@ description: ADR (docs/adr/) の決まり。採択の記録、修正と破棄、
 修正用の ADR が採択されたら、元の ADR のステータスを `superseded [{"part":null,"by":["docs/adr/NNNN-....md"]}]` にする。一部だけを変えたときは、`part` にその部分の名前 (節の名前など) を書く。`adr-guard trace` で修正の連なりをたどれる。
 ADRを破棄する場合は、ステータスを `discarded` にして、理由をdocs/specifications.mdに記述する。
 
+## ステータスと状態の遷移
+
+ADR の状態は、ステータスの行 `Status: <値>` で表し、決まった遷移でだけ変えられる。
+adr-guard の pre-commit hook と CI (`check-range`) は、コミットの前の状態からコミットの後の状態への遷移を検査し、決まりにない遷移を拒否する。
+この検査は `--allow-status` と `ADR_GUARD_ALLOW` でも免除されない
+([tett23/adr-guard ADR 0022](https://github.com/tett23/adr-guard/blob/v0.13.1/docs/adr/0022-status-transitions.md) の「コミット時の遷移検査」)。
+
+値は次のとおりである。
+
+| 値 | 意味 |
+| --- | --- |
+| `proposed` | 提案。レビューを待つ |
+| `accepted` | 採択し、実装を終えた |
+| `accepted-pending` | 採択し、実装を待つ |
+| `superseded [<変更の配列>]` | 採択した後に、後の ADR が変更を記録した |
+| `superseded-pending [<変更の配列>]` | 実装を待つ間に、後の ADR が変更を記録した |
+| `rejected` | 却下した |
+| `discarded` | 破棄した |
+| `deprecated` | 採択した後に、使わなくなった |
+
+許される遷移は次のとおりである。
+新しい ADR は `proposed` でしか追加できず、採択や却下は後のコミットで記録する。
+提案の時点の内容を Git の履歴に残すためである。
+
+| 前 | 後 | 使う場面 |
+| --- | --- | --- |
+| (無い) | `proposed` | ADR を足す |
+| `proposed` | `accepted`・`accepted-pending`・`rejected`・`discarded` | 採択、採択して実装を待つ、却下、破棄 |
+| `accepted-pending` | `accepted` | 実装を終えた |
+| `accepted-pending` | `superseded [...]`・`superseded-pending [...]` | 後の ADR が変更を記録した (実装を終えたか、まだか) |
+| `superseded-pending [...]` | `superseded [...]` | 実装を終えた。変更の配列は前と同じにする |
+| `accepted` | `superseded [...]` | 後の ADR が変更を記録した |
+| `superseded [...]`・`superseded-pending [...]` | 同じ値で、変更の配列だけ違うもの | さらに後の ADR が変更を記録した |
+| `accepted`・`accepted-pending`・`superseded [...]`・`superseded-pending [...]` | `deprecated` | 使わなくなった |
+
+同じ状態を別の書き方に移すだけの変更 (旧形式の `ステータス: 採択` を `Status: accepted` にするなど) は、遷移として検査を通る。
+`rejected`・`discarded`・`deprecated` からの遷移は無い。
+
+変更の配列の要素は、`{"part":<部分の名前か null>,"by":[<修正先>],"kind":<種類>,"note":<注記>}` である。
+`part` が `null` のときは ADR 全体を、文字列のときは節の名前などの一部を指す。
+修正先は、リポジトリのルートからの相対パスか、`https://` で始まる URL である。
+`kind` は `"replace"` (置換。省いたときの値)、`"supplement"` (補足)、`"note"` (注記) のどれかで、`note` は改行を含まない文字列である。
+注記は修正先を持たず (`"by":[]`)、`note` を必ず持つ。補足や注記だけを記録するときも、`superseded` か `superseded-pending` を使う
+([tett23/adr-guard ADR 0025](https://github.com/tett23/adr-guard/blob/v0.13.1/docs/adr/0025-extend-canonical-status-amendments.md))。
+修正の連なりは `adr-guard trace` でたどれる。
+
 変更を不可にする方法は以下にある。リポジトリを初期化するときにはREADMEに従うこと。
 https://github.com/tett23/adr-guard
 
