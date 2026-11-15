@@ -66,9 +66,11 @@
           ".claude/skills/doc-writing".source = link "agents/skills/doc-writing";
           ".claude/skills/release".source = link "agents/skills/release";
           ".claude/skills/close-reading".source = link "agents/skills/close-reading";
+          ".claude/skills/adr".source = link "agents/skills/adr";
           ".agents/skills/doc-writing".source = link "agents/skills/doc-writing";
           ".agents/skills/release".source = link "agents/skills/release";
           ".agents/skills/close-reading".source = link "agents/skills/close-reading";
+          ".agents/skills/adr".source = link "agents/skills/adr";
           "Library/Application Support/Code/User/settings.json".source = link "vscode/settings.json";
           "Library/Application Support/Code/User/keybindings.json".source = link "vscode/keybindings.json";
           "Library/Application Support/Code/User/snippets".source = link "vscode/snippets";

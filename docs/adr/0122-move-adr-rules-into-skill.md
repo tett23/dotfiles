@@ -1,6 +1,6 @@
 # ADR 0122: ADR の決まりを、全リポジトリ共通の指示から adr スキルに移す
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 

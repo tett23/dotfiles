@@ -1,6 +1,6 @@
 # ADR 0118: CLAUDE.md と AGENTS.md の、ときどきしか使わない節をスキルに分ける
 
-Status: accepted
+Status: superseded [{"part":"実装しないこと (「ADR」の節をスキルに移さない項目)","by":["docs/adr/0122-move-adr-rules-into-skill.md"]}]
 
 ## 文脈
 
