@@ -8,9 +8,11 @@ Codexの出力は日本語で書く。
 
 ## ADR（docs/adr/）
 
-実装に入るまえに必ずADRを作成する。一度コミットしたADRはステータスの行を除き、変更不可。作成時点ではコミットをせず、人間のレビューを受ける必要がある。
+実装に入るまえに必ずADRを作成する。一度コミットしたADRはステータスの行を除き、変更不可。作成時点では `Status: proposed` で書き、人間のレビューを受けるまでコミットしない。
+採択されたら、まず `Status: proposed` のまま ADR をコミットし、次のコミットでステータスを `accepted` (実装済み) か `accepted-pending` (未実装) に変える。adr-guard は、追加の時点で `accepted` の ADR と、決まりにない状態の遷移を拒否する。
 仕様を変更したくなった場合は、新たに修正用のADRを作成する。元のADRを書きかえてはいけない。
-ADRを破棄する場合は、ステータスを破棄にして、理由をdocs/specifications.mdに記述する。
+修正用の ADR が採択されたら、元の ADR のステータスを `superseded [{"part":null,"by":["docs/adr/NNNN-....md"]}]` にする。一部だけを変えたときは、`part` にその部分の名前 (節の名前など) を書く。`adr-guard trace` で修正の連なりをたどれる。
+ADRを破棄する場合は、ステータスを `discarded` にして、理由をdocs/specifications.mdに記述する。
 
 変更を不可にする方法は以下にある。リポジトリを初期化するときにはREADMEに従うこと。
 https://github.com/tett23/adr-guard
@@ -38,7 +40,7 @@ ADRは以下のような内容を記載する。ステータスはこのADRが�
 ```
 # ADR 0001: タイトル
 
-ステータス: {採択／採択（未実装）／採択→変更後ADR番号／採択→○○（変更部分）はADR NNNN／提案／却下／破棄など}
+Status: {proposed／accepted／accepted-pending／superseded [...]／superseded-pending／rejected／discarded／deprecated}
 
 ## 文脈
 
@@ -75,10 +77,10 @@ ADR を書いた後は、本人のレビューに出す前に、`close-reading` 
 
 ### 未実装ADRの自動実装
 
-採択（未実装）ADR を実装するよう頼まれたときの、デフォルトの指示は以下。
+`accepted-pending` の ADR を実装するよう頼まれたときの、デフォルトの指示は以下。
 
 ```
-ADRを全て読み、ステータスが採択（未実装）で現状実装可能なものを全て実装。実装が止まりそうなときはその場所を後回しにしてもよい。実装はADRごとにpull-reqを作成する。CIが通ればpull-reqはマージコミットでマージしてよい。停止後、どこを後回しにしたかのレポートをチャットに出力すること。実装のpull-reqには実装が終わったものはステータスを採択にする変更を含める。
+ADRを全て読み、ステータスが accepted-pending で現状実装可能なものを全て実装。実装が止まりそうなときはその場所を後回しにしてもよい。実装はADRごとにpull-reqを作成する。CIが通ればpull-reqはマージコミットでマージしてよい。停止後、どこを後回しにしたかのレポートをチャットに出力すること。実装のpull-reqには実装が終わったものはステータスを accepted にする変更を含める。
 ```
 
 ## docs/specifications.mdとREADME.md
