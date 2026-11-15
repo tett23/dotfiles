@@ -1,6 +1,6 @@
 # ADR 0021: bin/send-to-kindle を最新化し、.env が無ければ環境変数を使う
 
-Status: Accepted → 0031
+Status: superseded [{"by":["docs/adr/0031-command-finder-key-and-rust-tools-via-mise.md"],"part":null}]
 - Date: 2026-10-09
 
 ## Context

@@ -1,6 +1,6 @@
 # ADR 0069: プロンプトの git の表示に、worktree の名前を出す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

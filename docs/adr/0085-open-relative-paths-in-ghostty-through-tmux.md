@@ -1,6 +1,6 @@
 # ADR 0085: tmux の中でも Ghostty で相対パスを開けるようにし、rg・fd にリンクを出させる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

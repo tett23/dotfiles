@@ -1,6 +1,6 @@
 # ADR 0121: CI の adr-guard を 0.13.1 に上げ、ADR のステータスの行を新形式に移す
 
-Status: accepted-pending
+Status: accepted
 
 ## 文脈
 

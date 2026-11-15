@@ -1,6 +1,6 @@
 # ADR 0106: nvim で Alloy を tree-sitter で色付けする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

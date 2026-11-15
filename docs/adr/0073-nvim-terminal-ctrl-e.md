@@ -1,6 +1,6 @@
 # ADR 0073: nvim のターミナルがノーマルモードでも、Ctrl-E をシェルに渡す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

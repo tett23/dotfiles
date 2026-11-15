@@ -1,6 +1,6 @@
 # ADR 0104: nvim で Alloy の LSP サーバー (alloy6 lsp) を使う
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

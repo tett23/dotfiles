@@ -1,6 +1,6 @@
 # ADR 0007: tmux のステータスラインにプロセス名ではなくディレクトリ名を表示する
 
-Status: Accepted
+Status: accepted
 - Date: 2026-10-06
 
 ## Context

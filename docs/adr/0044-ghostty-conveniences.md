@@ -1,6 +1,6 @@
 # ADR 0044: Ghostty に便利な設定を足す
 
-ステータス: 採択→macos-option-as-alt は[ADR 0047](0047-ghostty-option-as-alt-removed.md)
+Status: superseded [{"by":["docs/adr/0047-ghostty-option-as-alt-removed.md"],"part":"macos-option-as-alt"}]
 
 ## 文脈
 

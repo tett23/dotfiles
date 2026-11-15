@@ -1,6 +1,6 @@
 # ADR 0001: `curl | sh` だけでインストールを完了させる
 
-Status: Accepted
+Status: accepted
 - Date: 2026-09-21
 
 ## Context

@@ -1,6 +1,6 @@
 # ADR 0075: smartmontools を Nix で入れる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

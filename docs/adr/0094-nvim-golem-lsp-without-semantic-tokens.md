@@ -1,6 +1,6 @@
 # ADR 0094: nvim で Golem の LSP の semantic tokens を使わない
 
-ステータス: 破棄
+Status: discarded
 
 ## 文脈
 

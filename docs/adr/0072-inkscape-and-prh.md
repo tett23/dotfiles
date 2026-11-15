@@ -1,6 +1,6 @@
 # ADR 0072: Inkscape を nixpkgs で、prh を mise で入れる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0077: MyGo の CLI (mygo) を mise で入れる
 
-ステータス: 破棄
+Status: discarded
 
 ## 文脈
 

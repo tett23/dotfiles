@@ -1,6 +1,6 @@
 # ADR 0003: wget を Nix (home-manager) の CLI 依存に追加する
 
-Status: Accepted
+Status: accepted
 - Date: 2026-09-23
 
 ## Context

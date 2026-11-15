@@ -1,6 +1,6 @@
 # ADR 0033: fzf で tmux のウィンドウを検索して切り替える (Ctrl-E)。コマンド選択 (Ctrl-O) には全コマンドを出す
 
-ステータス: 採択→キーの割り当て (Ctrl-E) は[ADR 0036](0036-tmux-window-switcher-on-ctrl-t.md)
+Status: superseded [{"by":["docs/adr/0036-tmux-window-switcher-on-ctrl-t.md"],"part":"キーの割り当て (Ctrl-E)"}]
 
 ## 文脈
 

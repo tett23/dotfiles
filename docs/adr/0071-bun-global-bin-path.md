@@ -1,6 +1,6 @@
 # ADR 0071: bun でグローバルに入れたコマンドを PATH に足す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0114: Codex の全体の指示 AGENTS.md を CLAUDE.md に沿って作り、dotfiles で管理する
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

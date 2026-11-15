@@ -1,6 +1,6 @@
 # ADR 0109: nvim の Alloy のインデントで、`and` や `=>` で終わる行の次を下げる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0084: [ADR 0082](0082-nvim-markdown-autosave-format-and-tsx.md) の参考文献と、prettier の表の整形についての記述を直す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

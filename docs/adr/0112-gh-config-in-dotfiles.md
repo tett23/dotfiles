@@ -1,6 +1,6 @@
 # ADR 0112: gh の設定 `config.yml` を dotfiles で管理する
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

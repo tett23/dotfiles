@@ -1,6 +1,6 @@
 # ADR 0118: CLAUDE.md と AGENTS.md の、ときどきしか使わない節をスキルに分ける
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

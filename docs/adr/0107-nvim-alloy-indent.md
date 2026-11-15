@@ -1,6 +1,6 @@
 # ADR 0107: nvim で Alloy のインデントを tree-sitter の indents.scm で行う
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

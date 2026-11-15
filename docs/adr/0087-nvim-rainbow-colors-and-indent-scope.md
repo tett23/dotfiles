@@ -1,6 +1,6 @@
 # ADR 0087: nvim の括弧の色を Monokai にそろえ、インデントの線にも括弧と同じ色を付ける
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0048: Ghostty の日本語の文字を BIZ UDゴシックで表示する
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0113: colima の既定のプロファイルの設定を flake.nix に書く
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

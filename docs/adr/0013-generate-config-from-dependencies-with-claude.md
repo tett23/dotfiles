@@ -1,6 +1,6 @@
 # ADR 0013: dependencies.md から Claude で設定を生成するスクリプトを置く
 
-Status: Accepted
+Status: accepted
 - Date: 2026-10-07
 
 ## Context

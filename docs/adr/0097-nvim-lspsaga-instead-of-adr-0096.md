@@ -1,6 +1,6 @@
 # ADR 0097: nvim の LSP の表示を lspsaga.nvim にする (0096 を置き換える)
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

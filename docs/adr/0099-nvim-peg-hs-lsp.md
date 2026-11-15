@@ -1,6 +1,6 @@
 # ADR 0099: nvim で peg-hs の LSP サーバーを使う
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0103: Java を mise で、Alloy を Nix で入れる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

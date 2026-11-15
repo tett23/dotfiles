@@ -1,6 +1,6 @@
 # ADR 0093: Ghostty の Esc で英数キーの代わりに F19 を送り、NablaSKK を英数モードにする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 
