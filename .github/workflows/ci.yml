@@ -59,7 +59,8 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       # ステータスの行とリンクだけの変更は許可する。リンクの無い ADR の参照とステータスの行の数も検査する (docs/adr/0066)
-      - uses: tett23/adr-guard@v0.8.0
+      # ADR の番号の重複とステータスの状態の遷移も検査する (docs/adr/0121)
+      - uses: tett23/adr-guard@v0.13.1
         with:
           base: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
           head: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
