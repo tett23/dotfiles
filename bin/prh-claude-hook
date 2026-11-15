@@ -1,9 +1,11 @@
 #!/bin/sh
 #
-# prh-claude-hook - Claude Code の PostToolUse の hook。書いた Markdown を prh の辞書で検査し、
-# 直す表記があれば標準エラーに出して終了コード 2 で終わる (Claude に知らせる。docs/adr/0078)
+# prh-claude-hook - Claude Code と Codex の PostToolUse の hook。書いた Markdown を prh の辞書で検査し、
+# 直す表記があれば標準エラーに出して終了コード 2 で終わる (モデルに知らせる。docs/adr/0078)
 #
-#   標準入力: hook の JSON (tool_input.file_path)
+#   標準入力: hook の JSON。Claude Code は tool_input.file_path、
+#             Codex は tool_input.command (apply_patch のパッチの全文) と cwd。
+#             パッチの Add File・Update File・Move to の行のパスを、cwd からの相対か絶対として読む
 #   辞書:     $PRH_CLAUDE_RULES (無ければ ${DOTFILES:-~/dotfiles}/prh/prh.yml)
 #
 # コードブロック (``` と ~~~ で囲んだ行) とインラインのコード (` で囲んだ部分) は、同じ文字数の空白に
@@ -22,40 +24,62 @@ else
   exit 0
 fi
 
-file=$(jq -r '.tool_input.file_path // empty')
-case $file in
-*.md) ;;
-*) exit 0 ;;
-esac
-[ -f "$file" ] || exit 0
+input=$(cat)
+file=$(printf '%s' "$input" | jq -r '.tool_input.file_path // empty')
+if [ -n "$file" ]; then
+  files=$file
+else
+  cwd=$(printf '%s' "$input" | jq -r '.cwd // empty')
+  files=$(printf '%s' "$input" | jq -r '.tool_input.command // empty' |
+    sed -n -E 's/^[[:space:]]*\*\*\* (Add File|Update File|Move to): //p' |
+    while IFS= read -r f; do
+      case $f in
+      (/*) printf '%s\n' "$f" ;;
+      (*) [ -n "$cwd" ] && printf '%s\n' "${cwd%/}/$f" ;;
+      esac
+    done)
+fi
+[ -n "$files" ] || exit 0
 
 tmp=$(mktemp -d "${TMPDIR:-/tmp}/prh-claude-hook.XXXXXX") || exit 0
 trap 'rm -rf "$tmp"' EXIT
 masked=$tmp/masked.md
+report=$tmp/report
 
-# コードの部分を、同じ文字数の空白にする (gawk は文字単位で数える)
-LC_ALL=${LC_ALL:-ja_JP.UTF-8} gawk '
-  function blank(n,   s) { s = sprintf("%" n "s", ""); return s }
-  /^[ ]{0,3}(```|~~~)/ { fence = !fence; print blank(length($0)); next }
-  fence { print blank(length($0)); next }
-  {
-    line = $0; out = ""
-    while (match(line, /`[^`]+`/)) {
-      out = out substr(line, 1, RSTART - 1) blank(RLENGTH)
-      line = substr(line, RSTART + RLENGTH)
+# 一つのファイルを検査し、直す表記を元のファイルの名前で $report に足す
+check_file() {
+  case $1 in
+  *.md) ;;
+  *) return 0 ;;
+  esac
+  [ -f "$1" ] || return 0
+  # コードの部分を、同じ文字数の空白にする (gawk は文字単位で数える)
+  LC_ALL=${LC_ALL:-ja_JP.UTF-8} gawk '
+    function blank(n,   s) { s = sprintf("%" n "s", ""); return s }
+    /^[ ]{0,3}(```|~~~)/ { fence = !fence; print blank(length($0)); next }
+    fence { print blank(length($0)); next }
+    {
+      line = $0; out = ""
+      while (match(line, /`[^`]+`/)) {
+        out = out substr(line, 1, RSTART - 1) blank(RLENGTH)
+        line = substr(line, RSTART + RLENGTH)
+      }
+      print out line
     }
-    print out line
-  }
-' "$file" >"$masked" || exit 0
+  ' "$1" >"$masked" || return 0
+  found=$("$prh" --rules "$rules" "$masked" 2>/dev/null) || return 0
+  [ -n "$found" ] || return 0
+  # 写しの名前を、元のファイルの名前に直す
+  printf '%s\n' "$found" | gawk -v from="$masked" -v to="$1" '
+    index($0, from) == 1 { $0 = to substr($0, length(from) + 1) } { print }
+  ' >>"$report"
+}
 
-found=$("$prh" --rules "$rules" "$masked" 2>/dev/null) || exit 0
-[ -n "$found" ] || exit 0
+printf '%s\n' "$files" | while IFS= read -r f; do check_file "$f"; done
+[ -s "$report" ] || exit 0
 
-# 写しの名前を、元のファイルの名前に直して出す
 {
   printf '%s\n' "prh の辞書で、直す表記が見つかりました (辞書: $rules):"
-  printf '%s\n' "$found" | gawk -v from="$masked" -v to="$file" '
-    index($0, from) == 1 { $0 = to substr($0, length(from) + 1) } { print }
-  '
+  cat "$report"
 } >&2
 exit 2

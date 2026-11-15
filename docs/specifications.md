@@ -274,6 +274,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   過剰な日本語訳 (「ウィンドウ」を `窓` と書くなど) を検査する。直す表記があれば、表記の一覧と辞書の場所を Claude に知らせる (書き込みは取り消さない)。
   コードブロックとインラインのコードは検査しない。辞書の規則は、実際に取り違えたものから足す。手で検査するときは
   `prh --rules ~/dotfiles/prh/prh.yml <ファイル>` ([ADR 0078](adr/0078-prh-dictionary-and-claude-hook.md))。
+  Codex でも、`codex/hooks.json` の `PostToolUse` で同じ hook を動かす。Codex の `apply_patch` (`Bash` の中のパッチを含む) では、パッチの `Add File`・`Update File`・`Move to` の行のパスを、
+  hook の入力の `cwd` からの相対か絶対として読み、そのうちの Markdown を検査する。
 - ステータスラインには、モデル名・ディレクトリ名・費用を出す (jq を 1 回だけ起動する)。コンテキストの使用率は usage-hint が出すので出さない ([ADR 0057](adr/0057-remaining-improvements-2.md))。
 - mod `usage-hint` (`.claude/mods/usage-hint/`) が、入力欄の下に `5h 23% · 7d 41% · Fable 12% · ctx 37%` の形で
   使用量を表示する ([ADR 0004](adr/0004-usage-hint-mod.md))。

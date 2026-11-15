@@ -74,6 +74,25 @@ r=$(run_hook "$(json_for $work/mixed.md)")
 check "本文の箇所だけを、元の行・列で出す" \
   "$(print -r -- "${r#*|*|}" | grep -c 'mixed.md(')|$([[ $r == *"$work/mixed.md(4,7): 窓 → ウィンドウ"* ]] && print yes)" "1|yes"
 
+# Codex の apply_patch (tool_input.command にパッチの全文、パスは cwd からの相対か絶対)
+codex_json() { jq -cn --arg c "$1" --arg d "$2" --arg t "${3:-apply_patch}" '{tool_name:$t,tool_input:{command:$c},cwd:$d}' }
+local patch_hit=$'*** Begin Patch\n*** Update File: hit.md\n@@\n-x\n+窓を開く。\n*** End Patch'
+r=$(run_hook "$(codex_json $patch_hit $work)")
+check "Codex: 相対のパスの .md に当たると終了コード 2" "${r%%|*}" "2"
+check "Codex: 標準エラーに cwd を付けたファイルの名前を出す" "$([[ $r == *"$work/hit.md(1,1): 窓 → ウィンドウ"* ]] && print yes)" "yes"
+r=$(run_hook "$(codex_json $'*** Begin Patch\n*** Add File: '$work$'/hit.md\n+窓\n*** End Patch' /)")
+check "Codex: 絶対のパスの追加でも当たる" "${r%%|*}" "2"
+r=$(run_hook "$(codex_json $'*** Begin Patch\n*** Update File: clean.md\n*** Update File: hit.md\n*** End Patch' $work)")
+check "Codex: 複数のファイルのうち当たるものだけを出す" "$(print -r -- "$r" | grep -c 'hit.md(')|$(print -r -- "$r" | grep -c 'clean.md(')" "1|0"
+r=$(run_hook "$(codex_json $'*** Begin Patch\n*** Update File: old.md\n*** Move to: hit.md\n*** End Patch' $work)")
+check "Codex: 移した先のファイルを検査する" "${r%%|*}" "2"
+check "Codex: 消したファイルと .md でないファイルは何も出さない" \
+  "$(run_hook "$(codex_json $'*** Begin Patch\n*** Delete File: hit.md\n*** Update File: hit.txt\n*** End Patch' $work)")" "0||"
+check "Codex: 当たる表記が無ければ何も出さない" "$(run_hook "$(codex_json $'*** Begin Patch\n*** Update File: clean.md\n*** End Patch' $work)")" "0||"
+check "Codex: パッチの無い Bash は何も出さない" "$(run_hook "$(codex_json 'ls' $work Bash)")" "0||"
+r=$(run_hook "$(codex_json $'apply_patch <<\'EOF\'\n*** Begin Patch\n*** Update File: hit.md\n*** End Patch\nEOF' $work Bash)")
+check "Codex: Bash のヒアドキュメントの中のパッチも検査する" "${r%%|*}" "2"
+
 # 実際の辞書
 "$prh_bin" --rules $root/prh/prh.yml --rules-json >/dev/null 2>&1
 check "実際の辞書を prh が読める" "$?" "0"

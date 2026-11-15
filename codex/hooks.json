@@ -3,7 +3,23 @@
     "PreToolUse": [
       {
         "matcher": "^(apply_patch|Bash)$",
-        "hooks": [{ "type": "command", "command": "adr-guard codex-hook --allow-status" }]
+        "hooks": [
+          {
+            "type": "command",
+            "command": "adr-guard codex-hook --allow-status"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^(apply_patch|Bash)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${DOTFILES:-$HOME/dotfiles}/bin/prh-claude-hook"
+          }
+        ]
       }
     ]
   }
