@@ -1,6 +1,6 @@
 # ADR 0042: git・tmux・zsh・rubocop の設定を XDG の場所 (`~/.config`) に移す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

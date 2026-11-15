@@ -1,6 +1,6 @@
 # ADR 0066: CI の adr-guard を 0.8.0 に上げ、記録・リンク・ステータスの行も検査する
 
-ステータス: 採択
+Status: superseded [{"by":["docs/adr/0121-adr-guard-0-13-in-ci.md"],"part":"CI の adr-guard の版"}]
 
 ## 文脈
 

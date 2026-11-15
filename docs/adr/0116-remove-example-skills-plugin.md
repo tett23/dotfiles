@@ -1,6 +1,6 @@
 # ADR 0116: Claude Code のプラグイン example-skills を外す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

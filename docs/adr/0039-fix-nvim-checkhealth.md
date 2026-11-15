@@ -1,6 +1,6 @@
 # ADR 0039: nvim の `:checkhealth` のエラーと警告を直す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0050: ghc と cabal を mise ではなく ghcup で入れ、`~/.ghcup/bin` を PATH に足す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

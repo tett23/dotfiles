@@ -1,6 +1,6 @@
 # ADR 0051: `eval` の結果のキャッシュに、作った時点の PATH を残さない
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0034: zsh・fzf・nvim に、広く使われている小さな便利設定を足す
 
-ステータス: 採択→Ctrl-T のプレビューは[ADR 0036](0036-tmux-window-switcher-on-ctrl-t.md) (Ctrl-P だけになる)
+Status: superseded [{"by":["docs/adr/0036-tmux-window-switcher-on-ctrl-t.md"],"note":"Ctrl-P だけになる","part":"Ctrl-T のプレビュー"}]
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0012: Homebrew を廃止し、Nix と mise に統一する
 
-Status: Accepted
+Status: accepted
 - Date: 2026-10-07
 
 ## Context

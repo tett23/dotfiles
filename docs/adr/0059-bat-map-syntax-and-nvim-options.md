@@ -1,6 +1,6 @@
 # ADR 0059: bat の言語の割り当てと、nvim の scrolloff・signcolumn・inccommand
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0054: tmux で、ペインのプログラムから端末への制御の素通し (allow-passthrough) を有効にする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

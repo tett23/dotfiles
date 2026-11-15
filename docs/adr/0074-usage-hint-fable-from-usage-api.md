@@ -1,6 +1,6 @@
 # ADR 0074: usage-hint の Fable の使用率を、使用量の API から取る
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

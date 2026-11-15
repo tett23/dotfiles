@@ -1,6 +1,6 @@
 # ADR 0031: fzf のコマンド選択を Ctrl-O にし、send-to-kindle と shorten-path を mise で入れる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

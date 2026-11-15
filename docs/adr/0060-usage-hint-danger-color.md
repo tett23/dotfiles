@@ -1,6 +1,6 @@
 # ADR 0060: usage-hint で 90% を超えた項目を赤にし、警告の色を暗めにする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

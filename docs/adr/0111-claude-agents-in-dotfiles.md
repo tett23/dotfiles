@@ -1,6 +1,6 @@
 # ADR 0111: Claude Code のサブエージェントの定義を dotfiles で管理する
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0038: Telescope の検索と zsh の補完で、`.` で始まるファイルも対象にする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

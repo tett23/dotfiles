@@ -1,6 +1,6 @@
 # ADR 0005: usage-hint で 75% を超えた項目を黄色で表示する
 
-Status: Accepted
+Status: accepted
 - Date: 2026-10-05
 - Supersedes: [ADR 0004](0004-usage-hint-mod.md) の「terminal は `PromptHint` の `tail` で追記する」部分
 

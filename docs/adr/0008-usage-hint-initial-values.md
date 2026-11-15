@@ -1,6 +1,6 @@
 # ADR 0008: usage-hint でセッション開始直後から値を表示する
 
-Status: Accepted
+Status: accepted
 - Date: 2026-10-07
 
 ## Context

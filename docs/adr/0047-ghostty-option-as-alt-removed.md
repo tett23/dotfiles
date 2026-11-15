@@ -1,6 +1,6 @@
 # ADR 0047: Ghostty の効いていない `macos-option-as-alt` を外し、仕様の記述を事実に合わせる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

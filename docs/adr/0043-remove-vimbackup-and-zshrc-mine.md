@@ -1,6 +1,6 @@
 # ADR 0043: `~/.vimbackup` を作るのをやめ、`.zshrc.mine` を dotfiles に置いてリンクする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

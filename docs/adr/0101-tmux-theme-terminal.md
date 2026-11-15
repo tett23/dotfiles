@@ -1,6 +1,6 @@
 # ADR 0101: tmux 3.8 の色のテーマを、端末の色 (terminal) にする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

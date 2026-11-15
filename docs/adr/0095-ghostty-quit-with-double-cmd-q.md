@@ -1,6 +1,6 @@
 # ADR 0095: Ghostty は Cmd+Q を 2 回押したときだけ終了する
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

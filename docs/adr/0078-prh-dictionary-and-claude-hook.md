@@ -1,6 +1,6 @@
 # ADR 0078: 過剰な日本語訳を prh の辞書で見つけ、Claude Code の hook で知らせる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

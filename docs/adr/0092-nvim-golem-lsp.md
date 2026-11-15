@@ -1,6 +1,6 @@
 # ADR 0092: nvim で Golem の LSP を使う
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

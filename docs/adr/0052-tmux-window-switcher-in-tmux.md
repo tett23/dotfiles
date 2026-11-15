@@ -1,6 +1,6 @@
 # ADR 0052: tmux のウィンドウの切り替えを tmux の Ctrl-T (ポップアップ) にし、nvim の中でも使えるようにする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

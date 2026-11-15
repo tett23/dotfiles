@@ -1,6 +1,6 @@
 # ADR 0037: fzf-tab・flash.nvim・nvim-treesitter-context・trouble.nvim を入れる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

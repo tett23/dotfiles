@@ -1,6 +1,6 @@
 # ADR 0064: adr-guard の pre-commit hook と Claude Code の hook に許可のオプションを付ける
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 
