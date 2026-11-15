@@ -1,6 +1,6 @@
 # ADR 0061: usage-hint の型検査を、今の Claude Code の型定義に合わせる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

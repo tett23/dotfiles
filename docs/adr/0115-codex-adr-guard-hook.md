@@ -1,6 +1,6 @@
 # ADR 0115: Codex の hook で adr-guard を動かし、hooks.json を dotfiles で管理する
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

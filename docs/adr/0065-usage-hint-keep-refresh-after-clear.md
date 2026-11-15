@@ -1,6 +1,6 @@
 # ADR 0065: usage-hint の 1 分ごとの更新を、/clear の後も続ける
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

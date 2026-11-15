@@ -1,6 +1,6 @@
 # ADR 0056: 古い ghcup と stack を消し、VSCode の Haskell 拡張が mise の ghcup を使うようにする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

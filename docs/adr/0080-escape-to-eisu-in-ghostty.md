@@ -1,6 +1,6 @@
 # ADR 0080: Ghostty で Esc を押したら、英数キーも送って IME を英数モードにする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

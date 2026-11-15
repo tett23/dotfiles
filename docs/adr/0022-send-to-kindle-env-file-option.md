@@ -1,6 +1,6 @@
 # ADR 0022: send-to-kindle で .env のパスをオプションで指定できるようにする
 
-Status: Accepted → 0031
+Status: superseded [{"by":["docs/adr/0031-command-finder-key-and-rust-tools-via-mise.md"],"part":null}]
 - Date: 2026-10-09
 
 ## Context

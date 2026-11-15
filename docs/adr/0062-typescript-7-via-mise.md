@@ -1,6 +1,6 @@
 # ADR 0062: TypeScript 7 を mise で入れ、usage-hint の型検査に使う
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

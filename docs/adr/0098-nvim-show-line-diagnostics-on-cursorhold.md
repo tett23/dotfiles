@@ -1,6 +1,6 @@
 # ADR 0098: nvim でカーソルを止めると、その行の診断を lspsaga で出す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0102: Esc の後の F19 を、NablaSKK の SwitchToAsciiIfIdle (入力中は何もしない) にする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

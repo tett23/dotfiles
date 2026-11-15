@@ -1,6 +1,6 @@
 # ADR 0081: NablaSKK の設定ファイルを dotfiles で管理する
 
-ステータス: 採択→トレードオフ (設定アプリで保存するとリンクが外れる) は [ADR 0086](0086-nablaskk-keeps-config-links.md)
+Status: superseded [{"by":["docs/adr/0086-nablaskk-keeps-config-links.md"],"part":"トレードオフ (設定アプリで保存するとリンクが外れる)"}]
 
 ## 文脈
 

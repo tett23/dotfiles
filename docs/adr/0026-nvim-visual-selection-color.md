@@ -1,6 +1,6 @@
 # ADR 0026: nvim の選択範囲の背景色を monokai-pro.nvim の設定で上書きする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

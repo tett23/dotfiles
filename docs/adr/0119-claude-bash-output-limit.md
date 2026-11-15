@@ -1,6 +1,6 @@
 # ADR 0119: Claude Code が文脈に受け取る Bash の出力を 10000 文字までにする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

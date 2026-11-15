@@ -1,6 +1,6 @@
 # ADR 0035: eza と bat の短いエイリアスを作る
 
-ステータス: 採択→eza の表示のオプションは[ADR 0053](0053-bat-manpager-and-eza-options.md)
+Status: superseded [{"by":["docs/adr/0053-bat-manpager-and-eza-options.md"],"part":"eza の表示のオプション"}]
 
 ## 文脈
 

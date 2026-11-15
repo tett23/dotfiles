@@ -1,6 +1,6 @@
 # ADR 0100: nvim で .hpeg・.gm・.emet を tree-sitter で色付けし、.emet でも Golem の LSP を使う
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

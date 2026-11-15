@@ -1,6 +1,6 @@
 # ADR 0088: tmux から Ghostty のタイトルに、ディレクトリ名とコマンド名を出す
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

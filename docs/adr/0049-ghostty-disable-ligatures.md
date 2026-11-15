@@ -1,6 +1,6 @@
 # ADR 0049: Ghostty で英数字の合字 (リガチャ) を無効にする
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0036: tmux のウィンドウの切り替えを Ctrl-T に移す
 
-ステータス: 採択→Ctrl-T の受け取り先 (zsh から tmux へ) は[ADR 0052](0052-tmux-window-switcher-in-tmux.md)
+Status: superseded [{"by":["docs/adr/0052-tmux-window-switcher-in-tmux.md"],"part":"Ctrl-T の受け取り先 (zsh から tmux へ)"}]
 
 ## 文脈
 

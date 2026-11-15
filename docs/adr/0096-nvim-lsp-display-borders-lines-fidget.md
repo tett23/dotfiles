@@ -1,6 +1,6 @@
 # ADR 0096: nvim の LSP の表示を見やすくする (浮動ウィンドウの枠、診断の行、fidget.nvim)
 
-ステータス: 採択→[ADR 0097](0097-nvim-lspsaga-instead-of-adr-0096.md)
+Status: superseded [{"by":["docs/adr/0097-nvim-lspsaga-instead-of-adr-0096.md"],"part":null}]
 
 ## 文脈
 

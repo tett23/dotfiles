@@ -1,6 +1,6 @@
 # ADR 0091: 完了したタスクを [完了] と表示する Claude Code mod (task-marks)
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0030: Claude Code の設定と mod を `.claude/` にまとめる
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 

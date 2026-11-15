@@ -1,6 +1,6 @@
 # ADR 0070: fzf で git の worktree を選んで移動する
 
-ステータス: 採択
+Status: accepted
 
 ## 文脈
 
