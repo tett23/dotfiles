@@ -1,6 +1,6 @@
 # ADR 0126: セキュリティを監査する security-audit スキルと、ADR 違反と予算違反を監査する conformance-audit スキルを足す
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 

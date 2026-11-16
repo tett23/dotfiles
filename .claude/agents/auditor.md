@@ -1,6 +1,6 @@
 ---
 name: auditor
-description: ADR と実装・テストの乖離の調査と、セキュリティ監査を行う。本人が Fable を使うよう明示して頼んだ作業にも使う。
+description: ADR と実装・テストの乖離の調査と、セキュリティ監査を行う。本人が Fable を使うよう明示して頼んだ作業にも使う。セキュリティの監査を頼まれたときは security-audit スキルの、ADR 違反と予算違反の監査を頼まれたときは conformance-audit スキルの手順で行う。
 model: fable
 tools: Read, Grep, Glob, Bash
 ---

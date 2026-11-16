@@ -1,6 +1,6 @@
 # ADR 0117: Codex でも、作業の種類ごとにモデルを使い分ける
 
-Status: accepted
+Status: superseded [{"part":"実装すること (auditor の推論の強さ)","by":["docs/adr/0126-audit-skill.md"]},{"part":"トレードオフ (auditor の推論の強さ)","by":["docs/adr/0126-audit-skill.md"]}]
 
 ## 文脈
 

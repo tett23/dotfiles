@@ -73,7 +73,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.codex/AGENTS.md` | `codex/AGENTS.md` (`.claude/CLAUDE.md` から Codex 向けに作る。[ADR 0114](adr/0114-codex-agents-md.md)) |
 | `~/.codex/hooks.json` | `codex/hooks.json` ([ADR 0115](adr/0115-codex-adr-guard-hook.md)) |
 | `~/.codex/agents` | `codex/agents/` ([ADR 0117](adr/0117-codex-model-roles.md)) |
-| `~/.claude/skills/<名前>`、`~/.agents/skills/<名前>` (`doc-writing`・`release`・`close-reading`・`adr`・`context-restore`・`roadmap`) | `agents/skills/<名前>/` (Claude Code と Codex で共有する。ほかのスキルは管理しない。[ADR 0118](adr/0118-split-instructions-into-skills.md)、[ADR 0122](adr/0122-move-adr-rules-into-skill.md)、[ADR 0123](adr/0123-context-restore-skill.md)、[ADR 0125](adr/0125-roadmap-skill.md)) |
+| `~/.claude/skills/<名前>`、`~/.agents/skills/<名前>` (`doc-writing`・`release`・`close-reading`・`adr`・`context-restore`・`roadmap`・`security-audit`・`conformance-audit`) | `agents/skills/<名前>/` (Claude Code と Codex で共有する。ほかのスキルは管理しない。[ADR 0118](adr/0118-split-instructions-into-skills.md)、[ADR 0122](adr/0122-move-adr-rules-into-skill.md)、[ADR 0123](adr/0123-context-restore-skill.md)、[ADR 0125](adr/0125-roadmap-skill.md)、[ADR 0126](adr/0126-audit-skill.md)) |
 | `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
 | `~/.config/gh/config.yml` | `gh/config.yml` (認証情報を持つ `hosts.yml` は管理しない。[ADR 0112](adr/0112-gh-config-in-dotfiles.md)) |
 | `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
@@ -268,6 +268,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   不変条件は `I1`、受けいれ条件は `A1` と番号を振り、テストの名前の先頭に `ADR NNNN I1: ` (識別子では `adr<NNNN>_i<番号>_…`) を置く。空白とハイフンを使えない名前では `_` を使う ([ADR 0124](adr/0124-invariant-and-test-naming.md))。
   共通の指示には、実装の前に ADR を作ること、コミットした ADR はステータスの行を除いて変えないこと、レビューまでコミットしないこと、スキルの表の `adr` の行、チャットでの ADR の表記だけを残す ([ADR 0122](adr/0122-move-adr-rules-into-skill.md))。
 - ロードマップ (`docs/roadmap.md`) の書き方は `roadmap` スキルに置く。まだ無いものだけを書き、実装を終えた項目は消して仕様書に書く ([ADR 0125](adr/0125-roadmap-skill.md))。
+- 監査は、セキュリティの `security-audit` と、ADR 違反と予算違反の `conformance-audit` のスキルで、`auditor` に任せて行う。指摘は変えずに、`docs/audits/` があるか本人が求めたときは記録し、ほかはチャットで返す。
+  予算は ADR の受けいれ条件と `docs/budgets.md` の両方に書き、食い違うときは ADR を正とする ([ADR 0126](adr/0126-audit-skill.md))。
 - `chat-log` で過去の会話から文脈を戻す手順は `context-restore` スキルに置く。
   セッションの始めと、過去の決定や経緯を聞かれたときと、前のセッションの続きを頼まれたときに使う ([ADR 0123](adr/0123-context-restore-skill.md))。
 - 文書を変えたら、本人に出す前に `close-reading` で精読する。
@@ -276,7 +278,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   Codex 向けに変え、`~/.codex/AGENTS.md` の Python の決まりを足した。2 つのファイルは手で合わせる ([ADR 0114](adr/0114-codex-agents-md.md))。
 - Codex でも、PreToolUse の hook (`codex/hooks.json`) で `adr-guard codex-hook --allow-status` を動かし、`apply_patch` と `Bash` によるコミット済みの ADR の変更を止める。
   hook は、本人が Codex の `/hooks` で信頼するまで動かない。`codex-hook` は adr-guard 0.11.0 から ([ADR 0115](adr/0115-codex-adr-guard-hook.md))。
-- Codex の既定のモデルは `gpt-6-astra` (`~/.codex/config.toml`。dotfiles では管理しない)。サブエージェントの役割は `codex/agents/` に置き、Claude Code のエージェントに対応させる: `auditor` (`gpt-6-astra`、推論 `xhigh`)・`reader` (`gpt-6-sol`)・`runner` (`gpt-6-luna`)。
+- Codex の既定のモデルは `gpt-6-astra` (`~/.codex/config.toml`。dotfiles では管理しない)。サブエージェントの役割は `codex/agents/` に置き、Claude Code のエージェントに対応させる: `auditor` (`gpt-6-astra`、推論 `medium`、モデルの既定。[ADR 0126](adr/0126-audit-skill.md))・`reader` (`gpt-6-sol`)・`runner` (`gpt-6-luna`)。
   使い分けは `codex/AGENTS.md` の「モデルの使い分け」に書く ([ADR 0117](adr/0117-codex-model-roles.md))。
 - Claude Code が Markdown のファイルを書くと (Write・Edit・MultiEdit)、hook `bin/prh-claude-hook` (`PostToolUse`) が、prh の辞書 `prh/prh.yml` で
   過剰な日本語訳 (「ウィンドウ」を `窓` と書くなど) を検査する。直す表記があれば、表記の一覧と辞書の場所を Claude に知らせる (書き込みは取り消さない)。
