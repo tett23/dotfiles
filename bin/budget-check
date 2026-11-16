@@ -1,0 +1,243 @@
+#!/bin/sh
+#
+# budget-check - 予算の一覧 (docs/budgets.md) の予算を計測して確かめ、違反を予算ごとに一つの issue にまとめる
+# (docs/adr/0128)。
+#
+#   使い方: budget-check [--dry-run] [--fail-on-violation] [予算の一覧のパス]
+#
+# 予算の一覧は、見出しの行が `| 名前 | 指標と単位 | 比較 | 値 | 計測のコマンド | ADR |` の表 (docs/adr/0126)。
+# 計測のコマンドはリポジトリのルートで動かし、標準出力の最後の空でない行を計測の値とする。
+# 違反のとき、ラベル budget-violation の題 `予算違反: <名前> (<一覧のパス>)` の issue を作るか、
+# 前の記録 (本文とコメントの末尾の印) が無いとき、満たした後にまた違反したとき、前の違反より悪いときだけコメントを足す。満たしたときは、前が違反なら一度だけ知らせる。
+# 終了コード: 一覧が読めないかエラーの予算があれば 1、違反があり --fail-on-violation なら 2、ほかは 0。
+set -u
+
+label=budget-violation
+us=$(printf '\037')
+num_re='^-?[0-9]+(\.[0-9]+)?$'
+
+dry=0
+fail_on_violation=0
+path=
+while [ $# -gt 0 ]; do
+  case $1 in
+  --dry-run) dry=1 ;;
+  --fail-on-violation) fail_on_violation=1 ;;
+  -*) printf 'budget-check: 知らないオプション: %s\n' "$1" >&2; exit 1 ;;
+  *) path=$1 ;;
+  esac
+  shift
+done
+
+root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+  printf '%s\n' 'budget-check: git のリポジトリの外です' >&2
+  exit 1
+}
+root=$(cd "$root" && pwd -P)
+
+if [ -z "$path" ]; then
+  rel=docs/budgets.md
+  if [ ! -f "$root/$rel" ]; then
+    printf '%s\n' '予算なし'
+    exit 0
+  fi
+else
+  case $path in
+  /*) abs=$path ;;
+  *) abs=$(pwd)/$path ;;
+  esac
+  if [ ! -f "$abs" ]; then
+    printf 'budget-check: %s がありません\n' "$path" >&2
+    exit 1
+  fi
+  abs=$(cd "$(dirname "$abs")" && pwd -P)/$(basename "$abs")
+  case $abs in
+  "$root"/*) rel=${abs#"$root"/} ;;
+  *)
+    printf 'budget-check: %s はリポジトリの外です\n' "$path" >&2
+    exit 1
+    ;;
+  esac
+fi
+file=$root/$rel
+
+is_num() { printf '%s\n' "$1" | grep -Eq "$num_re"; }
+
+# 表を読み、行ごとに「R<US>名前<US>単位<US>比較<US>値<US>コマンド<US>ADR」か「E<US>行番号<US>理由」を出す。
+# 見出しの表が無ければ NOHEADER を出す
+rows=$(awk -v US="$us" '
+  function trim(s) { gsub(/^[ \t]+|[ \t]+$/, "", s); return s }
+  function cells(line, arr,   n, i) {
+    gsub(/\\\|/, "\001", line)
+    sub(/^[ \t]*\|/, "", line); sub(/\|[ \t]*$/, "", line)
+    n = split(line, arr, "|")
+    for (i = 1; i <= n; i++) {
+      arr[i] = trim(arr[i]); gsub(/\001/, "|", arr[i])
+      if (arr[i] ~ /^`.*`$/) arr[i] = substr(arr[i], 2, length(arr[i]) - 2)
+    }
+    return n
+  }
+  state == 0 {
+    n = cells($0, h)
+    if (n == 6 && h[1] == "名前" && h[2] == "指標と単位" && h[3] == "比較" && h[4] == "値" && h[5] == "計測のコマンド" && h[6] == "ADR") { state = 1; found = 1 }
+    next
+  }
+  state == 1 { state = 2; if ($0 ~ /^[ \t]*\|[ \t:|-]*$/) next }
+  state == 2 {
+    if ($0 !~ /^[ \t]*\|/) { state = 3; next }
+    n = cells($0, c)
+    if (n != 6) { print "E" US NR US "セルの数が " n " です"; next }
+    print "R" US c[1] US c[2] US c[3] US c[4] US c[5] US c[6]
+  }
+  END { if (!found) print "NOHEADER" }
+' "$file")
+
+if [ "$rows" = NOHEADER ]; then
+  printf 'budget-check: %s に予算の表がありません\n' "$rel" >&2
+  exit 1
+fi
+[ -n "$rows" ] || exit 0
+
+errors=0
+violations=0
+seen=
+run_url="${GITHUB_SERVER_URL:-}/${GITHUB_REPOSITORY:-}/actions/runs/${GITHUB_RUN_ID:-}"
+commit=${GITHUB_SHA:-$(git -C "$root" rev-parse HEAD 2>/dev/null)}
+
+error() {
+  printf 'budget-check: %s: %s\n' "$1" "$2" >&2
+  errors=$((errors + 1))
+}
+
+# gh を呼ぶ。--dry-run のときは書き込みの呼び出しを出すだけにする
+gh_write() {
+  if [ "$dry" = 1 ]; then
+    printf 'dry-run: gh %s\n' "$*"
+    return 0
+  fi
+  gh "$@" >/dev/null
+}
+
+# 違反か満たすかを決める。満たせば 0
+satisfies() { awk -v a="$1" -v op="$2" -v b="$3" 'BEGIN { if (op == "<=") exit !(a + 0 <= b + 0); exit !(a + 0 >= b + 0) }'; }
+# 今の値が前の値より悪ければ 0
+worse() { awk -v a="$1" -v op="$2" -v b="$3" 'BEGIN { if (op == "<=") exit !(a + 0 > b + 0); exit !(a + 0 < b + 0) }'; }
+
+check_budget() {
+  name=$1 unit=$2 op=$3 limit=$4 cmd=$5 adr=$6
+  if printf '%s\n' "$seen" | grep -Fxq -- "$name"; then
+    error "$name" '名前がほかの行と同じです'
+    return
+  fi
+  seen="$seen
+$name"
+  case $op in
+  '<=' | '>=') ;;
+  *) error "$name" "比較が <= でも >= でもありません: $op"; return ;;
+  esac
+  is_num "$limit" || { error "$name" "値が数ではありません: $limit"; return; }
+
+  if ! output=$(cd "$root" && sh -c "$cmd" 2>/dev/null); then
+    error "$name" "計測のコマンドが失敗しました: $cmd"
+    return
+  fi
+  value=$(printf '%s\n' "$output" | awk 'NF { l = $0 } END { gsub(/^[ \t]+|[ \t]+$/, "", l); print l }')
+  is_num "$value" || { error "$name" "計測の値が数ではありません: $value"; return; }
+
+  if satisfies "$value" "$op" "$limit"; then state=ok; else state=violation; violations=$((violations + 1)); fi
+  title="予算違反: $name ($rel)"
+  mark="<!-- budget-check: value=$value state=$state -->"
+
+  if ! list=$(gh issue list --label "$label" --state open --limit 1000 --json number,title,body); then
+    error "$name" 'gh issue list が失敗しました'
+    return
+  fi
+  number=$(printf '%s' "$list" | jq -r --arg t "$title" '[.[] | select(.title == $t)] | sort_by(.number) | .[0].number // empty')
+
+  if [ -z "$number" ]; then
+    [ "$state" = violation ] || return
+    body="予算 \`$name\` ($unit) が予算を満たしていません。
+
+- 予算: $op $limit ($rel)
+- 計測の値: $value
+- 計測のコマンド: \`$cmd\`
+- 決めた ADR: $adr
+- コミット: $commit
+- 実行: $run_url
+
+$mark"
+    gh_write label create "$label" --force --description '予算違反 (bin/budget-check)' ||
+      { error "$name" 'gh label create が失敗しました'; return; }
+    gh_write issue create --title "$title" --label "$label" --body "$body" ||
+      { error "$name" 'gh issue create が失敗しました'; return; }
+    return
+  fi
+
+  if ! comments=$(gh api --paginate --slurp "repos/{owner}/{repo}/issues/$number/comments"); then
+    error "$name" 'gh api (コメント) が失敗しました'
+    return
+  fi
+  prev=$( {
+    printf '%s' "$list" | jq -r --argjson n "$number" '.[] | select(.number == $n) | .body'
+    printf '\n'
+    printf '%s' "$comments" | jq -r 'flatten | .[].body'
+  } | grep -o 'budget-check: value=[^ ]* state=[^ ]*' |
+    awk -v re="$num_re" '{
+      v = $2; sub(/^value=/, "", v); s = $3; sub(/^state=/, "", s)
+      if (v ~ re && (s == "violation" || s == "ok")) { pv = v; ps = s }
+    } END { if (ps != "") print pv " " ps }')
+  prev_value=${prev% *}
+  prev_state=${prev#* }
+
+  if [ "$state" = violation ]; then
+    if [ -n "$prev" ] && [ "$prev_state" = violation ] && ! worse "$value" "$op" "$prev_value"; then
+      return
+    fi
+    if [ -n "$prev" ] && [ "$prev_state" = violation ]; then
+      diff=$(awk -v a="$value" -v b="$prev_value" 'BEGIN { d = a - b; printf "%s%g", (d > 0 ? "+" : ""), d }')
+      prev_line="- 前の値: $prev_value (差: $diff)"
+    else
+      prev_line="- 前の記録: ${prev:-なし}"
+    fi
+    body="予算 \`$name\` の違反が続いています。
+
+- 計測の値: $value
+$prev_line
+- コミット: $commit
+- 実行: $run_url
+
+$mark"
+  else
+    [ -n "$prev" ] && [ "$prev_state" = violation ] || return
+    body="予算 \`$name\` を満たしました ($op $limit)。issue は閉じていません。
+
+- 計測の値: $value
+- コミット: $commit
+- 実行: $run_url
+
+$mark"
+  fi
+  gh_write issue comment "$number" --body "$body" ||
+    error "$name" 'gh issue comment が失敗しました'
+}
+
+nl='
+'
+set -f
+old_ifs=$IFS
+IFS=$nl
+for row in $rows; do
+  IFS=$us
+  # shellcheck disable=SC2086
+  set -- $row
+  IFS=$nl
+  case $1 in
+  E) error "$rel:$2" "$3" ;;
+  R) check_budget "$2" "$3" "$4" "$5" "$6" "$7" ;;
+  esac
+done
+IFS=$old_ifs
+
+[ "$errors" -gt 0 ] && exit 1
+[ "$violations" -gt 0 ] && [ "$fail_on_violation" = 1 ] && exit 2
+exit 0

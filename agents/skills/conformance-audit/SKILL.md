@@ -47,6 +47,39 @@ ADR の受けいれ条件に予算を書いたら、同じ変更で予算の一�
 正とする ADR は、`superseded [...]` をたどった最新の ADR である。
 予算の一覧と ADR が食い違うときは、監査でその食い違いも指摘にし、直すときは予算の一覧を ADR に合わせる。
 
+## CI で予算を確かめる
+
+予算は、頼まれた監査のほかに、CI でも毎回、機械的に確かめる。
+そのときは、dotfiles の `bin/budget-check` を使う (dotfiles の docs/adr/0128)。
+
+- `bin/budget-check` は、予算の一覧の予算を計測して確かめ、違反を予算ごとに一つの issue (ラベル `budget-violation`、題 `予算違反: <名前> (<リポジトリのルートから見た一覧のパス>)`) にまとめる。
+- 同じ予算の issue があるときは、前の記録が無いとき、満たした後にまた違反したとき、前の違反より悪いときだけコメントを足す。予算を満たしたときは、一度だけ知らせ、issue は閉じない。
+- `--dry-run` は書き込みをせずにすることを出し、`--fail-on-violation` は、エラーの予算が無く違反があると終了コード 2 で終わる (エラーの予算があれば 1)。
+
+各リポジトリの CI には、そのリポジトリの ADR で、次のようなジョブを足す。
+
+```yaml
+budget:
+  runs-on: ubuntu-latest
+  permissions:
+    contents: read
+    issues: write
+  concurrency:
+    group: budget-${{ github.repository }}
+  steps:
+    - uses: actions/checkout@v7
+    - uses: actions/checkout@v7
+      with:
+        repository: tett23/dotfiles
+        ref: <固定するコミット>
+        path: .dotfiles
+    - run: .dotfiles/bin/budget-check
+      env:
+        GH_TOKEN: ${{ github.token }}
+```
+
+dotfiles の `bin/budget-check` を直したときは、各リポジトリの `ref` を上げる。
+
 ## 使う場面
 
 本人がこの監査を頼んだときに使う。

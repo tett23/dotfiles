@@ -1,6 +1,6 @@
 # ADR 0128: CI で予算違反を見つけ、予算ごとに一つの issue にまとめる
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 
