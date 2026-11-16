@@ -1,6 +1,6 @@
 # ADR 0124: ADR の不変条件と受けいれ条件の番号と、テストの名前の付け方をそろえる
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 

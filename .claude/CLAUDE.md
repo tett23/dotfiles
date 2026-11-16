@@ -15,6 +15,7 @@ ADR を書く・直す・採択する・実装する・破棄する前と、リ�
 ### チャットでのADR表記
 
 モノレポやマルチモジュールのリポジトリでは、チャット、コミットログ、PRでADR番号を示すときは番号だけでなく、`<module name> ADR NNNN` のように明示する。
+ルートの `docs/adr/` の ADR は `root ADR NNNN` と、リポジトリの外の ADR は `<リポジトリ> ADR NNNN` と書く (docs/adr/0124)。
 
 ## docs/specifications.mdとREADME.md
 
