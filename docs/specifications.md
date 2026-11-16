@@ -73,7 +73,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.codex/AGENTS.md` | `codex/AGENTS.md` (`.claude/CLAUDE.md` から Codex 向けに作る。[ADR 0114](adr/0114-codex-agents-md.md)) |
 | `~/.codex/hooks.json` | `codex/hooks.json` ([ADR 0115](adr/0115-codex-adr-guard-hook.md)) |
 | `~/.codex/agents` | `codex/agents/` ([ADR 0117](adr/0117-codex-model-roles.md)) |
-| `~/.claude/skills/<名前>`、`~/.agents/skills/<名前>` (`doc-writing`・`release`・`close-reading`・`adr`) | `agents/skills/<名前>/` (Claude Code と Codex で共有する。ほかのスキルは管理しない。[ADR 0118](adr/0118-split-instructions-into-skills.md)) |
+| `~/.claude/skills/<名前>`、`~/.agents/skills/<名前>` (`doc-writing`・`release`・`close-reading`・`adr`・`context-restore`) | `agents/skills/<名前>/` (Claude Code と Codex で共有する。ほかのスキルは管理しない。[ADR 0118](adr/0118-split-instructions-into-skills.md)、[ADR 0122](adr/0122-move-adr-rules-into-skill.md)、[ADR 0123](adr/0123-context-restore-skill.md)) |
 | `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
 | `~/.config/gh/config.yml` | `gh/config.yml` (認証情報を持つ `hosts.yml` は管理しない。[ADR 0112](adr/0112-gh-config-in-dotfiles.md)) |
 | `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
@@ -263,9 +263,13 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 成功した Bash のコマンドの出力は、10000 文字まで文脈に受け取る (`.claude/settings.json` の `bashOutputMaxChars`)。超えた出力はファイルに保存され、先頭の 2000 文字までのプレビューとパスを受け取る。
   読み戻しの窓も 10000 文字になる ([ADR 0119](adr/0119-claude-bash-output-limit.md))。
 - 文書の書き方 (`doc-writing`)、タグとリリース (`release`)、精読 (`close-reading`) は、全リポジトリ共通の指示から分けたスキルで、`agents/skills/` に置き、Claude Code と Codex で共有する。
-  共通の指示 (`.claude/CLAUDE.md`・`codex/AGENTS.md`) には、使う前にスキルを読むことだけを書く ([ADR 0118](adr/0118-split-instructions-into-skills.md))。
+  共通の指示 (`.claude/CLAUDE.md`、`codex/AGENTS.md`) には、いつも守る決まりと、使う前にスキルを読むことだけを書く ([ADR 0118](adr/0118-split-instructions-into-skills.md))。
 - ADR の決まり (採択の記録、修正と破棄、adr-guard の入れ方、置き場所と名前、テンプレート、不変条件、精読、未実装の ADR の実装) は `adr` スキルに置く。
   共通の指示には、実装の前に ADR を作ること、コミットした ADR はステータスの行を除いて変えないこと、レビューまでコミットしないこと、`adr` スキルを読むこと、チャットでの ADR の表記だけを残す ([ADR 0122](adr/0122-move-adr-rules-into-skill.md))。
+- `chat-log` で過去の会話から文脈を戻す手順は `context-restore` スキルに置く。
+  セッションの始めと、過去の決定や経緯を聞かれたときと、前のセッションの続きを頼まれたときに使う ([ADR 0123](adr/0123-context-restore-skill.md))。
+- 文書を変えたら、本人に出す前に `close-reading` で精読する。
+  ADR、仕様書、README の節を足したり組み直したり、新しい文書を書いたりしたときは全文を、小さな変更は差分を読む (読む範囲は `close-reading` スキルに書く) ([ADR 0123](adr/0123-context-restore-skill.md))。
 - Codex の全リポジトリ共通の指示は `codex/AGENTS.md`。`.claude/CLAUDE.md` と同じ内容で、Claude Code に特有のところ (出力の言語の主語、hook の設定の場所、`/goal`、「モデルの使い分け」のモデルと役割の名前) だけを
   Codex 向けに変え、`~/.codex/AGENTS.md` の Python の決まりを足した。2 つのファイルは手で合わせる ([ADR 0114](adr/0114-codex-agents-md.md))。
 - Codex でも、PreToolUse の hook (`codex/hooks.json`) で `adr-guard codex-hook --allow-status` を動かし、`apply_patch` と `Bash` によるコミット済みの ADR の変更を止める。

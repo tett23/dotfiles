@@ -30,6 +30,7 @@ specifications.mdからADRを示すときは、リンクつきでなければな
 
 文書は、パラグラフライティングで書く。
 README、仕様書、ADR、マニュアルなどの文書を書く・直す前に、`doc-writing` スキルを読む (docs/adr/0118)。
+文書を変えたら、本人に出す前に `close-reading` スキルで精読し、指摘を直す。
 
 ## Git運用方針
 
@@ -55,10 +56,8 @@ fd, rgが入っているのでローカルの調査ではこちらを優先す�
 
 ### ai-chat-log
 
-ai-chat-logsリポジトリ (https://github.com/tett23/ai-chat-logs) で過去のチャットログを全て保存している。
-`chat-log` コマンドで過去のコンテキストを復元できるので、必要であればコンテキストを復元する。
-まず `chat-log context` でいまのプロジェクトの最近のセッションを知り、`chat-log search <語> --cwd .` で決定や議論を探し、
-`chat-log show <ID> --around <番号>` で前後の会話を読む。詳しくは `chat-log --help`。
+過去の Claude Code と Codex の会話は、ai-chat-logs リポジトリ (https://github.com/tett23/ai-chat-logs) にすべて保存してあり、`chat-log` コマンドで引ける。
+セッションの始めと、過去の決定、調査、実装の経緯を聞かれたときと、前のセッションの続きを頼まれたときは、`context-restore` スキルを読み、その手順で文脈を戻す。
 
 ## 実装方針
 
@@ -98,7 +97,7 @@ AIが作業用に使うのは問題ありません。
 - `reader` の調べが足りないとき (根拠が無い、問いに答えていない、食い違いがある) は、難しさに応じて既定のモデルか `auditor` で調べ直す。
 - ADR はサブエージェントに書かせず、既定のモデルで書く。
 - 調べものは、別のサブエージェントに分けてよい。
-- 過去の文脈、調査、実装の内容が要るときは、`chat-log` コマンドで取得する。
+- 過去の文脈、調査、実装の内容が要るときは、`context-restore` スキルの手順で `chat-log` から取得する。
 - `auditor` の調査や監査の結果は、要約し直さずに、指摘をそのまま本人に示す。
 
 ## GitHub actions

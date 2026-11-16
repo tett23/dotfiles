@@ -1,6 +1,6 @@
 # ADR 0123: chat-log で文脈を戻す context-restore スキルを足し、精読の範囲を close-reading スキルに書く
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 
