@@ -2,11 +2,11 @@
 
 Status: accepted
 - Date: 2026-10-07
-- 関連: docs/audit/2026-10-07-breaking-changes.md
+- 関連: docs/audits/2026-10-07-breaking-changes.md
 
 ## Context
 
-docs/audit/2026-10-07-breaking-changes.md に挙げた項目のうち、Z5・I4・O1・M2 を、挙動が変わってもよいとの判断のもとで直す。
+docs/audits/2026-10-07-breaking-changes.md に挙げた項目のうち、Z5・I4・O1・M2 を、挙動が変わってもよいとの判断のもとで直す。
 M1 (/opt/homebrew の残骸) は本人が手動で削除済み。
 
 ## Decision

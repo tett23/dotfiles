@@ -24,7 +24,7 @@ Status: superseded [{"by":["docs/adr/0031-command-finder-key-and-rust-tools-via-
 - 送信の失敗、ファイルが無い、引数が無い場合は、メッセージを表示して終了コード 1 で終わる。
 - ファイルのパスは、カレントディレクトリを基準に解決する (絶対パスはそのまま)。
 - nodemailer を 10 に上げ、型は `@types/nodemailer` を使う。不要な import と `-f` オプションを削除する。
-- 権限 (`-A`) は変えない (絞ると送信を実際に試さないと確かめられないため。docs/audit/2026-10-07-breaking-changes.md の B5)。
+- 権限 (`-A`) は変えない (絞ると送信を実際に試さないと確かめられないため。docs/audits/2026-10-07-breaking-changes.md の B5)。
 - CI に `deno test` を追加する。
 
 ## Consequences

@@ -4,7 +4,7 @@ Status: accepted
 
 ## 文脈
 
-ベストプラクティスの監査 (`docs/audit/2026-10-11-best-practices.md`) のうち、重要度が高く、直すと挙動が変わるものを直す。
+ベストプラクティスの監査 (`docs/audits/2026-10-11-best-practices.md`) のうち、重要度が高く、直すと挙動が変わるものを直す。
 故障の 8 件は、壊れているものが直る方向の変化。挙動を変えずに直せるもの (Z5・N1・T2 を含む) は [ADR 0046](0046-fix-audit-non-breaking.md) で扱う。
 
 ## 実装すること

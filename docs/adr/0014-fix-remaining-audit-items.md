@@ -2,12 +2,12 @@
 
 Status: accepted
 - Date: 2026-10-07
-- 関連: docs/audit/2026-10-07-best-practices.md の未対応 (⬜) 項目
+- 関連: docs/audits/2026-10-07-best-practices.md の未対応 (⬜) 項目
 
 ## Context
 
 監査の未対応項目を、「挙動を変えずに直せるもの」と「直すと何かが壊れる・変わるもの」に分ける。
-後者は直さず、何が壊れるかを docs/audit/2026-10-07-breaking-changes.md にまとめ、本人が判断する。
+後者は直さず、何が壊れるかを docs/audits/2026-10-07-breaking-changes.md にまとめ、本人が判断する。
 
 ## Decision
 
@@ -29,7 +29,7 @@ Status: accepted
   nix-darwin の設定の評価 (ビルドはしない) を行う。手元の挙動には影響しない。
 - O2 の一部: VSCode の設定から、もう存在しない `go-langserver` の指定 (`go.alternateTools`) を削除する。
 
-### 直さないもの (docs/audit/2026-10-07-breaking-changes.md に報告)
+### 直さないもの (docs/audits/2026-10-07-breaking-changes.md に報告)
 
 Z5、B5 の残り、B6、I4、C1、C2、C3 の残り、O1、O2 の残り、M1、M2。
 

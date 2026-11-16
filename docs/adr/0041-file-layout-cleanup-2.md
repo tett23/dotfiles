@@ -4,7 +4,7 @@ Status: accepted
 
 ## 文脈
 
-ファイル配置の監査 (`docs/audit/2026-10-11-file-layout.md`) で、直しても挙動が変わらない次の項目が見つかった。
+ファイル配置の監査 (`docs/audits/2026-10-11-file-layout.md`) で、直しても挙動が変わらない次の項目が見つかった。
 
 - **L13** `.vscode/settings.json` は `"deno.enable": true` だけを書いたファイル。Deno のコード (`bin/send-to-kindle`) は
   [ADR 0031](0031-command-finder-key-and-rust-tools-via-mise.md) で削除し、リポジトリに Deno のコードは無い。

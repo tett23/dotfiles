@@ -4,7 +4,7 @@ Status: accepted
 
 ## 文脈
 
-[dotfiles の改善案 (2026-10-13)](../audit/2026-10-13-improvements.md) のうち、[ADR 0057](0057-remaining-improvements-2.md) の後に残った項目から、
+[dotfiles の改善案 (2026-10-13)](../audits/2026-10-13-improvements.md) のうち、[ADR 0057](0057-remaining-improvements-2.md) の後に残った項目から、
 本人が G2・O2 を直すことにした。V5 (自動保存のたびの整形と行末の空白の削除) は許容する。I10 (adr-guard) は本人が直した。
 
 - **G2** git は、既定では fetch・clone・push で受け取るオブジェクトの形を検査しない。`transfer.fsckObjects` を有効にすると、

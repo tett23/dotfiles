@@ -4,7 +4,7 @@ Status: accepted
 
 ## 文脈
 
-ファイル配置の監査 (`docs/audit/2026-10-11-file-layout-2.md`) の次の 2 項目。
+ファイル配置の監査 (`docs/audits/2026-10-11-file-layout-2.md`) の次の 2 項目。
 
 - **L17** `flake.nix` の home-manager のアクティベーション (`createVimBackupDirectory`) が、`darwin-rebuild switch` のたびに
   `~/.vimbackup` を作る。nvim は `backup` と `swapfile` を無効にしていて `backupdir` も設定していないので、使われていない

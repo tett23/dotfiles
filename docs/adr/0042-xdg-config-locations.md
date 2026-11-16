@@ -4,7 +4,7 @@ Status: accepted
 
 ## 文脈
 
-ファイル配置の監査 (`docs/audit/2026-10-11-file-layout.md`) の L3〜L6 で、次の設定がホーム直下にリンクされている。
+ファイル配置の監査 (`docs/audits/2026-10-11-file-layout.md`) の L3〜L6 で、次の設定がホーム直下にリンクされている。
 どのツールも XDG Base Directory の場所 (`~/.config/<ツール>/`) の設定を読める。リポジトリ内の場所は [ADR 0027](0027-file-layout-without-behavior-change.md) で揃えてある。
 
 | ツール | 今のリンク先 | XDG の場所 | ツールの対応 |

@@ -2,7 +2,7 @@
 
 Status: accepted
 - Date: 2026-10-07
-- 関連: docs/audit/2026-10-07-best-practices.md の Z1〜Z13
+- 関連: docs/audits/2026-10-07-best-practices.md の Z1〜Z13
 
 ## Context
 

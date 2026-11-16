@@ -4,7 +4,7 @@ Status: accepted
 
 ## 文脈
 
-ファイル配置の監査 (`docs/audit/2026-10-09-file-layout.md`) の未対応項目のうち、直してもリンク先や読み込み順が
+ファイル配置の監査 (`docs/audits/2026-10-09-file-layout.md`) の未対応項目のうち、直してもリンク先や読み込み順が
 変わらないものは次の 3 つ。
 
 - **L7** ルート直下に単独のファイル (`bat-config`、`gitconfig`、`gitignore_global`、`rubocop.yml`) があり、

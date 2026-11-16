@@ -4,7 +4,7 @@ Status: accepted
 
 ## 文脈
 
-[dotfiles の改善案 (2026-10-13)](../audit/2026-10-13-improvements.md) の「提案したが入れていない便利な設定」から、本人が bat の
+[dotfiles の改善案 (2026-10-13)](../audits/2026-10-13-improvements.md) の「提案したが入れていない便利な設定」から、本人が bat の
 `--map-syntax` と、nvim の `scrolloff`・`signcolumn = "yes"`・`inccommand = "split"` を入れることにした (`splitright`・`splitbelow` は入れない)。
 V12 (`<C-w>o`) は直さない。I8 (nvim 0.12.6) は、nixpkgs にまだ新しい版が来ていない。
 

@@ -4,7 +4,7 @@ Status: accepted
 
 ## 文脈
 
-ベストプラクティスの監査 (`docs/audit/2026-10-11-best-practices.md`) のうち、直しても使い勝手が変わらないものを直す。
+ベストプラクティスの監査 (`docs/audits/2026-10-11-best-practices.md`) のうち、直しても使い勝手が変わらないものを直す。
 重要度の高い Z5 (zinit の本体の固定)・N1 (CI の Nix の action)・T2 (tmux の色の変数の漏れ) もここに含める。
 挙動が変わるものは [ADR 0045](0045-fix-audit-failures-and-risks.md) で扱う。
 

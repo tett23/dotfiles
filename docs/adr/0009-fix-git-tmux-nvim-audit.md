@@ -2,7 +2,7 @@
 
 Status: accepted
 - Date: 2026-10-07
-- 関連: docs/audit/2026-10-07-best-practices.md の G1〜G5, T1, B4, V1〜V6
+- 関連: docs/audits/2026-10-07-best-practices.md の G1〜G5, T1, B4, V1〜V6
 
 ## Context
 

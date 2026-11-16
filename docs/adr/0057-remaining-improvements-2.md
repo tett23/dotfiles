@@ -4,7 +4,7 @@ Status: accepted
 
 ## 文脈
 
-[dotfiles の改善案 (2026-10-13)](../audit/2026-10-13-improvements.md) のうち、[ADR 0055](0055-improvements-2026-10-13.md)・[0056](0056-remove-old-ghcup-and-stack.md)
+[dotfiles の改善案 (2026-10-13)](../audits/2026-10-13-improvements.md) のうち、[ADR 0055](0055-improvements-2026-10-13.md)・[0056](0056-remove-old-ghcup-and-stack.md)
 の後に残った項目から、本人が G3・G4・C1・C2・O4・Z12 を直すこと、「提案したが入れていない便利な設定」から fzf の履歴検索の
 プレビュー・bat-extras・eza のオプションを入れることを決めた。O3 (Ghostty の `Cmd+P` が tmux の中の nvim に届くか) は、
 [ADR 0055](0055-improvements-2026-10-13.md) の `extended-keys` の後に本人が届くことを確かめた。I10 (adr-guard) は本人が adr-guard のリポジトリで扱う。
