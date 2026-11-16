@@ -58,9 +58,9 @@ Status: accepted
 
 ## 受けいれ条件
 
-- `.claude/CLAUDE.md` と `codex/AGENTS.md` の「ADR」の節が、「実装すること」の 3 つだけになる。
-- 移す前の「ADR」の節の文が、「実装すること」の 2 か所の言いかえと、残した 3 文と「チャットでのADR表記」を除いて、`agents/skills/adr/SKILL.md` に一字も変わらずにある。
-- Claude Code と Codex の新しいセッションで、`adr` スキルが一覧に出て、ADR を書くよう頼むと、書く前に `adr` スキルを読む。
+- A1: `.claude/CLAUDE.md` と `codex/AGENTS.md` の「ADR」の節が、「実装すること」の 3 つだけになる。
+- A2: 移す前の「ADR」の節の文が、「実装すること」の 2 か所の言いかえと、残した 3 文と「チャットでのADR表記」を除いて、`agents/skills/adr/SKILL.md` に一字も変わらずにある。
+- A3: Claude Code と Codex の新しいセッションで、`adr` スキルが一覧に出て、ADR を書くよう頼むと、書く前に `adr` スキルを読む。
 
 ## テスト設計
 

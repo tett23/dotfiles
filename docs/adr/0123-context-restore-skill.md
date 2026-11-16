@@ -53,10 +53,10 @@ Status: accepted
 
 ## 受けいれ条件
 
-- `context-restore` スキルの手順とオプションが、`chat-log --help` と合う。
-- 共通の指示の「ai-chat-log」の節が 2 行になり、`context-restore` スキルを読む 3 つの場面を書く。
-- 共通の指示に「文書を変えたら精読する」の一文があり、読む範囲は共通の指示には書かず、`close-reading` スキルに書いてある。
-- Claude Code と Codex の新しいセッションで、スキルの一覧に `context-restore` が出る。
+- A1: `context-restore` スキルの手順とオプションが、`chat-log --help` と合う。
+- A2: 共通の指示の「ai-chat-log」の節が 2 行になり、`context-restore` スキルを読む 3 つの場面を書く。
+- A3: 共通の指示に「文書を変えたら精読する」の一文があり、読む範囲は共通の指示には書かず、`close-reading` スキルに書いてある。
+- A4: Claude Code と Codex の新しいセッションで、スキルの一覧に `context-restore` が出る。
 
 ## テスト設計
 
