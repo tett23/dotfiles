@@ -62,7 +62,7 @@ adr-guard の pre-commit hook と CI (`check-range`) は、コミットの前の
 変更を不可にする方法は以下にある。リポジトリを初期化するときにはREADMEに従うこと。
 https://github.com/tett23/adr-guard
 
-具体的には、次の 3 つを行う。Claude Code と Codex の hook は全体の設定 (`~/.claude/settings.json`、`~/.codex/hooks.json`) で有効なので不要。
+具体的には、次の 4 つを行う。Claude Code と Codex の hook は全体の設定 (`~/.claude/settings.json`、`~/.codex/hooks.json`) で有効なので不要。
 
 1. `.githooks/pre-commit` を置き、実行権限を付ける。ほかの検査と並べる場合は、`exec` の行を最後に置く。
 
@@ -72,7 +72,8 @@ https://github.com/tett23/adr-guard
    ```
 
 2. clone ごとに `git config core.hooksPath .githooks` を実行する (README にも手順を書く)。
-3. CI に adr-guard の `adr` ジョブを足す (adr-guard の README の例のとおり)。
+3. `docs/adr/.gitkeep` を置く。モノレポでは、各モジュールの `docs/<module name>/adr/.gitkeep` も置く (dotfiles の docs/adr/0129)。
+4. CI に adr-guard の `adr` ジョブを足す (adr-guard の README の例のとおり)。
 
 ## ADRの構成
 

@@ -268,6 +268,8 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   不変条件は `I1`、受けいれ条件は `A1` と番号を振り、テストの名前の先頭に `ADR NNNN I1: ` (識別子では `adr<NNNN>_i<番号>_…`) を置く。空白とハイフンを使えない名前では `_` を使う ([ADR 0124](adr/0124-invariant-and-test-naming.md))。
   共通の指示には、実装の前に ADR を作ること、コミットした ADR はステータスの行を除いて変えないこと、レビューまでコミットしないこと、スキルの表の `adr` の行、チャットでの ADR の表記だけを残す ([ADR 0122](adr/0122-move-adr-rules-into-skill.md))。
 - ロードマップ (`docs/roadmap.md`) の書き方は `roadmap` スキルに置く。まだ無いものだけを書き、実装を終えた項目は消して仕様書に書く ([ADR 0125](adr/0125-roadmap-skill.md))。
+- `docs/` の標準の構成 (`adr/`、`specifications.md`、`roadmap.md`、`budgets.md`、`glossary.md`、`research/`、`audits/`、`benchmarks/`) と、モノレポのモジュールごとの構成を、共通の指示の「docs/ の構成」に書く。
+  標準の構成の `docs/` の中だけの変更では CI のビルドとテストを省き、`docs/budgets.md` の変更では予算の確かめを省かない ([ADR 0129](adr/0129-standard-docs-layout.md))。
 - 監査は、セキュリティの `security-audit` と、ADR 違反と予算違反の `conformance-audit` のスキルで、`auditor` に任せて行う。指摘は変えずに、`docs/audits/` があるか本人が求めたときは記録し、ほかはチャットで返す。
   予算は ADR の受けいれ条件と `docs/budgets.md` の両方に書き、食い違うときは ADR を正とする ([ADR 0126](adr/0126-audit-skill.md))。
 - `chat-log` で過去の会話から文脈を戻す手順は `context-restore` スキルに置く。
@@ -347,7 +349,7 @@ usage-hint と task-marks の mod のテストは CI では行わない (本人�
 
 - 実装の前に ADR を書く。ファイル名は `docs/adr/0001-feature-details.md` のように 4 桁の連番を付ける。
 - コミットした ADR はステータスの行を除いて変更しない。仕様を変えるときは新しい ADR を作る。
-- 監査や計測の記録 (`docs/audit/`・`docs/benchmarks/`) も、コミットした後は変更しない ([ADR 0066](adr/0066-adr-guard-0-8-in-ci.md))。
+- 監査や計測の記録 (`docs/audits/`、`docs/benchmarks/`) も、コミットした後は変更しない ([ADR 0066](adr/0066-adr-guard-0-8-in-ci.md))。dotfiles の監査の記録は、単数形の `docs/audit/` から `docs/audits/` に移した ([ADR 0129](adr/0129-standard-docs-layout.md))。
 - この規則は adr-guard (https://github.com/tett23/adr-guard) で、git の pre-commit hook (`.githooks/pre-commit`)・
   Claude Code の hook (`.claude/settings.json`。全リポジトリで有効)・CI の `adr` ジョブの 3 か所で強制する ([ADR 0032](adr/0032-adr-guard.md))。
   - adr-guard が変更を許すのは、ステータスの行 (`Status:` で始まる行。各 ADR にちょうど 1 つ。`--allow-status`) と、

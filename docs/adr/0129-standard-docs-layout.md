@@ -1,6 +1,6 @@
 # ADR 0129: docs/ の標準のディレクトリとファイルの構成を決める
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 
