@@ -5,6 +5,9 @@ description: ADR (docs/adr/) の決まり。採択の記録、修正と破棄、
 
 # ADR（docs/adr/）
 
+ADR は、サブエージェントに書かせず、既定のモデルで書く。
+調べものはサブエージェントに任せてよいが、ADR に書く事実は、根拠のコマンドと出力が返ったものだけにする。
+
 採択されたら、まず `Status: proposed` のまま ADR をコミットし、次のコミットでステータスを `accepted` (実装済み) か `accepted-pending` (未実装) に変える。adr-guard は、追加の時点で `accepted` の ADR と、決まりにない状態の遷移を拒否する。
 仕様を変更したくなった場合は、新たに修正用のADRを作成する。元のADRを書きかえてはいけない。
 修正用の ADR が採択されたら、元の ADR のステータスを `superseded [{"part":null,"by":["docs/adr/NNNN-....md"]}]` にする。一部だけを変えたときは、`part` にその部分の名前 (節の名前など) を書く。`adr-guard trace` で修正の連なりをたどれる。
