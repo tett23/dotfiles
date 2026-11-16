@@ -1,6 +1,6 @@
 # ADR 0125: ロードマップの書き方をそろえる roadmap スキルを足す
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 
