@@ -263,10 +263,10 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 成功した Bash のコマンドの出力は、10000 文字まで文脈に受け取る (`.claude/settings.json` の `bashOutputMaxChars`)。超えた出力はファイルに保存され、先頭の 2000 文字までのプレビューとパスを受け取る。
   読み戻しの窓も 10000 文字になる ([ADR 0119](adr/0119-claude-bash-output-limit.md))。
 - 文書の書き方 (`doc-writing`)、タグとリリース (`release`)、精読 (`close-reading`) は、全リポジトリ共通の指示から分けたスキルで、`agents/skills/` に置き、Claude Code と Codex で共有する。
-  共通の指示 (`.claude/CLAUDE.md`、`codex/AGENTS.md`) には、いつも守る決まりと、使う前にスキルを読むことだけを書く ([ADR 0118](adr/0118-split-instructions-into-skills.md))。
+  共通の指示 (`.claude/CLAUDE.md`、`codex/AGENTS.md`) には、いつも守る決まりと、スキルの表 (使うときと使いかたの要点) だけを書く。手順の全文はスキルに書く ([ADR 0118](adr/0118-split-instructions-into-skills.md)、[ADR 0127](adr/0127-skills-table-in-shared-instructions.md))。
 - ADR の決まり (採択の記録、修正と破棄、adr-guard の入れ方、置き場所と名前、テンプレート、不変条件、精読、未実装の ADR の実装) は `adr` スキルに置く。
   不変条件は `I1`、受けいれ条件は `A1` と番号を振り、テストの名前の先頭に `ADR NNNN I1: ` (識別子では `adr<NNNN>_i<番号>_…`) を置く。空白とハイフンを使えない名前では `_` を使う ([ADR 0124](adr/0124-invariant-and-test-naming.md))。
-  共通の指示には、実装の前に ADR を作ること、コミットした ADR はステータスの行を除いて変えないこと、レビューまでコミットしないこと、`adr` スキルを読むこと、チャットでの ADR の表記だけを残す ([ADR 0122](adr/0122-move-adr-rules-into-skill.md))。
+  共通の指示には、実装の前に ADR を作ること、コミットした ADR はステータスの行を除いて変えないこと、レビューまでコミットしないこと、スキルの表の `adr` の行、チャットでの ADR の表記だけを残す ([ADR 0122](adr/0122-move-adr-rules-into-skill.md))。
 - `chat-log` で過去の会話から文脈を戻す手順は `context-restore` スキルに置く。
   セッションの始めと、過去の決定や経緯を聞かれたときと、前のセッションの続きを頼まれたときに使う ([ADR 0123](adr/0123-context-restore-skill.md))。
 - 文書を変えたら、本人に出す前に `close-reading` で精読する。

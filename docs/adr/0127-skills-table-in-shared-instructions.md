@@ -1,6 +1,6 @@
 # ADR 0127: 共通の指示に、スキルを使うときと使いかたの表を置く
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 
