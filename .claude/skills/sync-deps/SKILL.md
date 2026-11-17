@@ -66,7 +66,7 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 
 変更した範囲だけ適用する:
 
-- **mise**: `mise install` (新規追加時)。`mise install` と `mise upgrade` (`bin/update-mise`) は `mise/mise.lock` を書き換えるので、変わったらコミットする (docs/adr/0134)
+- **mise**: `mise install` (新規追加時)。`mise install` と `mise upgrade` (`bin/update-mise`) は `mise/mise.lock` と `mise/.mise/locks/` (npm のツールの lock) を書き換えるので、変わったら一緒にコミットする (docs/adr/0134、docs/adr/0136)
 - **Nix の変更 (CLI・GUI アプリとも)**: `darwin-rebuild switch` が必要で sudo を要する。
   home-manager は nix-darwin のモジュールとしてだけ使う (単体の `home-manager switch` は使わない。docs/adr/0015)。
   自分では実行せず、ユーザーにこのコマンドの実行を提案する:

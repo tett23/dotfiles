@@ -1,6 +1,6 @@
 # ADR 0136: mise の npm のツールの lock (mise/.mise/locks) をコミットする
 
-Status: proposed
+Status: accepted-pending
 
 ## 文脈
 
