@@ -1,6 +1,6 @@
 # ADR 0046: ベストプラクティスの監査 (2026-10-11) のうち、挙動を変えずに直せるものを直す
 
-Status: accepted
+Status: superseded [{"part":"N4 (Nix のインストーラーの版の固定)","by":["docs/adr/0141-ci-actions-lockfile-and-installer-hash.md"],"kind":"supplement"}]
 
 ## 文脈
 

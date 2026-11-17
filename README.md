@@ -10,7 +10,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 
 1. Xcode Command Line Tools
 2. `~/dotfiles` への clone (HTTPS)
-3. `bootstrap.sh`: Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク (途中で sudo のパスワードを聞かれます)
+3. `bootstrap.sh`: Nix → nix-darwin / home-manager / GUI アプリ / dotfiles のリンク (途中で sudo のパスワードを聞かれます) Nix のインストーラーは、書いた sha256 と一致するときだけ動かします。
 4. `mise install`: 言語 / ツール
 5. ghcup で Haskell の ghc・cabal
 6. git の hook (コミット済みの ADR の変更を防ぐ adr-guard)

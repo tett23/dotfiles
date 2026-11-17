@@ -21,6 +21,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
    (`git@github.com:tett23/dotfiles.git`) に切り替える ([ADR 0016](adr/0016-ssh-origin-after-install.md))。
 3. `bootstrap.sh` を実行する: Nix (Determinate Systems のインストーラ) を入れ、nix-darwin を適用する
    (初回は `nix run` で flake.lock に固定した nix-darwin を使う。[ADR 0017](adr/0017-fix-bootstrap-first-darwin-rebuild.md))。
+   Nix のインストーラーは、版を固定した URL から一時ファイルに取り、`sha256` が `bootstrap.sh` に書いた値と一致するときだけ動かす (一致しなければ終了コード 1 で終わる。[ADR 0141](adr/0141-ci-actions-lockfile-and-installer-hash.md))。
 4. `mise install` で言語とツールを入れる。
 5. mise で入れた ghcup で、Haskell の ghc・cabal の `latest` を入れて既定にする ([ADR 0050](adr/0050-ghc-cabal-via-ghcup.md))。
 6. git の hook (`.githooks`) を有効にする ([ADR 0032](adr/0032-adr-guard.md))。
@@ -361,6 +362,10 @@ GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
 
 同じブランチ・PR の古い実行は取り消し、各ジョブには時間の上限を付けている ([ADR 0046](adr/0046-fix-audit-non-breaking.md))。自前のパッケージのビルドと、
 usage-hint と task-marks の mod のテストは CI では行わない (本人の判断。[ADR 0046](adr/0046-fix-audit-non-breaking.md))。
+
+workflow の `uses:` はタグのまま書き、`.github/workflows/actions.lock` (`gh actions-lock` が作る lockfile) に各参照のコミットを記録する。
+別の workflow (`.github/workflows/verify-lockfile.yml`) が、`gh actions-lock --verify` で lockfile が workflow と合うかを確かめる。拡張の版は `--pin` で固定する。
+action の版を上げるとき (タグが動いたとき、新しいメジャー版にするとき) は、`gh actions-lock --relock` か、`uses:` を直した後の `gh actions-lock` で lockfile を更新し、その差分をコミットする。Dependabot は入れない ([ADR 0141](adr/0141-ci-actions-lockfile-and-installer-hash.md))。
 
 ## ADR の運用
 
