@@ -127,8 +127,9 @@ measure() {
   IFS=$nl
   for row in $rows; do
     IFS=$us
+    # 末尾に区切りを足し、空の最後のセルも欄として残す (2026-11-16 の ADR 違反の監査の指摘 3)
     # shellcheck disable=SC2086
-    set -- $row
+    set -- $row$us
     IFS=$nl
     case $1 in
     E) line="E$us$rel:$2$us$3" ;;
@@ -242,10 +243,11 @@ $mark"
     printf '%s' "$list" | jq -r --argjson n "$number" '.[] | select(.number == $n) | .body'
     printf '\n'
     printf '%s' "$comments" | jq -r 'flatten | .[].body'
-  } | grep -o 'budget-check: value=[^ ]* state=[^ ]*' |
-    awk -v re="$num_re" '{
-      v = $2; sub(/^value=/, "", v); s = $3; sub(/^state=/, "", s)
-      if (v ~ re && (s == "violation" || s == "ok")) { pv = v; ps = s }
+  } | grep -o '<!-- budget-check: value=[^ ]* state=[^ ]* -->' |
+    num_re=$num_re awk '{
+      # 正規表現は環境変数で渡す (awk -v は \. を . にしてしまう。2026-11-16 の ADR 違反の監査の指摘 2)
+      v = $3; sub(/^value=/, "", v); s = $4; sub(/^state=/, "", s)
+      if (v ~ ENVIRON["num_re"] && (s == "violation" || s == "ok")) { pv = v; ps = s }
     } END { if (ps != "") print pv " " ps }')
   prev_value=${prev% *}
   prev_state=${prev#* }
@@ -254,7 +256,8 @@ $mark"
     if [ -n "$prev" ] && [ "$prev_state" = violation ] && ! worse "$value" "$op" "$prev_value"; then
       return
     fi
-    if [ -n "$prev" ] && [ "$prev_state" = violation ]; then
+    # 前の記録があれば、state によらず前の値との差を書く (docs/adr/0128 の 12)
+    if [ -n "$prev" ]; then
       diff=$(awk -v a="$value" -v b="$prev_value" 'BEGIN { d = a - b; printf "%s%g", (d > 0 ? "+" : ""), d }')
       prev_line="- 前の値: $prev_value (差: $diff)"
     else
@@ -304,8 +307,9 @@ report() {
   IFS=$nl
   for row in $body_lines; do
     IFS=$us
+    # 末尾に区切りを足し、空の最後のセルも欄として残す (2026-11-16 の ADR 違反の監査の指摘 3)
     # shellcheck disable=SC2086
-    set -- $row
+    set -- $row$us
     IFS=$nl
     case $1 in
     E) [ $# = 3 ] && error "$2" "$3" || error "$rel" "結果のファイルの E の行の欄の数が違います" ;;
