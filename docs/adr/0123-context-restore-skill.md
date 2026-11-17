@@ -1,6 +1,6 @@
 # ADR 0123: chat-log で文脈を戻す context-restore スキルを足し、精読の範囲を close-reading スキルに書く
 
-Status: accepted
+Status: superseded [{"part":"実装すること (「ai-chat-log」の節を 2 行にする)","by":["docs/adr/0127-skills-table-in-shared-instructions.md"]},{"part":"受けいれ条件 (A2)","by":["docs/adr/0127-skills-table-in-shared-instructions.md"]}]
 
 ## 文脈
 

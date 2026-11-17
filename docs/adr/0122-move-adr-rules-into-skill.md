@@ -1,6 +1,6 @@
 # ADR 0122: ADR の決まりを、全リポジトリ共通の指示から adr スキルに移す
 
-Status: accepted
+Status: superseded [{"part":"実装すること (「ADR」の節を 3 つだけにする)","by":["docs/adr/0127-skills-table-in-shared-instructions.md"]},{"part":"受けいれ条件 (A1)","by":["docs/adr/0127-skills-table-in-shared-instructions.md"]}]
 
 ## 文脈
 

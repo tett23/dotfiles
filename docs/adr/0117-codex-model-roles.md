@@ -1,6 +1,6 @@
 # ADR 0117: Codex でも、作業の種類ごとにモデルを使い分ける
 
-Status: superseded [{"part":"実装すること (auditor の推論の強さ)","by":["docs/adr/0126-audit-skill.md"]},{"part":"トレードオフ (auditor の推論の強さ)","by":["docs/adr/0126-audit-skill.md"]}]
+Status: superseded [{"part":"実装すること (auditor の推論の強さ)","by":["docs/adr/0126-audit-skill.md"]},{"part":"トレードオフ (auditor の推論の強さ)","by":["docs/adr/0126-audit-skill.md"]},{"part":"実装すること (codex/AGENTS.md の「モデルの使い分け」の節で、作業をエージェントに任せると書く項目)","by":["docs/adr/0118-split-instructions-into-skills.md"]}]
 
 ## 文脈
 

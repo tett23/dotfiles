@@ -1,6 +1,6 @@
 # ADR 0111: Claude Code のサブエージェントの定義を dotfiles で管理する
 
-Status: accepted
+Status: superseded [{"part":"実装すること (.claude/CLAUDE.md の「モデルの使い分け」に 3 つのエージェントの名前を書く)","by":["docs/adr/0118-split-instructions-into-skills.md"]}]
 
 ## 文脈
 
