@@ -28,33 +28,33 @@ HOST="dione"
 # 生成対象。差分の表示もこの範囲に限る
 TARGETS=(flake.nix flake.lock mise/config.toml nix)
 
-# Claude に使わせるツール。ファイルの読み書きと、読み取り・ビルド系のコマンドだけ
+# Claude に使わせるツール。書き換える範囲と、名前の検索、ビルド、読み取りのコマンドだけ (docs/adr/0140)。
+# Write もこの Edit の規則で絞られる。Read、Glob、Grep は書かない (dontAsk では作業ディレクトリの中だけ読める)
 ALLOWED_TOOLS=(
-  Read Edit Write Glob Grep
-  "Bash(nix search:*)"
-  "Bash(nix eval:*)"
-  "Bash(nix build:*)"
-  "Bash(nix flake lock:*)"
-  "Bash(nix flake show:*)"
-  "Bash(nix store prefetch-file:*)"
-  "Bash(nix-prefetch-url:*)"
+  "Edit(flake.nix)"
+  "Edit(flake.lock)"
+  "Edit(mise/config.toml)"
+  "Edit(nix/**)"
+  "Bash(nix search nixpkgs *)"
+  "Bash(nix build --no-link .#darwinConfigurations.dione.system)"
+  "Bash(nix flake lock)"
   # Homebrew の公開 API は、このドメインだけを読める WebFetch で取る (curl の前方一致の許可は広すぎるため。docs/adr/0045)
   "WebFetch(domain:formulae.brew.sh)"
-  "Bash(git diff:*)"
-  "Bash(git status:*)"
-  "Bash(git add -N:*)"
-  "Bash(mise ls:*)"
-  "Bash(mise registry:*)"
+  "Bash(git diff *)"
+  "Bash(git status *)"
+  "Bash(git add -N nix/*)"
+  "Bash(mise ls *)"
+  "Bash(mise registry *)"
 )
 # 明示的に禁止するもの (許可リストに無いものも使えないが、念のため)
 DISALLOWED_TOOLS=(
-  "Bash(sudo:*)"
-  "Bash(darwin-rebuild:*)"
-  "Bash(home-manager:*)"
-  "Bash(git commit:*)"
-  "Bash(git push:*)"
-  "Bash(mise install:*)"
-  "Bash(rm:*)"
+  "Bash(sudo *)"
+  "Bash(darwin-rebuild *)"
+  "Bash(home-manager *)"
+  "Bash(git commit *)"
+  "Bash(git push *)"
+  "Bash(mise install *)"
+  "Bash(rm *)"
 )
 
 # shellcheck disable=SC2016 # プロンプト中のバッククォートは展開させない
@@ -67,6 +67,10 @@ PROMPT='dependencies.md を一次ソースとして、flake.nix / mise/config.to
   - nixpkgs に見つからない、または対応が曖昧なパッケージ
 - nix/ に新しいファイルを作ったら `git add -N <ファイル>` を実行してください (flake から見えるようにするため)。
 - 変更したら `nix build --no-link .#darwinConfigurations.dione.system` でビルドが通ることを確認してください。
+- 使えるコマンドは、`nix search nixpkgs`、上のビルド、`nix flake lock`、`git diff`、`git status`、`git add -N nix/...`、`mise ls`、`mise registry` と、formulae.brew.sh の WebFetch だけです。
+  書き換えられるのは flake.nix、flake.lock、mise/config.toml、nix/ だけです。
+- `nix-prefetch-url` などで sha256 を取らないでください。新しい自前パッケージは、Homebrew の cask の JSON
+  (https://formulae.brew.sh/api/cask/<名前>.json) の url と sha256 を使ってください。cask の無いものは足さずに、最後の報告に書いてください。
 - sudo、darwin-rebuild、home-manager switch、mise install、git commit は使わないでください。
 - 最後に、変更したファイルと内容、変更しなかった理由、ユーザーの判断が必要な点を日本語で簡潔に報告してください。
   差分が無ければ「差分なし」と報告してください。'
@@ -87,7 +91,8 @@ generate() {
     cd "$DOTFILES"
     claude -p "$PROMPT" \
       ${model_args[@]+"${model_args[@]}"} \
-      --permission-mode acceptEdits \
+      --permission-mode dontAsk \
+      --setting-sources user \
       --allowedTools "${ALLOWED_TOOLS[@]}" \
       --disallowedTools "${DISALLOWED_TOOLS[@]}"
   )

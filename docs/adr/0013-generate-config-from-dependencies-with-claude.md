@@ -1,6 +1,6 @@
 # ADR 0013: dependencies.md から Claude で設定を生成するスクリプトを置く
 
-Status: superseded [{"part":"Decision","by":["docs/adr/0133-sync-deps-confirm-before-switch.md"],"kind":"supplement"}]
+Status: superseded [{"part":"Decision","by":["docs/adr/0133-sync-deps-confirm-before-switch.md"],"kind":"supplement"},{"part":"Decision (claude -p に許すツール)","by":["docs/adr/0140-sync-deps-narrow-claude-tools.md"],"kind":"supplement"}]
 - Date: 2026-10-07
 
 ## Context

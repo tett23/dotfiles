@@ -1,6 +1,6 @@
 # ADR 0140: sync-deps の claude -p に許すツールを、書き換える範囲と決まったコマンドに絞る
 
-Status: proposed
+Status: accepted-pending
 
 ## 文脈
 

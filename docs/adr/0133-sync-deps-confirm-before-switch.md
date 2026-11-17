@@ -1,6 +1,6 @@
 # ADR 0133: sync-deps の --switch は、差分の全体を見せて本人の確認を取ってから適用する
 
-Status: accepted
+Status: superseded [{"part":"実装しないこと (claude -p に許すツールを絞り直すこと)","by":["docs/adr/0140-sync-deps-narrow-claude-tools.md"],"kind":"supplement"}]
 
 ## 文脈
 

@@ -124,6 +124,36 @@ check "ADR 0133 I7: 生成の前の写しを書き換えると、差分を見せ
   "$code|$(applied)|$(asked)|$([[ $out == *'生成の前の写しが変わりました'* ]] && print y)|$([[ $out == *'+# added'* ]] && print shown || print hidden)" \
   "1|0|no|y|hidden"
 
+
+# ADR 0140: claude に渡す引数。偽の claude は、受けた引数を NUL 区切りで $dot.log.args に書く
+local -a got allowed expected_allowed
+setup
+FAKE_CLAUDE='printf "%s\0" "$@" > "$FAKE_LOG.args"' run_sd
+got=("${(@0)$(<$dot.log.args)}")
+check "ADR 0140 I1: --permission-mode の次は dontAsk" "${got[${got[(i)--permission-mode]}+1]:-}" "dontAsk"
+check "ADR 0140 I1: --setting-sources の次は user" "${got[${got[(i)--setting-sources]}+1]:-}" "user"
+check "ADR 0140 I1: acceptEdits を渡さない" "${got[(Ie)acceptEdits]}" "0"
+# --allowedTools の後、次の -- で始まる引数までが許すツール
+local -i from=${got[(i)--allowedTools]} to
+for (( to = from + 1; to <= $#got; to++ )); do [[ ${got[to]} == --* ]] && break; done
+allowed=("${(@)got[from+1,to-1]}")
+expected_allowed=(
+  "Edit(flake.nix)" "Edit(flake.lock)" "Edit(mise/config.toml)" "Edit(nix/**)"
+  "Bash(nix search nixpkgs *)"
+  "Bash(nix build --no-link .#darwinConfigurations.dione.system)"
+  "Bash(nix flake lock)"
+  "WebFetch(domain:formulae.brew.sh)"
+  "Bash(git diff *)" "Bash(git status *)" "Bash(git add -N nix/*)"
+  "Bash(mise ls *)" "Bash(mise registry *)"
+)
+check "ADR 0140 I2: --allowedTools の値は一覧とちょうど一致する" "${(j:|:)${(o)allowed}}" "${(j:|:)${(o)expected_allowed}}"
+local tool
+for tool in Read Write Glob Grep; do
+  check "ADR 0140 I2: --allowedTools は ${tool} を含まない" "${allowed[(Ie)$tool]}" "0"
+done
+for tool in nix-prefetch-url "nix eval" "nix flake show" "nix store prefetch-file"; do
+  check "ADR 0140 I2: --allowedTools は ${tool} を許さない" "$(local -a h=("${(@M)allowed:#*${tool}*}"); print $#h)" "0"
+done
 print
 (( failures > 0 )) && { print "$failures failed"; exit 1 }
 print "all passed"
