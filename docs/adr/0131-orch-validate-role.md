@@ -1,6 +1,6 @@
 # ADR 0131: orch のすべてのサブコマンドで role の名前を確かめる
 
-Status: accepted-pending
+Status: accepted
 
 ## 文脈
 
