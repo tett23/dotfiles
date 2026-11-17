@@ -267,6 +267,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - 全リポジトリ共通のサブエージェントは `.claude/agents/` に置き、モデルを固定する: `auditor` (Fable。ADR と実装・テストの乖離の調査、セキュリティ監査、指示者が Fable を明示して頼んだ作業)・
   `reader` (Sonnet。外部のリポジトリや長いログを読む、確かめのスクリプト、機械的な実装)・`runner` (Haiku。テストや確かめを動かして数える、検索、CI の確認)。
   既定のモデルは Opus で、使い分けは `.claude/CLAUDE.md` の「モデルの使い分け」に書く ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md))。
+  サブエージェントは答えと根拠だけを返し、メインのエージェントは、判断が要るときと重要な進捗のときだけ指示者に報告する ([ADR 0145](adr/0145-terse-subagent-reports.md))。
 - メンテナーの設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
 - 指示の文 (`.claude/CLAUDE.md`、`codex/AGENTS.md`、スキル、エージェントの定義) は、エージェントに作業を頼んで報告を受ける人を「指示者」、リポジトリの決まりを決めて手作業の確かめや設定を受け持つ人を「メンテナー」と呼び分ける ([ADR 0146](adr/0146-requester-and-maintainer-terms.md))。
   `lua-lsp` は、メモリをリークするので、直るまで無効にしている (`enabledPlugins` で `false`。[ADR 0137](adr/0137-disable-lua-lsp-plugin-for-now.md))。ほかのプラグインは有効にしない。`example-skills` は使わないスキルが多いので外した ([ADR 0116](adr/0116-remove-example-skills-plugin.md))。
