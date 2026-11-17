@@ -1,6 +1,6 @@
 # ADR 0114: Codex の全体の指示 AGENTS.md を CLAUDE.md に沿って作り、dotfiles で管理する
 
-Status: accepted
+Status: superseded [{"part":"実装すること (codex/AGENTS.md に「モデルの使い分け」の節を書かない)","by":["docs/adr/0117-codex-model-roles.md"]},{"part":"実装すること (「Codex には adr-guard の hook が無い」という言いかえ)","by":["docs/adr/0115-codex-adr-guard-hook.md"]},{"part":"実装しないこと (Codex の hook で adr-guard を動かすこと)","by":["docs/adr/0115-codex-adr-guard-hook.md"]},{"part":"実装しないこと (Codex のモデルやサブエージェントの使い分けを書くこと)","by":["docs/adr/0117-codex-model-roles.md"]}]
 
 ## 文脈
 
