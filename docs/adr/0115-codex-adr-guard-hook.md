@@ -1,6 +1,6 @@
 # ADR 0115: Codex の hook で adr-guard を動かし、hooks.json を dotfiles で管理する
 
-Status: accepted
+Status: superseded [{"part":"実装しないこと (Codex の hook で、ほかの検査 (prh など) を動かすこと)","by":["docs/adr/0130-codex-prh-hook.md"]}]
 
 ## 文脈
 
