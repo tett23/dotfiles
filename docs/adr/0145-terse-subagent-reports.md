@@ -1,6 +1,6 @@
 # ADR 0145: サブエージェントの報告と、指示者への報告を削る
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 
