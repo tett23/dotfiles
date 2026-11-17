@@ -1,6 +1,6 @@
 # ADR 0146: 指示の文の「本人」を、指示者とメンテナーに分ける
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 
