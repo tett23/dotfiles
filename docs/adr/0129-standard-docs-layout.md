@@ -1,6 +1,6 @@
 # ADR 0129: docs/ の標準のディレクトリとファイルの構成を決める
 
-Status: accepted
+Status: superseded [{"part":"実装すること (標準の構成: 表のパスの中だけの変更でビルドとテストを省く決まり)","by":["docs/adr/0138-docs-layout-ci-rule-wording.md"]},{"part":"実装すること (標準の構成: 「GitHub actions」の節の改め方)","by":["docs/adr/0138-docs-layout-ci-rule-wording.md"]},{"part":"受けいれ条件 (A1)","by":[],"kind":"note","note":"一字も違わずには両ファイルの節どうしの一致と読み、ADR の文との一致とは読まない"}]
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0138: docs/ の構成の CI の決まりを、今の共通の指示の文に決め直す
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 
