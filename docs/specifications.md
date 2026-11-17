@@ -51,7 +51,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 
 | コマンド          | 内容                                                                                                                     |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `bin/sync-deps`   | `dependencies.md` を Claude (`claude -p`) に読ませ、`flake.nix`・`mise/config.toml`・`nix/pkgs/` を更新させる ([ADR 0013](adr/0013-generate-config-from-dependencies-with-claude.md)) |
+| `bin/sync-deps`   | `dependencies.md` を Claude (`claude -p`) に読ませ、`flake.nix`・`mise/config.toml`・`nix/pkgs/` を更新させる ([ADR 0013](adr/0013-generate-config-from-dependencies-with-claude.md))。生成の対象の外のファイルか生成の前の写しが変わっていれば止める。`--switch` は差分の全体を見せ、端末 (`SYNC_DEPS_TTY`、既定は `/dev/tty`) で `y` か `yes` と答えたときだけ適用する ([ADR 0133](adr/0133-sync-deps-confirm-before-switch.md)) |
 | `bin/update-nix`  | `flake.lock` と `nix/pkgs/sources.json` を最新にして適用する ([ADR 0012](adr/0012-remove-homebrew.md))                                                  |
 | `bin/update-mise` | mise の言語とツールを最新にする。mise 本体は Nix で更新する ([ADR 0012](adr/0012-remove-homebrew.md))                                                   |
 

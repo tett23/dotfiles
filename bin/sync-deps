@@ -6,14 +6,18 @@
 #      flake.nix / mise/config.toml / nix/pkgs/ を更新させる
 #      (手順と名前の対応表は .claude/skills/sync-deps/SKILL.md に従わせる)
 #   2. 一般ユーザーで nix build して、生成された設定を検証する
-#   3. 変更の差分を表示する
-#   4. --switch のときだけ適用する (darwin-rebuild switch と mise install。sudo のパスワードを聞かれる)
+#   3. 生成の対象の外のファイルと、生成の前の写しが変わっていないことを確かめる (変わっていれば止める。docs/adr/0133)
+#   4. 変更の差分の全体を表示する
+#   5. --switch のときだけ、端末で確認を取ってから適用する (darwin-rebuild switch と mise install。docs/adr/0133)
 #
 # バージョンの最新化は bin/update-nix / bin/update-mise で行う。
 #
 # 使い方:
 #   sync-deps                    生成と検証だけ行う
-#   sync-deps --switch           生成・検証のあと適用する
+#   sync-deps --switch           生成・検証のあと、確認を取って適用する
+#
+# 環境変数:
+#   SYNC_DEPS_TTY   確認の答えを読むファイル (既定: /dev/tty)。標準入力からは読まない
 #   sync-deps --model <モデル>    使う Claude のモデルを指定する (既定: Claude Code の既定)
 #
 set -euo pipefail
@@ -107,11 +111,66 @@ snapshot() {
   done
 }
 
-# 生成前の状態と比べて、変更があれば差分を表示する。変更が無ければ 1 を返す
+# hash_list <ディレクトリ>: 標準入力の NUL 区切りのパスについて「ハッシュ<TAB>パス」を並べて出す
+hash_list() {
+  local dir=$1 path
+  while IFS= read -r -d '' path; do
+    path=${path#./}
+    if [[ -L $dir/$path ]]; then
+      printf 'link:%s\t%s\n' "$(readlink "$dir/$path")" "$path"
+    elif [[ -f $dir/$path ]]; then
+      printf '%s\t%s\n' "$(git -C "$DOTFILES" hash-object --no-filters -- "$dir/$path")" "$path"
+    else
+      printf 'missing\t%s\n' "$path"
+    fi
+  done | LC_ALL=C sort
+}
+
+# 作業ツリーのファイル (git が追跡しているものと、除いていない追跡していないもの) の一覧。flake が読みうるファイルを含む
+worktree_list() { git -C "$DOTFILES" ls-files -c -o --exclude-standard -z | hash_list "$DOTFILES"; }
+# 生成の前の写しのファイルの一覧
+snapshot_list() { (cd "$SNAPSHOT" && find . \( -type f -o -type l \) -print0) | hash_list "$SNAPSHOT"; }
+
+in_targets() {
+  local target
+  for target in "${TARGETS[@]}"; do
+    [[ $1 == "$target" || $1 == "$target"/* ]] && return 0
+  done
+  return 1
+}
+
+# 生成の後に、生成の前の写しと、TARGETS の外のファイルが変わっていないことを確かめる。変わっていれば止める (docs/adr/0133)。
+# 比べる元の一覧はこのプロセスの変数にあるので、claude -p は書き換えられない
+check_untouched() {
+  local path changed outside=()
+  [[ $(snapshot_list) == "$SNAPSHOT_LIST" ]] || die "生成の前の写しが変わりました。差分を信用できないので適用しません"
+  # 生成の前と後の一覧で、片方にだけある行のパスを出す
+  changed=$({
+    printf '%s\n' "$WORKTREE_LIST"
+    printf '%s\n' '--after--'
+    worktree_list
+  } | awk -F '\t' '
+    $0 == "--after--" { after = 1; next }
+    !after { before[$0] = $2; next }
+    { if ($0 in before) delete before[$0]; else print $2 }
+    END { for (k in before) print before[k] }
+  ' | LC_ALL=C sort -u)
+  while IFS= read -r path; do
+    [[ -n $path ]] || continue
+    in_targets "$path" || outside+=("$path")
+  done <<<"$changed"
+  if ((${#outside[@]} > 0)); then
+    printf '%s\n' "${outside[@]}" >&2
+    die "生成の対象 (${TARGETS[*]}) の外のファイルが変わりました。適用しません"
+  fi
+}
+
+# 生成前の状態と比べて、変更があれば差分の全体を表示する。変更が無ければ 1 を返す
 show_diff() {
   log "Claude による変更の差分"
   local target changed=1
   for target in "${TARGETS[@]}"; do
+    [[ -e $SNAPSHOT/$target || -e $DOTFILES/$target ]] || continue
     # git diff --no-index は差分があると 1 を返す
     if ! git --no-pager diff --no-index --stat -- "$SNAPSHOT/$target" "$DOTFILES/$target" 2>/dev/null; then
       changed=0
@@ -119,8 +178,25 @@ show_diff() {
   done
   if ((changed)); then
     log "差分はありません"
+    return 1
   fi
-  return "$changed"
+  for target in "${TARGETS[@]}"; do
+    [[ -e $SNAPSHOT/$target || -e $DOTFILES/$target ]] || continue
+    git --no-pager diff --no-index -- "$SNAPSHOT/$target" "$DOTFILES/$target" 2>/dev/null || true
+  done
+  return 0
+}
+
+# 端末から答えを読み、y か yes (大文字と小文字を区別しない) のときだけ 0 を返す。標準入力からは読まない (docs/adr/0133)
+confirm() {
+  local answer=""
+  printf '適用しますか? [y/N] '
+  IFS= read -r answer <"${SYNC_DEPS_TTY:-/dev/tty}" 2>/dev/null || true
+  printf '\n'
+  case $(printf '%s' "$answer" | tr '[:upper:]' '[:lower:]') in
+  y | yes) return 0 ;;
+  *) return 1 ;;
+  esac
 }
 
 switch() {
@@ -156,13 +232,19 @@ main() {
 
   snapshot
   trap 'command rm -r -- "$SNAPSHOT"' EXIT
+  WORKTREE_LIST=$(worktree_list)
+  SNAPSHOT_LIST=$(snapshot_list)
   generate "$model"
   verify
-  if show_diff && ((do_switch)); then
+  check_untouched
+  if ! show_diff; then
+    ((do_switch)) && log "差分が無いので適用しません"
+    return 0
+  fi
+  if ((do_switch)); then
+    confirm || die "適用しませんでした"
     switch
     log "完了しました"
-  elif ((do_switch)); then
-    log "差分が無いので適用しません"
   else
     log "適用するには: sync-deps --switch (または sudo darwin-rebuild switch --flake $DOTFILES#$HOST)"
   fi
