@@ -14,3 +14,4 @@
 ## 手で確かめる項目
 
 - **Codex の prh のフック ([ADR 0130](adr/0130-codex-prh-hook.md) A3)**（2026-11-20 9:40 より後に確かめる）：Codex に辞書の表記 (`窓` など) を含む Markdown を書かせ、hook の出力がモデルに渡ることを本人が確かめる。Codex の利用の上限が戻るのを待つためである。確かめたら、[ADR 0130](adr/0130-codex-prh-hook.md) を `accepted` にする。
+- **監査の前後の確かめの記録 ([ADR 0143](adr/0143-auditor-read-only-checks.md) A2)**（次の監査で確かめる）：次に `auditor` に監査を任せたときに、記録に、前後で作業ツリーが変わったかの一行があることを確かめる。確かめたら、[ADR 0143](adr/0143-auditor-read-only-checks.md) を `accepted` にする。
