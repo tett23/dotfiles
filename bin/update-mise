@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# update-mise - mise で管理している言語とツールを最新化し、ロックファイルを更新する (docs/adr/0012、docs/adr/0134)
+# update-mise - mise で管理している言語とツールを最新化し、ロックファイルと npm の lock を更新する (docs/adr/0012、docs/adr/0134、docs/adr/0136)
 #
 # mise 本体は Nix で入れているので、bin/update-nix で更新する (mise self-update は使わない)。
 #
@@ -47,8 +47,9 @@ main() {
   log "現在のバージョン"
   mise ls --current
 
-  log "mise のロックファイルの変わった行数 (変わっていればコミットする)"
-  git -C "${DOTFILES:-$HOME/dotfiles}" --no-pager diff --stat -- mise/mise.lock
+  # npm の lock は版が上がると新しいディレクトリにできる (追跡していないファイル) ので、git diff ではなく git status で出す (docs/adr/0136)
+  log "mise のロックファイルと npm の lock の変わったファイル (変わっていれば一緒にコミットする)"
+  git -C "${DOTFILES:-$HOME/dotfiles}" status --short -- mise/mise.lock mise/.mise
 }
 
 main "$@"

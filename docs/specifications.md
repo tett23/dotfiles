@@ -48,8 +48,11 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
   Java も mise で入れる ([ADR 0103](adr/0103-java-and-alloy.md))。
 - mise は、`mise/mise.lock` (`macos-arm64` の分) に、入れたツールの版、ダウンロードの URL、`sha256` のハッシュを書き、入れるときにハッシュを確かめる。版は `latest` のままなので、ロックファイルは版を止めない。
   守れるのは、`github:` のツールの、すでにロックファイルにある版のファイルを後から差し替えられることである。
-  新しい版 (初めて入れたときのハッシュを信じる)、npm のツール (`prh`、`typescript`)、ghcup で入れる ghc と cabal は守れない。`go`、`node` などの言語のハッシュを確かめるかは、確かめていない。
-  `mise install` と `bin/update-mise` はロックファイルを書き換えるので、変わったらコミットする ([ADR 0134](adr/0134-mise-lockfile-checksums.md))。
+  npm のツール (`prh`、`typescript`) は、`mise/.mise/locks/<ツール>/<版>/` の `aube-lock.yaml` と `package.json` (npm の lock) の `integrity` で確かめ、合わなければ入れない。
+  守れるのは、すでに npm の lock にある版のパッケージを、後から差し替えられることであり、依存のパッケージもそれぞれの `integrity` で確かめる。
+  `mise install` は、`mise.lock` の `aube` の `digest` が食い違っても止まらず、書き直す。npm の lock が無いと、npm のツールの `mise install` は失敗する。
+  新しい版 (初めて入れたときのハッシュを信じる) と、ghcup で入れる ghc と cabal は守れない。`go`、`node` などの言語のハッシュを確かめるかは、確かめていない。
+  `mise install` と `bin/update-mise` はロックファイルと npm の lock を書き換えるので、変わったら `mise/mise.lock` と `mise/.mise/locks/` を一緒にコミットする ([ADR 0134](adr/0134-mise-lockfile-checksums.md)、[ADR 0136](adr/0136-mise-npm-lock-sidecars.md))。
 
 ### コマンド
 
@@ -57,7 +60,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `bin/sync-deps`   | `dependencies.md` を Claude (`claude -p`) に読ませ、`flake.nix`・`mise/config.toml`・`nix/pkgs/` を更新させる ([ADR 0013](adr/0013-generate-config-from-dependencies-with-claude.md))。生成の対象の外のファイルか生成の前の写しが変わっていれば止める。`--switch` は差分の全体を見せ、端末 (`SYNC_DEPS_TTY`、既定は `/dev/tty`) で `y` か `yes` と答えたときだけ適用する ([ADR 0133](adr/0133-sync-deps-confirm-before-switch.md)) |
 | `bin/update-nix`  | `flake.lock` と `nix/pkgs/sources.json` を最新にして適用する ([ADR 0012](adr/0012-remove-homebrew.md))                                                  |
-| `bin/update-mise` | mise の言語とツールを最新にし、`mise lock` でロックファイルを更新して、その変わった行数を出す。mise 本体は Nix で更新する ([ADR 0012](adr/0012-remove-homebrew.md)、[ADR 0134](adr/0134-mise-lockfile-checksums.md))                                                   |
+| `bin/update-mise` | mise の言語とツールを最新にし、`mise lock` でロックファイルを更新して、`mise/mise.lock` と `mise/.mise` の変わったファイルを出す。mise 本体は Nix で更新する ([ADR 0012](adr/0012-remove-homebrew.md)、[ADR 0134](adr/0134-mise-lockfile-checksums.md)、[ADR 0136](adr/0136-mise-npm-lock-sidecars.md))                                                   |
 
 ## 設定ファイルの配置
 

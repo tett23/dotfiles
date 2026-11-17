@@ -1,6 +1,6 @@
 # ADR 0134: mise のロックファイルで、入れたツールのハッシュを確かめる
 
-Status: accepted
+Status: superseded [{"part":"調査した事項 (npm のツールはロックファイルで守れないという結論)","by":["docs/adr/0136-mise-npm-lock-sidecars.md"]},{"part":"実装すること (mise/mise.lock をコミットする)","by":["docs/adr/0136-mise-npm-lock-sidecars.md"],"kind":"supplement"},{"part":"実装すること (bin/update-mise の git diff --stat)","by":["docs/adr/0136-mise-npm-lock-sidecars.md"]},{"part":"実装すること (docs/specifications.md の守れる範囲と守れない範囲)","by":["docs/adr/0136-mise-npm-lock-sidecars.md"]},{"part":"実装すること (.claude/skills/sync-deps/SKILL.md の mise の項)","by":["docs/adr/0136-mise-npm-lock-sidecars.md"],"kind":"supplement"},{"part":"実装しないこと (npm のツールを、ほかの方法で守ること)","by":[],"kind":"note","note":"ほかの方法は要らず、mise の npm の lock で守れた"},{"part":"受けいれ条件 (A3)","by":["docs/adr/0136-mise-npm-lock-sidecars.md"]},{"part":"トレードオフ (npm のツールは守れない)","by":["docs/adr/0136-mise-npm-lock-sidecars.md"]}]
 
 ## 文脈
 
