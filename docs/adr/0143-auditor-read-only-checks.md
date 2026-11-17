@@ -1,6 +1,6 @@
 # ADR 0143: auditor がファイルを変えなかったことを、任せる側が監査の前後で確かめる
 
-Status: accepted-pending
+Status: accepted
 
 ## 文脈
 

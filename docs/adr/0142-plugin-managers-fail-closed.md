@@ -1,6 +1,6 @@
 # ADR 0142: zinit と lazy.nvim の本体を、固定のコミットに切り替えられないときは読み込まない
 
-Status: accepted-pending
+Status: accepted
 
 ## 文脈
 
