@@ -256,6 +256,21 @@ jq -nc --arg t "$(title o)" '[range(1;1001) | {number:., title:("other " + tostr
 run_bc
 check "ADR 0128 I2: ラベル付きの開いた issue がちょうど 1000 件でも、いちばん古い同じ題の issue が見つかる" "$(issues "$(title o)")|$(comments 1)" "1|1"
 
+# 2026-11-16 の ADR 違反の監査の指摘 2、3、7
+setup "$(row lat '<=' 100 120)"; put_issue 1 "$(title lat)" "$(mark 130 violation)"
+print -r -- "[{\"body\":\"<!-- budget-check: value=9x9 state=violation -->\"}]" > $st/comments/1.json; run_bc
+check "ADR 0128 I10: 小数点の位置に数字でない文字がある印 (9x9) は読み飛ばす (130 より 120 はよいのでコメントしない)" "$(comments 1)|$([[ $err == *warning* ]] && print warn || print quiet)" "1|quiet"
+setup "$(row lat '<=' 100 120)"; put_issue 1 "$(title lat)" "印なし"
+print -r -- '[{"body":"引用: budget-check: value=500 state=violation と書いた"}]' > $st/comments/1.json; run_bc
+check "ADR 0128 I10: <!-- --> の枠の無い印は読み飛ばす (前の記録が無いので違反のコメントを足す)" "$(comments 1)" "2"
+setup "| a | ms | <= | 1 | \`echo 2\` | |" "$(row b '<=' 100 120)"; run_bc
+check "ADR 0128 I6, I8: 末尾の ADR のセルが空の行も予算として確かめ、ほかの予算も続ける" "$code|$(issues "$(title a)")|$(issues "$(title b)")" "0|1|1"
+setup "| a | ms | <= | 1 | \`echo 2\` | |"; measure_to_simple() { run_bc --measure-to $st/res }; measure_to_simple
+check "ADR 0132 I2: 末尾の ADR のセルが空の行も --measure-to で R の行にする" "$code|$(grep -c "^R"$'\037'"a"$'\037' $st/res)" "0|1"
+setup "$(row lat '<=' 100 120)"; put_issue 1 "$(title lat)" "$(mark 110 violation)"
+print -r -- "[{\"body\":\"$(mark 90 ok)\"}]" > $st/comments/1.json; run_bc
+check "ADR 0128 I3: 前の記録が state=ok でも、違反のコメントに前の値との差を書く" "$(jq -r '.[1].body' $st/comments/1.json | grep -c -F -- '- 前の値: 90 (差: +30)')" "1"
+
 # --- ADR 0132: 計測と書き込みを分ける ---
 local results
 # --measure-to で $results に結果を書き、--report-from をリポジトリの外で動かす
