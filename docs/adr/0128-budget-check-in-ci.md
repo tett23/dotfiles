@@ -1,6 +1,6 @@
 # ADR 0128: CI で予算違反を見つけ、予算ごとに一つの issue にまとめる
 
-Status: accepted
+Status: superseded [{"part":"実装すること (スクリプト bin/budget-check)","by":["docs/adr/0132-budget-check-separate-measure-and-report.md"],"kind":"supplement"},{"part":"実装すること (そのほか: CI のジョブの例)","by":["docs/adr/0132-budget-check-separate-measure-and-report.md"],"kind":"replace"}]
 
 ## 文脈
 

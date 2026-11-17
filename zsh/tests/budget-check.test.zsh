@@ -26,6 +26,8 @@ cat > $work/bin/gh <<'EOF'
 emulate -L zsh
 st=$FAKE_GH_STATE
 print -r -- "$*" >> $st/calls.log
+local a; for a in "$@"; do print -r -- ${(q)a}; done >> $st/argv.log
+print -r -- "${1:-} ${2:-}" >> $st/sub.log
 if [[ -n ${FAKE_GH_FAIL:-} && "$*" == *${FAKE_GH_FAIL}* ]]; then print -u2 "fake gh: fail"; exit 1; fi
 case "$1 $2" in
   ("label create") print -r -- "$3" >> $st/labels; exit 0 ;;
@@ -98,6 +100,8 @@ setup() {
   mkdir -p $st/comments
   print '[]' > $st/issues.json
   : > $st/calls.log
+  : > $st/argv.log
+  : > $st/sub.log
   git -C $repo init -q
   if (( $# )); then
     mkdir -p $repo/docs
@@ -251,6 +255,125 @@ setup "$(row o '<=' 100 120)"
 jq -nc --arg t "$(title o)" '[range(1;1001) | {number:., title:("other " + tostring), body:"", labels:["budget-violation"], state:"open"}] | .[0].title = $t' > $st/issues.json
 run_bc
 check "ADR 0128 I2: ラベル付きの開いた issue がちょうど 1000 件でも、いちばん古い同じ題の issue が見つかる" "$(issues "$(title o)")|$(comments 1)" "1|1"
+
+# --- ADR 0132: 計測と書き込みを分ける ---
+local results
+# --measure-to で $results に結果を書き、--report-from をリポジトリの外で動かす
+measure_to() { results=$st/out/results; run_bc --measure-to $results "$@" }
+report_from() {
+  local f=$1; shift
+  local outside2=$(mktemp -d $work/rep.XXXXXX)
+  out=$(cd $outside2 && PATH=$work/bin:$PATH FAKE_GH_STATE=$st FAKE_GH_FAIL=${FAKE_GH_FAIL:-} GITHUB_SHA=abc1234 GITHUB_SERVER_URL=https://example.invalid \
+    GITHUB_REPOSITORY=o/r GITHUB_RUN_ID=1 sh $bc --report-from $f "$@" 2>$st/err); code=$?
+  err=$(<$st/err)
+}
+local US=$'\037'
+
+# I1: 計測のコマンドにトークンが見えない
+for var in GH_TOKEN GITHUB_TOKEN GH_ENTERPRISE_TOKEN GITHUB_ENTERPRISE_TOKEN; do
+  setup "| t | 個 | <= | 0 | \`[ -z \"\${$var+x}\" ] && echo 0 \\|\\| echo 1\` | ADR 0132 I1 |"
+  export $var=secret
+  run_bc
+  unset $var
+  check "ADR 0132 I1: $var を設定しても、一つのプロセスの計測のコマンドに見えない" "$code|$(issues "$(title t)")" "0|0"
+  export $var=secret
+  measure_to
+  unset $var
+  check "ADR 0132 I1: $var を設定しても、--measure-to の計測のコマンドに見えない" "$(grep -c "^R${US}t${US}.*${US}0\$" $results)" "1"
+done
+
+# I2: --measure-to は gh を呼ばない
+setup "$(row a '<=' 100 120)"; measure_to
+check "ADR 0132 I2: --measure-to で違反の予算は R の行を書き、gh を呼ばない" \
+  "$code|$(grep -c "^R${US}a${US}ms${US}<=${US}100${US}printf 120${US}ADR 0001 A1${US}120\$" $results)|$(wc -l < $st/calls.log | tr -d ' ')" "0|1|0"
+check "ADR 0132 I2: 結果のファイルの 1 行目に一覧のパスとコミットを書く" "$(head -1 $results)" "budget-check-results 1${US}docs/budgets.md${US}abc1234"
+check "ADR 0132 I2: --measure-to は結果のファイルの親のディレクトリを作る" "$([[ -d $st/out ]] && print y)" "y"
+setup "| b | ms | <= | 100 | \`false\` | ADR 0001 A1 |"; measure_to
+check "ADR 0132 I2: --measure-to で計測のコマンドが失敗すると E の行を書き、終了コード 0" \
+  "$code|$(grep -c "^E${US}b${US}" $results)|$(wc -l < $st/calls.log | tr -d ' ')" "0|1|0"
+
+# I7: --measure-to の一覧の読み方
+setup; mkdir -p $repo/docs; print '# 表なし' > $repo/docs/budgets.md; measure_to
+check "ADR 0132 I2, I7: 予算の表が無ければ結果のファイルを書かず、終了コード 1" "$code|$([[ -e $results ]] && print y || print n)|$(wc -l < $st/calls.log | tr -d ' ')" "1|n|0"
+setup; measure_to
+check "ADR 0132 I7: パスを省き docs/budgets.md が無ければ 1 行目だけを書き、終了コード 0" "$code|$(wc -l < $results | tr -d ' ')" "0|1"
+setup -; measure_to
+check "ADR 0132 I7: 表に行が無ければ 1 行目だけを書き、終了コード 0" "$code|$(wc -l < $results | tr -d ' ')" "0|1"
+
+# I4: 1 行目だけの結果
+report_from $results
+check "ADR 0132 I4: 1 行目だけの結果を --report-from に渡すと gh を呼ばずに 0" "$code|$(wc -l < $st/calls.log | tr -d ' ')" "0|0"
+
+# I4: リポジトリの外の --report-from
+setup "$(row c '<=' 100 120)"; measure_to; report_from $results
+check "ADR 0132 I4: --report-from はリポジトリの外でも動き、issue を作る" "$code|$(issues "$(title c)")" "0|1"
+
+# I3: --report-from は計測のコマンドを動かさない
+setup "| d | ms | <= | 100 | \`touch $work/ran; printf 120\` | ADR 0001 A1 |"; measure_to; command rm -f $work/ran; report_from $results
+check "ADR 0132 I3: --report-from は計測のコマンドを動かさない" "$([[ -e $work/ran ]] && print ran || print no)|$(issues "$(title d)")" "no|1"
+
+# I4: 分けて動かす場合と一つで動かす場合が同じ
+local -a cases=(
+  "$(row v '<=' 100 120)"
+  "$(row s '<=' 100 90)"
+  "| e | ms | <= | 100 | \`false\` | ADR 0001 A1 |"
+)
+local base=$work/same; command rm -rf $base; mkdir -p $base
+for how in one split; do
+  setup "${cases[@]}"
+  put_issue 1 "$(title s)" "$(mark 110 violation)"
+  if [[ $how == one ]]; then run_bc --fail-on-violation; else measure_to; report_from $results --fail-on-violation; fi
+  print -r -- "$code" > $base/$how.code
+  grep -v -e '^issue list' -e '^api ' $st/calls.log > $base/$how.calls
+  cp $st/issues.json $base/$how.issues; cat /dev/null $st/comments/*.json(N) > $base/$how.comments
+done
+check "ADR 0132 I4: 違反、満たす、エラーの三つで、書き込みの呼び出しが同じ" "$(diff $base/one.calls $base/split.calls >/dev/null && print same)" "same"
+check "ADR 0132 I4: 違反、満たす、エラーの三つで、issue とコメントが同じ" \
+  "$(diff $base/one.issues $base/split.issues >/dev/null && diff $base/one.comments $base/split.comments >/dev/null && print same)" "same"
+check "ADR 0132 I4: 違反、満たす、エラーの三つで、終了コードが同じ (1)" "$(<$base/one.code)|$(<$base/split.code)" "1|1"
+setup "$(row w '<=' 100 120)"; measure_to; report_from $results --fail-on-violation
+check "ADR 0132 I4: R の行だけで違反があり --fail-on-violation なら終了コード 2" "$code" "2"
+
+# I5: 1 行目の形
+setup; : > $st/empty; report_from $st/empty
+check "ADR 0132 I5: 空のファイルは gh を呼ばずに 1" "$code|$(wc -l < $st/calls.log | tr -d ' ')" "1|0"
+print -r -- "budget-check-results 2${US}docs/budgets.md${US}abc" > $st/v2; report_from $st/v2
+check "ADR 0132 I5: 1 行目が budget-check-results 2 なら gh を呼ばずに 1" "$code|$(wc -l < $st/calls.log | tr -d ' ')" "1|0"
+print -r -- "budget-check-results 1" > $st/nopath; report_from $st/nopath
+check "ADR 0132 I5: 1 行目にパスが無ければ gh を呼ばずに 1" "$code|$(wc -l < $st/calls.log | tr -d ' ')" "1|0"
+
+# I6: R の行を確かめ直す
+local hdr="budget-check-results 1${US}docs/budgets.md${US}abc"
+setup; print -rl -- "$hdr" "R${US}x${US}ms${US}<=${US}100${US}printf 1${US}ADR 0001 A1${US}abc" > $st/r; report_from $st/r
+check "ADR 0132 I6: R の行の計測の値が abc ならエラーで、issue を作らない" "$code|$(issues "$(title x)")" "1|0"
+setup; print -rl -- "$hdr" "R${US}y${US}ms${US}<${US}100${US}printf 1${US}ADR 0001 A1${US}120" > $st/r; report_from $st/r
+check "ADR 0132 I6: R の行の比較が < ならエラーで、issue を作らない" "$code|$(issues "$(title y)")" "1|0"
+setup; print -rl -- "$hdr" "R${US}z${US}ms${US}<=${US}1e3${US}printf 1${US}ADR 0001 A1${US}120" > $st/r
+put_issue 1 "$(title z)" "$(mark 110 violation)"; report_from $st/r
+check "ADR 0132 I6: R の行の値が 1e3 ならエラーで、コメントを足さない" "$code|$(comments 1)" "1|0"
+
+# I8: 一緒に渡せないオプション
+setup "$(row f '<=' 100 120)"
+run_bc --measure-to $st/x --report-from $st/x
+check "ADR 0132 I8: --measure-to と --report-from を一緒に渡すと何も動かさず 1" "$code|$(wc -l < $st/calls.log | tr -d ' ')|$([[ -e $st/x ]] && print y || print n)" "1|0|n"
+run_bc --measure-to $st/x --dry-run
+check "ADR 0132: --measure-to に --dry-run を添えると 1" "$code" "1"
+run_bc --report-from $st/x docs/budgets.md
+check "ADR 0132: --report-from に予算の一覧のパスを添えると 1" "$code" "1"
+
+# ADR 0135 I1 (ADR 0132 I9 を置き換えた): --report-from が呼ぶ gh
+setup "| ![x](./a.png) --attach ./a.png | ms | <= | 100 | \`printf 120 # --attach ./a.png\` | ADR 0001 A1 |" "$(row g '<=' 100 130)"
+put_issue 1 "$(title g)" "$(mark 110 violation)"
+print png > $repo/a.png
+measure_to; (cd $repo && report_from $results)
+check "ADR 0135 I1: 違反の issue とコメントを書いた" "$(issues '予算違反: ![x](./a.png) --attach ./a.png (docs/budgets.md)')|$(comments 1)" "1|1"
+check "ADR 0135 I1: gh の呼び出しは issue list、label create、issue create、issue comment、api だけ" \
+  "$(grep -v -c -E '^(issue list|label create|issue create|issue comment|api)( |$)' $st/sub.log)|$(wc -l < $st/sub.log | tr -d ' ')" "0|6"
+check "ADR 0135 I1: api の呼び出しは読み出しだけ" "$(grep -E '^api ' $st/calls.log | grep -c -E -- ' (-X|--method|-f|-F|--field|--raw-field|--input)( |$)')" "0"
+check "ADR 0135 I1: label create の呼び出しの引数の並びが固定の並びとちょうど一致する" \
+  "$(grep -E '^label create' $st/calls.log | sort -u)" "label create budget-violation --force --description 予算違反 (bin/budget-check)"
+check "ADR 0135 I1: どの引数も --attach ではない" \
+  "$(grep -c -x -e '--attach' -e '--attach=.*' $st/argv.log)|$(grep -c -x -- 'artifact' $st/argv.log)" "0|0"
 
 print
 (( failures > 0 )) && { print "$failures failed"; exit 1 }
