@@ -279,6 +279,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   標準の構成の `docs/` の中だけの変更では CI のビルドとテストを省き、`docs/budgets.md` の変更では予算の確かめを省かない ([ADR 0129](adr/0129-standard-docs-layout.md))。
 - 監査は、セキュリティの `security-audit` と、ADR 違反と予算違反の `conformance-audit` のスキルで、`auditor` に任せて行う。指摘は変えずに、`docs/audits/` があるか本人が求めたときは記録し、ほかはチャットで返す。
   予算は ADR の受けいれ条件と `docs/budgets.md` の両方に書き、食い違うときは ADR を正とする ([ADR 0126](adr/0126-audit-skill.md))。
+  `auditor` の「変えない」は設定で強制できないので、任せる側が、監査の前後で `git status`、`HEAD`、stash、差分と追跡していないファイルのハッシュを比べ、変わっていれば本人に知らせる。Codex では `codex --sandbox read-only` のセッションから任せる ([ADR 0143](adr/0143-auditor-read-only-checks.md))。
 - `bin/budget-check` は、予算の一覧の予算を CI で計測して確かめ、違反を予算ごとに一つの issue (ラベル `budget-violation`) にまとめる。
   同じ予算の issue には、前の記録が無いとき、満たした後にまた違反したとき、前の違反より悪いときだけコメントを足し、満たしたときは一度だけ知らせる (issue は閉じない)。
   使い方は `bin/budget-check [--dry-run] [--fail-on-violation] [予算の一覧のパス]` で、終了コードは、一覧が読めないかエラーの予算があれば 1、エラーが無く違反があり `--fail-on-violation` なら 2、ほかは 0。
