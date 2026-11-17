@@ -1,6 +1,6 @@
 # ADR 0144: 古いコミットのメールアドレスのために履歴を書き換えない
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 
