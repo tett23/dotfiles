@@ -3,33 +3,33 @@
 lockfile_version = 3
 
 [[tools.biome]]
-version = "2.5.15"
+version = "2.6.8"
 backend = "aqua:biomejs/biome"
 specifiers = ["latest"]
 
 [tools.biome."platforms.macos-arm64"]
-checksum = "sha256:3636796d8c78bfcfe0d45946dc93e21e12d27a49eba7401e18af1ea854d25503"
-url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.5.15/biome-darwin-arm64"
-url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/601227628"
+checksum = "sha256:16c2a522889a679768bafe463523aded030c51f17004cf5c579750422443fcc4"
+url = "https://github.com/biomejs/biome/releases/download/%40biomejs/biome%402.6.8/biome-darwin-arm64"
+url_api = "https://api.github.com/repos/biomejs/biome/releases/assets/751278580"
 provenance = "github-attestations"
 
 [[tools.bun]]
-version = "1.4.3"
+version = "1.4.4"
 backend = "core:bun"
 specifiers = ["latest"]
 
 [tools.bun."platforms.macos-arm64"]
-checksum = "sha256:80afd4c069b46a6fa8f3ec520bebc750a7843e4a8d5b9583d29ad436c00a3403"
-url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.3/bun-darwin-aarch64.zip"
+checksum = "sha256:c240d7f0ccb90c263a849fcdb09b7ee62630d921348ed6aafda86b9d577bc510"
+url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-darwin-aarch64.zip"
 
 [[tools.deno]]
-version = "2.9.7"
+version = "2.9.8"
 backend = "core:deno"
 specifiers = ["latest"]
 
 [tools.deno."platforms.macos-arm64"]
-checksum = "sha256:5cd46d6268f6f78f5d88bdc7159d20bd44cdaa4b3303474839f87ec6fe7ae25c"
-url = "https://dl.deno.land/release/v2.9.7/deno-aarch64-apple-darwin.zip"
+checksum = "sha256:5882caa6c9b7ab7adb06f23ec1894ac5bec0b1a5df1195157f75829a0d3cb651"
+url = "https://dl.deno.land/release/v2.9.8/deno-aarch64-apple-darwin.zip"
 
 [[tools.ghcup]]
 version = "0.2.6.2"
@@ -41,14 +41,14 @@ checksum = "sha256:4e521e008fe0813db6db4b91cfeebd0c44c80c68afb458ea32a1c94cf5c7c
 url = "https://downloads.haskell.org/~ghcup/0.2.6.2/aarch64-apple-darwin-ghcup-0.2.6.2"
 
 [[tools."github:bootandy/dust"]]
-version = "1.2.6"
+version = "1.2.7"
 backend = "github:bootandy/dust"
 specifiers = ["latest"]
 
 [tools."github:bootandy/dust"."platforms.macos-arm64"]
-checksum = "sha256:5c37ee0d353165c73aedd6b21b9133182221efe08f9a5e76c082d9d6d5a0935d"
-url = "https://github.com/bootandy/dust/releases/download/v1.2.6/dust-v1.2.6-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/bootandy/dust/releases/assets/568852617"
+checksum = "sha256:38e1b3b4e5e6a5cdb044b5fdb32ea45f18dc78276711796214806f20f7705a99"
+url = "https://github.com/bootandy/dust/releases/download/v1.2.7/dust-v1.2.7-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/bootandy/dust/releases/assets/699455834"
 
 [[tools."github:tett23/adr-guard"]]
 version = "0.13.1"
@@ -61,43 +61,43 @@ url = "https://github.com/tett23/adr-guard/releases/download/v0.13.1/adr-guard-v
 url_api = "https://api.github.com/repos/tett23/adr-guard/releases/assets/752368370"
 
 [[tools."github:tett23/peg-hs"]]
-version = "0.1.0-rc5"
+version = "0.1.0-rc6"
 backend = "github:tett23/peg-hs"
 specifiers = ["latest"]
 
 [tools."github:tett23/peg-hs"."platforms.macos-arm64"]
-checksum = "sha256:51b2d929b3e397d89478e18d3138287dd49d77d473e20e73800f80761b192535"
-url = "https://github.com/tett23/peg-hs/releases/download/v0.1.0-rc5/peg-hs-0.1.0-rc5-aarch64-macos.tar.gz"
-url_api = "https://api.github.com/repos/tett23/peg-hs/releases/assets/719792731"
+checksum = "sha256:b283b460e1cfdad20c41588ddb62dc06278fbf669e0fcc6db29392f6a3bcbba7"
+url = "https://github.com/tett23/peg-hs/releases/download/v0.1.0-rc6/peg-hs-0.1.0-rc6-aarch64-macos.tar.gz"
+url_api = "https://api.github.com/repos/tett23/peg-hs/releases/assets/721839097"
 
 [[tools."github:tett23/send-to-kindle"]]
-version = "0.3.0"
+version = "0.3.1"
 backend = "github:tett23/send-to-kindle"
 specifiers = ["latest"]
 
 [tools."github:tett23/send-to-kindle"."platforms.macos-arm64"]
-checksum = "sha256:a755e68b5efb8d988d94ba92f7320d0b9680e9389b64dc390bcf3ed24bd1cbc2"
-url = "https://github.com/tett23/send-to-kindle/releases/download/v0.3.0/send-to-kindle-v0.3.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/tett23/send-to-kindle/releases/assets/629944398"
+checksum = "sha256:5e634494ffce34e3dc03dd84982de26f72c2dc80f8abffd58d7508d0ae74b694"
+url = "https://github.com/tett23/send-to-kindle/releases/download/v0.3.1/send-to-kindle-v0.3.1-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/tett23/send-to-kindle/releases/assets/635507915"
 
 [[tools."github:tett23/shorten-path"]]
-version = "1.0.0"
+version = "1.1.0"
 backend = "github:tett23/shorten-path"
 specifiers = ["latest"]
 
 [tools."github:tett23/shorten-path"."platforms.macos-arm64"]
-checksum = "sha256:79bf3156171cd0264910a0a83b05ecdba5fa9849365ff13afa87056f676aad3d"
-url = "https://github.com/tett23/shorten-path/releases/download/v1.0.0/shorten-path-1.0.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/tett23/shorten-path/releases/assets/629733485"
+checksum = "sha256:1858c4688bc0a752dbf97b8dedbf867935334b12fd42d9f69665696e5ffde208"
+url = "https://github.com/tett23/shorten-path/releases/download/v1.1.0/shorten-path-1.1.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/tett23/shorten-path/releases/assets/634845545"
 
 [[tools.go]]
-version = "1.27.2"
+version = "1.27.4"
 backend = "core:go"
 specifiers = ["latest"]
 
 [tools.go."platforms.macos-arm64"]
-checksum = "sha256:76812b213b1b2302c978d28fa52fa92d541704b9e7d9d5db8002c50e4018c4c5"
-url = "https://dl.google.com/go/go1.27.2.darwin-arm64.tar.gz"
+checksum = "sha256:91a44a2b8a716600ad94a4f143e156116620db8828086a6e3602291be9bd0bb4"
+url = "https://dl.google.com/go/go1.27.4.darwin-arm64.tar.gz"
 
 [[tools.java]]
 version = "27.0.1+1"
@@ -120,17 +120,17 @@ specifiers = ["latest"]
 url = "https://www.lua.org/ftp/lua-5.5.1.tar.gz"
 
 [[tools.node]]
-version = "26.11.1"
+version = "26.13.1"
 backend = "core:node"
 specifiers = ["latest"]
 
 [tools.node."platforms.macos-arm64"]
-checksum = "sha256:d916511b55965e91be7a88e17f88d895b6793ceaba3e6c9b194aefe51c2c65ac"
-url = "https://nodejs.org/dist/v26.11.1/node-v26.11.1-darwin-arm64.tar.gz"
+checksum = "sha256:aec2514ea1ceb2ba52455e9ec65986f6749a06dd759e5db2a72e6889668c9735"
+url = "https://nodejs.org/dist/v26.13.1/node-v26.13.1-darwin-arm64.tar.gz"
 
 [[tools."npm:prh"]]
-version = "6.1.0"
-aube = { path = ".mise/locks/npm-prh/6.1.0", digest = "sha256:f2165de67ccba1efa500149fcda61fee8230cb2ece2e57bb09c02c33251266da" }
+version = "7.0.0"
+aube = { path = ".mise/locks/npm-prh/7.0.0", digest = "sha256:1d525df4856a41cc53ae333c8a04a092a70c0f6a11d474a244973d6a359ca612" }
 backend = "npm:prh"
 specifiers = ["latest"]
 
@@ -141,28 +141,28 @@ backend = "npm:typescript"
 specifiers = ["latest"]
 
 [[tools.pnpm]]
-version = "12.11.2"
+version = "12.21.0"
 backend = "aqua:pnpm/pnpm"
 specifiers = ["latest"]
 
 [tools.pnpm."platforms.macos-arm64"]
-checksum = "sha256:2f4701dbd4a7b81827789e94225272355fcc17c4eb9f5add08ed26f943003b67"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.11.2/pnpm-darwin-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/625613178"
+checksum = "sha256:5c4d73018e00dd602531ce714625594fb693cbe110e6719df2b043b0ae62ab1a"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.21.0/pnpm-darwin-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/744357270"
 provenance = "github-attestations"
 
 [[tools.python]]
-version = "3.15.0"
+version = "3.15.2"
 backend = "core:python"
 specifiers = ["latest"]
 
 [tools.python."platforms.macos-arm64"]
-checksum = "sha256:80af02b62e3675f653e79fd9560f90f7ab8ced848cd4a5a81ee7e3d6c8dc2a10"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20261020/cpython-3.15.0+20261020-aarch64-apple-darwin-install_only_stripped.tar.gz"
+checksum = "sha256:7e58607647b5b4832092a339ff1c55eeeccee128221232509b8fc8d27957065e"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20261110/cpython-3.15.2+20261110-aarch64-apple-darwin-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [[tools.ruby]]
-version = "4.0.7"
+version = "4.0.9"
 backend = "core:ruby"
 specifiers = ["latest"]
 
@@ -173,12 +173,12 @@ ruby_build_repo = "https://github.com/rbenv/ruby-build.git"
 ruby_install = "false"
 
 [tools.ruby."platforms.macos-arm64"]
-checksum = "sha256:6ad0acc5b0c437a2514679ff9a0f925e8b66ad4e96357e9ae2764b622f5d88d4"
-url = "https://github.com/jdx/ruby/releases/download/4.0.7-2/ruby-4.0.7.macos.tar.gz"
+checksum = "sha256:6eca5d2aaf6bb6c805daa31b4139a3c974526f41dae990ab0cef0ee3db8ea5d1"
+url = "https://github.com/jdx/ruby/releases/download/4.0.9-1/ruby-4.0.9.macos.tar.gz"
 provenance = "github-attestations"
 
 [[tools.rust]]
-version = "1.99.0"
+version = "1.100.0"
 backend = "core:rust"
 specifiers = ["latest"]
 

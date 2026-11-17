@@ -1,6 +1,6 @@
 # ADR 0134: mise のロックファイルで、入れたツールのハッシュを確かめる
 
-Status: accepted-pending
+Status: accepted
 
 ## 文脈
 
