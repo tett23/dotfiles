@@ -44,7 +44,7 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 生成の対象 (`flake.nix`、`flake.lock`、`mise/config.toml`、`nix/`) の外のファイルか、生成の前の写しが変わっていれば、適用せずに止まる。
 `--switch` は差分の全体を見せ、端末で `適用しますか? [y/N]` に `y` か `yes` と答えたときだけ適用する。答えは標準入力からは読まないので、端末の前にいないときは `--switch` を付けずに動かし、差分を読んでから手で適用する (docs/adr/0133)。
 `claude -p` は `--permission-mode dontAsk` と `--setting-sources user` で動き、書き換えられるのは `flake.nix`、`flake.lock`、`mise/config.toml`、`nix/` だけである。
-使えるコマンドは、名前の検索 (`nix search nixpkgs`)、ビルド、`nix flake lock`、git と mise の読み取りと、formulae.brew.sh の WebFetch に絞る。
+使えるコマンドは、名前の検索 (`nix search nixpkgs`)、ビルド、`nix flake lock`、git と mise の読み取り、`git add -N nix/…` と、formulae.brew.sh の WebFetch に絞る。
 新しい自前パッケージの `sha256` は Homebrew の cask の JSON から取り、cask の無いものは足さずに報告に書かせる (docs/adr/0140)。
 
 ## 手順

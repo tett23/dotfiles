@@ -156,7 +156,7 @@ Claude Code の `auditor` は Fable、Codex の `auditor` は `gpt-6-astra` で�
 3. 違っていれば、監査の記録とは別に、変わったパスと違いを本人に知らせる。直したり戻したりはしない。
 
 Codex で監査するときは、`codex --sandbox read-only` で始めたセッションから `auditor` に任せる。
-Codex の役割は、親のセッションの sandbox を引き継ぐためである。
+Codex の役割 (`codex/agents/*.toml` の agent) は、自分の設定の sandbox を使わず、親のセッションの sandbox を引き継ぐためである。
 このセッションでは記録を書けないので、監査の記録は、監査の後に、書き込める通常のセッションで書く。
 
 ## 指摘の形
