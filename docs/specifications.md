@@ -105,7 +105,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - nix-daemon.sh は読み込まない (tmux の中で `NIX_PROFILES` が上書きされるのを防ぐ。[ADR 0020](adr/0020-stop-sourcing-nix-daemon-sh.md))。
 - 履歴は `$XDG_STATE_HOME/zsh/history` に 50 万件まで保存する。先頭が空白のコマンドは残さない ([ADR 0023](adr/0023-fix-remaining-audit-items-2.md))。
 - プラグイン (zinit で入れる zsh-completions・zsh-autosuggestions・fast-syntax-highlighting・fzf-tab) と zinit 本体は、コミットに固定する
-  (2026-11-05 の上流の先頭。[ADR 0083](adr/0083-update-zsh-plugins-and-own-command-time.md))。zinit 本体は、固定のコミットでなければ起動のときに切り替わる。
+  (2026-11-05 の上流の先頭。[ADR 0083](adr/0083-update-zsh-plugins-and-own-command-time.md))。zinit 本体は、固定のコミットでなければ起動のときに切り替わる。切り替えられないとき (clone の失敗を含む) は、zinit とプラグインを読み込まず、警告を出してプラグイン無しで起動する ([ADR 0142](adr/0142-plugin-managers-fail-closed.md))。
   プラグインの `ver` は clone するときにだけ効くので、上げたときは、今のクローン (`~/.local/share/zinit/plugins/<名前>`) で `git checkout <コミット>` する。
 - 3 秒以上かかったコマンドの後に、`Time: 0h:00m:05s` の形で所要時間を出す (端末のときだけ。`zsh/lib/command-time.zsh`。
   zsh-command-time の既定の動きを書き直したもの。[ADR 0083](adr/0083-update-zsh-plugins-and-own-command-time.md))。
@@ -144,6 +144,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 ## nvim
 
+- プラグインは lazy.nvim で入れ、`nvim/lazy-lock.json` でコミットに固定する。lazy.nvim 本体は、新しく clone した直後に `lazy-lock.json` の `lazy.nvim` のコミットに切り替え、切り替えられないときは clone を消し、理由を出して止まる (キーを押すと終了コード 1。[ADR 0142](adr/0142-plugin-managers-fail-closed.md))。mason で入れるツールの版は固定しない。
 - カラースキームは monokai-pro.nvim の `classic` フィルタ ([ADR 0009](adr/0009-fix-git-tmux-nvim-audit.md))。
 - 不可視文字を表示する ([ADR 0028](adr/0028-nvim-show-invisible-characters.md))。タブ (`>-`)、行末の空白 (`_`)、ノーブレークスペース (`+`)、すべての半角スペース (`·`)、
   改行 (`↲`) は記号で、全角スペースは背景色で示す。色は緑 `#76b98e` (灰色の本文・コメントと色味で区別でき、文字列の黄緑より暗い。[ADR 0028](adr/0028-nvim-show-invisible-characters.md) の色の値の調整)。
