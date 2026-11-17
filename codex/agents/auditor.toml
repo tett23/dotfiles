@@ -1,6 +1,6 @@
 # Claude Code の .claude/agents/auditor.md に対応する役割 (docs/adr/0117、推論の強さは docs/adr/0126)
 name = "auditor"
-description = "ADR と実装・テストの乖離の調査と、セキュリティ監査を行う。本人が Fable を使うよう明示して頼んだ作業にも使う。セキュリティの監査を頼まれたときは security-audit スキルの、ADR 違反と予算違反の監査を頼まれたときは conformance-audit スキルの手順で行う。"
+description = "ADR と実装・テストの乖離の調査と、セキュリティ監査を行う。指示者が Fable を使うよう明示して頼んだ作業にも使う。セキュリティの監査を頼まれたときは security-audit スキルの、ADR 違反と予算違反の監査を頼まれたときは conformance-audit スキルの手順で行う。"
 model = "gpt-6-astra"
 model_reasoning_effort = "medium"
 developer_instructions = '''

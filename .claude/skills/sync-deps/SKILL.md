@@ -80,7 +80,7 @@ dependencies.md の名前と実装側の名前は一致しないものがある�
 ### 4. アップデート(差分がなかった場合)
 
 セットアップ済みで同期差分がない場合はアップデートを行う。
-どちらも本人に実行を提案する (`bin/update-nix` は sudo を要する):
+どちらも指示者に実行を提案する (`bin/update-nix` は sudo を要する):
 
 ```bash
 bin/update-nix    # flake.lock と nix/pkgs/sources.json を更新し、ビルドしてから darwin-rebuild switch で適用
@@ -89,7 +89,7 @@ bin/update-mise   # mise 管理の言語・ツールを latest に
 
 `bin/update-nix` は、書き換える前に自前パッケージの取得元 (URL の接頭辞と、GitHub のリリースの `digest`) を確かめ、
 更新の差分の全体を見せてから、端末で `y` か `yes` と答えたときだけ適用する (docs/adr/0139)。
-確かめに失敗したら何も書かずに止まるので、出力を本人と読む。
+確かめに失敗したら何も書かずに止まるので、出力を指示者と読む。
 
 ### 5. 検証
 

@@ -264,10 +264,11 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 ## Claude Code
 
-- 全リポジトリ共通のサブエージェントは `.claude/agents/` に置き、モデルを固定する: `auditor` (Fable。ADR と実装・テストの乖離の調査、セキュリティ監査、本人が Fable を明示して頼んだ作業)・
+- 全リポジトリ共通のサブエージェントは `.claude/agents/` に置き、モデルを固定する: `auditor` (Fable。ADR と実装・テストの乖離の調査、セキュリティ監査、指示者が Fable を明示して頼んだ作業)・
   `reader` (Sonnet。外部のリポジトリや長いログを読む、確かめのスクリプト、機械的な実装)・`runner` (Haiku。テストや確かめを動かして数える、検索、CI の確認)。
   既定のモデルは Opus で、使い分けは `.claude/CLAUDE.md` の「モデルの使い分け」に書く ([ADR 0111](adr/0111-claude-agents-in-dotfiles.md))。
-- 本人の設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
+- メンテナーの設定は `.claude/settings.json`、全リポジトリ共通の指示は `.claude/CLAUDE.md`。
+- 指示の文 (`.claude/CLAUDE.md`、`codex/AGENTS.md`、スキル、エージェントの定義) は、エージェントに作業を頼んで報告を受ける人を「指示者」、リポジトリの決まりを決めて手作業の確かめや設定を受け持つ人を「メンテナー」と呼び分ける ([ADR 0146](adr/0146-requester-and-maintainer-terms.md))。
   `lua-lsp` は、メモリをリークするので、直るまで無効にしている (`enabledPlugins` で `false`。[ADR 0137](adr/0137-disable-lua-lsp-plugin-for-now.md))。ほかのプラグインは有効にしない。`example-skills` は使わないスキルが多いので外した ([ADR 0116](adr/0116-remove-example-skills-plugin.md))。
 - 成功した Bash のコマンドの出力は、10000 文字まで文脈に受け取る (`.claude/settings.json` の `bashOutputMaxChars`)。超えた出力はファイルに保存され、先頭の 2000 文字までのプレビューとパスを受け取る。
   読み戻しの窓も 10000 文字になる ([ADR 0119](adr/0119-claude-bash-output-limit.md))。
@@ -279,9 +280,9 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 - ロードマップ (`docs/roadmap.md`) の書き方は `roadmap` スキルに置く。まだ無いものだけを書き、実装を終えた項目は消して仕様書に書く ([ADR 0125](adr/0125-roadmap-skill.md))。
 - `docs/` の標準の構成 (`adr/`、`specifications.md`、`roadmap.md`、`budgets.md`、`glossary.md`、`research/`、`audits/`、`benchmarks/`) と、モノレポのモジュールごとの構成を、共通の指示の「docs/ の構成」に書く。
   標準の構成の `docs/` の中だけの変更では CI のビルドとテストを省き、`docs/budgets.md` の変更では予算の確かめを省かない ([ADR 0129](adr/0129-standard-docs-layout.md))。
-- 監査は、セキュリティの `security-audit` と、ADR 違反と予算違反の `conformance-audit` のスキルで、`auditor` に任せて行う。指摘は変えずに、`docs/audits/` があるか本人が求めたときは記録し、ほかはチャットで返す。
+- 監査は、セキュリティの `security-audit` と、ADR 違反と予算違反の `conformance-audit` のスキルで、`auditor` に任せて行う。指摘は変えずに、`docs/audits/` があるか指示者が求めたときは記録し、ほかはチャットで返す。
   予算は ADR の受けいれ条件と `docs/budgets.md` の両方に書き、食い違うときは ADR を正とする ([ADR 0126](adr/0126-audit-skill.md))。
-  `auditor` の「変えない」は設定で強制できないので、任せる側が、監査の前後で `git status`、`HEAD`、stash、差分と追跡していないファイルのハッシュを比べ、変わっていれば本人に知らせる。Codex では `codex --sandbox read-only` のセッションから任せる ([ADR 0143](adr/0143-auditor-read-only-checks.md))。
+  `auditor` の「変えない」は設定で強制できないので、任せる側が、監査の前後で `git status`、`HEAD`、stash、差分と追跡していないファイルのハッシュを比べ、変わっていれば指示者に知らせる。Codex では `codex --sandbox read-only` のセッションから任せる ([ADR 0143](adr/0143-auditor-read-only-checks.md))。
 - `bin/budget-check` は、予算の一覧の予算を CI で計測して確かめ、違反を予算ごとに一つの issue (ラベル `budget-violation`) にまとめる。
   同じ予算の issue には、前の記録が無いとき、満たした後にまた違反したとき、前の違反より悪いときだけコメントを足し、満たしたときは一度だけ知らせる (issue は閉じない)。
   使い方は `bin/budget-check [--dry-run] [--fail-on-violation] [予算の一覧のパス]` で、終了コードは、一覧が読めないかエラーの予算があれば 1、エラーが無く違反があり `--fail-on-violation` なら 2、ほかは 0。
@@ -291,12 +292,12 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   CI では、計測と書き込みを別のジョブに分け、計測のジョブにトークンを渡さない。書き込みの `gh` は `label create`、`issue create`、`issue comment` だけで、`--attach` と `gh issue artifact` は使わない ([ADR 0132](adr/0132-budget-check-separate-measure-and-report.md)、[ADR 0135](adr/0135-budget-check-report-allows-label-create.md))。
 - `chat-log` で過去の会話から文脈を戻す手順は `context-restore` スキルに置く。
   セッションの始めと、過去の決定や経緯を聞かれたときと、前のセッションの続きを頼まれたときに使う ([ADR 0123](adr/0123-context-restore-skill.md))。
-- 文書を変えたら、本人に出す前に `close-reading` で精読する。
+- 文書を変えたら、指示者に出す前に `close-reading` で精読する。
   ADR、仕様書、README の節を足したり組み直したり、新しい文書を書いたりしたときは全文を、小さな変更は差分を読む (読む範囲は `close-reading` スキルに書く) ([ADR 0123](adr/0123-context-restore-skill.md))。
 - Codex の全リポジトリ共通の指示は `codex/AGENTS.md`。`.claude/CLAUDE.md` と同じ内容で、Claude Code に特有のところ (出力の言語の主語、hook の設定の場所、`/goal`、「モデルの使い分け」のモデルと役割の名前) だけを
   Codex 向けに変え、`~/.codex/AGENTS.md` の Python の決まりを足した。2 つのファイルは手で合わせる ([ADR 0114](adr/0114-codex-agents-md.md))。
 - Codex でも、PreToolUse の hook (`codex/hooks.json`) で `adr-guard codex-hook --allow-status` を動かし、`apply_patch` と `Bash` によるコミット済みの ADR の変更を止める。
-  hook は、本人が Codex の `/hooks` で信頼するまで動かない。`codex-hook` は adr-guard 0.11.0 から ([ADR 0115](adr/0115-codex-adr-guard-hook.md))。
+  hook は、メンテナーが Codex の `/hooks` で信頼するまで動かない。`codex-hook` は adr-guard 0.11.0 から ([ADR 0115](adr/0115-codex-adr-guard-hook.md))。
 - Codex の既定のモデルは `gpt-6-astra` (`~/.codex/config.toml`。dotfiles では管理しない)。サブエージェントの役割は `codex/agents/` に置き、Claude Code のエージェントに対応させる: `auditor` (`gpt-6-astra`、推論 `medium`、モデルの既定。[ADR 0126](adr/0126-audit-skill.md))・`reader` (`gpt-6-sol`)・`runner` (`gpt-6-luna`)。
   使い分けは `codex/AGENTS.md` の「モデルの使い分け」に書く ([ADR 0117](adr/0117-codex-model-roles.md))。
 - Claude Code が Markdown のファイルを書くと (Write・Edit・MultiEdit)、hook `bin/prh-claude-hook` (`PostToolUse`) が、prh の辞書 `prh/prh.yml` で
@@ -361,7 +362,7 @@ GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
 - nix-darwin の設定の評価 (`nix eval`。Nix は `DeterminateSystems/determinate-nix-action@v3` で入れる。[ADR 0046](adr/0046-fix-audit-non-breaking.md))
 
 同じブランチ・PR の古い実行は取り消し、各ジョブには時間の上限を付けている ([ADR 0046](adr/0046-fix-audit-non-breaking.md))。自前のパッケージのビルドと、
-usage-hint と task-marks の mod のテストは CI では行わない (本人の判断。[ADR 0046](adr/0046-fix-audit-non-breaking.md))。
+usage-hint と task-marks の mod のテストは CI では行わない (メンテナーの判断。[ADR 0046](adr/0046-fix-audit-non-breaking.md))。
 
 workflow の `uses:` はタグのまま書き、`.github/workflows/actions.lock` (`gh actions-lock` が作る lockfile) に各参照のコミットを記録する。
 別の workflow (`.github/workflows/verify-lockfile.yml`) が、`gh actions-lock --verify` で lockfile が workflow と合うかを確かめる。

@@ -1,5 +1,5 @@
 # .github/workflows/actions.lock が workflow と合わないか、記録したコミットが上流で確かめられなくなったら失敗する (docs/adr/0141)。
-# github/gh-actions-lock の verify-lockfile.yml を写して直したもの。拡張の版は --pin で固定し、上げるときは本人が書き換える
+# github/gh-actions-lock の verify-lockfile.yml を写して直したもの。拡張の版は --pin で固定し、上げるときはメンテナーが書き換える
 name: verify-lockfile
 
 on:
