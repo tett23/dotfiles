@@ -84,6 +84,10 @@ bin/update-nix    # flake.lock と nix/pkgs/sources.json を更新し、ビル�
 bin/update-mise   # mise 管理の言語・ツールを latest に
 ```
 
+`bin/update-nix` は、書き換える前に自前パッケージの取得元 (URL の接頭辞と、GitHub のリリースの `digest`) を確かめ、
+更新の差分の全体を見せてから、端末で `y` か `yes` と答えたときだけ適用する (docs/adr/0139)。
+確かめに失敗したら何も書かずに止まるので、出力を本人と読む。
+
 ### 5. 検証
 
 適用後に実際にコマンドが引けることを確認する:
