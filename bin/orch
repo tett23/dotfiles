@@ -56,6 +56,17 @@ require_session() {
   SID=$(cat "$ORCH_DIR/session")
 }
 
+# validate_role <サブコマンド> <名前>: 空の名前と、ASCII の英数字、_、- 以外を含む名前を拒む (docs/adr/0131)
+validate_role() {
+  local LC_ALL=C
+  case "$2" in
+    ''|*[!a-zA-Z0-9_-]*) die "$1: role は [a-zA-Z0-9_-] のみ: '$2'" ;;
+  esac
+}
+
+# need_value <サブコマンド> <オプション> <残りの引数の数>: オプションの後に値が無ければ止める (docs/adr/0131)
+need_value() { [ "$3" -ge 2 ] || die "$1: $2 には値が要ります"; }
+
 role_dir()  { printf '%s/roles/%s' "$ORCH_DIR" "$1"; }
 chan_name() { printf 'orch-%s-%s' "$SID" "$1"; }
 
@@ -99,7 +110,7 @@ cmd_spawn() {
   local role="" model="" use_worktree=0 prompt_file="" root rdir workdir launch
   while [ $# -gt 0 ]; do
     case "$1" in
-      --role)        role="${2:-}"; shift 2 ;;
+      --role)        need_value spawn --role $#; role="$2"; shift 2 ;;
       --model)       model="${2:-}"; shift 2 ;;
       --worktree)    use_worktree=1; shift ;;
       --prompt-file) prompt_file="${2:-}"; shift 2 ;;
@@ -108,7 +119,7 @@ cmd_spawn() {
   done
   [ -n "$role" ]  || die "spawn: --role は必須です"
   [ -n "$model" ] || die "spawn: --model は必須です (claude / codex で CLI 既定モデル)"
-  case "$role" in (*[!a-zA-Z0-9_-]*) die "spawn: role は [a-zA-Z0-9_-] のみ: '$role'" ;; esac
+  validate_role spawn "$role"
 
   root=$(repo_root); cd "$root" || die "cd failed: $root"
   require_session
@@ -218,12 +229,13 @@ cmd_wait() {
   local role="" timeout=900 root rc
   while [ $# -gt 0 ]; do
     case "$1" in
-      --role)    role="${2:-}"; shift 2 ;;
+      --role)    need_value wait --role $#; role="$2"; shift 2 ;;
       --timeout) timeout="${2:-}"; shift 2 ;;
       *) die "wait: 不明な引数 '$1'" ;;
     esac
   done
   [ -n "$role" ] || die "wait: --role は必須です"
+  validate_role wait "$role"
   root=$(repo_root); cd "$root" || die "cd failed: $root"
   require_session
   if wait_one "$role" "$(( $(date +%s) + timeout ))"; then
@@ -263,11 +275,12 @@ cmd_collect() {
   local role="" root rdir rc
   while [ $# -gt 0 ]; do
     case "$1" in
-      --role) role="${2:-}"; shift 2 ;;
+      --role) need_value collect --role $#; role="$2"; shift 2 ;;
       *) die "collect: 不明な引数 '$1'" ;;
     esac
   done
   [ -n "$role" ] || die "collect: --role は必須です"
+  validate_role collect "$role"
   root=$(repo_root); cd "$root" || die "cd failed: $root"
   rdir=$(role_dir "$role")
   [ -d "$rdir" ] || die "collect: role '$role' がありません"
@@ -297,14 +310,15 @@ cleanup_role() {
 }
 
 cmd_cleanup() {
-  local role="" all=0 root d
+  local role="" role_given=0 all=0 root d
   while [ $# -gt 0 ]; do
     case "$1" in
-      --role) role="${2:-}"; shift 2 ;;
+      --role) need_value cleanup --role $#; role="$2"; role_given=1; shift 2 ;;
       --all)  all=1; shift ;;
       *) die "cleanup: 不明な引数 '$1'" ;;
     esac
   done
+  [ "$role_given" = 0 ] || validate_role cleanup "$role"
   root=$(repo_root); cd "$root" || die "cd failed: $root"
   require_session
   if [ "$all" = 1 ]; then

@@ -316,6 +316,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   - ペインは、セッションで最初のタスクが作られたときに開く。`/task-marks` でも開ける。CLI だけのセッションでは開かず、描かない。
 - `bin/orch` は、Claude から `codex exec` / `claude -p` へ作業を委譲する道具。モデルは別名で指定する
   (`opus`、`sonnet`、`haiku`、`fable`、`sol`。既定値は環境変数 `ORCH_MODEL_<別名>` で上書きできる。[ADR 0024](adr/0024-orch-models-and-headless-install.md))。
+  `spawn`、`wait`、`collect`、`cleanup --role` は、role の名前が空か、ASCII の英数字、`_`、`-` 以外の文字を含むとき、何にも触れずに終了コード 1 で終わる。`--role` の後に値が無いときも 1 で終わる ([ADR 0131](adr/0131-orch-validate-role.md))。
 
 ## その他のコマンド (`bin/`)
 
