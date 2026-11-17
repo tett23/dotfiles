@@ -1,6 +1,6 @@
 # ADR 0130: Codex の hook で prh を動かす
 
-Status: accepted-pending
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0139: update-nix は、自前パッケージの取得元を確かめ、差分を見せて確認を取ってから適用する
 
-Status: accepted-pending
+Status: accepted
 
 ## 文脈
 
