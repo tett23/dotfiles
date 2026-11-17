@@ -55,28 +55,70 @@ ADR の受けいれ条件に予算を書いたら、同じ変更で予算の一�
 - `bin/budget-check` は、予算の一覧の予算を計測して確かめ、違反を予算ごとに一つの issue (ラベル `budget-violation`、題 `予算違反: <名前> (<リポジトリのルートから見た一覧のパス>)`) にまとめる。
 - 同じ予算の issue があるときは、前の記録が無いとき、満たした後にまた違反したとき、前の違反より悪いときだけコメントを足す。予算を満たしたときは、一度だけ知らせ、issue は閉じない。
 - `--dry-run` は書き込みをせずにすることを出し、`--fail-on-violation` は、エラーの予算が無く違反があると終了コード 2 で終わる (エラーの予算があれば 1)。
+- `--measure-to <結果のファイル>` は計測だけを行い、`gh` を呼ばない。`--report-from <結果のファイル>` は、結果のファイルから issue に書き込むだけで、計測のコマンドを動かさない (dotfiles の docs/adr/0132)。
+
+CI では、計測と書き込みを別のジョブに分け、計測のジョブにはトークンを渡さない。
+計測のコマンドは、リポジトリのビルドやベンチマークを動かすので、依存のパッケージのコードも動く。
+同じジョブにトークンがあると、侵された依存のパッケージがそのトークンを使えるためである。
+そのため、CI では、計測と書き込みを一つのプロセスで行う形 (オプションを付けない形) を使わない。
+計測のジョブのチェックアウトには `persist-credentials: false` を付ける (付けないと、git の設定にトークンが残る)。
 
 各リポジトリの CI には、そのリポジトリの ADR で、次のようなジョブを足す。
+どのイベントで動かすかは、各リポジトリの ADR で決める。
+fork からの `pull_request` では、トークンで issue に書き込めず、書き込みのジョブが終了コード 1 で終わる。
+そのため、例では既定のブランチへの `push` で動かす。
 
 ```yaml
-budget:
-  runs-on: ubuntu-latest
-  permissions:
-    contents: read
-    issues: write
-  concurrency:
-    group: budget-${{ github.repository }}
-  steps:
-    - uses: actions/checkout@v7
-    - uses: actions/checkout@v7
-      with:
-        repository: tett23/dotfiles
-        ref: <固定するコミット>
-        path: .dotfiles
-    - run: .dotfiles/bin/budget-check
-      env:
-        GH_TOKEN: ${{ github.token }}
+on:
+  push:
+    branches: [main]
+jobs:
+  budget-measure:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        with:
+          repository: tett23/dotfiles
+          ref: <固定するコミット>
+          path: .dotfiles
+          persist-credentials: false
+      - run: .dotfiles/bin/budget-check --measure-to "$RUNNER_TEMP/budget/results"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: budget-results
+          path: ${{ runner.temp }}/budget/results
+  budget-report:
+    needs: budget-measure
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    concurrency:
+      group: budget-${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          repository: tett23/dotfiles
+          ref: <固定するコミット>
+          path: .dotfiles
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: budget-results
+          path: ${{ runner.temp }}/budget
+      - run: .dotfiles/bin/budget-check --report-from "$RUNNER_TEMP/budget/results"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
 ```
+
+書き込みのジョブは、対象のリポジトリをチェックアウトせず、計測のコマンドを動かさない。
+この例が各リポジトリで通るか (権限、artifact の受け渡し) は、各リポジトリに足すときに、そのリポジトリの ADR で動かして確かめる。
 
 dotfiles の `bin/budget-check` を直したときは、各リポジトリの `ref` を上げる。
 

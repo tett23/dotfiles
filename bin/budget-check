@@ -1,12 +1,16 @@
 #!/bin/sh
 #
 # budget-check - 予算の一覧 (docs/budgets.md) の予算を計測して確かめ、違反を予算ごとに一つの issue にまとめる
-# (docs/adr/0128)。
+# (docs/adr/0128、docs/adr/0132)。
 #
 #   使い方: budget-check [--dry-run] [--fail-on-violation] [予算の一覧のパス]
+#           budget-check --measure-to <結果のファイル> [予算の一覧のパス]
+#           budget-check --report-from <結果のファイル> [--dry-run] [--fail-on-violation]
 #
+# 一つ目は、計測と書き込みを一つのプロセスで行う (手元で使う)。--measure-to は計測だけを行い、gh を呼ばない。
+# --report-from は結果のファイルから issue に書き込むだけで、計測のコマンドを動かさない。CI ではこの二つを別のジョブで動かす。
 # 予算の一覧は、見出しの行が `| 名前 | 指標と単位 | 比較 | 値 | 計測のコマンド | ADR |` の表 (docs/adr/0126)。
-# 計測のコマンドはリポジトリのルートで動かし、標準出力の最後の空でない行を計測の値とする。
+# 計測のコマンドは、トークンの環境変数を消してリポジトリのルートで動かし、標準出力の最後の空でない行を計測の値とする。
 # 違反のとき、ラベル budget-violation の題 `予算違反: <名前> (<一覧のパス>)` の issue を作るか、
 # 前の記録 (本文とコメントの末尾の印) が無いとき、満たした後にまた違反したとき、前の違反より悪いときだけコメントを足す。満たしたときは、前が違反なら一度だけ知らせる。
 # 終了コード: 一覧が読めないかエラーの予算があれば 1、違反があり --fail-on-violation なら 2、ほかは 0。
@@ -14,102 +18,169 @@ set -u
 
 label=budget-violation
 us=$(printf '\037')
+nl='
+'
 num_re='^-?[0-9]+(\.[0-9]+)?$'
+magic='budget-check-results 1'
+
+die() {
+  printf 'budget-check: %s\n' "$1" >&2
+  exit 1
+}
 
 dry=0
 fail_on_violation=0
 path=
+measure_to=
+report_from=
 while [ $# -gt 0 ]; do
   case $1 in
   --dry-run) dry=1 ;;
   --fail-on-violation) fail_on_violation=1 ;;
-  -*) printf 'budget-check: 知らないオプション: %s\n' "$1" >&2; exit 1 ;;
+  --measure-to | --report-from)
+    [ $# -ge 2 ] || die "$1 には結果のファイルのパスが要ります"
+    if [ "$1" = --measure-to ]; then measure_to=$2; else report_from=$2; fi
+    shift
+    ;;
+  -*) die "知らないオプション: $1" ;;
   *) path=$1 ;;
   esac
   shift
 done
 
-root=$(git rev-parse --show-toplevel 2>/dev/null) || {
-  printf '%s\n' 'budget-check: git のリポジトリの外です' >&2
-  exit 1
-}
-root=$(cd "$root" && pwd -P)
-
-if [ -z "$path" ]; then
-  rel=docs/budgets.md
-  if [ ! -f "$root/$rel" ]; then
-    printf '%s\n' '予算なし'
-    exit 0
-  fi
-else
-  case $path in
-  /*) abs=$path ;;
-  *) abs=$(pwd)/$path ;;
-  esac
-  if [ ! -f "$abs" ]; then
-    printf 'budget-check: %s がありません\n' "$path" >&2
-    exit 1
-  fi
-  abs=$(cd "$(dirname "$abs")" && pwd -P)/$(basename "$abs")
-  case $abs in
-  "$root"/*) rel=${abs#"$root"/} ;;
-  *)
-    printf 'budget-check: %s はリポジトリの外です\n' "$path" >&2
-    exit 1
-    ;;
-  esac
+if [ -n "$measure_to" ] && [ -n "$report_from" ]; then
+  die '--measure-to と --report-from は一緒に使えません'
 fi
-file=$root/$rel
+if [ -n "$measure_to" ] && { [ "$dry" = 1 ] || [ "$fail_on_violation" = 1 ]; }; then
+  die '--measure-to には --dry-run も --fail-on-violation も添えられません'
+fi
+if [ -n "$report_from" ] && [ -n "$path" ]; then
+  die '--report-from には予算の一覧のパスを添えられません'
+fi
 
 is_num() { printf '%s\n' "$1" | grep -Eq "$num_re"; }
 
-# 表を読み、行ごとに「R<US>名前<US>単位<US>比較<US>値<US>コマンド<US>ADR」か「E<US>行番号<US>理由」を出す。
-# 見出しの表が無ければ NOHEADER を出す
-rows=$(awk -v US="$us" '
-  function trim(s) { gsub(/^[ \t]+|[ \t]+$/, "", s); return s }
-  function cells(line, arr,   n, i) {
-    gsub(/\\\|/, "\001", line)
-    sub(/^[ \t]*\|/, "", line); sub(/\|[ \t]*$/, "", line)
-    n = split(line, arr, "|")
-    for (i = 1; i <= n; i++) {
-      arr[i] = trim(arr[i]); gsub(/\001/, "|", arr[i])
-      if (arr[i] ~ /^`.*`$/) arr[i] = substr(arr[i], 2, length(arr[i]) - 2)
+# --- 計測 ---------------------------------------------------------------------
+# 予算の一覧を読んで計測し、結果のファイルの中身を変数 results に入れる (docs/adr/0132)。
+#   1 行目: budget-check-results 1<US>一覧の相対パス<US>コミット
+#   2 行目から: R<US>名前<US>単位<US>比較<US>値<US>コマンド<US>ADR<US>計測の値 か E<US>場所<US>理由
+# 一覧が読めないときは 1 で終わる。予算が無いときは none に「無い理由」を入れる
+measure() {
+  root=$(git rev-parse --show-toplevel 2>/dev/null) || die 'git のリポジトリの外です'
+  root=$(cd "$root" && pwd -P)
+
+  none=
+  if [ -z "$path" ]; then
+    rel=docs/budgets.md
+    [ -f "$root/$rel" ] || none=nofile
+  else
+    case $path in
+    /*) abs=$path ;;
+    *) abs=$(pwd)/$path ;;
+    esac
+    [ -f "$abs" ] || die "$path がありません"
+    abs=$(cd "$(dirname "$abs")" && pwd -P)/$(basename "$abs")
+    case $abs in
+    "$root"/*) rel=${abs#"$root"/} ;;
+    *) die "$path はリポジトリの外です" ;;
+    esac
+  fi
+  commit=${GITHUB_SHA:-$(git -C "$root" rev-parse HEAD 2>/dev/null)}
+  results="$magic$us$rel$us$commit"
+  [ -z "$none" ] || return 0
+
+  # 表を読み、行ごとに「R<US>名前<US>単位<US>比較<US>値<US>コマンド<US>ADR」か「E<US>行番号<US>理由」を出す。
+  # 見出しの表が無ければ NOHEADER を出す
+  rows=$(awk -v US="$us" '
+    function trim(s) { gsub(/^[ \t]+|[ \t]+$/, "", s); return s }
+    function cells(line, arr,   n, i) {
+      gsub(/\\\|/, "\001", line)
+      sub(/^[ \t]*\|/, "", line); sub(/\|[ \t]*$/, "", line)
+      n = split(line, arr, "|")
+      for (i = 1; i <= n; i++) {
+        arr[i] = trim(arr[i]); gsub(/\001/, "|", arr[i])
+        if (arr[i] ~ /^`.*`$/) arr[i] = substr(arr[i], 2, length(arr[i]) - 2)
+      }
+      return n
     }
-    return n
-  }
-  state == 0 {
-    n = cells($0, h)
-    if (n == 6 && h[1] == "名前" && h[2] == "指標と単位" && h[3] == "比較" && h[4] == "値" && h[5] == "計測のコマンド" && h[6] == "ADR") { state = 1; found = 1 }
-    next
-  }
-  state == 1 { state = 2; if ($0 ~ /^[ \t]*\|[ \t:|-]*$/) next }
-  state == 2 {
-    if ($0 !~ /^[ \t]*\|/) { state = 3; next }
-    n = cells($0, c)
-    if (n != 6) { print "E" US NR US "セルの数が " n " です"; next }
-    print "R" US c[1] US c[2] US c[3] US c[4] US c[5] US c[6]
-  }
-  END { if (!found) print "NOHEADER" }
-' "$file")
+    state == 0 {
+      n = cells($0, h)
+      if (n == 6 && h[1] == "名前" && h[2] == "指標と単位" && h[3] == "比較" && h[4] == "値" && h[5] == "計測のコマンド" && h[6] == "ADR") { state = 1; found = 1 }
+      next
+    }
+    state == 1 { state = 2; if ($0 ~ /^[ \t]*\|[ \t:|-]*$/) next }
+    state == 2 {
+      if ($0 !~ /^[ \t]*\|/) { state = 3; next }
+      n = cells($0, c)
+      if (n != 6) { print "E" US NR US "セルの数が " n " です"; next }
+      print "R" US c[1] US c[2] US c[3] US c[4] US c[5] US c[6]
+    }
+    END { if (!found) print "NOHEADER" }
+  ' "$root/$rel")
 
-if [ "$rows" = NOHEADER ]; then
-  printf 'budget-check: %s に予算の表がありません\n' "$rel" >&2
-  exit 1
-fi
-[ -n "$rows" ] || exit 0
+  [ "$rows" != NOHEADER ] || die "$rel に予算の表がありません"
+  [ -n "$rows" ] || { none=empty; return 0; }
 
+  seen=
+  set -f
+  old_ifs=$IFS
+  IFS=$nl
+  for row in $rows; do
+    IFS=$us
+    # shellcheck disable=SC2086
+    set -- $row
+    IFS=$nl
+    case $1 in
+    E) line="E$us$rel:$2$us$3" ;;
+    R)
+      if printf '%s\n' "$seen" | grep -Fxq -- "$2"; then
+        line="E$us$2${us}名前がほかの行と同じです"
+      else
+        seen="$seen$nl$2"
+        line=$(measure_one "$2" "$3" "$4" "$5" "$6" "$7")
+      fi
+      ;;
+    esac
+    results="$results$nl$line"
+  done
+  IFS=$old_ifs
+  set +f
+}
+
+# 一つの予算を計測し、結果のファイルの行を一つ出す
+measure_one() {
+  case $3 in
+  '<=' | '>=') ;;
+  *) printf 'E%s%s%s比較が <= でも >= でもありません: %s' "$us" "$1" "$us" "$3"; return ;;
+  esac
+  is_num "$4" || { printf 'E%s%s%s値が数ではありません: %s' "$us" "$1" "$us" "$4"; return; }
+
+  # 計測のコマンドにトークンを見せない (docs/adr/0132)。
+  # これは誤って渡さないためのもので、トークンを守る境界は、計測と書き込みのジョブを分けることである
+  if ! output=$(
+    unset GH_TOKEN GITHUB_TOKEN GH_ENTERPRISE_TOKEN GITHUB_ENTERPRISE_TOKEN
+    cd "$root" && sh -c "$5" 2>/dev/null
+  ); then
+    printf 'E%s%s%s計測のコマンドが失敗しました: %s' "$us" "$1" "$us" "$5"
+    return
+  fi
+  value=$(printf '%s\n' "$output" | awk 'NF { l = $0 } END { gsub(/^[ \t]+|[ \t]+$/, "", l); print l }')
+  is_num "$value" || { printf 'E%s%s%s計測の値が数ではありません: %s' "$us" "$1" "$us" "$value"; return; }
+  printf 'R%s%s%s%s%s%s%s%s%s%s%s%s%s%s' "$us" "$1" "$us" "$2" "$us" "$3" "$us" "$4" "$us" "$5" "$us" "$6" "$us" "$value"
+}
+
+# --- 書き込み -----------------------------------------------------------------
 errors=0
 violations=0
-seen=
 run_url="${GITHUB_SERVER_URL:-}/${GITHUB_REPOSITORY:-}/actions/runs/${GITHUB_RUN_ID:-}"
-commit=${GITHUB_SHA:-$(git -C "$root" rev-parse HEAD 2>/dev/null)}
 
 error() {
   printf 'budget-check: %s: %s\n' "$1" "$2" >&2
   errors=$((errors + 1))
 }
 
-# gh を呼ぶ。--dry-run のときは書き込みの呼び出しを出すだけにする
+# gh を呼ぶ。--dry-run のときは書き込みの呼び出しを出すだけにする。
+# 書き込みの gh は label create、issue create、issue comment だけで、--attach と gh issue artifact は使わない (docs/adr/0132)
 gh_write() {
   if [ "$dry" = 1 ]; then
     printf 'dry-run: gh %s\n' "$*"
@@ -123,25 +194,15 @@ satisfies() { awk -v a="$1" -v op="$2" -v b="$3" 'BEGIN { if (op == "<=") exit !
 # 今の値が前の値より悪ければ 0
 worse() { awk -v a="$1" -v op="$2" -v b="$3" 'BEGIN { if (op == "<=") exit !(a + 0 > b + 0); exit !(a + 0 < b + 0) }'; }
 
-check_budget() {
-  name=$1 unit=$2 op=$3 limit=$4 cmd=$5 adr=$6
-  if printf '%s\n' "$seen" | grep -Fxq -- "$name"; then
-    error "$name" '名前がほかの行と同じです'
-    return
-  fi
-  seen="$seen
-$name"
+# 計測できた一つの予算について、issue とコメントを書く。引数は R の行の 7 つの値
+report_budget() {
+  name=$1 unit=$2 op=$3 limit=$4 cmd=$5 adr=$6 value=$7
+  # 結果のファイルは計測のジョブが作るので、比較、値、計測の値を確かめ直す (docs/adr/0132)
   case $op in
   '<=' | '>=') ;;
   *) error "$name" "比較が <= でも >= でもありません: $op"; return ;;
   esac
   is_num "$limit" || { error "$name" "値が数ではありません: $limit"; return; }
-
-  if ! output=$(cd "$root" && sh -c "$cmd" 2>/dev/null); then
-    error "$name" "計測のコマンドが失敗しました: $cmd"
-    return
-  fi
-  value=$(printf '%s\n' "$output" | awk 'NF { l = $0 } END { gsub(/^[ \t]+|[ \t]+$/, "", l); print l }')
   is_num "$value" || { error "$name" "計測の値が数ではありません: $value"; return; }
 
   if satisfies "$value" "$op" "$limit"; then state=ok; else state=violation; violations=$((violations + 1)); fi
@@ -221,23 +282,67 @@ $mark"
     error "$name" 'gh issue comment が失敗しました'
 }
 
-nl='
-'
-set -f
-old_ifs=$IFS
-IFS=$nl
-for row in $rows; do
-  IFS=$us
-  # shellcheck disable=SC2086
-  set -- $row
-  IFS=$nl
-  case $1 in
-  E) error "$rel:$2" "$3" ;;
-  R) check_budget "$2" "$3" "$4" "$5" "$6" "$7" ;;
+# 変数 results の結果を読み、issue に書き込む。1 行目が決まった形でなければ 1 で終わる
+report() {
+  header=${results%%"$nl"*}
+  case $results in
+  *"$nl"*) body_lines=${results#*"$nl"} ;;
+  *) body_lines= ;;
   esac
-done
-IFS=$old_ifs
+  case $header in
+  "$magic$us"*"$us"*) ;;
+  *) die '結果のファイルの 1 行目が budget-check-results 1 の形ではありません' ;;
+  esac
+  rest=${header#"$magic$us"}
+  rel=${rest%%"$us"*}
+  commit=${rest#*"$us"}
+  case $commit in *"$us"*) die '結果のファイルの 1 行目の欄の数が違います' ;; esac
+  [ -n "$rel" ] || die '結果のファイルの 1 行目に予算の一覧のパスがありません'
 
-[ "$errors" -gt 0 ] && exit 1
-[ "$violations" -gt 0 ] && [ "$fail_on_violation" = 1 ] && exit 2
-exit 0
+  set -f
+  old_ifs=$IFS
+  IFS=$nl
+  for row in $body_lines; do
+    IFS=$us
+    # shellcheck disable=SC2086
+    set -- $row
+    IFS=$nl
+    case $1 in
+    E) [ $# = 3 ] && error "$2" "$3" || error "$rel" "結果のファイルの E の行の欄の数が違います" ;;
+    R)
+      if [ $# = 8 ]; then
+        report_budget "$2" "$3" "$4" "$5" "$6" "$7" "$8"
+      else
+        error "$rel" "結果のファイルの R の行の欄の数が違います"
+      fi
+      ;;
+    *) error "$rel" "結果のファイルに知らない行があります" ;;
+    esac
+  done
+  IFS=$old_ifs
+  set +f
+
+  [ "$errors" -gt 0 ] && exit 1
+  [ "$violations" -gt 0 ] && [ "$fail_on_violation" = 1 ] && exit 2
+  exit 0
+}
+
+# --- 入口 ---------------------------------------------------------------------
+if [ -n "$report_from" ]; then
+  [ -f "$report_from" ] || die "$report_from がありません"
+  results=$(cat "$report_from")
+  report
+fi
+
+measure
+if [ -n "$measure_to" ]; then
+  mkdir -p "$(dirname "$measure_to")" || die "$measure_to の親のディレクトリを作れません"
+  printf '%s\n' "$results" > "$measure_to" || die "$measure_to に書けません"
+  printf '%s\n' "$results" | awk -F "$(printf '\037')" '$1 == "E" { print "budget-check: " $2 ": " $3 }' >&2
+  exit 0
+fi
+if [ "$none" = nofile ]; then
+  printf '%s\n' '予算なし'
+  exit 0
+fi
+report

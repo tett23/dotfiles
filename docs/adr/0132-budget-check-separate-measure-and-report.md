@@ -1,6 +1,6 @@
 # ADR 0132: budget-check の計測と issue への書き込みを分け、計測のコマンドにトークンを見せない
 
-Status: accepted-pending
+Status: accepted
 
 ## 文脈
 
