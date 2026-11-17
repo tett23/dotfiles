@@ -1,6 +1,6 @@
 # ADR 0133: sync-deps の --switch は、差分の全体を見せて本人の確認を取ってから適用する
 
-Status: proposed
+Status: accepted-pending
 
 ## 文脈
 
