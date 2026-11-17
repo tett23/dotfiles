@@ -1,6 +1,6 @@
 # ADR 0137: Claude Code のプラグイン lua-lsp を、直るまで無効にする
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 

@@ -1,6 +1,6 @@
 # ADR 0116: Claude Code のプラグイン example-skills を外す
 
-Status: accepted
+Status: superseded [{"part":"実装すること (有効にするプラグインは lua-lsp だけ)","by":["docs/adr/0137-disable-lua-lsp-plugin-for-now.md"]},{"part":"実装しないこと (lua-lsp を外すこと)","by":["docs/adr/0137-disable-lua-lsp-plugin-for-now.md"],"kind":"supplement"}]
 
 ## 文脈
 
