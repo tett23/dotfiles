@@ -1,6 +1,6 @@
 # ADR 0132: budget-check の計測と issue への書き込みを分け、計測のコマンドにトークンを見せない
 
-Status: accepted
+Status: superseded [{"part":"不変条件 (I9)","by":["docs/adr/0135-budget-check-report-allows-label-create.md"]},{"part":"実装すること (結果のファイル: --report-from が呼ぶ gh)","by":["docs/adr/0135-budget-check-report-allows-label-create.md"]},{"part":"トレードオフ (結果のファイルを偽ったときにできること)","by":["docs/adr/0135-budget-check-report-allows-label-create.md"]},{"part":"調査した事項 (bin/budget-check が呼ぶ gh)","by":[],"kind":"note","note":"呼ぶ gh の列挙で gh label create を見落としていた"}]
 
 ## 文脈
 

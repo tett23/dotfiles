@@ -278,7 +278,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
   各リポジトリの CI は、dotfiles をコミットに固定して取得して動かす ([ADR 0128](adr/0128-budget-check-in-ci.md))。
   計測だけを行う `bin/budget-check --measure-to <結果のファイル> [予算の一覧のパス]` と、結果のファイルから書き込むだけの `bin/budget-check --report-from <結果のファイル> [--dry-run] [--fail-on-violation]` もある。
   計測のコマンドは、`GH_TOKEN`、`GITHUB_TOKEN`、`GH_ENTERPRISE_TOKEN`、`GITHUB_ENTERPRISE_TOKEN` を消した環境で動かす。
-  CI では、計測と書き込みを別のジョブに分け、計測のジョブにトークンを渡さない。書き込みの `gh` は `label create`、`issue create`、`issue comment` だけで、`--attach` と `gh issue artifact` は使わない ([ADR 0132](adr/0132-budget-check-separate-measure-and-report.md))。
+  CI では、計測と書き込みを別のジョブに分け、計測のジョブにトークンを渡さない。書き込みの `gh` は `label create`、`issue create`、`issue comment` だけで、`--attach` と `gh issue artifact` は使わない ([ADR 0132](adr/0132-budget-check-separate-measure-and-report.md)、[ADR 0135](adr/0135-budget-check-report-allows-label-create.md))。
 - `chat-log` で過去の会話から文脈を戻す手順は `context-restore` スキルに置く。
   セッションの始めと、過去の決定や経緯を聞かれたときと、前のセッションの続きを頼まれたときに使う ([ADR 0123](adr/0123-context-restore-skill.md))。
 - 文書を変えたら、本人に出す前に `close-reading` で精読する。

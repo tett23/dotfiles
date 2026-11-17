@@ -180,7 +180,7 @@ error() {
 }
 
 # gh を呼ぶ。--dry-run のときは書き込みの呼び出しを出すだけにする。
-# 書き込みの gh は label create、issue create、issue comment だけで、--attach と gh issue artifact は使わない (docs/adr/0132)
+# 書き込みの gh は label create、issue create、issue comment だけで、--attach と gh issue artifact は使わない (docs/adr/0132、docs/adr/0135)
 gh_write() {
   if [ "$dry" = 1 ]; then
     printf 'dry-run: gh %s\n' "$*"

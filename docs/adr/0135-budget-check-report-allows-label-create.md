@@ -1,6 +1,6 @@
 # ADR 0135: budget-check の書き込みのジョブが呼ぶ gh に、ラベルの用意を含める
 
-Status: proposed
+Status: accepted
 
 ## 文脈
 

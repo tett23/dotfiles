@@ -370,8 +370,8 @@ check "ADR 0135 I1: 違反の issue とコメントを書いた" "$(issues '予�
 check "ADR 0135 I1: gh の呼び出しは issue list、label create、issue create、issue comment、api だけ" \
   "$(grep -v -c -E '^(issue list|label create|issue create|issue comment|api)( |$)' $st/sub.log)|$(wc -l < $st/sub.log | tr -d ' ')" "0|6"
 check "ADR 0135 I1: api の呼び出しは読み出しだけ" "$(grep -E '^api ' $st/calls.log | grep -c -E -- ' (-X|--method|-f|-F|--field|--raw-field|--input)( |$)')" "0"
-check "ADR 0135 I1: label create の引数は固定の文字列だけ" \
-  "$(grep -A5 -x 'label' $st/argv.log | grep -v -F -x -e label -e create -e budget-violation -e --force -e --description -e "${(q):-予算違反 (bin/budget-check)}" -e -- | grep -c .)" "0"
+check "ADR 0135 I1: label create の呼び出しの引数の並びが固定の並びとちょうど一致する" \
+  "$(grep -E '^label create' $st/calls.log | sort -u)" "label create budget-violation --force --description 予算違反 (bin/budget-check)"
 check "ADR 0135 I1: どの引数も --attach ではない" \
   "$(grep -c -x -e '--attach' -e '--attach=.*' $st/argv.log)|$(grep -c -x -- 'artifact' $st/argv.log)" "0|0"
 
