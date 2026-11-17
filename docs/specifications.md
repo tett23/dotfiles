@@ -21,7 +21,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
    (`git@github.com:tett23/dotfiles.git`) に切り替える ([ADR 0016](adr/0016-ssh-origin-after-install.md))。
 3. `bootstrap.sh` を実行する: Nix (Determinate Systems のインストーラ) を入れ、nix-darwin を適用する
    (初回は `nix run` で flake.lock に固定した nix-darwin を使う。[ADR 0017](adr/0017-fix-bootstrap-first-darwin-rebuild.md))。
-   Nix のインストーラーは、版を固定した URL から一時ファイルに取り、`sha256` が `bootstrap.sh` に書いた値と一致するときだけ動かす (一致しなければ終了コード 1 で終わる。[ADR 0141](adr/0141-ci-actions-lockfile-and-installer-hash.md))。
+   Nix のインストーラは、版を固定した URL から一時ファイルに取り、`sha256` が `bootstrap.sh` に書いた値と一致するときだけ動かす (一致しなければ終了コード 1 で終わる。[ADR 0141](adr/0141-ci-actions-lockfile-and-installer-hash.md))。
 4. `mise install` で言語とツールを入れる。
 5. mise で入れた ghcup で、Haskell の ghc・cabal の `latest` を入れて既定にする ([ADR 0050](adr/0050-ghc-cabal-via-ghcup.md))。
 6. git の hook (`.githooks`) を有効にする ([ADR 0032](adr/0032-adr-guard.md))。
@@ -59,8 +59,8 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 
 | コマンド          | 内容                                                                                                                     |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `bin/sync-deps`   | `dependencies.md` を Claude (`claude -p`) に読ませ、`flake.nix`・`mise/config.toml`・`nix/pkgs/` を更新させる ([ADR 0013](adr/0013-generate-config-from-dependencies-with-claude.md))。生成の対象の外のファイルか生成の前の写しが変わっていれば止める。`--switch` は差分の全体を見せ、端末 (`SYNC_DEPS_TTY`、既定は `/dev/tty`) で `y` か `yes` と答えたときだけ適用する ([ADR 0133](adr/0133-sync-deps-confirm-before-switch.md))。`claude -p` は `--permission-mode dontAsk` と `--setting-sources user` で動き、書き換えられるのは `flake.nix`、`flake.lock`、`mise/config.toml`、`nix/` だけで、使えるコマンドは名前の検索、ビルド、`nix flake lock`、git と mise の読み取り、formulae.brew.sh の WebFetch に絞る ([ADR 0140](adr/0140-sync-deps-narrow-claude-tools.md)) |
-| `bin/update-nix`  | `flake.lock` と `nix/pkgs/sources.json` を最新にして適用する ([ADR 0012](adr/0012-remove-homebrew.md))。書き換える前に、自前パッケージの Homebrew の `url` が許す接頭辞で始まることと、GitHub のリリースなら asset の `digest` が `sha256` と一致すること (`digest` が無ければ警告) を確かめ、外れれば何も書かずに終了コード 1 で終わる。更新の後に、実行の前の写しとの差分の全体を出し (差分が無ければ終了コード 0 で終わる)、ビルドし、端末 (`UPDATE_NIX_TTY`、既定は `/dev/tty`) で `y` か `yes` と答えたときだけ適用する。`--no-switch` はビルドで止まる ([ADR 0139](adr/0139-update-nix-verify-sources.md)) |
+| `bin/sync-deps`   | `dependencies.md` を Claude (`claude -p`) に読ませ、`flake.nix`・`mise/config.toml`・`nix/pkgs/` を更新させる ([ADR 0013](adr/0013-generate-config-from-dependencies-with-claude.md))。生成の対象の外のファイルか生成の前の写しが変わっていれば止める。`--switch` は差分の全体を見せ、端末 (`SYNC_DEPS_TTY`、既定は `/dev/tty`) で `y` か `yes` と答えたときだけ適用する ([ADR 0133](adr/0133-sync-deps-confirm-before-switch.md))。`claude -p` は `--permission-mode dontAsk` と `--setting-sources user` で動き、書き換えられるのは `flake.nix`、`flake.lock`、`mise/config.toml`、`nix/` だけで、使えるコマンドは名前の検索、ビルド、`nix flake lock`、git と mise の読み取り、`git add -N nix/…`、formulae.brew.sh の WebFetch に絞る ([ADR 0140](adr/0140-sync-deps-narrow-claude-tools.md)) |
+| `bin/update-nix`  | `flake.lock` と `nix/pkgs/sources.json` を最新にして適用する ([ADR 0012](adr/0012-remove-homebrew.md))。書き換える前に、自前パッケージの Homebrew の `url` が許す接頭辞で始まることと、GitHub のリリースなら asset の `digest` が `sha256` と一致することを確かめ、外れれば何も書かずに終了コード 1 で終わる。asset の `digest` が `null` なら警告して続け、その名前の asset が無いときと GitHub の API を読めないときは、何も書かずに終了コード 1 で終わる。更新の後に、実行の前の写しとの差分の全体を出し (差分が無ければ終了コード 0 で終わる)、ビルドし、端末 (`UPDATE_NIX_TTY`、既定は `/dev/tty`) で `y` か `yes` (大文字と小文字を区別しない) と答えたときだけ適用し、ほかは適用せずに終了コード 1 で終わる。`--no-switch` はビルドで止まる ([ADR 0139](adr/0139-update-nix-verify-sources.md)) |
 | `bin/update-mise` | mise の言語とツールを最新にし、`mise lock` でロックファイルを更新して、`mise/mise.lock` と `mise/.mise` の変わったファイルを出す。mise 本体は Nix で更新する ([ADR 0012](adr/0012-remove-homebrew.md)、[ADR 0134](adr/0134-mise-lockfile-checksums.md)、[ADR 0136](adr/0136-mise-npm-lock-sidecars.md))                                                   |
 
 ## 設定ファイルの配置
@@ -364,7 +364,8 @@ GitHub Actions (`.github/workflows/ci.yml`) で次を確かめる。
 usage-hint と task-marks の mod のテストは CI では行わない (本人の判断。[ADR 0046](adr/0046-fix-audit-non-breaking.md))。
 
 workflow の `uses:` はタグのまま書き、`.github/workflows/actions.lock` (`gh actions-lock` が作る lockfile) に各参照のコミットを記録する。
-別の workflow (`.github/workflows/verify-lockfile.yml`) が、`gh actions-lock --verify` で lockfile が workflow と合うかを確かめる。拡張の版は `--pin` で固定する。
+別の workflow (`.github/workflows/verify-lockfile.yml`) が、`gh actions-lock --verify` で lockfile が workflow と合うかを確かめる。
+gh の拡張 `github/gh-actions-lock` の版は、`gh extension install --pin` で固定する。
 action の版を上げるとき (タグが動いたとき、新しいメジャー版にするとき) は、`gh actions-lock --relock` か、`uses:` を直した後の `gh actions-lock` で lockfile を更新し、その差分をコミットする。Dependabot は入れない ([ADR 0141](adr/0141-ci-actions-lockfile-and-installer-hash.md))。
 
 ## ADR の運用
