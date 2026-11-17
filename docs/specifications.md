@@ -145,7 +145,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 
 ## nvim
 
-- プラグインは lazy.nvim で入れ、`nvim/lazy-lock.json` でコミットに固定する。lazy.nvim 本体は、新しく clone した直後に `lazy-lock.json` の `lazy.nvim` のコミットに切り替え、切り替えられないときは clone を消し、理由を出して止まる (キーを押すと終了コード 1。[ADR 0142](adr/0142-plugin-managers-fail-closed.md))。mason で入れるツールの版は固定しない。
+- プラグインは lazy.nvim で入れ、`nvim/lazy-lock.json` でコミットに固定する。lazy.nvim 本体は、一時的な名前 (`lazy.nvim.staging`) で clone して `lazy-lock.json` の `lazy.nvim` のコミットに切り替え、切り替えられたときだけ本来の場所に移す。切り替えられないときは、理由を出して止まる (キーを押すと終了コード 1。[ADR 0142](adr/0142-plugin-managers-fail-closed.md))。mason で入れるツールの版は固定しない。
 - カラースキームは monokai-pro.nvim の `classic` フィルタ ([ADR 0009](adr/0009-fix-git-tmux-nvim-audit.md))。
 - 不可視文字を表示する ([ADR 0028](adr/0028-nvim-show-invisible-characters.md))。タブ (`>-`)、行末の空白 (`_`)、ノーブレークスペース (`+`)、すべての半角スペース (`·`)、
   改行 (`↲`) は記号で、全角スペースは背景色で示す。色は緑 `#76b98e` (灰色の本文・コメントと色味で区別でき、文字列の黄緑より暗い。[ADR 0028](adr/0028-nvim-show-invisible-characters.md) の色の値の調整)。
