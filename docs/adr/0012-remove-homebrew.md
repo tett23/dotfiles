@@ -1,6 +1,6 @@
 # ADR 0012: Homebrew を廃止し、Nix と mise に統一する
 
-Status: accepted
+Status: superseded [{"part":"Decision","by":["docs/adr/0134-mise-lockfile-checksums.md"],"kind":"supplement"}]
 - Date: 2026-10-07
 
 ## Context

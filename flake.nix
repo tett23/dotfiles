@@ -104,6 +104,8 @@
           # gh の設定。hosts.yml は認証情報を持つので管理しない (docs/adr/0112)
           "gh/config.yml".source = link "gh/config.yml";
           "mise/config.toml".source = link "mise/config.toml";
+          # mise は、入れたツールのハッシュをこのロックファイルで確かめ、書き換える (docs/adr/0134)
+          "mise/mise.lock".source = link "mise/mise.lock";
           # tmux-nova は Nix で入れる (docs/adr/0029)。nova.tmux は自分の置き場所から scripts/ を読むため、
           # ファイル単体ではなくディレクトリをリンクする
           "tmux/plugins/tmux-nova".source = "${pkgs.tmuxPlugins.tmux-nova}/share/tmux-plugins/tmux-nova";
