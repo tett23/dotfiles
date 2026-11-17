@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# update-mise - mise で管理している言語とツールを最新化する (docs/adr/0012)
+# update-mise - mise で管理している言語とツールを最新化し、ロックファイルを更新する (docs/adr/0012、docs/adr/0134)
 #
 # mise 本体は Nix で入れているので、bin/update-nix で更新する (mise self-update は使わない)。
 #
@@ -29,6 +29,11 @@ main() {
   log "mise 管理の言語とツールを最新化します"
   mise upgrade --yes
 
+  # mise upgrade が、config.toml に足したばかりのツールをロックファイルに書くかは確かめていないので、
+  # mise lock でロックファイルにある版のまま足りない項目を書く (docs/adr/0134)
+  log "mise のロックファイルを更新します"
+  mise lock -g --platform macos-arm64
+
   # Haskell の ghc・cabal は mise で入れた ghcup で管理する (docs/adr/0050)
   log "ghcup で ghc・cabal を最新化します"
   mise exec -- ghcup install ghc latest --set
@@ -41,6 +46,9 @@ main() {
 
   log "現在のバージョン"
   mise ls --current
+
+  log "mise のロックファイルの変わった行数 (変わっていればコミットする)"
+  git -C "${DOTFILES:-$HOME/dotfiles}" --no-pager diff --stat -- mise/mise.lock
 }
 
 main "$@"

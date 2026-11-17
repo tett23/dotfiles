@@ -46,6 +46,10 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
   `install.sh` と `bin/update-mise` が ghcup の `latest` を入れて既定にする ([ADR 0050](adr/0050-ghc-cabal-via-ghcup.md))。
   VSCode の Haskell 拡張も mise の ghcup を使い、ghcup の自動の更新はしない。stack は入れない ([ADR 0056](adr/0056-remove-old-ghcup-and-stack.md))。
   Java も mise で入れる ([ADR 0103](adr/0103-java-and-alloy.md))。
+- mise は、`mise/mise.lock` (`macos-arm64` の分) に、入れたツールの版、ダウンロードの URL、`sha256` のハッシュを書き、入れるときにハッシュを確かめる。版は `latest` のままなので、ロックファイルは版を止めない。
+  守れるのは、`github:` のツールの、すでにロックファイルにある版のファイルを後から差し替えられることである。
+  新しい版 (初めて入れたときのハッシュを信じる)、npm のツール (`prh`、`typescript`)、ghcup で入れる ghc と cabal は守れない。`go`、`node` などの言語のハッシュを確かめるかは、確かめていない。
+  `mise install` と `bin/update-mise` はロックファイルを書き換えるので、変わったらコミットする ([ADR 0134](adr/0134-mise-lockfile-checksums.md))。
 
 ### コマンド
 
@@ -53,7 +57,7 @@ curl -fsSL https://raw.githubusercontent.com/tett23/dotfiles/HEAD/install.sh | s
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `bin/sync-deps`   | `dependencies.md` を Claude (`claude -p`) に読ませ、`flake.nix`・`mise/config.toml`・`nix/pkgs/` を更新させる ([ADR 0013](adr/0013-generate-config-from-dependencies-with-claude.md))。生成の対象の外のファイルか生成の前の写しが変わっていれば止める。`--switch` は差分の全体を見せ、端末 (`SYNC_DEPS_TTY`、既定は `/dev/tty`) で `y` か `yes` と答えたときだけ適用する ([ADR 0133](adr/0133-sync-deps-confirm-before-switch.md)) |
 | `bin/update-nix`  | `flake.lock` と `nix/pkgs/sources.json` を最新にして適用する ([ADR 0012](adr/0012-remove-homebrew.md))                                                  |
-| `bin/update-mise` | mise の言語とツールを最新にする。mise 本体は Nix で更新する ([ADR 0012](adr/0012-remove-homebrew.md))                                                   |
+| `bin/update-mise` | mise の言語とツールを最新にし、`mise lock` でロックファイルを更新して、その変わった行数を出す。mise 本体は Nix で更新する ([ADR 0012](adr/0012-remove-homebrew.md)、[ADR 0134](adr/0134-mise-lockfile-checksums.md))                                                   |
 
 ## 設定ファイルの配置
 
@@ -76,7 +80,7 @@ home-manager が、リポジトリ内のファイルへのシンボリックリ�
 | `~/.claude/skills/<名前>`、`~/.agents/skills/<名前>` (`doc-writing`・`release`・`close-reading`・`adr`・`context-restore`・`roadmap`・`security-audit`・`conformance-audit`) | `agents/skills/<名前>/` (Claude Code と Codex で共有する。ほかのスキルは管理しない。[ADR 0118](adr/0118-split-instructions-into-skills.md)、[ADR 0122](adr/0122-move-adr-rules-into-skill.md)、[ADR 0123](adr/0123-context-restore-skill.md)、[ADR 0125](adr/0125-roadmap-skill.md)、[ADR 0126](adr/0126-audit-skill.md)) |
 | `~/.config/nvim`、`~/.config/karabiner`                                                       | `nvim/`、`karabiner/`                              |
 | `~/.config/gh/config.yml` | `gh/config.yml` (認証情報を持つ `hosts.yml` は管理しない。[ADR 0112](adr/0112-gh-config-in-dotfiles.md)) |
-| `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`              | `bat/config`、`ghostty/config`、`mise/config.toml` |
+| `~/.config/bat/config`、`~/.config/ghostty/config`、`~/.config/mise/config.toml`、`~/.config/mise/mise.lock` | `bat/config`、`ghostty/config`、`mise/config.toml`、`mise/mise.lock` ([ADR 0134](adr/0134-mise-lockfile-checksums.md)) |
 | `~/Library/Application Support/Code/User/` の `settings.json`・`keybindings.json`・`snippets` | `vscode/`                                          |
 | `~/Library/Application Support/AquaSKK/keymap.conf`                                           | `skk/keymap.conf`                                  |
 | `~/Library/Application Support/NablaSKK/` の `keymap.conf`・`kana-rule.conf`・`settings.conf`・`dictionaries.conf` | `nablaskk/` (ユーザーの辞書 `skk-jisyo` は管理しない。[ADR 0081](adr/0081-nablaskk-config-in-dotfiles.md)。NablaSKK の設定アプリで保存すると、リンクの先 (dotfiles の `nablaskk/`) のファイルが書き換わる。リンクのまま保つのは、NablaSKK の `docs/adr/0021-keep-symlinked-config-files.md` を入れた版から。[ADR 0086](adr/0086-nablaskk-keeps-config-links.md)) |
