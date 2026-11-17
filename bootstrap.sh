@@ -44,6 +44,30 @@ ensure_xcode_clt() {
   log "Xcode Command Line Tools をインストールしました"
 }
 
+# Nix のインストーラー。版を固定し、中身の sha256 が一致するときだけ動かす (docs/adr/0046、docs/adr/0141)。
+# 版を上げるときは、URL とハッシュを一緒に書き換える
+NIX_INSTALLER_URL="https://install.determinate.systems/nix/tag/v3.24.1"
+NIX_INSTALLER_SHA256=1470fa510a9e3e8d8e03c7dc50f89c22003a0d7077a43486b6a3e97e3dde6160
+
+# インストーラーを一時ファイルに取り、sha256 を確かめてから動かす。Nix の前に動くので curl と shasum だけを使う
+install_nix() {
+  local tmp actual
+  tmp="$(mktemp "${TMPDIR:-/tmp}/nix-installer.XXXXXX")"
+  if ! curl --proto '=https' --tlsv1.2 -sSf -L -o "$tmp" "$NIX_INSTALLER_URL"; then
+    rm -f "$tmp"
+    echo "Nix のインストーラーを取得できませんでした: $NIX_INSTALLER_URL" >&2
+    exit 1
+  fi
+  actual="$(shasum -a 256 "$tmp" | awk '{print $1}')"
+  if [ "$actual" != "$NIX_INSTALLER_SHA256" ]; then
+    rm -f "$tmp"
+    echo "Nix のインストーラーの sha256 ($actual) が、書いた値 ($NIX_INSTALLER_SHA256) と違います。動かさずに終わります。" >&2
+    exit 1
+  fi
+  sh "$tmp" install --no-confirm
+  rm -f "$tmp"
+}
+
 # 1. Nix のインストール (未導入のときだけ)
 ensure_nix() {
   load_nix_env
@@ -53,9 +77,7 @@ ensure_nix() {
   fi
 
   log "Nix が見つからないためインストールします (Determinate Systems installer)"
-  # インストーラは版を固定する。上げるときはここを書き換える (docs/adr/0046)
-  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v3.24.1 \
-    | sh -s -- install --no-confirm
+  install_nix
 
   load_nix_env
   if ! command -v nix >/dev/null 2>&1; then
@@ -88,4 +110,7 @@ main() {
   log "完了しました。新しいシェルを開くと反映されます。"
 }
 
-main "$@"
+# source されたときは関数の定義だけ行う (テスト用。docs/adr/0141)
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+  main "$@"
+fi

@@ -1,6 +1,6 @@
 # ADR 0141: CI の action を lockfile でコミットに固定し、Nix のインストーラーのハッシュを確かめる
 
-Status: proposed
+Status: accepted-pending
 
 ## 文脈
 
